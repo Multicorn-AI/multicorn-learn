@@ -64,16 +64,16 @@ multicorn-learn/
 
 ## Scripts
 
-| Command              | Description                     |
-| -------------------- | ------------------------------- |
-| `pnpm dev`           | Start development server        |
-| `pnpm build`         | Build for production            |
-| `pnpm start`         | Start production server         |
-| `pnpm lint`          | Run ESLint                      |
-| `pnpm lint:fix`      | Run ESLint with auto-fix        |
-| `pnpm format`        | Format code with Prettier       |
-| `pnpm format:check`  | Check formatting                |
-| `pnpm typecheck`     | Run TypeScript type checking    |
+| Command             | Description                  |
+| ------------------- | ---------------------------- |
+| `pnpm dev`          | Start development server     |
+| `pnpm build`        | Build for production         |
+| `pnpm start`        | Start production server      |
+| `pnpm lint`         | Run ESLint                   |
+| `pnpm lint:fix`     | Run ESLint with auto-fix     |
+| `pnpm format`       | Format code with Prettier    |
+| `pnpm format:check` | Check formatting             |
+| `pnpm typecheck`    | Run TypeScript type checking |
 
 ## Tech Stack
 

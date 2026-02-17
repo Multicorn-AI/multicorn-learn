@@ -12,9 +12,9 @@ export default function HomePage() {
           </span>
         </h1>
         <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-text-secondary">
-          Multicorn helps teams understand, secure, and govern AI agents. From open-source
-          education to enterprise-grade permission controls — we are building the trust layer for
-          autonomous AI.
+          Multicorn helps teams understand, secure, and govern AI agents. From open-source education
+          to enterprise-grade permission controls — we are building the trust layer for autonomous
+          AI.
         </p>
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           <a
