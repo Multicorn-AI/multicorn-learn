@@ -13,11 +13,12 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     h3: ({ children }) => (
       <h3 className="mb-3 mt-8 text-2xl font-semibold text-text-primary">{children}</h3>
     ),
-    p: ({ children }) => (
-      <p className="mb-4 leading-relaxed text-text-secondary">{children}</p>
-    ),
+    p: ({ children }) => <p className="mb-4 leading-relaxed text-text-secondary">{children}</p>,
     a: ({ href, children }) => (
-      <a href={href} className="font-medium text-primary underline decoration-primary/30 hover:decoration-primary">
+      <a
+        href={href}
+        className="font-medium text-primary underline decoration-primary/30 hover:decoration-primary"
+      >
         {children}
       </a>
     ),
