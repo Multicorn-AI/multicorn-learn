@@ -13,7 +13,8 @@
     "lint:fix": "next lint --fix",
     "format": "prettier --write \"**/*.{ts,tsx,css,json,md,mdx}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,css,json,md,mdx}\"",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepare": "husky"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.0.1",
@@ -23,6 +24,15 @@
     "next": "^15.0.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,json,md,mdx}": [
+      "prettier --write"
+    ]
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
@@ -34,6 +44,8 @@
     "eslint": "^8.57.1",
     "eslint-config-next": "^15.0.8",
     "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.9",
