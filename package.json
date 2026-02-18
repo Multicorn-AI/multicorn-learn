@@ -44,6 +44,7 @@
     "eslint": "^8.57.1",
     "eslint-config-next": "^15.0.8",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-multicorn-ui": "file:../eslint-plugin-multicorn-ui",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "postcss": "^8.4.49",
