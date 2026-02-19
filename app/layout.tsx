@@ -10,9 +10,32 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Multicorn — AI Education & Agent Security',
+  title: 'Multicorn — The trusted layer between humans and AI agents',
   description:
-    'Learn how to build, secure, and govern AI agents. Explore Multicorn Shield for enterprise-grade agent permission controls.',
+    'Multicorn Shield gives your team consent screens, spending controls, and activity logging for every AI agent. Open-source SDK, enterprise-grade controls.',
+  metadataBase: new URL('https://multicorn.ai'),
+  openGraph: {
+    title: 'Multicorn — The trusted layer between humans and AI agents',
+    description:
+      'Consent screens, spending controls, and activity logging for every AI agent. Open-source SDK, enterprise-grade controls.',
+    url: 'https://multicorn.ai',
+    siteName: 'Multicorn',
+    type: 'website',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Multicorn — The trusted layer between humans and AI agents',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Multicorn — The trusted layer between humans and AI agents',
+    description: 'Consent screens, spending controls, and activity logging for every AI agent.',
+    images: ['/og-image.png'],
+  },
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

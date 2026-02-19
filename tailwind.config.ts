@@ -18,6 +18,8 @@ const config: Config = {
         orange: '#F59E0B',
         green: '#22C55E',
         blue: '#3B82F6',
+        teal: '#14B8A6',
+        red: '#EF4444',
         surface: '#FFFFFF',
         'surface-secondary': '#F9FAFB',
         'surface-tertiary': '#F3F4F6',
