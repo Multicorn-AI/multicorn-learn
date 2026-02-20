@@ -10,7 +10,7 @@ const PRODUCT_LINKS: readonly FooterLink[] = [
   { label: 'Shield', href: '/shield' },
   { label: 'Pricing', href: '/pricing' },
   { label: 'Documentation', href: '/shield' },
-  { label: 'Changelog', href: '/blog' },
+  { label: 'Changelog', href: '/changelog' },
 ]
 
 const RESOURCE_LINKS: readonly FooterLink[] = [

@@ -1,0 +1,123 @@
+---
+title: 'Permissions'
+description: 'Define what your agent can access using scopes, and revoke permissions when they are no longer needed.'
+order: 3
+---
+
+## Scope format
+
+Every permission in Shield is expressed as a scope string with the format `permission:service`:
+
+```
+read:gmail
+write:calendar
+execute:payments
+```
+
+A scope has two parts:
+
+- **Permission level** — what kind of access: `read`, `write`, or `execute`
+- **Service** — the target service: a lowercase identifier using letters, digits, hyphens, or underscores
+
+### Permission levels
+
+| Level     | Meaning                           | Example                                           |
+| --------- | --------------------------------- | ------------------------------------------------- |
+| `read`    | Observe data without modification | Reading emails, viewing calendar events           |
+| `write`   | Create or modify data             | Creating calendar events, updating contacts       |
+| `execute` | Trigger side-effects              | Sending emails, making payments, posting messages |
+
+### Service names
+
+Service names must start with a lowercase letter and contain only lowercase letters, digits, hyphens, or underscores. Examples: `gmail`, `calendar`, `my-service`, `slack_bot`.
+
+## Defining scopes
+
+Pass scope strings when requesting consent. Shield parses and validates them automatically:
+
+```typescript
+const decision = await shield.requestConsent({
+  agent: 'OpenClaw',
+  scopes: ['read:gmail', 'write:calendar', 'execute:payments', 'read:slack'],
+  spendLimit: 200,
+})
+```
+
+If any scope string is malformed, `requestConsent()` throws a `ScopeParseError` with a descriptive message:
+
+```typescript
+await shield.requestConsent({
+  agent: 'OpenClaw',
+  scopes: ['delete:gmail'], // "delete" is not a valid permission level
+})
+// ScopeParseError: Unknown permission level "delete" in scope string "delete:gmail".
+// Valid permission levels are: read, write, execute.
+```
+
+## Checking granted scopes
+
+After consent, use `getGrantedScopes()` to see what the user approved:
+
+```typescript
+const scopes = shield.getGrantedScopes('OpenClaw')
+// [
+//   { service: "gmail", permissionLevel: "read" },
+//   { service: "calendar", permissionLevel: "write" },
+// ]
+```
+
+Each scope is a structured object with `service` and `permissionLevel` fields, not the raw string.
+
+## Revoking permissions
+
+Revoke a specific permission at any time with `revokeScope()`:
+
+```typescript
+shield.revokeScope('OpenClaw', 'write:calendar')
+```
+
+After revocation, any `logAction()` call targeting the revoked service will throw an error. Revocation takes effect immediately.
+
+You can verify the revocation:
+
+```typescript
+shield.revokeScope('OpenClaw', 'write:calendar')
+
+const scopes = shield.getGrantedScopes('OpenClaw')
+// write:calendar is no longer in the list
+
+await shield.logAction({
+  agent: 'OpenClaw',
+  service: 'calendar',
+  action: 'create_event',
+  status: 'approved',
+})
+// Error: Agent "OpenClaw" does not have permission to access "calendar".
+```
+
+## Parsing scopes manually
+
+If you need to parse or validate scope strings outside of `requestConsent()`, Shield exports utility functions:
+
+```typescript
+import { parseScope, parseScopes, tryParseScope, isValidScopeString } from 'multicorn-shield'
+
+// Parse a single scope (throws on invalid input)
+const scope = parseScope('read:gmail')
+// { service: "gmail", permissionLevel: "read" }
+
+// Parse multiple scopes
+const scopes = parseScopes(['read:gmail', 'write:calendar'])
+
+// Parse without throwing
+const result = tryParseScope('bad-scope')
+if (result.success) {
+  console.log(result.scope)
+} else {
+  console.error(result.error)
+}
+
+// Quick validation check
+isValidScopeString('read:gmail') // true
+isValidScopeString('delete:gmail') // false
+```
