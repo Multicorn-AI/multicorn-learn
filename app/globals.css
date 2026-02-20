@@ -21,3 +21,11 @@
     @apply font-sans font-semibold tracking-tight;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-drift,
+  .animate-drift-reverse,
+  .animate-gradient-shift {
+    animation: none !important;
+  }
+}
