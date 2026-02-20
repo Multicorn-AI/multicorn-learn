@@ -4,6 +4,7 @@ import { EmailSignupForm } from '@/components/EmailSignupForm'
 interface FooterLink {
   readonly label: string
   readonly href: string
+  readonly isExternal?: boolean
 }
 
 const PRODUCT_LINKS: readonly FooterLink[] = [
@@ -14,17 +15,17 @@ const PRODUCT_LINKS: readonly FooterLink[] = [
 ]
 
 const RESOURCE_LINKS: readonly FooterLink[] = [
-  { label: 'Learn AI 101', href: '/learn' },
+  { label: 'Learn AI 101', href: '/learn/ai-101' },
   { label: 'Blog', href: '/blog' },
-  { label: 'GitHub', href: 'https://github.com/Multicorn-AI/multicorn-shield' },
-  { label: 'npm', href: 'https://www.npmjs.com/package/multicorn-shield' },
+  { label: 'GitHub', href: 'https://github.com/Multicorn-AI/multicorn-shield', isExternal: true },
+  { label: 'npm', href: 'https://www.npmjs.com/package/multicorn-shield', isExternal: true },
 ]
 
 const COMPANY_LINKS: readonly FooterLink[] = [
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
-  { label: 'Privacy', href: '/privacy' },
-  { label: 'Terms', href: '/terms' },
+  { label: 'Privacy', href: '/policies/privacy' },
+  { label: 'Terms', href: '/policies/terms' },
 ]
 
 function FooterLinkGroup({
@@ -40,12 +41,23 @@ function FooterLinkGroup({
       <ul className="mt-4 space-y-3" role="list">
         {links.map((link) => (
           <li key={link.label}>
-            <a
-              href={link.href}
-              className="text-sm text-text-secondary transition-colors hover:text-text-primary"
-            >
-              {link.label}
-            </a>
+            {link.isExternal ? (
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-text-secondary transition-colors hover:text-text-primary"
+              >
+                {link.label}
+              </a>
+            ) : (
+              <Link
+                href={link.href}
+                className="text-sm text-text-secondary transition-colors hover:text-text-primary"
+              >
+                {link.label}
+              </Link>
+            )}
           </li>
         ))}
       </ul>
@@ -83,6 +95,8 @@ export function Footer() {
           <div className="flex items-center gap-4">
             <a
               href="https://github.com/Multicorn-AI/multicorn-shield"
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="Multicorn on GitHub"
               className="text-text-tertiary transition-colors hover:text-text-primary"
             >
