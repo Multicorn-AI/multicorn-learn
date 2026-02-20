@@ -1,18 +1,506 @@
+import { Footer } from '@/components/Footer'
+import { ConsentScreenDemo } from '@/components/ConsentScreenDemo'
+import { CopyButton } from '@/components/CopyButton'
+
+interface Capability {
+  readonly name: string
+  readonly description: string
+  readonly icon: React.ReactNode
+}
+
+const CAPABILITIES: readonly Capability[] = [
+  {
+    name: 'Consent screens',
+    description:
+      'A drop-in approval screen so users can review and approve what an agent wants to do — before it acts. Framework-agnostic, works everywhere.',
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-6 w-6"
+        aria-hidden="true"
+      >
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        <path d="m9 12 2 2 4-4" />
+      </svg>
+    ),
+  },
+  {
+    name: 'Spending controls',
+    description:
+      'Set per-transaction, daily, and monthly limits. Know exactly what your agents spend and stop them before they go over budget.',
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-6 w-6"
+        aria-hidden="true"
+      >
+        <line x1="12" y1="1" x2="12" y2="23" />
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+      </svg>
+    ),
+  },
+  {
+    name: 'Activity logging',
+    description:
+      'A tamper-evident audit trail of every action every agent takes. See what happened, when, and why — with hash-chain integrity.',
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-6 w-6"
+        aria-hidden="true"
+      >
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+        <polyline points="14 2 14 8 20 8" />
+        <line x1="16" y1="13" x2="8" y2="13" />
+        <line x1="16" y1="17" x2="8" y2="17" />
+        <polyline points="10 9 9 9 8 9" />
+      </svg>
+    ),
+  },
+  {
+    name: 'Permission management',
+    description:
+      'Define exactly what each agent can access — Gmail, Calendar, Slack, GitHub — with granular, per-service permissions.',
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-6 w-6"
+        aria-hidden="true"
+      >
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+      </svg>
+    ),
+  },
+  {
+    name: 'MCP integration',
+    description:
+      'Middleware for Model Context Protocol servers. Sits between agents and tools, enforcing permissions on every call automatically.',
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-6 w-6"
+        aria-hidden="true"
+      >
+        <polyline points="16 18 22 12 16 6" />
+        <polyline points="8 6 2 12 8 18" />
+      </svg>
+    ),
+  },
+  {
+    name: 'Open source',
+    description:
+      'MIT-licensed, fully auditable. Read the code, run the tests, extend it for your needs. No black boxes.',
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-6 w-6"
+        aria-hidden="true"
+      >
+        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+      </svg>
+    ),
+  },
+]
+
+interface ComparisonRow {
+  readonly feature: string
+  readonly shield: 'yes' | 'no' | 'partial'
+  readonly agentGate: 'yes' | 'no' | 'partial'
+  readonly noControl: 'yes' | 'no' | 'partial'
+}
+
+const COMPARISON_ROWS: readonly ComparisonRow[] = [
+  { feature: 'Consent screens', shield: 'yes', agentGate: 'no', noControl: 'no' },
+  { feature: 'Spending controls', shield: 'yes', agentGate: 'partial', noControl: 'no' },
+  { feature: 'Activity logging', shield: 'yes', agentGate: 'yes', noControl: 'no' },
+  { feature: 'Open source', shield: 'yes', agentGate: 'no', noControl: 'no' },
+  { feature: 'MCP support', shield: 'yes', agentGate: 'no', noControl: 'no' },
+  { feature: 'Custom permissions', shield: 'yes', agentGate: 'partial', noControl: 'no' },
+]
+
+function ComparisonCell({ value }: { readonly value: 'yes' | 'no' | 'partial' }) {
+  if (value === 'yes') {
+    return (
+      <span className="inline-flex items-center gap-1.5 text-sm font-medium text-green">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          className="h-4 w-4"
+          aria-hidden="true"
+        >
+          <path
+            fillRule="evenodd"
+            d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
+            clipRule="evenodd"
+          />
+        </svg>
+        Yes
+      </span>
+    )
+  }
+  if (value === 'partial') {
+    return (
+      <span className="inline-flex items-center gap-1.5 text-sm text-orange">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          className="h-4 w-4"
+          aria-hidden="true"
+        >
+          <path
+            fillRule="evenodd"
+            d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-8-5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0v-4.5A.75.75 0 0 1 10 5Zm0 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
+            clipRule="evenodd"
+          />
+        </svg>
+        Limited
+      </span>
+    )
+  }
+  return (
+    <span className="inline-flex items-center gap-1.5 text-sm text-text-tertiary">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+        className="h-4 w-4"
+        aria-hidden="true"
+      >
+        <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+      </svg>
+      No
+    </span>
+  )
+}
+
+const QUICKSTART_STEPS = [
+  {
+    step: '1',
+    title: 'Install the SDK',
+    code: 'npm install multicorn-shield',
+  },
+  {
+    step: '2',
+    title: 'Initialize Shield',
+    code: `import { MulticornShield } from "multicorn-shield";
+
+const shield = new MulticornShield({
+  apiKey: "mcs_your_key_here",
+});`,
+  },
+  {
+    step: '3',
+    title: 'Request consent from users',
+    code: `const decision = await shield.requestConsent({
+  agent: "OpenClaw",
+  scopes: ["read:gmail", "write:calendar"],
+  spendLimit: 200,
+});
+
+// decision.grantedScopes — what the user approved`,
+  },
+] as const
+
 export default function ShieldPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center px-6">
-      <div className="max-w-content text-center">
-        <span className="mb-4 inline-block rounded-full bg-indigo/10 px-4 py-1.5 text-sm font-medium text-indigo">
-          Product
-        </span>
-        <h1 className="mb-6 text-4xl font-bold tracking-tight text-text-primary sm:text-5xl">
-          Multicorn Shield
-        </h1>
-        <p className="mx-auto max-w-2xl text-lg leading-relaxed text-text-secondary">
-          Enterprise-grade permission controls for AI agents. Define what your agents can do, track
-          what they actually do, and maintain a tamper-evident audit trail.
-        </p>
-      </div>
-    </main>
+    <>
+      <main>
+        {/* Hero */}
+        <section className="relative overflow-hidden px-6 pb-20 pt-24 sm:pb-28 sm:pt-32">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-primary/5 via-indigo/5 to-transparent"
+          />
+          <div className="mx-auto max-w-content text-center">
+            <span className="mb-4 inline-block rounded-full bg-indigo/10 px-4 py-1.5 text-sm font-medium text-indigo">
+              Product
+            </span>
+            <h1 className="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-text-primary sm:text-5xl lg:text-6xl">
+              Control what your{' '}
+              <span className="bg-gradient-to-r from-primary via-indigo to-pink bg-clip-text text-transparent">
+                AI agents
+              </span>{' '}
+              can do
+            </h1>
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-text-secondary sm:text-xl">
+              Multicorn Shield gives your team consent screens, spending controls, and activity
+              logging for every AI agent. One SDK — full oversight.
+            </p>
+            <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+              <a
+                href="https://dashboard.multicorn.ai/signup"
+                className="inline-flex min-h-[44px] items-center rounded-lg bg-primary px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+              >
+                Start for free
+              </a>
+              <a
+                href="https://github.com/Multicorn-AI/multicorn-shield"
+                className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-border px-8 py-3 text-base font-semibold text-text-primary transition-colors hover:bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="h-5 w-5"
+                  aria-hidden="true"
+                >
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+                </svg>
+                View on GitHub
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Feature Deep-Dive */}
+        <section className="px-6 py-20 sm:py-28">
+          <div className="mx-auto max-w-content">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
+                Everything you need to govern AI agents
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-lg text-text-secondary">
+                One SDK to define what agents can do, track what they did, and keep your users in
+                control.
+              </p>
+            </div>
+            <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {CAPABILITIES.map((capability) => (
+                <div
+                  key={capability.name}
+                  className="rounded-card border border-border bg-surface-secondary p-6"
+                >
+                  <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    {capability.icon}
+                  </div>
+                  <h3 className="mb-2 text-base font-semibold text-text-primary">
+                    {capability.name}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-text-secondary">
+                    {capability.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Interactive Consent Screen Demo */}
+        <section className="bg-[#0d0d14] px-6 py-20 sm:py-28">
+          <div className="mx-auto max-w-content">
+            <div className="mb-16 text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                See the consent screen in action
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-lg text-[#8888a0]">
+                This is how the consent screen appears to your users. Try toggling permissions,
+                adjusting the spending limit, and approving or denying the agent.
+              </p>
+            </div>
+            <ConsentScreenDemo />
+          </div>
+        </section>
+
+        {/* SDK Quickstart */}
+        <section className="px-6 py-20 sm:py-28">
+          <div className="mx-auto max-w-content">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
+                Up and running in minutes
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-lg text-text-secondary">
+                Three steps to start controlling your AI agents. Copy, paste, ship.
+              </p>
+            </div>
+
+            <div className="mx-auto mt-16 max-w-2xl space-y-10">
+              {QUICKSTART_STEPS.map((item) => (
+                <div key={item.step}>
+                  <div className="mb-3 flex items-center gap-3">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
+                      {item.step}
+                    </span>
+                    <h3 className="text-lg font-semibold text-text-primary">{item.title}</h3>
+                  </div>
+                  <div className="overflow-hidden rounded-lg border border-border bg-text-primary">
+                    <div className="flex items-center justify-between border-b border-white/10 px-4 py-2">
+                      <span className="text-xs text-text-tertiary">
+                        {item.step === '1' ? 'Terminal' : 'TypeScript'}
+                      </span>
+                      <CopyButton text={item.code} />
+                    </div>
+                    <pre className="overflow-x-auto px-4 py-3">
+                      <code className="text-sm text-green">{item.code}</code>
+                    </pre>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-12 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+              <a
+                href="https://github.com/Multicorn-AI/multicorn-shield"
+                className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-semibold text-text-primary transition-colors hover:bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="h-5 w-5"
+                  aria-hidden="true"
+                >
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+                </svg>
+                GitHub
+              </a>
+              <a
+                href="https://www.npmjs.com/package/multicorn-shield"
+                className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-semibold text-text-primary transition-colors hover:bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="h-5 w-5 text-red"
+                  aria-hidden="true"
+                >
+                  <path d="M0 7.334v8h6.666v1.332H12v-1.332h12v-8H0zm6.666 6.664H5.334v-4H3.999v4H1.335V8.667h5.331v5.331zm4 0h-2.666V8.667h2.666v5.331zm12 0h-2.666v-4h-1.334v4h-1.335v-4h-1.333v4h-2.666V8.667H22.666v5.331zM11.333 8.667h1.334v4h-1.334v-4z" />
+                </svg>
+                npm
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Comparison Table */}
+        <section className="bg-surface-secondary px-6 py-20 sm:py-28">
+          <div className="mx-auto max-w-content">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
+                How Shield compares
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-lg text-text-secondary">
+                See how Multicorn Shield stacks up against alternatives.
+              </p>
+            </div>
+            <div className="mx-auto mt-16 max-w-3xl overflow-x-auto rounded-card border border-border bg-surface">
+              <table className="w-full text-left text-sm">
+                <thead>
+                  <tr className="border-b border-border bg-surface-secondary">
+                    <th scope="col" className="px-6 py-4 font-semibold text-text-primary">
+                      Feature
+                    </th>
+                    <th scope="col" className="px-6 py-4 font-semibold text-primary">
+                      Multicorn Shield
+                    </th>
+                    <th scope="col" className="px-6 py-4 font-semibold text-text-primary">
+                      AgentGate
+                    </th>
+                    <th scope="col" className="px-6 py-4 font-semibold text-text-primary">
+                      No control
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {COMPARISON_ROWS.map((row, index) => (
+                    <tr
+                      key={row.feature}
+                      className={index < COMPARISON_ROWS.length - 1 ? 'border-b border-border' : ''}
+                    >
+                      <td className="px-6 py-4 font-medium text-text-primary">{row.feature}</td>
+                      <td className="px-6 py-4">
+                        <ComparisonCell value={row.shield} />
+                      </td>
+                      <td className="px-6 py-4">
+                        <ComparisonCell value={row.agentGate} />
+                      </td>
+                      <td className="px-6 py-4">
+                        <ComparisonCell value={row.noControl} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="px-6 py-20 sm:py-28">
+          <div className="mx-auto max-w-content text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
+              Start controlling your AI agents today
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-lg text-text-secondary">
+              Free to start, no credit card required. Set up consent screens and spending controls
+              in minutes.
+            </p>
+            <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+              <a
+                href="https://dashboard.multicorn.ai/signup"
+                className="inline-flex min-h-[44px] items-center rounded-lg bg-primary px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+              >
+                Start for free
+              </a>
+              <a
+                href="https://github.com/Multicorn-AI/multicorn-shield"
+                className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-border px-8 py-3 text-base font-semibold text-text-primary transition-colors hover:bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="h-5 w-5"
+                  aria-hidden="true"
+                >
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+                </svg>
+                View on GitHub
+              </a>
+            </div>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </>
   )
 }
