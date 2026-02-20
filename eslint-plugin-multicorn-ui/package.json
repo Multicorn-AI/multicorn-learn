@@ -1,0 +1,14 @@
+{
+  "name": "eslint-plugin-multicorn-ui",
+  "version": "1.0.0",
+  "description": "ESLint rules to enforce Multicorn UI language standards",
+  "main": "src/index.js",
+  "license": "MIT",
+  "keywords": [
+    "eslint",
+    "eslintplugin"
+  ],
+  "peerDependencies": {
+    "eslint": ">=8.0.0"
+  }
+}

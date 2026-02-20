@@ -67,8 +67,8 @@ importers:
         specifier: ^9.1.0
         version: 9.1.2(eslint@8.57.1)
       eslint-plugin-multicorn-ui:
-        specifier: file:../eslint-plugin-multicorn-ui
-        version: file:../eslint-plugin-multicorn-ui(eslint@8.57.1)
+        specifier: file:./eslint-plugin-multicorn-ui
+        version: file:eslint-plugin-multicorn-ui(eslint@8.57.1)
       husky:
         specifier: ^9.1.7
         version: 9.1.7
@@ -1080,8 +1080,8 @@ packages:
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9
 
-  eslint-plugin-multicorn-ui@file:../eslint-plugin-multicorn-ui:
-    resolution: {directory: ../eslint-plugin-multicorn-ui, type: directory}
+  eslint-plugin-multicorn-ui@file:eslint-plugin-multicorn-ui:
+    resolution: {directory: eslint-plugin-multicorn-ui, type: directory}
     peerDependencies:
       eslint: '>=8.0.0'
 
@@ -3577,7 +3577,7 @@ snapshots:
       safe-regex-test: 1.1.0
       string.prototype.includes: 2.0.1
 
-  eslint-plugin-multicorn-ui@file:../eslint-plugin-multicorn-ui(eslint@8.57.1):
+  eslint-plugin-multicorn-ui@file:eslint-plugin-multicorn-ui(eslint@8.57.1):
     dependencies:
       eslint: 8.57.1
 
