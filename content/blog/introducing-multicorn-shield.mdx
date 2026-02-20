@@ -1,0 +1,210 @@
+---
+title: 'Introducing Multicorn Shield'
+description: 'AI agents are accessing your email, calendar, and bank accounts with zero oversight. Multicorn Shield is the open-source permissions layer that puts you back in control.'
+date: '2026-02-20'
+author: 'Multicorn Team'
+ogImage: '/blog/og-introducing-multicorn-shield.png'
+tags: ['launch', 'shield', 'open-source']
+---
+
+## AI agents are everywhere. Permissions are not.
+
+Your team probably uses AI agents already. Maybe one reads your email and drafts replies. Another books meetings on your calendar. A third manages code reviews on GitHub.
+
+These agents are useful. They save time. But here is the problem: most of them operate with **no permission boundaries at all**. They can read, write, and spend on your behalf — and you have no way to review what they are doing, set limits on what they can access, or stop them when they go too far.
+
+Imagine an agent called OpenClaw. You connected it to your Gmail, Calendar, and Slack. One morning you check the dashboard and see:
+
+- OpenClaw sent 14 emails you never reviewed
+- It booked a $200 dinner reservation through a connected payments service
+- It posted a message in your company's #engineering channel
+
+Was all of that authorised? Was the $200 within your budget? Did you even know it had access to payments?
+
+For most teams today, the honest answer is: "We're not sure."
+
+## The missing layer
+
+When you install a mobile app, your phone asks for permission before the app can access your camera, location, or contacts. When a website wants to connect to your Google account, you see an OAuth consent screen listing exactly what it will access.
+
+AI agents have nothing like this. There is no standard way to:
+
+- Show users what an agent wants to access before granting permission
+- Define and enforce what each agent is allowed to do
+- Track every action an agent takes in a tamper-evident record
+- Set spending limits and block transactions that exceed them
+
+Every team that uses AI agents is building these controls from scratch — or, more often, skipping them entirely.
+
+## Multicorn Shield: the permissions layer for AI agents
+
+Today we are open-sourcing **Multicorn Shield**, a TypeScript SDK that gives developers a single integration point for agent permissions, consent, spending controls, and activity logging.
+
+Shield sits between your application and your AI agents. Before an agent can act, Shield ensures the user has reviewed and approved what it can do. After the agent acts, Shield logs everything to a tamper-evident audit trail. If an agent tries to overspend, Shield blocks it.
+
+Here is what that looks like in practice.
+
+## How it works
+
+### Consent screen
+
+Shield includes a drop-in consent screen — a web component that works with any framework. When an agent needs access to a service, your user sees exactly what it is requesting and can approve, modify, or deny each permission individually.
+
+```typescript
+import { MulticornShield } from 'multicorn-shield'
+
+const shield = new MulticornShield({ apiKey: 'mcs_your_key_here' })
+
+const decision = await shield.requestConsent({
+  agent: 'OpenClaw',
+  scopes: ['read:gmail', 'write:calendar', 'execute:payments'],
+  spendLimit: 200,
+})
+
+// decision.grantedScopes — exactly what the user approved
+```
+
+The consent screen uses Shadow DOM so it cannot be styled or tampered with by the host page. Users can toggle individual permissions on or off and set a spending limit with a slider — all before the agent gets access to anything.
+
+### Permission scopes
+
+Every permission in Shield follows a clear format: `permission:service`. For example, `read:gmail` means the agent can read emails but not send them. `write:calendar` means it can create events. `execute:payments` means it can make purchases.
+
+Shield ships with built-in support for common services (Gmail, Calendar, Slack, Drive, GitHub, Jira, Payments) and lets you register your own:
+
+```typescript
+import { createScopeRegistry, parseScope } from 'multicorn-shield'
+
+const registry = createScopeRegistry()
+
+registry.register({
+  name: 'analytics',
+  description: 'Internal analytics platform',
+  capabilities: ['read', 'write'],
+})
+
+const scope = parseScope('read:analytics')
+// { service: "analytics", permissionLevel: "read" }
+```
+
+Scopes are validated at parse time. If an agent tries to use a malformed or unregistered scope, Shield throws a clear error immediately — no silent failures.
+
+### Spending controls
+
+Shield enforces per-transaction, daily, and monthly spending limits using integer-cents arithmetic (no floating-point rounding errors). Before an agent makes a purchase, you can check whether it would exceed the approved limit:
+
+```typescript
+const result = shield.checkSpending('OpenClaw', 849)
+
+if (!result.allowed) {
+  // "Action blocked: $849.00 exceeds per-transaction limit of $200.00"
+  console.error(result.reason)
+}
+```
+
+If the user set a $200 spending limit in the consent screen, an $849 purchase gets blocked before it happens.
+
+### Activity logging
+
+Every action an agent takes is logged to a structured, tamper-evident audit trail. You see what happened, which agent did it, which service was involved, and when:
+
+```typescript
+await shield.logAction({
+  agent: 'OpenClaw',
+  service: 'gmail',
+  action: 'send_email',
+  status: 'approved',
+  cost: 0.002,
+  metadata: { recipient: 'team@example.com' },
+})
+```
+
+Shield verifies that the agent actually has permission for that service before accepting the log entry. If OpenClaw never received access to Gmail, the call fails with a descriptive error message — not a cryptic code.
+
+### MCP integration
+
+If you are building with the Model Context Protocol, Shield provides a middleware adapter that sits between agents and MCP tool servers. It enforces permissions on every tool call automatically:
+
+```typescript
+import { createMcpAdapter, isBlockedResult } from 'multicorn-shield'
+
+const adapter = createMcpAdapter({
+  agentId: 'inbox-assistant',
+  grantedScopes: [
+    { service: 'gmail', permissionLevel: 'execute' },
+    { service: 'calendar', permissionLevel: 'read' },
+  ],
+})
+
+const result = await adapter.intercept(
+  { toolName: 'gmail_send_email', arguments: { to: 'user@example.com' } },
+  (call) => mcpServer.callTool(call.toolName, call.arguments),
+)
+
+if (isBlockedResult(result)) {
+  console.error(result.reason)
+}
+```
+
+## See everything in one place
+
+The Multicorn dashboard gives you a real-time view of every agent, every action, and every permission across your organisation. You can see which agents are active, what they have done, how much they have spent, and whether anything was blocked.
+
+![Multicorn Shield dashboard showing agent activity, spending, and permissions](/blog/shield-dashboard.png)
+
+No training required — the dashboard is designed so anyone on your team can understand what is happening at a glance.
+
+## Get started in five minutes
+
+Install Shield from npm:
+
+```bash
+npm install multicorn-shield
+```
+
+Then add consent and logging to your agent integration:
+
+```typescript
+import { MulticornShield } from 'multicorn-shield'
+
+const shield = new MulticornShield({ apiKey: 'mcs_your_key_here' })
+
+// 1. Ask the user for permission
+const decision = await shield.requestConsent({
+  agent: 'OpenClaw',
+  scopes: ['read:gmail', 'write:calendar'],
+  spendLimit: 200,
+})
+
+// 2. Log every action the agent takes
+await shield.logAction({
+  agent: 'OpenClaw',
+  service: 'gmail',
+  action: 'send_email',
+  status: 'approved',
+})
+
+// 3. Check spending before purchases
+const check = shield.checkSpending('OpenClaw', 50)
+if (!check.allowed) {
+  console.error(check.reason)
+}
+
+// 4. Clean up when done
+shield.destroy()
+```
+
+That gives you a consent screen, scoped permissions, an audit trail, and spending controls. The full API reference and framework-specific examples (React, Vue, Svelte, vanilla HTML) are in the [GitHub repository](https://github.com/Multicorn-AI/multicorn-shield).
+
+## What comes next
+
+Shield is the foundation. Here is what we are working on:
+
+- **Policy engine** — define organisation-wide rules for what agents can and cannot do, enforced server-side
+- **Team roles** — give different team members different levels of control over agent permissions
+- **More integrations** — native adapters for popular agent frameworks beyond MCP
+- **Alerting** — get notified when an agent does something unexpected, not just when it is blocked
+
+We are building Multicorn in the open. The SDK is [MIT-licensed on GitHub](https://github.com/Multicorn-AI/multicorn-shield) and we welcome contributions — whether that is code, bug reports, or ideas for what to build next.
+
+If you are building with AI agents and want to give your users real control over what those agents can do, [try Shield today](/shield).
