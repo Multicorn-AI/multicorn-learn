@@ -117,12 +117,12 @@ export function EmailSignupForm() {
         </button>
       </div>
       {validationError && (
-        <p id="email-error" role="alert" className="mt-2 text-sm text-red-600">
+        <p id="email-error" role="alert" className="text-red-600 mt-2 text-sm">
           {validationError}
         </p>
       )}
       {submitError && (
-        <p role="alert" className="mt-2 text-sm text-red-600">
+        <p role="alert" className="text-red-600 mt-2 text-sm">
           {submitError}
         </p>
       )}
