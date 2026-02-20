@@ -43,6 +43,25 @@ const config: Config = {
       maxWidth: {
         content: '72rem',
       },
+      keyframes: {
+        drift: {
+          '0%, 100%': { transform: 'translateY(0) rotate(0deg)', opacity: '0.7' },
+          '50%': { transform: 'translateY(-18px) rotate(12deg)', opacity: '1' },
+        },
+        'drift-reverse': {
+          '0%, 100%': { transform: 'translateY(0) rotate(0deg)', opacity: '1' },
+          '50%': { transform: 'translateY(14px) rotate(-8deg)', opacity: '0.6' },
+        },
+        'gradient-shift': {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
+      },
+      animation: {
+        drift: 'drift 6s ease-in-out infinite',
+        'drift-reverse': 'drift-reverse 7s ease-in-out infinite',
+        'gradient-shift': 'gradient-shift 8s ease infinite',
+      },
     },
   },
   plugins: [],
