@@ -1,0 +1,122 @@
+---
+title: 'Consent Screen'
+description: 'Show users exactly what your agent wants to do and let them approve or deny each permission.'
+order: 2
+---
+
+## Overview
+
+The consent screen is the moment your users decide whether to trust your agent. It shows the agent name, requested permissions, and spending limit — then lets the user approve, partially approve, or deny.
+
+Shield renders the consent screen as a `<multicorn-consent>` web component using Shadow DOM. This means it works in any framework (React, Vue, Svelte, vanilla JS) and its styles cannot be affected by your application CSS.
+
+## Requesting consent
+
+Call `requestConsent()` with the agent name, requested scopes, and an optional spending limit:
+
+```typescript
+const decision = await shield.requestConsent({
+  agent: 'OpenClaw',
+  scopes: ['read:gmail', 'write:calendar', 'execute:payments'],
+  spendLimit: 200,
+  agentColor: '#8b5cf6',
+})
+```
+
+The method returns a `ConsentDecision` when the user makes their choice. The promise resolves — it never rejects. Check the result to determine what was approved.
+
+## Configuration options
+
+| Option       | Type       | Default     | Description                                                                           |
+| ------------ | ---------- | ----------- | ------------------------------------------------------------------------------------- |
+| `agent`      | `string`   | —           | The name of the agent requesting access. Displayed on the consent screen.             |
+| `scopes`     | `string[]` | —           | Permission strings the agent is requesting. Format: `"permission:service"`.           |
+| `spendLimit` | `number`   | `0`         | Maximum spend per transaction in dollars. Omit or set to 0 to hide spending controls. |
+| `agentColor` | `string`   | `"#8b5cf6"` | Hex colour for the agent icon on the consent screen.                                  |
+
+## The consent decision
+
+The returned `ConsentDecision` object contains:
+
+```typescript
+interface ConsentDecision {
+  scopeRequest: ScopeRequest // What was originally requested
+  grantedScopes: readonly Scope[] // What the user actually approved
+  timestamp: string // ISO 8601 timestamp of the decision
+}
+```
+
+There are three possible outcomes:
+
+### Full approval
+
+The user approved everything. `grantedScopes` matches all requested scopes:
+
+```typescript
+const decision = await shield.requestConsent({
+  agent: 'OpenClaw',
+  scopes: ['read:gmail', 'write:calendar'],
+  spendLimit: 200,
+})
+
+// decision.grantedScopes contains both scopes
+```
+
+### Partial approval
+
+The user approved some permissions but denied others. Check `grantedScopes` to see what was actually approved:
+
+```typescript
+const decision = await shield.requestConsent({
+  agent: 'OpenClaw',
+  scopes: ['read:gmail', 'write:calendar', 'execute:payments'],
+  spendLimit: 200,
+})
+
+// User approved read:gmail and write:calendar but denied execute:payments
+// decision.grantedScopes only contains the two approved scopes
+const canAccessPayments = decision.grantedScopes.some((s) => s.service === 'payments')
+// false
+```
+
+### Denial
+
+The user denied the entire request. `grantedScopes` is an empty array:
+
+```typescript
+const decision = await shield.requestConsent({
+  agent: 'OpenClaw',
+  scopes: ['read:gmail'],
+  spendLimit: 200,
+})
+
+if (decision.grantedScopes.length === 0) {
+  // Handle denial — show a message, disable the agent, etc.
+}
+```
+
+## Scope enforcement
+
+After consent, Shield stores the granted scopes internally. Every subsequent `logAction()` call checks that the agent has permission for the target service. If the user denied access to a service, actions targeting that service will throw:
+
+```typescript
+// User denied execute:payments
+await shield.logAction({
+  agent: 'OpenClaw',
+  service: 'payments',
+  action: 'charge_card',
+  status: 'approved',
+})
+// Error: Agent "OpenClaw" does not have permission to access "payments".
+// Call requestConsent() to grant access.
+```
+
+## Events
+
+The consent screen emits three custom events on the underlying web component element. These are handled internally by `requestConsent()`, but you can listen for them if you mount the `<multicorn-consent>` element directly:
+
+| Event             | When                      | Detail                                                   |
+| ----------------- | ------------------------- | -------------------------------------------------------- |
+| `consent-granted` | User approved all scopes  | `{ grantedScopes, spendLimit, timestamp }`               |
+| `consent-partial` | User approved some scopes | `{ grantedScopes, deniedScopes, spendLimit, timestamp }` |
+| `consent-denied`  | User denied everything    | `{ deniedScopes, timestamp }`                            |

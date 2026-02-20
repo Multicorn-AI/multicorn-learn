@@ -1,0 +1,232 @@
+---
+title: 'API Reference'
+description: 'Complete method reference for the MulticornShield class, including parameters, return types, and error handling.'
+order: 6
+---
+
+## MulticornShield
+
+The main entry point for the Multicorn Shield SDK. Create one instance per application and reuse it across agent interactions.
+
+### Constructor
+
+```typescript
+new MulticornShield(config: MulticornShieldConfig)
+```
+
+| Parameter          | Type              | Required | Description                                                         |
+| ------------------ | ----------------- | -------- | ------------------------------------------------------------------- |
+| `config.apiKey`    | `string`          | Yes      | Your API key. Must start with `mcs_` and be at least 16 characters. |
+| `config.baseUrl`   | `string`          | No       | API base URL. Default: `"https://api.multicorn.ai"`                 |
+| `config.timeout`   | `number`          | No       | Request timeout in ms. Default: `5000`                              |
+| `config.batchMode` | `BatchModeConfig` | No       | Batch mode for action logging.                                      |
+
+**Throws:** `Error` if the API key is missing, does not start with `mcs_`, or is shorter than 16 characters.
+
+### requestConsent
+
+Show the consent screen and wait for the user's decision.
+
+```typescript
+shield.requestConsent(options: ConsentOptions): Promise<ConsentDecision>
+```
+
+**Parameters:**
+
+| Field                | Type                | Required | Description                                                    |
+| -------------------- | ------------------- | -------- | -------------------------------------------------------------- |
+| `options.agent`      | `string`            | Yes      | Agent name shown on the consent screen.                        |
+| `options.scopes`     | `readonly string[]` | Yes      | Scope strings to request. Format: `"permission:service"`.      |
+| `options.spendLimit` | `number`            | No       | Max spend per transaction in dollars. Default: `0` (no limit). |
+| `options.agentColor` | `string`            | No       | Hex colour for agent icon. Default: `"#8b5cf6"`.               |
+
+**Returns:** `Promise<ConsentDecision>` — resolves with the user's decision. Never rejects.
+
+```typescript
+interface ConsentDecision {
+  scopeRequest: ScopeRequest
+  grantedScopes: readonly Scope[]
+  timestamp: string
+}
+```
+
+**Throws:** `ScopeParseError` if any scope string is malformed. `Error` if the instance has been destroyed.
+
+### logAction
+
+Log an action taken by an agent.
+
+```typescript
+shield.logAction(action: ActionInput): Promise<void>
+```
+
+**Parameters:**
+
+| Field             | Type                                          | Required | Description                                                        |
+| ----------------- | --------------------------------------------- | -------- | ------------------------------------------------------------------ |
+| `action.agent`    | `string`                                      | Yes      | Agent identifier. Must match the value used in `requestConsent()`. |
+| `action.service`  | `string`                                      | Yes      | Service accessed (e.g. `"gmail"`).                                 |
+| `action.action`   | `string`                                      | Yes      | Action type (e.g. `"send_email"`).                                 |
+| `action.status`   | `ActionStatus`                                | Yes      | `"approved"`, `"blocked"`, `"pending"`, or `"flagged"`.            |
+| `action.cost`     | `number`                                      | No       | Cost in USD.                                                       |
+| `action.metadata` | `Record<string, string or number or boolean>` | No       | Structured metadata.                                               |
+
+**Returns:** `Promise<void>` — resolves when logged (or queued in batch mode).
+
+**Throws:** `Error` if the agent does not have a granted scope for the target service. `Error` if the instance has been destroyed.
+
+### revokeScope
+
+Revoke a specific permission for an agent. Takes effect immediately.
+
+```typescript
+shield.revokeScope(agentId: string, scope: string): void
+```
+
+**Parameters:**
+
+| Parameter | Type     | Description                                       |
+| --------- | -------- | ------------------------------------------------- |
+| `agentId` | `string` | The agent whose permission should be revoked.     |
+| `scope`   | `string` | Scope string to revoke (e.g. `"write:calendar"`). |
+
+**Throws:** `ScopeParseError` if the scope string is malformed. `Error` if the instance has been destroyed.
+
+### getGrantedScopes
+
+Return the current granted scopes for an agent.
+
+```typescript
+shield.getGrantedScopes(agentId: string): readonly Scope[]
+```
+
+**Parameters:**
+
+| Parameter | Type     | Description         |
+| --------- | -------- | ------------------- |
+| `agentId` | `string` | The agent to query. |
+
+**Returns:** Array of granted `Scope` objects. Empty array if no scopes have been granted.
+
+```typescript
+interface Scope {
+  service: string
+  permissionLevel: 'read' | 'write' | 'execute'
+}
+```
+
+**Throws:** `Error` if the instance has been destroyed.
+
+### checkSpending
+
+Pre-check whether a proposed spend would be allowed.
+
+```typescript
+shield.checkSpending(agentId: string, amount: number): SpendCheckResult
+```
+
+**Parameters:**
+
+| Parameter | Type     | Description                                |
+| --------- | -------- | ------------------------------------------ |
+| `agentId` | `string` | The agent proposing the spend.             |
+| `amount`  | `number` | Proposed amount in dollars (e.g. `49.99`). |
+
+**Returns:** `SpendCheckResult` indicating whether the spend is allowed and what budget remains.
+
+```typescript
+interface SpendCheckResult {
+  allowed: boolean
+  reason?: string
+  remainingBudget: {
+    transaction: number
+    daily: number
+    monthly: number
+  }
+}
+```
+
+**Throws:** `Error` if the instance has been destroyed.
+
+### destroy
+
+Clean up the SDK instance. Flushes pending log entries and removes the consent screen from the DOM.
+
+```typescript
+shield.destroy(): void
+```
+
+Safe to call multiple times — subsequent calls are no-ops. All method calls after `destroy()` will throw.
+
+## Types
+
+### ActionStatus
+
+```typescript
+type ActionStatus = 'approved' | 'blocked' | 'pending' | 'flagged'
+```
+
+### PermissionLevel
+
+```typescript
+type PermissionLevel = 'read' | 'write' | 'execute'
+```
+
+### AgentStatus
+
+```typescript
+type AgentStatus = 'active' | 'paused' | 'revoked'
+```
+
+## Utility functions
+
+### parseScope / parseScopes
+
+Parse scope strings into structured objects.
+
+```typescript
+import { parseScope, parseScopes } from 'multicorn-shield'
+
+parseScope('read:gmail')
+// { service: "gmail", permissionLevel: "read" }
+
+parseScopes(['read:gmail', 'write:calendar'])
+// [{ service: "gmail", permissionLevel: "read" }, { service: "calendar", permissionLevel: "write" }]
+```
+
+### tryParseScope
+
+Parse a scope string without throwing.
+
+```typescript
+import { tryParseScope } from 'multicorn-shield'
+
+const result = tryParseScope('read:gmail')
+if (result.success) {
+  console.log(result.scope)
+} else {
+  console.error(result.error)
+}
+```
+
+### isValidScopeString
+
+Quick validation check.
+
+```typescript
+import { isValidScopeString } from 'multicorn-shield'
+
+isValidScopeString('read:gmail') // true
+isValidScopeString('delete:gmail') // false
+```
+
+### dollarsToCents / centsToDollars
+
+Currency conversion utilities.
+
+```typescript
+import { dollarsToCents, centsToDollars } from 'multicorn-shield'
+
+dollarsToCents(200.0) // 20000
+centsToDollars(20000) // "$200.00"
+```

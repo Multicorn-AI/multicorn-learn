@@ -1,0 +1,105 @@
+---
+title: 'Getting Started'
+description: 'Install Multicorn Shield and get your first consent screen running in under 10 minutes.'
+order: 1
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+- **Node.js 18+** — Shield uses modern JavaScript features that require Node 18 or later
+- **npm, pnpm, or yarn** — any package manager works
+- **A Multicorn API key** — sign up at [dashboard.multicorn.ai](https://dashboard.multicorn.ai/signup) and create a key under Settings > API Keys
+
+## Installation
+
+Install the SDK from npm:
+
+```bash
+npm install multicorn-shield
+```
+
+Or with pnpm:
+
+```bash
+pnpm add multicorn-shield
+```
+
+## Initialise Shield
+
+Create a single `MulticornShield` instance for your application. The API key is stored in memory only and is never written to localStorage, cookies, or the DOM.
+
+```typescript
+import { MulticornShield } from 'multicorn-shield'
+
+const shield = new MulticornShield({
+  apiKey: 'mcs_your_key_here',
+})
+```
+
+### Configuration options
+
+| Option      | Type              | Default                      | Description                                                                                        |
+| ----------- | ----------------- | ---------------------------- | -------------------------------------------------------------------------------------------------- |
+| `apiKey`    | `string`          | —                            | Your Multicorn API key. Must start with `mcs_` and be at least 16 characters.                      |
+| `baseUrl`   | `string`          | `"https://api.multicorn.ai"` | Base URL for the Multicorn API.                                                                    |
+| `timeout`   | `number`          | `5000`                       | Request timeout in milliseconds.                                                                   |
+| `batchMode` | `BatchModeConfig` | `undefined`                  | Optional batch mode for action logging. When enabled, actions are queued and flushed periodically. |
+
+### Batch mode
+
+If your agent performs many actions in quick succession, enable batch mode to reduce API calls:
+
+```typescript
+const shield = new MulticornShield({
+  apiKey: 'mcs_your_key_here',
+  batchMode: {
+    enabled: true,
+    maxSize: 10,
+    flushIntervalMs: 5000,
+  },
+})
+```
+
+Actions are flushed when either condition is met: the queue reaches `maxSize` actions, or `flushIntervalMs` milliseconds have elapsed since the last flush.
+
+## Your first consent screen
+
+Once Shield is initialised, request consent from the user before your agent takes any actions:
+
+```typescript
+const decision = await shield.requestConsent({
+  agent: 'OpenClaw',
+  scopes: ['read:gmail', 'write:calendar'],
+  spendLimit: 200,
+})
+
+if (decision.grantedScopes.length > 0) {
+  // The user approved — your agent can now act
+  console.log('Approved scopes:', decision.grantedScopes)
+} else {
+  // The user denied the request
+  console.log('User denied consent')
+}
+```
+
+The consent screen appears as a web component overlay. The user can approve all requested permissions, approve some and deny others, or deny everything.
+
+## Clean up
+
+When your application shuts down, call `destroy()` to flush pending log entries and remove the consent screen from the DOM:
+
+```typescript
+shield.destroy()
+```
+
+After `destroy()` is called, all subsequent method calls will throw. Create a new instance if you need Shield again.
+
+## Next steps
+
+- [Consent screen](/docs/consent-screen) — configuration options, display modes, and event handling
+- [Permissions](/docs/permissions) — scope format, defining scopes, and revocation
+- [Action logging](/docs/action-logging) — log every action your agent takes
+- [Spending controls](/docs/spending-controls) — set and enforce spending limits
+- [API reference](/docs/api-reference) — full method reference for the MulticornShield class

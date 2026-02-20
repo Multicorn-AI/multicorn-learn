@@ -1,0 +1,150 @@
+---
+title: 'Action Logging'
+description: 'Log every action your agent takes with structured metadata for a complete audit trail.'
+order: 4
+---
+
+## Overview
+
+Every action your agent takes should be logged through Shield. This creates a tamper-evident audit trail that records what happened, when, and why. The server stores logs with hash-chain integrity so entries cannot be modified or deleted after the fact.
+
+## Logging an action
+
+Call `logAction()` after your agent performs an action:
+
+```typescript
+await shield.logAction({
+  agent: 'OpenClaw',
+  service: 'gmail',
+  action: 'send_email',
+  status: 'approved',
+})
+```
+
+Shield verifies that the agent has a granted permission for the target service before submitting the log entry. If the agent does not have access, `logAction()` throws with a descriptive error — actions are never silently discarded.
+
+## Required fields
+
+Every action must include these four fields:
+
+| Field     | Type           | Description                                                                |
+| --------- | -------------- | -------------------------------------------------------------------------- |
+| `agent`   | `string`       | Agent identifier. Must match the `agent` value used in `requestConsent()`. |
+| `service` | `string`       | The service the agent accessed (e.g. `"gmail"`, `"calendar"`).             |
+| `action`  | `string`       | The type of action performed (e.g. `"send_email"`, `"read_message"`).      |
+| `status`  | `ActionStatus` | The outcome of the action.                                                 |
+
+## Status values
+
+The `status` field uses one of four values:
+
+| Status       | Meaning                                      |
+| ------------ | -------------------------------------------- |
+| `"approved"` | Action passed policy checks and was executed |
+| `"blocked"`  | Action was denied by policy                  |
+| `"pending"`  | Action is awaiting human approval            |
+| `"flagged"`  | Action was executed but flagged for review   |
+
+```typescript
+await shield.logAction({
+  agent: 'OpenClaw',
+  service: 'gmail',
+  action: 'send_email',
+  status: 'blocked',
+})
+```
+
+## Optional fields
+
+### Cost
+
+Include the `cost` field (in USD) for actions with usage-based pricing:
+
+```typescript
+await shield.logAction({
+  agent: 'OpenClaw',
+  service: 'openai',
+  action: 'generate_text',
+  status: 'approved',
+  cost: 0.002,
+})
+```
+
+The cost is tracked by the spending checker and contributes to daily and monthly cumulative totals.
+
+### Metadata
+
+Add structured metadata for additional context. Values can be strings, numbers, or booleans:
+
+```typescript
+await shield.logAction({
+  agent: 'OpenClaw',
+  service: 'gmail',
+  action: 'send_email',
+  status: 'approved',
+  metadata: {
+    recipient: 'team@example.com',
+    subject: 'Weekly report',
+    attachmentCount: 2,
+    hasSignature: true,
+  },
+})
+```
+
+Metadata is stored alongside the action and appears in the Shield dashboard activity view.
+
+## Permission enforcement
+
+`logAction()` checks granted scopes before logging. If the agent does not have a granted scope for the target service, the call throws immediately:
+
+```typescript
+try {
+  await shield.logAction({
+    agent: 'OpenClaw',
+    service: 'slack',
+    action: 'post_message',
+    status: 'approved',
+  })
+} catch (error) {
+  // Agent "OpenClaw" does not have permission to access "slack".
+  // Services with granted access: gmail, calendar.
+  // Call requestConsent() to grant access.
+  console.error(error.message)
+}
+```
+
+This prevents agents from logging actions for services they were never approved to access.
+
+## Batch mode
+
+When batch mode is enabled during initialisation, `logAction()` queues entries instead of sending them immediately. The queue flushes when it reaches `maxSize` actions or when `flushIntervalMs` milliseconds have elapsed:
+
+```typescript
+const shield = new MulticornShield({
+  apiKey: 'mcs_your_key_here',
+  batchMode: {
+    enabled: true,
+    maxSize: 10,
+    flushIntervalMs: 5000,
+  },
+})
+
+// These are queued, not sent immediately
+await shield.logAction({
+  agent: 'OpenClaw',
+  service: 'gmail',
+  action: 'read_inbox',
+  status: 'approved',
+})
+await shield.logAction({
+  agent: 'OpenClaw',
+  service: 'gmail',
+  action: 'read_inbox',
+  status: 'approved',
+})
+
+// Call destroy() to flush any remaining queued actions
+shield.destroy()
+```
+
+Logging failures never block the agent's action. If the API is unreachable, the error is handled gracefully.

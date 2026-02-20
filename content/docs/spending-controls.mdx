@@ -1,0 +1,111 @@
+---
+title: 'Spending Controls'
+description: 'Set per-transaction, daily, and monthly limits to control how much your agents can spend.'
+order: 5
+---
+
+## Overview
+
+Spending controls prevent agents from exceeding financial limits. Shield enforces three tiers of limits: per-transaction, per-day, and per-month. When any limit is exceeded, the action is blocked with a clear message explaining what happened.
+
+## Setting limits
+
+Spending limits are configured through the consent screen. When you pass a `spendLimit` to `requestConsent()`, Shield creates a spending checker for that agent:
+
+```typescript
+const decision = await shield.requestConsent({
+  agent: 'OpenClaw',
+  scopes: ['execute:payments'],
+  spendLimit: 200, // $200 per transaction
+})
+```
+
+The `spendLimit` value (in dollars) sets the per-transaction limit. Daily and monthly limits are derived automatically:
+
+| Limit           | Value              | Example ($200 per-transaction) |
+| --------------- | ------------------ | ------------------------------ |
+| Per-transaction | `spendLimit`       | $200.00                        |
+| Per-day         | `spendLimit * 10`  | $2,000.00                      |
+| Per-month       | `spendLimit * 100` | $20,000.00                     |
+
+## Checking spending before an action
+
+Use `checkSpending()` to pre-check whether a proposed spend would be allowed. This is a read-only check — it does not record the spend:
+
+```typescript
+const result = shield.checkSpending('OpenClaw', 50)
+
+if (result.allowed) {
+  // Proceed with the action
+  console.log('Remaining daily budget:', result.remainingBudget.daily)
+} else {
+  // Show the user why the action was blocked
+  console.error(result.reason)
+}
+```
+
+### The result object
+
+`checkSpending()` returns a `SpendCheckResult`:
+
+```typescript
+interface SpendCheckResult {
+  allowed: boolean
+  reason?: string // Only present when allowed is false
+  remainingBudget: {
+    transaction: number // Per-transaction limit (always the full amount)
+    daily: number // Remaining daily budget
+    monthly: number // Remaining monthly budget
+  }
+}
+```
+
+When `allowed` is `false`, the `reason` field contains a descriptive message with exact dollar amounts:
+
+```
+Action blocked: $849.00 exceeds per-transaction limit of $200.00
+```
+
+```
+Action blocked: $50.00 would exceed per-day limit.
+Current spend today: $1,975.00, limit: $2,000.00
+```
+
+## Client-side vs server-side enforcement
+
+Shield enforces spending limits at two levels:
+
+### Client-side (the SDK)
+
+The SDK tracks cumulative spend in memory and provides instant feedback through `checkSpending()`. This prevents unnecessary API calls and gives users immediate responses. However, the client-side tracker resets on page reload and cannot be relied on as the sole enforcement mechanism.
+
+### Server-side (the API)
+
+The Multicorn API is the source of truth. It maintains persistent spending records and performs final validation on every action. Even if the client-side check passes, the server can still block an action if its records show the limit has been exceeded.
+
+Always use both: call `checkSpending()` in the client for instant feedback, and rely on the server for authoritative enforcement.
+
+## What happens when a limit is exceeded
+
+When `checkSpending()` detects a violation, it returns `allowed: false` with a specific reason. The checks are performed in order:
+
+1. **Per-transaction limit** — Is this single action too expensive?
+2. **Per-day limit** — Would this action push today's total over the daily limit?
+3. **Per-month limit** — Would this action push this month's total over the monthly limit?
+
+The check fails at the first violated limit. For example, if a $500 action exceeds the $200 per-transaction limit, the response mentions the per-transaction limit — even if the daily limit would also be exceeded.
+
+## No spending limit configured
+
+If no `spendLimit` was set during `requestConsent()` (or it was set to 0), all amounts are allowed. `checkSpending()` returns `allowed: true` with `Number.MAX_SAFE_INTEGER` for all remaining budget values.
+
+## Currency handling
+
+All internal calculations use integer cents to avoid floating-point precision issues. The `checkSpending()` method on `MulticornShield` accepts dollars as input and converts them internally. If you use the lower-level spending module directly, use the `dollarsToCents()` utility:
+
+```typescript
+import { dollarsToCents, centsToDollars } from 'multicorn-shield'
+
+const cents = dollarsToCents(200.0) // 20000
+const display = centsToDollars(20000) // "$200.00"
+```
