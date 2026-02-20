@@ -9,7 +9,7 @@ interface FooterLink {
 const PRODUCT_LINKS: readonly FooterLink[] = [
   { label: 'Shield', href: '/shield' },
   { label: 'Pricing', href: '/pricing' },
-  { label: 'Documentation', href: '/shield' },
+  { label: 'Documentation', href: '/docs' },
   { label: 'Changelog', href: '/changelog' },
 ]
 
