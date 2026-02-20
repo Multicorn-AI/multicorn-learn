@@ -22,11 +22,20 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         {children}
       </a>
     ),
-    code: ({ children }) => (
-      <code className="rounded bg-surface-tertiary px-1.5 py-0.5 text-sm font-medium">
-        {children}
-      </code>
-    ),
+    code: ({ children, className, ...rest }) => {
+      if (className && className.startsWith('language-')) {
+        return (
+          <code className={className} {...rest}>
+            {children}
+          </code>
+        )
+      }
+      return (
+        <code className="rounded bg-surface-tertiary px-1.5 py-0.5 text-sm font-medium">
+          {children}
+        </code>
+      )
+    },
     pre: ({ children }) => (
       <pre className="mb-6 overflow-x-auto rounded-card bg-text-primary p-4 text-sm text-white">
         {children}

@@ -34,5 +34,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.6,
     },
+    {
+      url: `${BASE_URL}/blog/introducing-multicorn-shield`,
+      lastModified: new Date('2026-02-20'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
   ]
 }
