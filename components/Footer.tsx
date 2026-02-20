@@ -22,7 +22,7 @@ const RESOURCE_LINKS: readonly FooterLink[] = [
 
 const COMPANY_LINKS: readonly FooterLink[] = [
   { label: 'About', href: '/about' },
-  { label: 'Contact', href: 'mailto:hello@multicorn.ai' },
+  { label: 'Contact', href: '/contact' },
   { label: 'Privacy', href: '/privacy' },
   { label: 'Terms', href: '/terms' },
 ]
