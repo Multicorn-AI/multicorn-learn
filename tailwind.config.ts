@@ -13,6 +13,7 @@ const config: Config = {
         primary: '#8B5CF6',
         'primary-light': '#A78BFA',
         'primary-dark': '#7C3AED',
+        shield: '#7C3AED',
         pink: '#EC4899',
         indigo: '#6366F1',
         orange: '#F59E0B',

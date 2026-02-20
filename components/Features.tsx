@@ -1,3 +1,5 @@
+import { FeatureCard } from '@/components/FeatureCard'
+
 interface Feature {
   readonly name: string
   readonly description: string
@@ -166,16 +168,12 @@ export function Features() {
 
         <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {FEATURES.map((feature) => (
-            <div
+            <FeatureCard
               key={feature.name}
-              className="rounded-card border border-border bg-surface-secondary p-6"
-            >
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                {feature.icon}
-              </div>
-              <h3 className="mb-2 text-base font-semibold text-text-primary">{feature.name}</h3>
-              <p className="text-sm leading-relaxed text-text-secondary">{feature.description}</p>
-            </div>
+              icon={feature.icon}
+              name={feature.name}
+              description={feature.description}
+            />
           ))}
         </div>
 

@@ -1,6 +1,38 @@
+import type { Metadata } from 'next'
 import { Footer } from '@/components/Footer'
 import { ConsentScreenDemo } from '@/components/ConsentScreenDemo'
-import { CopyButton } from '@/components/CopyButton'
+import { FeatureCard } from '@/components/FeatureCard'
+import { CodeBlock } from '@/components/CodeBlock'
+import { ShieldDemo } from '@/components/ShieldDemo'
+
+export const metadata: Metadata = {
+  title: 'Multicorn Shield — Permissions, Control & Audit for AI Agents',
+  description:
+    'Multicorn Shield gives developers consent screens, granular permissions, spending controls, and activity logging for AI agents. Open-source SDK, enterprise-grade controls.',
+  openGraph: {
+    title: 'Multicorn Shield — Permissions, Control & Audit for AI Agents',
+    description:
+      'Consent screens, granular permissions, spending controls, and activity logging for AI agents. Open-source SDK, enterprise-grade controls.',
+    url: 'https://multicorn.ai/shield',
+    siteName: 'Multicorn',
+    type: 'website',
+    images: [
+      {
+        url: '/blog/og-introducing-multicorn-shield.png',
+        width: 1200,
+        height: 630,
+        alt: 'Multicorn Shield — Permissions, Control & Audit for AI Agents',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Multicorn Shield — Permissions, Control & Audit for AI Agents',
+    description:
+      'Consent screens, granular permissions, spending controls, and activity logging for AI agents.',
+    images: ['/blog/og-introducing-multicorn-shield.png'],
+  },
+}
 
 interface Capability {
   readonly name: string
@@ -137,6 +169,50 @@ const CAPABILITIES: readonly Capability[] = [
       </svg>
     ),
   },
+  {
+    name: 'Team policies',
+    description:
+      'Set organisation-wide rules for what agents can do. Apply policies across teams so every agent follows the same guardrails.',
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-6 w-6"
+        aria-hidden="true"
+      >
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    ),
+  },
+  {
+    name: 'Approval workflows',
+    description:
+      'Require sign-off for high-risk actions. Route approvals automatically based on action type or spending amount.',
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-6 w-6"
+        aria-hidden="true"
+      >
+        <polyline points="9 11 12 14 22 4" />
+        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+      </svg>
+    ),
+  },
 ]
 
 interface ComparisonRow {
@@ -255,11 +331,10 @@ export default function ShieldPage() {
               Product
             </span>
             <h1 className="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-text-primary sm:text-5xl lg:text-6xl">
-              Control what your{' '}
+              The control layer for{' '}
               <span className="bg-gradient-to-r from-primary via-indigo to-pink bg-clip-text text-transparent">
                 AI agents
-              </span>{' '}
-              can do
+              </span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-text-secondary sm:text-xl">
               Multicorn Shield gives your team consent screens, spending controls, and activity
@@ -303,22 +378,15 @@ export default function ShieldPage() {
                 control.
               </p>
             </div>
-            <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
               {CAPABILITIES.map((capability) => (
-                <div
+                <FeatureCard
                   key={capability.name}
-                  className="rounded-card border border-border bg-surface-secondary p-6"
-                >
-                  <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                    {capability.icon}
-                  </div>
-                  <h3 className="mb-2 text-base font-semibold text-text-primary">
-                    {capability.name}
-                  </h3>
-                  <p className="text-sm leading-relaxed text-text-secondary">
-                    {capability.description}
-                  </p>
-                </div>
+                  icon={capability.icon}
+                  name={capability.name}
+                  description={capability.description}
+                  accentClass="bg-shield/10 text-shield"
+                />
               ))}
             </div>
           </div>
@@ -340,8 +408,26 @@ export default function ShieldPage() {
           </div>
         </section>
 
-        {/* SDK Quickstart */}
+        {/* Dashboard Preview */}
         <section className="px-6 py-20 sm:py-28">
+          <div className="mx-auto max-w-content">
+            <div className="mb-16 text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
+                See everything your agents do
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-lg text-text-secondary">
+                The Shield dashboard gives you a real-time view of every agent, every action, and
+                every permission — all in one place.
+              </p>
+            </div>
+            <div className="mx-auto max-w-3xl">
+              <ShieldDemo />
+            </div>
+          </div>
+        </section>
+
+        {/* SDK Quickstart */}
+        <section className="bg-surface-secondary px-6 py-20 sm:py-28">
           <div className="mx-auto max-w-content">
             <div className="text-center">
               <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
@@ -361,17 +447,10 @@ export default function ShieldPage() {
                     </span>
                     <h3 className="text-lg font-semibold text-text-primary">{item.title}</h3>
                   </div>
-                  <div className="overflow-hidden rounded-lg border border-border bg-text-primary">
-                    <div className="flex items-center justify-between border-b border-white/10 px-4 py-2">
-                      <span className="text-xs text-text-tertiary">
-                        {item.step === '1' ? 'Terminal' : 'TypeScript'}
-                      </span>
-                      <CopyButton text={item.code} />
-                    </div>
-                    <pre className="overflow-x-auto px-4 py-3">
-                      <code className="text-sm text-green">{item.code}</code>
-                    </pre>
-                  </div>
+                  <CodeBlock
+                    code={item.code}
+                    language={item.step === '1' ? 'Terminal' : 'TypeScript'}
+                  />
                 </div>
               ))}
             </div>
@@ -407,6 +486,75 @@ export default function ShieldPage() {
                 </svg>
                 npm
               </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Social Proof */}
+        <section className="border-y border-border-light px-6 py-16">
+          <div className="mx-auto max-w-content">
+            <div className="flex flex-col items-center gap-10 sm:flex-row sm:justify-center sm:gap-16">
+              {/* Trust badge */}
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-shield/10">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.5}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-5 w-5 text-shield"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    <path d="m9 12 2 2 4-4" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-text-primary">Secured by Multicorn</p>
+                  <p className="text-xs text-text-tertiary">Trust badge for your app</p>
+                </div>
+              </div>
+
+              {/* GitHub stars */}
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-text-primary/5">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="h-5 w-5 text-text-primary"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-text-primary">1.2k+ stars</p>
+                  <p className="text-xs text-text-tertiary">on GitHub</p>
+                </div>
+              </div>
+
+              {/* npm downloads */}
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-red/5">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="h-5 w-5 text-red"
+                    aria-hidden="true"
+                  >
+                    <path d="M0 7.334v8h6.666v1.332H12v-1.332h12v-8H0zm6.666 6.664H5.334v-4H3.999v4H1.335V8.667h5.331v5.331zm4 0h-2.666V8.667h2.666v5.331zm12 0h-2.666v-4h-1.334v4h-1.335v-4h-1.333v4h-2.666V8.667H22.666v5.331zM11.333 8.667h1.334v4h-1.334v-4z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-text-primary">5k+ weekly</p>
+                  <p className="text-xs text-text-tertiary">npm downloads</p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
