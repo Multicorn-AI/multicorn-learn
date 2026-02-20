@@ -1,5 +1,3 @@
-import { EmailSignupForm } from '@/components/EmailSignupForm'
-
 export function LaunchPage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-6 py-16">
@@ -14,14 +12,8 @@ export function LaunchPage() {
           </span>
         </h1>
 
-        <p className="mb-10 max-w-md text-lg leading-relaxed text-text-secondary">
+        <p className="max-w-md text-lg leading-relaxed text-text-secondary">
           Learn how to build safe AI agents — and get the tools to keep them in check.
-        </p>
-
-        <EmailSignupForm />
-
-        <p className="mt-8 text-sm text-text-tertiary">
-          Be the first to know when we launch. No spam, ever.
         </p>
       </div>
     </main>
