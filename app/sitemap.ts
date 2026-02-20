@@ -40,5 +40,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.7,
     },
+    {
+      url: `${BASE_URL}/learn/ai-101`,
+      lastModified: new Date('2026-02-20'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/learn/ai-101/what-is-generative-ai`,
+      lastModified: new Date('2026-02-20'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/ai-101/what-are-prompts`,
+      lastModified: new Date('2026-02-20'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/ai-101/what-are-ai-agents-and-permissions`,
+      lastModified: new Date('2026-02-20'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
   ]
 }
