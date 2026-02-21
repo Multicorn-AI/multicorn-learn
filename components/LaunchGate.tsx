@@ -1,14 +1,20 @@
+import { cookies } from 'next/headers'
 import { LaunchPage } from '@/components/LaunchPage'
 
 interface LaunchGateProps {
   readonly children: React.ReactNode
 }
 
-export function LaunchGate({ children }: LaunchGateProps) {
+export async function LaunchGate({ children }: LaunchGateProps) {
   const isLaunchMode = process.env.NEXT_PUBLIC_LAUNCH_MODE === 'true'
 
   if (isLaunchMode) {
-    return <LaunchPage />
+    const cookieStore = await cookies()
+    const hasPreview = cookieStore.has('multicorn_preview')
+
+    if (!hasPreview) {
+      return <LaunchPage />
+    }
   }
 
   return <>{children}</>
