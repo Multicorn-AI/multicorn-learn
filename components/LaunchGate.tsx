@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers'
 import { LaunchPage } from '@/components/LaunchPage'
+import { SiteHeader } from '@/components/SiteHeader'
 
 interface LaunchGateProps {
   readonly children: React.ReactNode
@@ -17,5 +18,10 @@ export async function LaunchGate({ children }: LaunchGateProps) {
     }
   }
 
-  return <>{children}</>
+  return (
+    <>
+      <SiteHeader />
+      {children}
+    </>
+  )
 }

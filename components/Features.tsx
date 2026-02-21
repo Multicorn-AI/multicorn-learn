@@ -204,6 +204,8 @@ export function Features() {
             <div className="flex flex-col gap-3 sm:flex-row">
               <a
                 href="https://github.com/Multicorn-AI/multicorn-shield"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-semibold text-text-primary transition-colors hover:bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
               >
                 <svg
@@ -218,7 +220,9 @@ export function Features() {
                 View on GitHub
               </a>
               <a
-                href="/shield"
+                href="https://github.com/Multicorn-AI/multicorn-shield#readme"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex min-h-[44px] items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
               >
                 Read the docs

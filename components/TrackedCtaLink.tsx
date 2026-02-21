@@ -7,6 +7,8 @@ interface TrackedCtaLinkProps {
   readonly className: string
   readonly eventName: string
   readonly eventProps?: Record<string, string>
+  readonly target?: string
+  readonly rel?: string
   readonly children: React.ReactNode
 }
 
@@ -15,10 +17,18 @@ export function TrackedCtaLink({
   className,
   eventName,
   eventProps,
+  target,
+  rel,
   children,
 }: TrackedCtaLinkProps) {
   return (
-    <a href={href} className={className} onClick={() => trackEvent(eventName, eventProps)}>
+    <a
+      href={href}
+      className={className}
+      target={target}
+      rel={rel}
+      onClick={() => trackEvent(eventName, eventProps)}
+    >
       {children}
     </a>
   )
