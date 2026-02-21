@@ -1,3 +1,7 @@
+'use client'
+
+import { trackEvent } from '@/lib/plausible'
+
 interface PricingCardProps {
   readonly name: string
   readonly price: string
@@ -85,6 +89,9 @@ export function PricingCard({
       ) : (
         <a
           href={href}
+          onClick={() =>
+            trackEvent('signup_cta_click', { location: `pricing_${name.toLowerCase()}` })
+          }
           className={[
             'mt-8 flex min-h-[44px] items-center justify-center rounded-lg px-6 py-3 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2',
             highlighted

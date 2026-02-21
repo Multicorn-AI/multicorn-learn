@@ -4,6 +4,8 @@ import { ConsentScreenDemo } from '@/components/ConsentScreenDemo'
 import { FeatureCard } from '@/components/FeatureCard'
 import { CodeBlock } from '@/components/CodeBlock'
 import { ShieldDemo } from '@/components/ShieldDemo'
+import { TrackedCtaLink } from '@/components/TrackedCtaLink'
+import { ShieldPageTracker } from '@/components/ShieldPageTracker'
 
 export const metadata: Metadata = {
   title: 'Multicorn Shield — Permissions, Control & Audit for AI Agents',
@@ -319,6 +321,7 @@ const shield = new MulticornShield({
 export default function ShieldPage() {
   return (
     <>
+      <ShieldPageTracker />
       <main>
         {/* Hero */}
         <section className="relative overflow-hidden px-6 pb-20 pt-24 sm:pb-28 sm:pt-32">
@@ -341,12 +344,14 @@ export default function ShieldPage() {
               logging for every AI agent. One SDK — full oversight.
             </p>
             <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <a
+              <TrackedCtaLink
                 href="https://dashboard.multicorn.ai/signup"
                 className="inline-flex min-h-[44px] items-center rounded-lg bg-primary px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+                eventName="signup_cta_click"
+                eventProps={{ location: 'shield_hero' }}
               >
                 Start for free
-              </a>
+              </TrackedCtaLink>
               <a
                 href="https://github.com/Multicorn-AI/multicorn-shield"
                 className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-border px-8 py-3 text-base font-semibold text-text-primary transition-colors hover:bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
@@ -623,12 +628,14 @@ export default function ShieldPage() {
               in minutes.
             </p>
             <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <a
+              <TrackedCtaLink
                 href="https://dashboard.multicorn.ai/signup"
                 className="inline-flex min-h-[44px] items-center rounded-lg bg-primary px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+                eventName="signup_cta_click"
+                eventProps={{ location: 'shield_bottom_cta' }}
               >
                 Start for free
-              </a>
+              </TrackedCtaLink>
               <a
                 href="https://github.com/Multicorn-AI/multicorn-shield"
                 className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-border px-8 py-3 text-base font-semibold text-text-primary transition-colors hover:bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"

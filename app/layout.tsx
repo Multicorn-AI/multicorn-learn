@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import { Inter } from 'next/font/google'
 import { LaunchGate } from '@/components/LaunchGate'
 import './globals.css'
@@ -43,6 +44,14 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" className={inter.variable}>
       <body className="min-h-screen font-sans">
         <LaunchGate>{children}</LaunchGate>
+        {process.env.NODE_ENV === 'production' && (
+          <Script
+            defer
+            data-domain="multicorn.ai"
+            src="https://plausible.io/js/script.js"
+            strategy="afterInteractive"
+          />
+        )}
       </body>
     </html>
   )

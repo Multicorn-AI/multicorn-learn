@@ -1,4 +1,5 @@
 import { EmailSignupForm } from '@/components/EmailSignupForm'
+import { TrackedCtaLink } from '@/components/TrackedCtaLink'
 
 export function Hero() {
   return (
@@ -22,12 +23,14 @@ export function Hero() {
         </p>
 
         <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-          <a
+          <TrackedCtaLink
             href="/shield"
             className="inline-flex min-h-[44px] items-center rounded-lg bg-primary px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+            eventName="signup_cta_click"
+            eventProps={{ location: 'home_hero' }}
           >
             Get Started — Free
-          </a>
+          </TrackedCtaLink>
           <a
             href="https://github.com/Multicorn-AI/multicorn-shield"
             className="inline-flex min-h-[44px] items-center rounded-lg border border-border px-8 py-3 text-base font-semibold text-text-primary transition-colors hover:bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
