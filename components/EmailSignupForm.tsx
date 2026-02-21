@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import { trackEvent } from '@/lib/plausible'
 
 const FORM_STATES = {
   idle: 'idle',
@@ -68,6 +69,7 @@ export function EmailSignupForm() {
       }
 
       setFormState(FORM_STATES.success)
+      trackEvent('email_signup')
     } catch {
       setFormState(FORM_STATES.error)
       setSubmitError('Something went wrong. Please try again.')
