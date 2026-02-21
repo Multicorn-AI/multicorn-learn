@@ -324,7 +324,7 @@ export default function ShieldPage() {
       <ShieldPageTracker />
       <main>
         {/* Hero */}
-        <section className="relative overflow-hidden px-6 pb-20 pt-24 sm:pb-28 sm:pt-32">
+        <section className="relative overflow-hidden px-6 pb-12 pt-24 sm:pb-16 sm:pt-32">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-primary/5 via-indigo/5 to-transparent"
@@ -346,6 +346,8 @@ export default function ShieldPage() {
             <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <TrackedCtaLink
                 href="https://dashboard.multicorn.ai/signup"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex min-h-[44px] items-center rounded-lg bg-primary px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
                 eventName="signup_cta_click"
                 eventProps={{ location: 'shield_hero' }}
@@ -354,6 +356,8 @@ export default function ShieldPage() {
               </TrackedCtaLink>
               <a
                 href="https://github.com/Multicorn-AI/multicorn-shield"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-border px-8 py-3 text-base font-semibold text-text-primary transition-colors hover:bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
               >
                 <svg
@@ -372,7 +376,7 @@ export default function ShieldPage() {
         </section>
 
         {/* Feature Deep-Dive */}
-        <section className="px-6 py-20 sm:py-28">
+        <section className="px-6 pb-20 pt-12 sm:pb-28 sm:pt-16">
           <div className="mx-auto max-w-content">
             <div className="text-center">
               <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
@@ -463,6 +467,8 @@ export default function ShieldPage() {
             <div className="mt-12 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <a
                 href="https://github.com/Multicorn-AI/multicorn-shield"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-semibold text-text-primary transition-colors hover:bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
               >
                 <svg
@@ -478,6 +484,8 @@ export default function ShieldPage() {
               </a>
               <a
                 href="https://www.npmjs.com/package/multicorn-shield"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-semibold text-text-primary transition-colors hover:bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
               >
                 <svg
@@ -630,6 +638,8 @@ export default function ShieldPage() {
             <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <TrackedCtaLink
                 href="https://dashboard.multicorn.ai/signup"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex min-h-[44px] items-center rounded-lg bg-primary px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
                 eventName="signup_cta_click"
                 eventProps={{ location: 'shield_bottom_cta' }}
@@ -638,6 +648,8 @@ export default function ShieldPage() {
               </TrackedCtaLink>
               <a
                 href="https://github.com/Multicorn-AI/multicorn-shield"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-border px-8 py-3 text-base font-semibold text-text-primary transition-colors hover:bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
               >
                 <svg
