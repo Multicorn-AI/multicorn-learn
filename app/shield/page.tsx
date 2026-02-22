@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Footer } from '@/components/Footer'
 import { ConsentScreenDemo } from '@/components/ConsentScreenDemo'
 import { FeatureCard } from '@/components/FeatureCard'
+import { HowItWorks } from '@/components/HowItWorks'
 import { ShieldDemo } from '@/components/ShieldDemo'
 import { TrackedCtaLink } from '@/components/TrackedCtaLink'
 import { ShieldPageTracker } from '@/components/ShieldPageTracker'
@@ -388,6 +389,22 @@ export default function ShieldPage() {
                 View on GitHub
               </a>
             </div>
+          </div>
+        </section>
+
+        {/* How It Works */}
+        <section className="px-6 py-20 sm:py-28">
+          <div className="mx-auto max-w-content">
+            <div className="mb-16 text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
+                How It Works
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-lg text-text-secondary">
+                Two paths to add Shield — pick the one that fits your setup. Both give you the same
+                dashboard, the same controls, the same peace of mind.
+              </p>
+            </div>
+            <HowItWorks />
           </div>
         </section>
 
