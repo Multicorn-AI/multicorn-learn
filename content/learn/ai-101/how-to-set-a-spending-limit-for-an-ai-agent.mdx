@@ -1,0 +1,100 @@
+---
+title: 'How to Set a Spending Limit for an AI Agent'
+description: 'A practical guide to spending controls for AI agents — per-transaction limits, daily caps, and approval thresholds. Includes real examples and shows how Multicorn Shield enforces them.'
+date: '2026-02-22'
+author: 'Multicorn Team'
+ogImage: '/learn/og-how-to-set-a-spending-limit-for-an-ai-agent.png'
+tags: ['ai-101', 'agents', 'spending', 'shield', 'safety']
+order: 14
+series: 'ai-101'
+---
+
+## The short version
+
+If an AI agent can make purchases, book services, or trigger anything that costs money, you need spending controls. This article explains the three types of spending limits — per-transaction, daily, and monthly — how to choose the right thresholds for your team, and how [Multicorn Shield](/shield) enforces them automatically.
+
+## Why spending controls matter
+
+In the [previous article](/learn/ai-101/what-happens-when-an-ai-agent-makes-a-mistake), we walked through the scenario of an agent that accidentally ordered $8,910 worth of printer paper because it misread a spreadsheet. That example illustrates a broader problem: **agents do not have an instinct for "that seems like too much."**
+
+A human employee ordering supplies would pause at a $9,000 paper order and think, "That cannot be right." An agent does not have that reflex. It sees that stock is low, calculates the quantity needed, and places the order. The maths is correct. The judgement is missing.
+
+Spending controls add the judgement layer that agents lack. They define what is reasonable before the agent acts, so unreasonable spending gets blocked automatically — no human intervention required in the moment.
+
+## The three types of spending limits
+
+### Per-transaction limits
+
+A per-transaction limit caps how much an agent can spend on a single action. If the limit is $500 and the agent tries to place an order for $8,910, the action is blocked before it goes through.
+
+This is the most important limit to set because it catches the most common failure: a single action that is wildly out of range. Most agent spending mistakes are not a slow bleed of small charges — they are one large action triggered by bad data or a misinterpreted instruction.
+
+**How to set it:** Look at your typical transaction amounts for the tasks the agent handles. If the agent orders office supplies and most orders are between $50 and $300, a per-transaction limit of $500 gives it room to operate while blocking anything unreasonable.
+
+### Daily limits
+
+A daily limit caps the total amount an agent can spend in a single day, across all transactions. Even if every individual transaction is within the per-transaction limit, the daily cap prevents an agent from making an excessive number of purchases.
+
+This catches a different failure pattern: the agent making many small-but-correct purchases that add up to an unreasonable total. For example, an agent that orders supplies from multiple vendors might place ten $400 orders in one morning — each one under the $500 per-transaction limit, but totalling $4,000.
+
+**How to set it:** Think about the maximum reasonable daily spending for the agent's tasks. If the supply agent normally spends $200-$500 per day, a daily limit of $1,000 provides headroom for busy days while capping runaway spending.
+
+### Monthly limits
+
+A monthly limit caps total spending over a calendar month. This is your backstop — the absolute ceiling on what the agent can spend, no matter what.
+
+Monthly limits are especially useful for agents that handle recurring expenses or operate continuously. Even if the per-transaction and daily limits are reasonable, a monthly limit ensures the total stays within your budget.
+
+**How to set it:** Start with your actual monthly budget for the tasks the agent handles. If your office supply budget is $3,000 per month, set the monthly limit at or slightly below that. The agent should not be able to exhaust the entire budget without human review.
+
+## Approval thresholds
+
+Beyond hard limits, many teams also set **approval thresholds** — a spending level above which the agent pauses and asks for human approval before proceeding.
+
+For example, you might configure the agent so that:
+
+- Transactions under $100 are processed automatically
+- Transactions between $100 and $500 require a quick approval from a team member
+- Transactions over $500 are blocked entirely
+
+This creates a tiered system where the agent handles routine small purchases on its own, involves a human for medium-sized ones, and cannot make large purchases at all.
+
+Approval thresholds are particularly useful during the first few weeks of deploying an agent. You start with low thresholds, observe how the agent behaves, and gradually increase them as you build confidence.
+
+## How Multicorn Shield handles spending
+
+[Multicorn Shield](/shield) enforces all three types of spending limits — per-transaction, daily, and monthly — at the permission layer between your agent and the services it connects to.
+
+Here is how it works in practice. When you set up an agent with Shield, you configure its spending limits as part of the consent process. The user sees the proposed limits in the consent screen and can adjust them before granting the agent access.
+
+Once the limits are set, Shield checks every action that involves spending before it happens. If the agent tries to exceed any limit, the action is blocked and the agent receives a clear explanation of why — for example, "This purchase of $849 exceeds the per-transaction limit of $500."
+
+Shield uses integer-cent arithmetic for all spending calculations, which means no floating-point rounding errors. When you set a limit of $500.00, it means exactly $500.00 — not $499.99 or $500.01 due to rounding.
+
+Every spending check is recorded in the activity trail, whether the action was approved or blocked. You can review spending totals per agent, per day, or per month at any time through the dashboard.
+
+**Ready to add spending controls to your agents?** [Get started with Multicorn Shield](/shield) — set up per-transaction, daily, and monthly limits in minutes.
+
+## A practical checklist for setting spending limits
+
+If you are deploying an agent that can spend money, work through this checklist:
+
+1. **Identify every action that involves spending.** Not just obvious purchases — also API calls that cost money, services billed per use, and subscriptions the agent can trigger.
+2. **Review your historical spending data.** What is the typical range for each type of transaction? What is the highest legitimate transaction in the past three months?
+3. **Set per-transaction limits** at roughly 1.5 to 2 times your typical transaction amount. This allows for normal variation while catching outliers.
+4. **Set daily limits** at roughly 2 to 3 times your average daily spending. Account for busy days but cap runaway scenarios.
+5. **Set monthly limits** at or below your actual budget for those tasks.
+6. **Start with approval thresholds** for the first few weeks. Require human sign-off above a low threshold, then raise it as you gain confidence.
+7. **Review activity weekly** for the first month. Look for blocked actions — they tell you whether the limits are too tight or whether they are catching real problems.
+
+## Key takeaways
+
+- AI agents do not have a sense of "that seems like too much." Spending controls add the judgement layer that agents lack.
+- Set three types of limits: per-transaction (catches single large errors), daily (catches high-volume patterns), and monthly (caps total exposure).
+- Use approval thresholds to require human sign-off for medium-sized spending while letting the agent handle routine small purchases.
+- [Multicorn Shield](/shield) enforces all three limit types automatically, blocks over-limit actions before they happen, and records every spending check in the activity trail.
+- Start with conservative limits and approval thresholds, then adjust based on real activity data.
+
+**Next up:** [What Is an Audit Trail and Why Does Your Agent Need One?](/learn/ai-101/what-is-an-audit-trail)
+
+**Previous:** [What Happens When an AI Agent Makes a Mistake?](/learn/ai-101/what-happens-when-an-ai-agent-makes-a-mistake)

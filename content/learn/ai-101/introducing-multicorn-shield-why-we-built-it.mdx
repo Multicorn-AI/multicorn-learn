@@ -3,9 +3,15 @@ title: 'Introducing Multicorn Shield — Why We Built It'
 description: 'The story behind Multicorn Shield: an AI agent called OpenClaw, a $200 dinner no one approved, and the open-source permissions layer we built to make sure it never happens again.'
 date: '2026-02-22'
 author: 'Rachelle Rathbone'
-ogImage: '/blog/og-introducing-multicorn-shield.png'
-tags: ['launch', 'shield', 'agents', 'open-source']
+ogImage: '/learn/og-introducing-multicorn-shield-why-we-built-it.png'
+tags: ['ai-101', 'shield', 'launch', 'agents', 'open-source']
+order: 18
+series: 'ai-101'
 ---
+
+## The short version
+
+Multicorn Shield is an open-source permissions layer for AI agents. It gives you consent screens, granular permissions, spending controls, and a tamper-evident activity trail — the same kinds of controls your phone gives you for apps, but for AI agents. This is the story of why we built it and what it does.
 
 ## It started with a $200 dinner
 
@@ -52,7 +58,7 @@ We could have built Shield as a closed platform — and honestly, it would have 
 
 If you are going to trust a tool to govern your AI agents, you should be able to inspect how it works. You should be able to verify that the consent screen cannot be bypassed, that spending limits are enforced correctly, and that the activity trail is genuinely tamper-evident. Open source means you do not have to take our word for it.
 
-It also means the developer community can contribute. Shield supports the Model Context Protocol out of the box, and we want to add adapters for every major agent framework. That is easier to do with contributions from people who actually use those frameworks every day.
+It also means the developer community can contribute. Shield supports the [Model Context Protocol](/learn/ai-101/what-is-the-model-context-protocol) out of the box, and we want to add adapters for every major agent framework. That is easier to do with contributions from people who actually use those frameworks every day.
 
 The SDK is [MIT-licensed on GitHub](https://github.com/Multicorn-AI/multicorn-shield). Clone it, read the code, run the tests, and use it in your own projects.
 
@@ -88,12 +94,20 @@ We are building Multicorn in the open, and we welcome contributions — code, bu
 
 ## The bigger picture
 
-AI agents are powerful and genuinely useful, but they need the same kinds of controls we already apply to every other piece of software that acts on our behalf. Shield is our contribution to closing that gap.
+Throughout this series, we have gone from [the basics of generative AI](/learn/ai-101/what-is-generative-ai) to the practical reality of deploying agents safely. The theme has been consistent: AI agents are powerful and genuinely useful, but they need the same kinds of controls we already apply to every other piece of software that acts on our behalf.
 
-If you are building with AI agents, evaluating them for your team, or just trying to understand what responsible AI governance looks like — I hope what we have built is useful to you.
-
-If you want to learn more about AI agents and why governance matters, our [AI 101 series](/learn/ai-101) covers everything from the basics of generative AI to practical guides on permissions, spending controls, and audit trails.
+Shield is our contribution to closing that gap. If you are building with AI agents, evaluating them for your team, or just trying to understand what responsible AI governance looks like — I hope what we have built is useful to you.
 
 **[Get started with Multicorn Shield](/shield)** — add permissions, spending controls, and activity records to your AI agents in minutes.
 
 You can also **[sign up for early access](https://app.multicorn.ai/signup)** to the hosted Multicorn dashboard.
+
+## Key takeaways
+
+- Multicorn Shield is an open-source permissions layer for AI agents, providing consent screens, granular permissions, spending controls, and a tamper-evident activity trail.
+- We built it because we experienced the permission gap firsthand — our own agent had broad, uncontrolled access to our tools with no visibility into what it was doing.
+- Shield is open-source because trust requires transparency. You can inspect, verify, and contribute to the code.
+- The SDK is available now with a consent screen, permission enforcement, spending controls, activity records, MCP support, and a dashboard.
+- [Try Shield today](/shield) or [sign up for early access](https://app.multicorn.ai/signup) to the hosted dashboard.
+
+**Previous:** [AI Agents for Small Teams — A Practical Guide](/learn/ai-101/ai-agents-for-small-teams)
