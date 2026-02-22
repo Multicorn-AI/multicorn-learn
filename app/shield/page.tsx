@@ -2,10 +2,10 @@ import type { Metadata } from 'next'
 import { Footer } from '@/components/Footer'
 import { ConsentScreenDemo } from '@/components/ConsentScreenDemo'
 import { FeatureCard } from '@/components/FeatureCard'
-import { CodeBlock } from '@/components/CodeBlock'
 import { ShieldDemo } from '@/components/ShieldDemo'
 import { TrackedCtaLink } from '@/components/TrackedCtaLink'
 import { ShieldPageTracker } from '@/components/ShieldPageTracker'
+import { QuickstartTabs } from '@/components/QuickstartTabs'
 
 export const metadata: Metadata = {
   title: 'Multicorn Shield — Permissions, Control & Audit for AI Agents',
@@ -290,7 +290,25 @@ function ComparisonCell({ value }: { readonly value: 'yes' | 'no' | 'partial' })
   )
 }
 
-const QUICKSTART_STEPS = [
+const PROXY_QUICKSTART_STEPS = [
+  {
+    step: '1',
+    title: 'Install',
+    code: 'npm install -g multicorn-shield',
+  },
+  {
+    step: '2',
+    title: 'Set up your API key',
+    code: 'npx multicorn-proxy init',
+  },
+  {
+    step: '3',
+    title: 'Wrap your MCP server',
+    code: 'npx multicorn-proxy --wrap npx @modelcontextprotocol/server-filesystem /tmp',
+  },
+] as const
+
+const SDK_QUICKSTART_STEPS = [
   {
     step: '1',
     title: 'Install the SDK',
@@ -435,7 +453,7 @@ export default function ShieldPage() {
           </div>
         </section>
 
-        {/* SDK Quickstart */}
+        {/* Quickstart */}
         <section className="bg-surface-secondary px-6 py-20 sm:py-28">
           <div className="mx-auto max-w-content">
             <div className="text-center">
@@ -443,25 +461,38 @@ export default function ShieldPage() {
                 Up and running in minutes
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-lg text-text-secondary">
-                Three steps to start controlling your AI agents. Copy, paste, ship.
+                Two paths to start controlling your AI agents. Pick the one that fits your setup.
               </p>
             </div>
 
-            <div className="mx-auto mt-16 max-w-2xl space-y-10">
-              {QUICKSTART_STEPS.map((item) => (
-                <div key={item.step}>
-                  <div className="mb-3 flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
-                      {item.step}
-                    </span>
-                    <h3 className="text-lg font-semibold text-text-primary">{item.title}</h3>
-                  </div>
-                  <CodeBlock
-                    code={item.code}
-                    language={item.step === '1' ? 'Terminal' : 'TypeScript'}
-                  />
-                </div>
-              ))}
+            <div className="mt-16">
+              <QuickstartTabs
+                paths={[
+                  {
+                    id: 'proxy',
+                    label: 'Wrap your agents (no code changes)',
+                    description:
+                      'Already using an MCP server with Claude Code, OpenClaw, or another agent? Add Shield as a proxy in front of it.',
+                    steps: PROXY_QUICKSTART_STEPS.map((s) => ({
+                      ...s,
+                      language: 'Terminal',
+                    })),
+                    note: 'Already using Claude Code, OpenClaw, or another MCP client?',
+                    noteHref: '/docs/mcp-proxy',
+                    noteLinkText: 'See the full guide',
+                  },
+                  {
+                    id: 'sdk',
+                    label: 'Integrate the SDK',
+                    description:
+                      'For full control over consent screens, spending limits, and action logging in your application code.',
+                    steps: SDK_QUICKSTART_STEPS.map((s) => ({
+                      ...s,
+                      language: s.step === '1' ? 'Terminal' : 'TypeScript',
+                    })),
+                  },
+                ]}
+              />
             </div>
 
             <div className="mt-12 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
@@ -499,6 +530,55 @@ export default function ShieldPage() {
                 </svg>
                 npm
               </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Proxy Demo */}
+        <section className="px-6 py-20 sm:py-28">
+          <div className="mx-auto max-w-content">
+            <div className="mb-12 text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
+                See it in action
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-lg text-text-secondary">
+                Run the proxy, make a tool call, and watch it appear in the dashboard in real time.
+              </p>
+            </div>
+            <div className="mx-auto max-w-3xl overflow-hidden rounded-xl border border-border bg-surface shadow-lg">
+              {/* Terminal recording placeholder — asset will be created for Product Hunt launch (7.06) */}
+              <div className="flex items-center gap-2 border-b border-border bg-surface-secondary px-4 py-3">
+                <span className="h-3 w-3 rounded-full bg-red/60" aria-hidden="true" />
+                <span className="h-3 w-3 rounded-full bg-orange/60" aria-hidden="true" />
+                <span className="h-3 w-3 rounded-full bg-green/60" aria-hidden="true" />
+                <span className="ml-2 text-xs text-text-tertiary">Terminal</span>
+              </div>
+              <div className="bg-[#1a1a2e] px-6 py-8 font-mono text-sm leading-relaxed text-green">
+                <p className="text-text-tertiary">
+                  $ npx multicorn-proxy --wrap npx @modelcontextprotocol/server-filesystem /tmp
+                </p>
+                <p className="mt-3 text-[#8888a0]">
+                  [multicorn-proxy] Proxy starting. agent=filesystem
+                </p>
+                <p className="text-[#8888a0]">
+                  [multicorn-proxy] Agent resolved. agent=filesystem scopes=3
+                </p>
+                <p className="text-green">[multicorn-proxy] Proxy ready. agent=filesystem</p>
+                <p className="mt-3 text-[#8888a0]">
+                  [multicorn-proxy] Tool call intercepted. tool=filesystem_read_file allowed=true
+                </p>
+                <p className="text-green">
+                  [multicorn-proxy] Action logged. service=filesystem action=read_file
+                  status=approved
+                </p>
+                <p className="mt-3 text-[#8888a0]">
+                  [multicorn-proxy] Tool call intercepted. tool=gmail_send_email allowed=false
+                </p>
+                <p className="text-red">
+                  [multicorn-proxy] Action blocked. service=gmail reason=no execute access
+                </p>
+                <p className="mt-4 animate-pulse text-text-tertiary">█</p>
+              </div>
             </div>
           </div>
         </section>
