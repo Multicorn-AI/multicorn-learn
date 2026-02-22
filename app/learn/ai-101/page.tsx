@@ -23,7 +23,7 @@ export default function AI101IndexPage() {
         <div className="mb-16 text-center">
           <Link
             href="/learn"
-            className="mb-6 inline-flex items-center gap-1.5 text-sm font-medium text-text-secondary transition-colors hover:text-text-primary"
+            className="mb-6 flex items-center justify-center gap-1.5 text-sm font-medium text-text-secondary transition-colors hover:text-text-primary"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
