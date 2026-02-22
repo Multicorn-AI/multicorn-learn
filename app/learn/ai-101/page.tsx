@@ -42,7 +42,7 @@ export default function AI101IndexPage() {
           </Link>
 
           <span className="mb-4 inline-block rounded-full bg-green/10 px-4 py-1.5 text-sm font-medium text-green">
-            3 articles
+            {articles.length} articles
           </span>
           <h1 className="mb-6 text-4xl font-bold tracking-tight text-text-primary sm:text-5xl">
             AI 101

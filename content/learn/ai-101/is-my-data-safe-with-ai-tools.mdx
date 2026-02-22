@@ -1,0 +1,91 @@
+---
+title: 'Is My Data Safe with AI Tools?'
+description: 'What happens to your data when you use ChatGPT, Claude, or Gemini? This article explains training data policies, how to opt out, and what enterprise plans offer.'
+date: '2026-02-22'
+author: 'Multicorn Team'
+ogImage: '/learn/og-is-my-data-safe-with-ai-tools.png'
+tags: ['ai-101', 'data-privacy', 'security', 'enterprise']
+order: 10
+series: 'ai-101'
+---
+
+## The short version
+
+When you type something into an AI tool, where does that text go? Can the company behind the tool see it? Could it end up in the model's training data? The answers depend on which tool you use, which plan you are on, and which settings you have enabled. This article explains the data policies of the major AI providers in plain English, so you can make informed decisions about what you share.
+
+## The core question: is my data used for training?
+
+When AI companies talk about "training," they mean using your conversations to improve their models. If your data is used for training, the patterns and information from your conversations could influence the model's future responses — not just for you, but for everyone who uses it.
+
+This does not mean your exact words appear in someone else's conversation. Training is a statistical process — the model learns patterns, not individual inputs. But even so, many people and organisations are uncomfortable with the idea that their inputs might contribute to model training, especially when those inputs contain confidential business information.
+
+Here is where each major provider stands as of early 2026.
+
+## OpenAI (ChatGPT)
+
+**Free and Plus plans:** By default, OpenAI may use your conversations to train its models. You can opt out in your account settings under Data Controls by turning off "Improve the model for everyone." When you opt out, your conversations are still stored for up to 30 days for safety monitoring, but they are not used for training.
+
+**ChatGPT Team and Enterprise plans:** Conversations are not used for model training. OpenAI states that data is not shared across organisations. Team and Enterprise plans also offer features like longer data retention controls, single sign-on, and admin management of data policies.
+
+**API usage:** Data sent through the OpenAI API is not used for model training by default. This is a meaningful distinction — if a company builds an application using the OpenAI API, the data their users send through that application is not used to train OpenAI's models unless the company explicitly opts in.
+
+## Anthropic (Claude)
+
+**Free and Pro plans:** Anthropic may use your conversations to improve its models, but you can opt out. Anthropic's usage policy states that it does not train on data from users who opt out. The opt-out is available in account settings.
+
+**Claude for Business and Enterprise:** Conversations are not used for model training. Anthropic provides data processing agreements and compliance certifications for business customers who need them for regulatory purposes.
+
+**API usage:** Data sent through the Anthropic API is not used for model training by default, similar to OpenAI's API policy.
+
+## Google (Gemini)
+
+**Free tier (Gemini with a Google account):** By default, Google may use your Gemini conversations to improve its products and AI models. You can opt out by turning off Gemini Apps Activity in your Google account activity controls. Note that when activity is on, human reviewers at Google may read your conversations as part of quality review.
+
+**Google Workspace with Gemini (business plans):** Google states that Workspace customer data processed by Gemini is not used to train the underlying AI models. Workspace data processing is covered by Google's Workspace data processing terms, which provide specific commitments about data use, storage location, and processing.
+
+**Vertex AI (Google's API platform):** Customer data processed through Vertex AI is not used to train Google's models, consistent with Google Cloud's data processing terms.
+
+## What about smaller and open-source models?
+
+If you run an open-source model (like Llama from Meta) on your own hardware, your data never leaves your machine. This is the most private option, though it requires technical expertise to set up and maintain.
+
+Cloud services that host open-source models (like Amazon Bedrock or Azure AI) process your data on their infrastructure. Their data policies vary, so check the specific terms of service for the hosting provider. In general, major cloud providers commit to not using customer data for model training.
+
+## Practical steps to protect your data
+
+### 1. Check your settings
+
+For every AI tool you use, go into the settings and check whether your data is being used for training. Opt out if you are uncomfortable with it, or if you are using the tool for work.
+
+### 2. Be thoughtful about what you share
+
+Regardless of the privacy settings, avoid pasting confidential information — client data, financial details, proprietary code, personal health information — into any AI tool unless you are certain about how that data is handled.
+
+### 3. Use business or enterprise plans for work
+
+If your team uses AI tools regularly, upgrade to a business or enterprise plan. These plans consistently provide stronger data protection: no training on your data, data processing agreements, compliance certifications, and admin controls.
+
+### 4. Consider the API for custom applications
+
+If your company is building an application that uses AI, using the API rather than the consumer chat interface gives you more control. API data is generally not used for training by default, and you can implement additional safeguards in your own code.
+
+### 5. Keep an eye on policy changes
+
+AI data policies are evolving. What is true today may change with the next terms-of-service update. Review the privacy policies of the tools you rely on at least once a quarter.
+
+## Data safety and AI agents
+
+Data privacy becomes more complex when AI agents are involved. An agent that connects to your email, calendar, and payment systems has access to sensitive data across multiple services. The data flowing through the agent includes not just your prompts, but the content of your emails, the details of your calendar events, and your payment information.
+
+This is another reason why a control layer between your agents and the services they access is valuable. [Multicorn Shield](/shield) provides that layer — ensuring that agents only access the data they are specifically permitted to see, and that every data access is logged in a reviewable activity trail.
+
+## Key takeaways
+
+- All major AI providers may use your free-tier conversations for model training, but all offer opt-out controls.
+- Business and enterprise plans consistently provide stronger data protection: no training on your data, plus data processing agreements and compliance certifications.
+- API usage is generally not used for training by default across all major providers.
+- Running open-source models on your own hardware provides the strongest data privacy.
+- Avoid sharing confidential information in AI tools unless you have verified the data policy.
+- AI agents create additional data privacy considerations because they access data across multiple services — tools like [Multicorn Shield](/shield) help manage this by enforcing granular access permissions.
+
+**Next up:** [What Is the Model Context Protocol (MCP)?](/learn/ai-101/what-is-the-model-context-protocol)
