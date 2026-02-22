@@ -1,0 +1,107 @@
+---
+title: 'What Are AI Hallucinations and Why Do They Happen?'
+description: 'AI tools sometimes make things up. This article explains why it happens, how to spot it, and practical ways to reduce it with better prompting.'
+date: '2026-02-22'
+author: 'Multicorn Team'
+ogImage: '/learn/og-what-are-ai-hallucinations.png'
+tags: ['ai-101', 'hallucinations', 'accuracy']
+order: 4
+series: 'ai-101'
+---
+
+## The short version
+
+AI tools sometimes produce confident, well-written answers that are completely wrong. This is called a hallucination. It happens because AI models predict plausible-sounding text rather than looking up verified facts. This article explains why hallucinations happen, how to spot them, and what you can do to reduce them.
+
+## What is an AI hallucination?
+
+When an AI tool gives you information that sounds correct but is actually false, that is a hallucination. The term comes from the idea that the model is "seeing" something that is not there — like a person hallucinating.
+
+A more accurate word, used by researchers, is **confabulation**. The model is not lying on purpose. It is filling in gaps with whatever sounds most plausible based on the patterns it learned during training. It does not know the difference between a true statement and a false one that sounds convincing.
+
+Here are a few real-world examples of the kind of mistakes AI models make:
+
+- Citing a research paper that does not exist, complete with a realistic-sounding title and author names
+- Giving you a confident answer about a law or regulation that was never enacted
+- Describing a product feature that the product does not actually have
+- Providing a URL that leads to a page that does not exist
+
+The problem is not that the AI says "I don't know." The problem is that it says something wrong with the same confidence it uses when it says something right.
+
+## Why do hallucinations happen?
+
+To understand hallucinations, it helps to remember how AI models work. As we covered in [What is Generative AI?](/learn/ai-101/what-is-generative-ai), large language models generate text by predicting the next word in a sequence. They are pattern-matching engines, not fact databases.
+
+There are a few specific reasons hallucinations occur:
+
+### The model does not store facts
+
+An LLM does not have a filing cabinet of verified information. It has billions of internal settings (called parameters) that encode statistical patterns from its training data. When you ask it a question, it generates text that follows the patterns it learned — not text that it has verified against a source of truth.
+
+### Training data has gaps and errors
+
+The text used to train models comes from the internet, books, and other sources. That text contains mistakes, outdated information, contradictions, and gaps. The model absorbs all of it without distinguishing reliable sources from unreliable ones.
+
+### The model always tries to answer
+
+Most AI tools are trained to be helpful, which means they are biased toward producing an answer rather than saying "I don't have enough information." This helpfulness bias means the model will sometimes generate a plausible-sounding response even when it should admit uncertainty.
+
+### Some topics have less training data
+
+If you ask about a niche topic, a recent event, or something that was not well-represented in the training data, the model has fewer patterns to draw from. With less data to anchor its predictions, it is more likely to fill in gaps with made-up details.
+
+## How to spot a hallucination
+
+Hallucinations can be hard to catch because the text reads well. Here are practical ways to identify them:
+
+**Check specific claims.** If the AI gives you a statistic, a date, a name, or a citation, verify it independently. Search for the source it mentions. If you cannot find it, the AI may have invented it.
+
+**Watch for excessive detail on obscure topics.** If the AI writes three paragraphs of highly specific information about something you know is niche or poorly documented, that is a warning sign. The more specific and confident the response, the more you should verify.
+
+**Ask the AI to show its reasoning.** If you ask "Why do you think that?" or "What source is this from?" and the AI gives vague or circular answers, treat the original claim with scepticism.
+
+**Compare across tools.** Ask the same question to a different AI tool. If the answers diverge significantly, at least one of them is likely wrong.
+
+**Trust your expertise.** If something feels off based on what you already know, investigate further. AI text can sound authoritative even when it is wrong, but your domain knowledge is still valuable.
+
+## How to reduce hallucinations with better prompts
+
+You cannot eliminate hallucinations entirely, but you can significantly reduce them by changing how you ask questions. These techniques build on what we covered in [What Are Prompts and How Do They Work?](/learn/ai-101/what-are-prompts).
+
+### Be specific about what you know and what you need
+
+Vague questions invite vague (and potentially made-up) answers. Instead of asking "Tell me about data privacy laws," try "Summarise the key requirements of the EU's General Data Protection Regulation (GDPR) that apply to companies storing customer email addresses."
+
+### Ask the AI to say when it is unsure
+
+You can explicitly instruct the model: "If you are not confident about any part of your answer, say so clearly instead of guessing." This does not guarantee honesty, but it often produces more cautious responses.
+
+### Provide reference material
+
+If you paste in the actual text you want the AI to work with — a document, a policy, a code file — the AI is far less likely to hallucinate because it is working from your source rather than its training data.
+
+### Ask for sources
+
+Include "Cite your sources" or "Where did you get this information?" in your prompt. If the model cannot point to a real source, that is a signal to verify the claim yourself.
+
+### Break complex questions into smaller ones
+
+Long, multi-part questions give the model more room to go off track. Ask one thing at a time, verify the answer, and then move to the next question.
+
+## Why this matters for AI agents
+
+Hallucinations are annoying when a chatbot gives you wrong information. They become dangerous when an AI agent acts on wrong information.
+
+If an agent hallucinates a customer's email address and sends a message to it, that is a real problem. If an agent confidently "remembers" a spending limit that does not exist and approves a large purchase, that is a financial risk.
+
+This is one of the reasons AI agents need permission controls and activity logging. Even well-built agents can act on faulty information, and you need a way to review what happened and stop it from happening again. Tools like [Multicorn Shield](/shield) provide that safety layer.
+
+## Key takeaways
+
+- AI hallucinations are confident-sounding responses that contain false information.
+- They happen because models predict plausible text rather than looking up verified facts.
+- You can spot them by checking specific claims, watching for excessive detail, and comparing across tools.
+- You can reduce them by being specific, providing reference material, asking for sources, and breaking complex questions into smaller parts.
+- Hallucinations are especially risky when AI agents take real-world actions based on faulty information.
+
+**Next up:** [How to Write a Good Prompt](/learn/ai-101/how-to-write-a-good-prompt)

@@ -1,0 +1,98 @@
+---
+title: 'What Permissions Does Your AI Agent Actually Need?'
+description: 'Most AI agents ask for far more access than they need. This article explains the principle of least privilege in plain English and shows you how to think about scoping what an agent can do.'
+date: '2026-02-22'
+author: 'Multicorn Team'
+ogImage: '/learn/og-what-permissions-does-your-ai-agent-need.png'
+tags: ['ai-101', 'agents', 'permissions', 'safety']
+order: 12
+series: 'ai-101'
+---
+
+## The short version
+
+When you give an AI agent access to a service like your email or calendar, it usually gets full access by default — read, write, delete, everything. That is far more than most agents need to do their job. This article explains why agents ask for broad access, why that is a problem, and how to think about giving each agent only the permissions it actually requires.
+
+## Why agents ask for everything
+
+Think about the last time you installed an app on your phone. It probably asked for access to your camera, microphone, contacts, and location — even if you only downloaded it to scan a QR code. The app asked for broad access because the developer built it to handle many possible use cases, and it is simpler to request everything upfront than to ask permission for each individual action later.
+
+AI agents work the same way. When you connect an agent to Gmail, the default behaviour in most platforms is to grant full access to your entire mailbox — reading, composing, sending, and deleting. The agent might only need to read your inbox to summarise new messages each morning, but it receives the keys to the entire building.
+
+This happens for a few reasons:
+
+**Convenience over caution.** Most agent platforms make it easier to grant broad access than to configure specific permissions. The path of least resistance is "allow all."
+
+**Unpredictable tasks.** Some agents handle a range of tasks, and the developer does not know in advance exactly which capabilities a specific user will need. So they request everything to avoid breaking later.
+
+**No standard for granular permissions.** Until recently, there was no widely adopted standard for defining what an agent can and cannot do at a fine-grained level. The [Model Context Protocol](/learn/ai-101/what-is-the-model-context-protocol) is changing this, but many agents still operate without structured permission models.
+
+## Why broad access is a problem
+
+If an agent only needs to read your inbox, but it also has the ability to send emails, two things can go wrong.
+
+First, if the agent makes a mistake — misinterprets a prompt, [hallucinates](/learn/ai-101/what-are-ai-hallucinations) a response, or encounters a bug — it can take actions you never intended. An agent with send access that was only supposed to read might draft and send a reply to your biggest client with incorrect information.
+
+Second, if the agent is compromised — through a vulnerability in the agent itself, the platform it runs on, or a connected service — the attacker inherits every permission the agent has. An agent with delete access to your entire inbox is a much bigger risk than one that can only read.
+
+This is not a theoretical concern. As we covered in [What Can AI Agents Do Today?](/learn/ai-101/what-can-ai-agents-do-today), agents are connected to real services and take real actions. The more permissions an agent has, the larger the blast radius when something goes wrong.
+
+## The principle of least privilege
+
+Security professionals use a concept called the **principle of least privilege**: every piece of software should have exactly the permissions it needs to do its job and nothing more.
+
+For AI agents, this means asking three questions before granting access:
+
+### 1. What does this agent need to do?
+
+Start with the job, not the tool. If you want an agent to summarise your morning email, it needs to read your inbox. It does not need to send emails, delete messages, or access your drafts. Write down the specific tasks you expect the agent to perform.
+
+### 2. Which services does it need to access?
+
+An agent that summarises email only needs access to your email service. It does not need your calendar, file storage, or payment methods. Each connected service is an additional surface area for mistakes or misuse.
+
+### 3. What level of access does it need for each service?
+
+For each service, think about whether the agent needs to read, write, or do both. Reading is almost always lower risk than writing. An agent that can read your calendar but not create events is much safer than one that can do both.
+
+## Scoping permissions in practice
+
+Here is a practical example. Your team wants to use an agent called "InboxHelper" to triage incoming support emails and flag urgent ones.
+
+**What InboxHelper needs:**
+
+- Read access to one shared inbox (not your personal email)
+- The ability to add labels or tags to messages
+
+**What InboxHelper does not need:**
+
+- Access to send or reply to emails
+- Access to delete messages
+- Access to your calendar, files, or any other service
+- Access to payment methods
+
+If you grant InboxHelper only the permissions it needs, the worst it can do is mislabel an email. That is easy to fix. If you grant it full access to everything, the worst it can do is send incorrect replies to customers, delete important messages, or trigger actions in services it was never supposed to touch.
+
+## What to do if your tool does not support granular permissions
+
+Many agent platforms today still offer only broad, all-or-nothing access toggles. If that is the case with the tools you use, there are a few things you can do:
+
+**Use a permissions layer.** Tools like [Multicorn Shield](/shield) sit between your agent and the services it connects to, enforcing granular permissions regardless of what the agent platform supports natively. You define what each agent can do, and Shield blocks anything outside those boundaries.
+
+**Limit the number of connected services.** If you cannot control the access level, at least control the access surface. Connect the agent to the minimum number of services it needs.
+
+**Review activity regularly.** If you cannot prevent an agent from having broad access, at least monitor what it does with that access. Regular activity review helps you catch problems early.
+
+**Choose agents that support permission controls.** When evaluating new agents, ask whether they support granular permissions. This is becoming a differentiator, and tools that offer it are generally more mature and trustworthy.
+
+## Key takeaways
+
+- Most AI agents request broader access than they need, because it is simpler for the developer and the platform defaults to it.
+- Broad access increases risk: mistakes and security compromises have a larger blast radius.
+- Apply the principle of least privilege — give each agent only the permissions it needs for its specific tasks.
+- Ask three questions: what does it need to do, which services does it need, and what level of access for each?
+- If your platform does not support granular permissions, use a tool like [Multicorn Shield](/shield) to add that control layer.
+
+**Next up:** [What Happens When an AI Agent Makes a Mistake?](/learn/ai-101/what-happens-when-an-ai-agent-makes-a-mistake)
+
+**Previous:** [What Is the Model Context Protocol (MCP)?](/learn/ai-101/what-is-the-model-context-protocol)

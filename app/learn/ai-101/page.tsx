@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { getAllLearnArticles } from '@/lib/learn'
+import { ArticleSearch } from '@/components/ArticleSearch'
 
 export const metadata: Metadata = {
   title: 'AI 101 — Multicorn Learn',
@@ -16,6 +17,13 @@ export const metadata: Metadata = {
 
 export default function AI101IndexPage() {
   const articles = getAllLearnArticles()
+
+  const searchableArticles = articles.map((article) => ({
+    slug: article.slug,
+    title: article.meta.title,
+    description: article.meta.description,
+    tags: article.meta.tags,
+  }))
 
   return (
     <main className="flex min-h-screen flex-col items-center px-6 pb-20 pt-16 sm:pb-28 sm:pt-24">
@@ -42,7 +50,7 @@ export default function AI101IndexPage() {
           </Link>
 
           <span className="mb-4 inline-block rounded-full bg-green/10 px-4 py-1.5 text-sm font-medium text-green">
-            3 articles
+            {articles.length} articles
           </span>
           <h1 className="mb-6 text-4xl font-bold tracking-tight text-text-primary sm:text-5xl">
             AI 101
@@ -56,39 +64,7 @@ export default function AI101IndexPage() {
         {articles.length === 0 ? (
           <p className="text-center text-text-secondary">No articles yet. Check back soon.</p>
         ) : (
-          <div className="mx-auto max-w-3xl space-y-6">
-            {articles.map((article, index) => (
-              <Link
-                key={article.slug}
-                href={`/learn/ai-101/${article.slug}`}
-                className="group block rounded-card border border-border bg-surface-secondary p-6 transition-colors hover:border-green/30 hover:bg-surface-tertiary sm:p-8"
-              >
-                <div className="flex items-start gap-5">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green/10 text-sm font-bold text-green">
-                    {index + 1}
-                  </span>
-                  <div>
-                    <h2 className="mb-2 text-xl font-bold tracking-tight text-text-primary group-hover:text-green sm:text-2xl">
-                      {article.meta.title}
-                    </h2>
-                    <p className="leading-relaxed text-text-secondary">
-                      {article.meta.description}
-                    </p>
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {article.meta.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-full bg-green/10 px-2.5 py-0.5 text-xs font-medium text-green"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+          <ArticleSearch articles={searchableArticles} />
         )}
       </div>
     </main>

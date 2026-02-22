@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { getAllLearnArticles } from '@/lib/learn'
+import { ArticleSearch } from '@/components/ArticleSearch'
+import { EmailSignupForm } from '@/components/EmailSignupForm'
 
 export const metadata: Metadata = {
   title: 'Learn AI Agent Security — Multicorn',
@@ -16,6 +18,13 @@ export const metadata: Metadata = {
 
 export default function LearnPage() {
   const articles = getAllLearnArticles()
+
+  const searchableArticles = articles.map((article) => ({
+    slug: article.slug,
+    title: article.meta.title,
+    description: article.meta.description,
+    tags: article.meta.tags,
+  }))
 
   return (
     <main className="flex min-h-screen flex-col items-center px-6 pb-20 pt-16 sm:pb-28 sm:pt-24">
@@ -48,6 +57,9 @@ export default function LearnPage() {
                 </svg>
               </span>
               <div>
+                <span className="mb-1 inline-block rounded-full bg-green/10 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-green">
+                  Course 1
+                </span>
                 <h2 className="text-2xl font-bold tracking-tight text-text-primary">AI 101</h2>
                 <p className="text-sm text-text-secondary">
                   {articles.length} articles — Start here if you are new to AI
@@ -60,28 +72,9 @@ export default function LearnPage() {
               permissions. Written in plain English — no technical background required.
             </p>
 
-            <ul className="mb-8 space-y-4">
-              {articles.map((article, index) => (
-                <li key={article.slug}>
-                  <Link
-                    href={`/learn/ai-101/${article.slug}`}
-                    className="group flex items-start gap-4 rounded-lg p-3 transition-colors hover:bg-surface-tertiary"
-                  >
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-green/10 text-xs font-bold text-green">
-                      {index + 1}
-                    </span>
-                    <div>
-                      <span className="font-semibold text-text-primary group-hover:text-green">
-                        {article.meta.title}
-                      </span>
-                      <p className="mt-0.5 text-sm text-text-secondary">
-                        {article.meta.description}
-                      </p>
-                    </div>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <div className="mb-8">
+              <ArticleSearch articles={searchableArticles} variant="compact" />
+            </div>
 
             <Link
               href="/learn/ai-101"
@@ -89,6 +82,17 @@ export default function LearnPage() {
             >
               Start learning
             </Link>
+          </div>
+
+          <div className="mt-6 rounded-card border border-dashed border-border bg-surface p-8 text-center sm:p-10">
+            <p className="text-lg font-semibold text-text-primary">More courses coming soon</p>
+            <p className="mx-auto mt-2 max-w-lg text-sm leading-relaxed text-text-secondary">
+              We are building courses on agent deployment, security best practices, and governance
+              for teams. Sign up below to get notified when new courses launch.
+            </p>
+            <div className="mt-6 flex justify-center">
+              <EmailSignupForm />
+            </div>
           </div>
         </div>
       </div>
