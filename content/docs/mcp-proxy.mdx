@@ -1,0 +1,248 @@
+---
+title: 'MCP Proxy'
+description: 'Add Shield to your existing MCP agents in 2 minutes. No code changes required.'
+order: 2
+---
+
+## What the proxy does
+
+The Multicorn proxy sits between your AI agent and its MCP server on the stdio transport. Every tool call passes through Shield's permission layer before reaching the server. Blocked calls are rejected immediately. Approved calls are logged to your dashboard in real time.
+
+```
+Agent  →  multicorn-proxy  →  MCP server
+              │
+              └── checks permissions
+              └── logs activity
+              └── enforces spending limits
+```
+
+No changes to your agent code or MCP server. You only change how the server is started.
+
+## Quick start
+
+### Step 1: Install
+
+```bash
+npm install -g multicorn-shield
+```
+
+### Step 2: Set up your API key
+
+```bash
+npx multicorn-proxy init
+```
+
+This prompts for your API key (starts with `mcs_`). Get one at [app.multicorn.ai/settings/api-keys](https://app.multicorn.ai/settings/api-keys). The key is saved to `~/.multicorn/config.json`.
+
+### Step 3: Wrap your MCP server
+
+```bash
+npx multicorn-proxy --wrap <your-mcp-server-command>
+```
+
+For example:
+
+```bash
+npx multicorn-proxy --wrap npx @modelcontextprotocol/server-filesystem /tmp
+```
+
+That's it. Open your [Multicorn dashboard](https://app.multicorn.ai) to see agent activity in real time.
+
+## Claude Code
+
+Claude Code stores its MCP server configuration in `~/.claude/claude_desktop_config.json` (macOS/Linux) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows).
+
+### Claude Code before
+
+Your existing config points directly to the MCP server:
+
+```json
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-filesystem", "/tmp"]
+    }
+  }
+}
+```
+
+### Claude Code after
+
+Wrap the command with `multicorn-proxy --wrap`. The original command and arguments move into the proxy's arguments:
+
+```json
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "multicorn-proxy",
+        "--wrap",
+        "npx",
+        "@modelcontextprotocol/server-filesystem",
+        "/tmp"
+      ]
+    }
+  }
+}
+```
+
+Restart Claude Code. The agent now appears in your Multicorn dashboard, and every tool call is checked against your permissions.
+
+To set a custom name for the agent in the dashboard, add `--agent-name` before `--wrap`:
+
+```json
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "multicorn-proxy",
+        "--agent-name",
+        "claude-filesystem",
+        "--wrap",
+        "npx",
+        "@modelcontextprotocol/server-filesystem",
+        "/tmp"
+      ]
+    }
+  }
+}
+```
+
+## OpenClaw
+
+OpenClaw uses a similar JSON configuration for MCP servers. The same wrapping pattern applies.
+
+### OpenClaw before
+
+```json
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-github"]
+    }
+  }
+}
+```
+
+### OpenClaw after
+
+```json
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["multicorn-proxy", "--wrap", "npx", "@modelcontextprotocol/server-github"]
+    }
+  }
+}
+```
+
+If OpenClaw uses environment variables for configuration, those still work. The proxy forwards the environment to the wrapped server.
+
+## Generic MCP client
+
+If your MCP client starts a server via a shell command on the stdio transport, you can wrap it with `multicorn-proxy`. The pattern is always the same:
+
+**Original command:**
+
+```bash
+my-mcp-server --port 3000 --data /var/data
+```
+
+**Wrapped command:**
+
+```bash
+npx multicorn-proxy --wrap my-mcp-server --port 3000 --data /var/data
+```
+
+Everything after `--wrap` is forwarded to the child process as-is.
+
+### JSON config format
+
+If your client uses a JSON config, replace the `command` and `args` fields:
+
+**Before:**
+
+```json
+{
+  "command": "my-mcp-server",
+  "args": ["--port", "3000", "--data", "/var/data"]
+}
+```
+
+**After:**
+
+```json
+{
+  "command": "npx",
+  "args": ["multicorn-proxy", "--wrap", "my-mcp-server", "--port", "3000", "--data", "/var/data"]
+}
+```
+
+### CLI flags
+
+| Flag                  | Description                                                         | Default                          |
+| --------------------- | ------------------------------------------------------------------- | -------------------------------- |
+| `--wrap <command>`    | The MCP server command to wrap. Everything after this is forwarded. | Required                         |
+| `--agent-name <name>` | Override the agent name shown in the dashboard.                     | Derived from the wrapped command |
+| `--log-level <level>` | Log verbosity: `debug`, `info`, `warn`, `error`.                    | `info`                           |
+| `--base-url <url>`    | Multicorn API base URL.                                             | `https://api.multicorn.ai`       |
+
+## Demo
+
+{/* Terminal recording: run proxy, agent makes a tool call, dashboard shows it in real time. */}
+{/* Asset will be created for Product Hunt launch (7.06). Placeholder for layout. */}
+
+![Terminal recording showing the proxy intercepting a tool call and the dashboard updating in real time](https://multicorn.ai/docs/mcp-proxy-demo.gif)
+
+## Troubleshooting
+
+### "API key not recognised"
+
+The API key is invalid or has been revoked.
+
+**Fix:** Run `npx multicorn-proxy init` and enter a valid key from [app.multicorn.ai/settings/api-keys](https://app.multicorn.ai/settings/api-keys). Keys start with `mcs_` and must be at least 16 characters.
+
+### Agent not appearing in dashboard
+
+The proxy could not reach the Multicorn service, or the agent name does not match what you expect.
+
+**Fix:**
+
+- Check your network connection to `api.multicorn.ai`.
+- Use `--agent-name` to set a specific name: `npx multicorn-proxy --agent-name my-agent --wrap <command>`.
+- Run with `--log-level debug` to see detailed output about agent registration.
+
+### Tool calls timing out
+
+The wrapped MCP server is not responding, or there is a network issue between the proxy and the server.
+
+**Fix:**
+
+- Verify that the wrapped command works on its own: run `<your-mcp-server-command>` directly and confirm it starts.
+- Run the proxy with `--log-level debug` for detailed diagnostics.
+- Check that the MCP server's dependencies (Node.js, Python, etc.) are installed.
+
+### "No config found" error
+
+The proxy has not been initialised yet.
+
+**Fix:** Run `npx multicorn-proxy init` to create the config file at `~/.multicorn/config.json`.
+
+### Permissions not taking effect
+
+The proxy caches permissions and refreshes them every 60 seconds. If you just changed permissions in the dashboard, wait up to a minute or restart the proxy.
+
+**Fix:** Restart the proxy to pick up permission changes immediately.
+
+## Next steps
+
+- [Getting started](/docs/getting-started) — full SDK integration for consent screens and spending controls
+- [Consent screen](/docs/consent-screen) — customise the approval screen your users see
+- [Permissions](/docs/permissions) — scope format, defining scopes, and revocation
+- [Action logging](/docs/action-logging) — log every action your agent takes
+- [Spending controls](/docs/spending-controls) — set and enforce spending limits
