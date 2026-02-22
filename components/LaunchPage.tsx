@@ -1,4 +1,8 @@
+import { EmailSignupForm } from '@/components/EmailSignupForm'
+
 export function LaunchPage() {
+  const hasSignup = !!process.env.NEXT_PUBLIC_CONVERTKIT_FORM_ID?.trim()
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-6 py-16">
       <div className="flex max-w-xl flex-col items-center text-center">
@@ -15,6 +19,12 @@ export function LaunchPage() {
         <p className="max-w-md text-lg leading-relaxed text-text-secondary">
           Learn how to build safe AI agents — and get the tools to keep them in check.
         </p>
+
+        {hasSignup && (
+          <div className="mt-8 w-full max-w-md">
+            <EmailSignupForm />
+          </div>
+        )}
       </div>
     </main>
   )
