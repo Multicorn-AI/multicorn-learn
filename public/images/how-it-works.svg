@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" fill="none">
+  <title>How Multicorn Shield Works — SDK and Proxy paths converge at the same dashboard</title>
+
+  <!-- Background -->
+  <rect width="800" height="520" rx="12" fill="#FAFAFA" stroke="#E5E7EB" stroke-width="1"/>
+
+  <!-- Title -->
+  <text x="400" y="40" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="20" font-weight="700" fill="#111827">How It Works</text>
+
+  <!-- Path A: SDK -->
+  <text x="220" y="80" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="700" fill="#6366F1">Path A: SDK</text>
+
+  <!-- SDK Step 1 -->
+  <circle cx="140" cy="115" r="14" fill="#EEF2FF" stroke="#6366F1" stroke-width="1.5"/>
+  <text x="140" y="120" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="700" fill="#6366F1">1</text>
+  <text x="168" y="120" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" fill="#111827">Install the SDK</text>
+  <line x1="140" y1="130" x2="140" y2="155" stroke="#E5E7EB" stroke-width="1.5" stroke-dasharray="3 2"/>
+
+  <!-- SDK Step 2 -->
+  <circle cx="140" cy="170" r="14" fill="#EEF2FF" stroke="#6366F1" stroke-width="1.5"/>
+  <text x="140" y="175" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="700" fill="#6366F1">2</text>
+  <text x="168" y="175" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" fill="#111827">Add to your agent code</text>
+  <line x1="140" y1="185" x2="140" y2="210" stroke="#E5E7EB" stroke-width="1.5" stroke-dasharray="3 2"/>
+
+  <!-- SDK Step 3 -->
+  <circle cx="140" cy="225" r="14" fill="#EEF2FF" stroke="#6366F1" stroke-width="1.5"/>
+  <text x="140" y="230" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="700" fill="#6366F1">3</text>
+  <text x="168" y="230" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" fill="#111827">Consent screen shown</text>
+  <line x1="140" y1="240" x2="140" y2="265" stroke="#E5E7EB" stroke-width="1.5" stroke-dasharray="3 2"/>
+
+  <!-- SDK Step 4 -->
+  <circle cx="140" cy="280" r="14" fill="#EEF2FF" stroke="#6366F1" stroke-width="1.5"/>
+  <text x="140" y="285" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="700" fill="#6366F1">4</text>
+  <text x="168" y="285" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" fill="#111827">Actions logged</text>
+  <line x1="140" y1="295" x2="140" y2="320" stroke="#E5E7EB" stroke-width="1.5" stroke-dasharray="3 2"/>
+
+  <!-- SDK Step 5 -->
+  <circle cx="140" cy="335" r="14" fill="#EEF2FF" stroke="#6366F1" stroke-width="1.5"/>
+  <text x="140" y="340" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="700" fill="#6366F1">5</text>
+  <text x="168" y="340" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" fill="#111827">View in your dashboard</text>
+
+  <!-- Path B: Proxy -->
+  <text x="580" y="80" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="700" fill="#14B8A6">Path B: Proxy</text>
+
+  <!-- Proxy Step 1 -->
+  <circle cx="660" cy="115" r="14" fill="#F0FDFA" stroke="#14B8A6" stroke-width="1.5"/>
+  <text x="660" y="120" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="700" fill="#14B8A6">1</text>
+  <text x="632" y="120" text-anchor="end" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" fill="#111827">Wrap your MCP server</text>
+  <line x1="660" y1="130" x2="660" y2="155" stroke="#E5E7EB" stroke-width="1.5" stroke-dasharray="3 2"/>
+
+  <!-- Proxy Step 2 -->
+  <circle cx="660" cy="170" r="14" fill="#F0FDFA" stroke="#14B8A6" stroke-width="1.5"/>
+  <text x="660" y="175" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="700" fill="#14B8A6">2</text>
+  <text x="632" y="175" text-anchor="end" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" fill="#111827">Agent runs normally</text>
+  <line x1="660" y1="185" x2="660" y2="210" stroke="#E5E7EB" stroke-width="1.5" stroke-dasharray="3 2"/>
+
+  <!-- Proxy Step 3 -->
+  <circle cx="660" cy="225" r="14" fill="#F0FDFA" stroke="#14B8A6" stroke-width="1.5"/>
+  <text x="660" y="230" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="700" fill="#14B8A6">3</text>
+  <text x="632" y="230" text-anchor="end" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" fill="#111827">All calls intercepted</text>
+  <line x1="660" y1="240" x2="660" y2="265" stroke="#E5E7EB" stroke-width="1.5" stroke-dasharray="3 2"/>
+
+  <!-- Proxy Step 4 -->
+  <circle cx="660" cy="280" r="14" fill="#F0FDFA" stroke="#14B8A6" stroke-width="1.5"/>
+  <text x="660" y="285" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="700" fill="#14B8A6">4</text>
+  <text x="632" y="285" text-anchor="end" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" fill="#111827">Consent on first run</text>
+  <line x1="660" y1="295" x2="660" y2="320" stroke="#E5E7EB" stroke-width="1.5" stroke-dasharray="3 2"/>
+
+  <!-- Proxy Step 5 -->
+  <circle cx="660" cy="335" r="14" fill="#F0FDFA" stroke="#14B8A6" stroke-width="1.5"/>
+  <text x="660" y="340" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="700" fill="#14B8A6">5</text>
+  <text x="632" y="340" text-anchor="end" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" fill="#111827">View in your dashboard</text>
+
+  <!-- Convergence lines — curves meet at a point, then a vertical line drops into the service box -->
+  <path d="M 140 350 Q 140 372 400 375" stroke="#E5E7EB" stroke-width="1.5" stroke-dasharray="4 3" fill="none"/>
+  <path d="M 660 350 Q 660 372 400 375" stroke="#E5E7EB" stroke-width="1.5" stroke-dasharray="4 3" fill="none"/>
+
+  <!-- Vertical connector from convergence point to service box -->
+  <line x1="400" y1="375" x2="400" y2="393" stroke="#E5E7EB" stroke-width="1.5" stroke-dasharray="3 2"/>
+
+  <!-- multicorn-service node -->
+  <rect x="300" y="395" width="200" height="44" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="400" y="415" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700" fill="#7C3AED">multicorn-service</text>
+  <text x="400" y="431" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#9CA3AF">Permissions, logging, controls</text>
+
+  <!-- Connector to dashboard — same length as above (18px) -->
+  <line x1="400" y1="441" x2="400" y2="459" stroke="#E5E7EB" stroke-width="1.5" stroke-dasharray="3 2"/>
+
+  <!-- Dashboard node -->
+  <rect x="300" y="461" width="200" height="36" rx="8" fill="#F5F3FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="400" y="484" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700" fill="#8B5CF6">Dashboard</text>
+</svg>

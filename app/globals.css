@@ -25,7 +25,8 @@
 @media (prefers-reduced-motion: reduce) {
   .animate-drift,
   .animate-drift-reverse,
-  .animate-gradient-shift {
+  .animate-gradient-shift,
+  .animate-flow-dot {
     animation: none !important;
   }
 }

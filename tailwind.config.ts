@@ -56,11 +56,18 @@ const config: Config = {
           '0%, 100%': { backgroundPosition: '0% 50%' },
           '50%': { backgroundPosition: '100% 50%' },
         },
+        'flow-dot': {
+          '0%': { transform: 'translateY(0)', opacity: '0' },
+          '15%': { opacity: '1' },
+          '85%': { opacity: '1' },
+          '100%': { transform: 'translateY(var(--flow-distance, 40px))', opacity: '0' },
+        },
       },
       animation: {
         drift: 'drift 6s ease-in-out infinite',
         'drift-reverse': 'drift-reverse 7s ease-in-out infinite',
         'gradient-shift': 'gradient-shift 8s ease infinite',
+        'flow-dot': 'flow-dot 2s ease-in-out infinite',
       },
     },
   },
