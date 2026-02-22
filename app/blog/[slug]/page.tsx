@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getBlogPost, getAllBlogSlugs } from '@/lib/blog'
 import { blogComponents } from '@/lib/mdx-blog-components'
+import { EmailSignupForm } from '@/components/EmailSignupForm'
 
 interface BlogPostPageProps {
   readonly params: Promise<{ slug: string }>
@@ -120,6 +121,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <div className="prose-multicorn">
           <MDXRemote source={post.content} components={blogComponents} />
         </div>
+
+        <section className="mt-16 border-t border-border pt-10">
+          <h2 className="mb-2 text-lg font-semibold text-text-primary">
+            Stay up to date with Multicorn
+          </h2>
+          <p className="mb-6 text-sm text-text-secondary">
+            Get the latest articles and product updates delivered to your inbox.
+          </p>
+          <EmailSignupForm />
+        </section>
       </article>
     </main>
   )

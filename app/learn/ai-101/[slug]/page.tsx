@@ -11,6 +11,7 @@ import {
 import { blogComponents } from '@/lib/mdx-blog-components'
 import { TableOfContents } from '@/components/TableOfContents'
 import { ArticleNavigation } from '@/components/ArticleNavigation'
+import { EmailSignupForm } from '@/components/EmailSignupForm'
 
 interface LearnArticlePageProps {
   readonly params: Promise<{ slug: string }>
@@ -156,6 +157,16 @@ export default async function LearnArticlePage({ params }: LearnArticlePageProps
               <div className="prose-multicorn">
                 <MDXRemote source={article.content} components={blogComponents} />
               </div>
+
+              <section className="mt-16 border-t border-border pt-10">
+                <h2 className="mb-2 text-lg font-semibold text-text-primary">
+                  Stay up to date with Multicorn
+                </h2>
+                <p className="mb-6 text-sm text-text-secondary">
+                  Get the latest articles and product updates delivered to your inbox.
+                </p>
+                <EmailSignupForm />
+              </section>
 
               <ArticleNavigation navigation={navigation} />
             </article>
