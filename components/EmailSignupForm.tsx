@@ -7,6 +7,7 @@ const FORM_STATES = {
   idle: 'idle',
   submitting: 'submitting',
   success: 'success',
+  duplicate: 'duplicate',
   error: 'error',
 } as const
 
@@ -14,6 +15,10 @@ type FormState = (typeof FORM_STATES)[keyof typeof FORM_STATES]
 
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+}
+
+interface SubscribeResponse {
+  readonly status: 'success' | 'already_subscribed' | 'error'
 }
 
 export function EmailSignupForm() {
@@ -46,26 +51,26 @@ export function EmailSignupForm() {
       return
     }
 
-    const formId = process.env.NEXT_PUBLIC_CONVERTKIT_FORM_ID
-    if (!formId) {
-      setFormState(FORM_STATES.error)
-      setSubmitError('Signup is not available right now. Please try again later.')
-      return
-    }
-
     setFormState(FORM_STATES.submitting)
     setValidationError('')
     setSubmitError('')
 
     try {
-      const response = await fetch(`https://app.convertkit.com/forms/${formId}/subscriptions`, {
+      const response = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email_address: email }),
+        body: JSON.stringify({ email }),
       })
 
+      const data = (await response.json()) as SubscribeResponse
+
+      if (data.status === 'already_subscribed') {
+        setFormState(FORM_STATES.duplicate)
+        return
+      }
+
       if (!response.ok) {
-        throw new Error('Signup failed')
+        throw new Error('Subscription failed')
       }
 
       setFormState(FORM_STATES.success)
@@ -84,11 +89,25 @@ export function EmailSignupForm() {
       >
         <p className="font-medium text-text-primary">You&apos;re on the list!</p>
         <p className="mt-1 text-sm text-text-secondary">
-          We&apos;ll let you know when Multicorn is ready.
+          Check your inbox to confirm your subscription.
         </p>
       </div>
     )
   }
+
+  if (formState === FORM_STATES.duplicate) {
+    return (
+      <div
+        role="status"
+        className="rounded-lg border border-primary/20 bg-primary/5 px-6 py-4 text-center"
+      >
+        <p className="font-medium text-text-primary">Looks like you&apos;re already subscribed.</p>
+        <p className="mt-1 text-sm text-text-secondary">Check your inbox for updates.</p>
+      </div>
+    )
+  }
+
+  const isSubmitting = formState === FORM_STATES.submitting
 
   return (
     <form onSubmit={handleSubmit} noValidate className="w-full max-w-md">
@@ -107,27 +126,36 @@ export function EmailSignupForm() {
           onBlur={handleBlur}
           placeholder="you@example.com"
           aria-invalid={validationError ? 'true' : undefined}
-          aria-describedby={validationError ? 'email-error' : undefined}
+          aria-describedby={
+            [validationError ? 'email-error' : '', submitError ? 'submit-error' : '']
+              .filter(Boolean)
+              .join(' ') || undefined
+          }
           className="min-h-[44px] flex-1 rounded-lg border border-border bg-surface px-4 py-3 text-text-primary placeholder:text-text-tertiary focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
         />
         <button
           type="submit"
-          disabled={formState === FORM_STATES.submitting}
+          disabled={isSubmitting}
+          aria-label="Sign up for email updates"
           className="min-h-[44px] rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {formState === FORM_STATES.submitting ? 'Signing up…' : 'Notify me'}
+          {isSubmitting ? 'Signing up…' : 'Notify me'}
         </button>
       </div>
+      <p aria-live="polite" className="sr-only">
+        {isSubmitting ? 'Signing up…' : ''}
+      </p>
       {validationError && (
         <p id="email-error" role="alert" className="text-red-600 mt-2 text-sm">
           {validationError}
         </p>
       )}
       {submitError && (
-        <p role="alert" className="text-red-600 mt-2 text-sm">
+        <p id="submit-error" role="alert" className="text-red-600 mt-2 text-sm">
           {submitError}
         </p>
       )}
+      <p className="mt-3 text-xs text-text-tertiary">No spam, ever. Unsubscribe any time.</p>
     </form>
   )
 }
