@@ -107,25 +107,81 @@ export default async function LearnArticlePage({ params }: LearnArticlePageProps
         <div className="mx-auto max-w-content">
           <div className="lg:grid lg:grid-cols-[1fr_250px] lg:gap-12">
             <article className="mx-auto max-w-3xl lg:mx-0">
-              <Link
-                href="/learn/ai-101"
-                className="mb-8 inline-flex items-center gap-1.5 text-sm font-medium text-text-secondary transition-colors hover:text-text-primary"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  className="h-4 w-4"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                AI 101
-              </Link>
+              <nav aria-label="Breadcrumb" className="mb-8">
+                <ol className="flex flex-wrap items-center gap-2 text-sm" role="list">
+                  <li>
+                    <Link
+                      href="/"
+                      className="text-text-secondary transition-colors hover:text-text-primary"
+                    >
+                      Home
+                    </Link>
+                  </li>
+                  <li aria-hidden="true">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      className="h-4 w-4 text-text-tertiary"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </li>
+                  <li>
+                    <Link
+                      href="/learn"
+                      className="text-text-secondary transition-colors hover:text-text-primary"
+                    >
+                      Learn
+                    </Link>
+                  </li>
+                  <li aria-hidden="true">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      className="h-4 w-4 text-text-tertiary"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </li>
+                  <li>
+                    <Link
+                      href="/learn/ai-101"
+                      className="text-text-secondary transition-colors hover:text-text-primary"
+                    >
+                      AI 101
+                    </Link>
+                  </li>
+                  <li aria-hidden="true">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      className="h-4 w-4 text-text-tertiary"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </li>
+                  <li>
+                    <span className="font-medium text-text-primary" aria-current="page">
+                      {article.meta.title}
+                    </span>
+                  </li>
+                </ol>
+              </nav>
 
               <header className="mb-12">
                 <div className="mb-4 flex flex-wrap gap-2">
