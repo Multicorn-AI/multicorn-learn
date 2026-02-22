@@ -89,7 +89,7 @@ export function EmailSignupForm() {
       >
         <p className="font-medium text-text-primary">You&apos;re on the list!</p>
         <p className="mt-1 text-sm text-text-secondary">
-          Check your inbox to confirm your subscription.
+          Check your inbox (and spam folder) for a confirmation email.
         </p>
       </div>
     )
@@ -155,7 +155,12 @@ export function EmailSignupForm() {
           {submitError}
         </p>
       )}
-      <p className="mt-3 text-xs text-text-tertiary">No spam, ever. Unsubscribe any time.</p>
+      <p className="mt-3 text-xs text-text-tertiary">
+        We&apos;ll send you updates about Multicorn. No spam, ever. Unsubscribe any time.{' '}
+        <a href="/policies/privacy" className="underline hover:text-text-secondary">
+          Privacy policy
+        </a>
+      </p>
     </form>
   )
 }

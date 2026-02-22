@@ -10,14 +10,9 @@ function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
 
-interface ConvertKitSubscriber {
-  readonly state: string
-}
-
-interface ConvertKitResponse {
-  readonly subscription: {
-    readonly subscriber: ConvertKitSubscriber
-  }
+interface KitSubscriberLookup {
+  readonly total_subscribers: number
+  readonly subscribers: readonly { readonly state: string }[]
 }
 
 export async function POST(request: Request) {
@@ -42,12 +37,28 @@ export async function POST(request: Request) {
 
     const formId = process.env.NEXT_PUBLIC_CONVERTKIT_FORM_ID
     const apiKey = process.env.CONVERTKIT_API_KEY
+    const apiSecret = process.env.CONVERTKIT_API_SECRET
 
-    if (!formId || !apiKey) {
+    if (!formId || !apiKey || !apiSecret) {
       return NextResponse.json(
         { status: SUBSCRIBE_STATUSES.error, message: 'Email signup is not configured.' },
         { status: 500 },
       )
+    }
+
+    const lookupUrl = new URL('https://api.convertkit.com/v3/subscribers')
+    lookupUrl.searchParams.set('api_secret', apiSecret)
+    lookupUrl.searchParams.set('email_address', email)
+
+    const lookupResponse = await fetch(lookupUrl.toString(), {
+      signal: AbortSignal.timeout(10_000),
+    })
+
+    if (lookupResponse.ok) {
+      const lookupData = (await lookupResponse.json()) as KitSubscriberLookup
+      if (lookupData.total_subscribers > 0) {
+        return NextResponse.json({ status: SUBSCRIBE_STATUSES.already_subscribed })
+      }
     }
 
     const response = await fetch(`https://api.convertkit.com/v3/forms/${formId}/subscribe`, {
@@ -58,21 +69,17 @@ export async function POST(request: Request) {
     })
 
     if (!response.ok) {
+      const errorBody = await response.text()
+      console.error('Kit API error:', response.status, errorBody)
       return NextResponse.json(
         { status: SUBSCRIBE_STATUSES.error, message: 'Subscription failed.' },
         { status: 502 },
       )
     }
 
-    const data = (await response.json()) as ConvertKitResponse
-    const subscriberState = data.subscription?.subscriber?.state
-
-    if (subscriberState === 'active') {
-      return NextResponse.json({ status: SUBSCRIBE_STATUSES.already_subscribed })
-    }
-
     return NextResponse.json({ status: SUBSCRIBE_STATUSES.success })
-  } catch {
+  } catch (error) {
+    console.error('Subscribe route error:', error)
     return NextResponse.json(
       { status: SUBSCRIBE_STATUSES.error, message: 'Something went wrong.' },
       { status: 500 },

@@ -45,12 +45,16 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className="min-h-screen font-sans">
         <LaunchGate>{children}</LaunchGate>
         {process.env.NODE_ENV === 'production' && (
-          <Script
-            defer
-            data-domain="multicorn.ai"
-            src="https://plausible.io/js/script.js"
-            strategy="afterInteractive"
-          />
+          <>
+            <Script
+              async
+              src="https://plausible.io/js/pa-GYvkW2mmytiEOtMR5Enjz.js"
+              strategy="afterInteractive"
+            />
+            <Script id="plausible-init" strategy="afterInteractive">
+              {`window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()`}
+            </Script>
+          </>
         )}
       </body>
     </html>
