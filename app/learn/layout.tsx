@@ -4,7 +4,7 @@ export default function LearnLayout({ children }: Readonly<{ children: React.Rea
   return (
     <>
       {children}
-      <Footer />
+      <Footer site="learn" />
     </>
   )
 }
