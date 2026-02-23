@@ -70,8 +70,8 @@ export default function TermsOfServicePage() {
               </p>
               <p>
                 You can contact us by email at{' '}
-                <a href="mailto:rachelle@multicorn.ai" className="text-primary hover:underline">
-                  rachelle@multicorn.ai
+                <a href="mailto:support@multicorn.ai" className="text-primary hover:underline">
+                  support@multicorn.ai
                 </a>
                 .
               </p>
@@ -87,8 +87,8 @@ export default function TermsOfServicePage() {
                 We will provide you with prior notice of any scheduled changes to the Services you
                 are using. The modified Legal Terms will become effective upon posting or notifying
                 you by{' '}
-                <a href="mailto:rachelle@multicorn.ai" className="text-primary hover:underline">
-                  rachelle@multicorn.ai
+                <a href="mailto:support@multicorn.ai" className="text-primary hover:underline">
+                  support@multicorn.ai
                 </a>
                 , as stated in the email message. By continuing to use the Services after the
                 effective date of any changes, you agree to be bound by the modified terms.
@@ -316,8 +316,8 @@ export default function TermsOfServicePage() {
               <p>
                 If you wish to make any use of the Services, Content, or Marks other than as set out
                 in this section or elsewhere in our Legal Terms, please address your request to:{' '}
-                <a href="mailto:rachelle@multicorn.ai" className="text-primary hover:underline">
-                  rachelle@multicorn.ai
+                <a href="mailto:support@multicorn.ai" className="text-primary hover:underline">
+                  support@multicorn.ai
                 </a>
                 . If we ever grant you the permission to post, reproduce, or publicly display any
                 part of our Services or Content, you must identify us as the owners or licensors of
@@ -491,8 +491,8 @@ export default function TermsOfServicePage() {
                 You can cancel your subscription at any time by logging into your account. Your
                 cancellation will take effect at the end of the current paid term. If you have any
                 questions or are unsatisfied with our Services, please email us at{' '}
-                <a href="mailto:rachelle@multicorn.ai" className="text-primary hover:underline">
-                  rachelle@multicorn.ai
+                <a href="mailto:support@multicorn.ai" className="text-primary hover:underline">
+                  support@multicorn.ai
                 </a>
                 .
               </p>
@@ -1122,8 +1122,8 @@ export default function TermsOfServicePage() {
               <p>
                 <strong className="text-text-primary">Multicorn AI Pty Ltd</strong>
                 <br />
-                <a href="mailto:rachelle@multicorn.ai" className="text-primary hover:underline">
-                  rachelle@multicorn.ai
+                <a href="mailto:support@multicorn.ai" className="text-primary hover:underline">
+                  support@multicorn.ai
                 </a>
               </p>
             </div>

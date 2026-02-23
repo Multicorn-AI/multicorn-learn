@@ -104,7 +104,7 @@ const SHIELD_TIERS: readonly ShieldTier[] = [
       'Dedicated support',
     ],
     cta: 'Register interest',
-    href: 'mailto:rachelle@multicorn.ai',
+    href: 'mailto:sales@multicorn.ai',
     highlighted: false,
     badge: 'Coming soon',
     disabled: true,
@@ -359,7 +359,7 @@ export default function PricingPage() {
                 Start for free
               </a>
               <a
-                href="mailto:rachelle@multicorn.ai"
+                href="mailto:sales@multicorn.ai"
                 className="inline-flex min-h-[44px] items-center rounded-lg border border-border px-8 py-3 text-base font-semibold text-text-primary transition-colors hover:bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
               >
                 Contact us

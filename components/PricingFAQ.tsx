@@ -22,7 +22,7 @@ const FAQ_ITEMS: readonly FAQItem[] = [
   {
     question: 'What payment methods do you accept?',
     answer:
-      'We accept all major credit and debit cards through Stripe. Enterprise customers can pay by invoice with net-30 terms. Contact us at rachelle@multicorn.ai for invoicing details.',
+      'We accept all major credit and debit cards through Stripe. Enterprise customers can pay by invoice with net-30 terms. Contact us at sales@multicorn.ai for invoicing details.',
   },
 ]
 
