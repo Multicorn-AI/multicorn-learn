@@ -78,9 +78,9 @@
   <!-- Vertical connector from convergence point to service box -->
   <line x1="400" y1="375" x2="400" y2="393" stroke="#E5E7EB" stroke-width="1.5" stroke-dasharray="3 2"/>
 
-  <!-- multicorn-service node -->
+  <!-- Shield API node -->
   <rect x="300" y="395" width="200" height="44" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2"/>
-  <text x="400" y="415" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700" fill="#7C3AED">multicorn-service</text>
+  <text x="400" y="415" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700" fill="#7C3AED">Shield API</text>
   <text x="400" y="431" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#9CA3AF">Permissions, logging, controls</text>
 
   <!-- Connector to dashboard — same length as above (18px) -->

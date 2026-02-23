@@ -32,9 +32,9 @@ export default function DocsLayout({ children }: Readonly<{ children: React.Reac
 
   return (
     <>
-      <div className="mx-auto flex min-h-screen max-w-content px-6 pt-16 sm:pt-20 lg:gap-12">
+      <div className="mx-auto grid min-h-screen w-full max-w-[1600px] grid-cols-1 px-6 pt-16 sm:pt-20 lg:grid-cols-[256px_minmax(0,1fr)] lg:gap-8">
         <DocsSidebar sections={sidebarSections} />
-        <main className="min-w-0 flex-1 pb-20">{children}</main>
+        <main className="min-w-0 pb-20 lg:w-full lg:max-w-[1100px]">{children}</main>
       </div>
       <Footer />
     </>

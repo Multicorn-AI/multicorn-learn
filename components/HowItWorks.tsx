@@ -168,7 +168,7 @@ export function HowItWorks() {
           )}
 
           <div className="rounded-lg border-2 border-shield bg-shield/5 px-8 py-4 text-center">
-            <p className="text-sm font-bold text-shield">multicorn-service</p>
+            <p className="text-sm font-bold text-shield">Shield API</p>
             <p className="mt-0.5 text-xs text-text-tertiary">Permissions, logging, controls</p>
           </div>
 
