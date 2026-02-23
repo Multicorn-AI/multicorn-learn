@@ -154,7 +154,7 @@ function DashboardPreview() {
 
 export function Features() {
   return (
-    <section id="features" className="px-6 py-20 sm:py-28">
+    <section id="features" className="px-6 py-12 sm:py-20 lg:py-28">
       <div className="mx-auto max-w-content">
         <div className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
