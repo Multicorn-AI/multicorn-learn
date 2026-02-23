@@ -139,19 +139,19 @@ export function EmailSignupForm() {
           aria-label="Sign up for email updates"
           className="min-h-[44px] rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {isSubmitting ? 'Signing up…' : 'Notify me'}
+          {isSubmitting ? 'Joining…' : 'Join the waitlist'}
         </button>
       </div>
       <p aria-live="polite" className="sr-only">
-        {isSubmitting ? 'Signing up…' : ''}
+        {isSubmitting ? 'Joining…' : ''}
       </p>
       {validationError && (
-        <p id="email-error" role="alert" className="text-red-600 mt-2 text-sm">
+        <p id="email-error" role="alert" className="mt-2 text-sm text-red">
           {validationError}
         </p>
       )}
       {submitError && (
-        <p id="submit-error" role="alert" className="text-red-600 mt-2 text-sm">
+        <p id="submit-error" role="alert" className="mt-2 text-sm text-red">
           {submitError}
         </p>
       )}
