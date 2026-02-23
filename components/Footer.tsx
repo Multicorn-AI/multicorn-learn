@@ -7,18 +7,16 @@ interface FooterLink {
   readonly isExternal?: boolean
 }
 
+type FooterSite = 'shield' | 'learn'
+
+const SHIELD_GITHUB_REPO_URL = 'http://github.com/Multicorn-AI/multicorn-shield'
+const LEARN_GITHUB_REPO_URL = 'http://github.com/Multicorn-AI/multicorn-learn'
+
 const PRODUCT_LINKS: readonly FooterLink[] = [
   { label: 'Shield', href: '/shield' },
   { label: 'Pricing', href: '/pricing' },
   { label: 'Documentation', href: '/docs' },
   { label: 'Changelog', href: '/changelog' },
-]
-
-const RESOURCE_LINKS: readonly FooterLink[] = [
-  { label: 'Learn AI 101', href: '/learn/ai-101' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'GitHub', href: 'https://github.com/Multicorn-AI/multicorn-shield', isExternal: true },
-  { label: 'npm', href: 'https://www.npmjs.com/package/multicorn-shield', isExternal: true },
 ]
 
 const COMPANY_LINKS: readonly FooterLink[] = [
@@ -65,7 +63,15 @@ function FooterLinkGroup({
   )
 }
 
-export function Footer() {
+export function Footer({ site = 'shield' }: { readonly site?: FooterSite }) {
+  const githubRepoUrl = site === 'learn' ? LEARN_GITHUB_REPO_URL : SHIELD_GITHUB_REPO_URL
+  const resourceLinks: readonly FooterLink[] = [
+    { label: 'Learn AI 101', href: '/learn/ai-101' },
+    { label: 'Blog', href: '/blog' },
+    { label: 'GitHub', href: githubRepoUrl, isExternal: true },
+    { label: 'npm', href: 'https://www.npmjs.com/package/multicorn-shield', isExternal: true },
+  ]
+
   return (
     <footer className="border-t border-border bg-surface-secondary px-6 pb-10 pt-16">
       <div className="mx-auto max-w-content">
@@ -84,7 +90,7 @@ export function Footer() {
           </div>
 
           <FooterLinkGroup title="Product" links={PRODUCT_LINKS} />
-          <FooterLinkGroup title="Resources" links={RESOURCE_LINKS} />
+          <FooterLinkGroup title="Resources" links={resourceLinks} />
           <FooterLinkGroup title="Company" links={COMPANY_LINKS} />
         </div>
 
@@ -94,7 +100,7 @@ export function Footer() {
           </p>
           <div className="flex items-center gap-4">
             <a
-              href="https://github.com/Multicorn-AI/multicorn-shield"
+              href={githubRepoUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Multicorn on GitHub"
