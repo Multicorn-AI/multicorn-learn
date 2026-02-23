@@ -343,7 +343,7 @@ export default function ShieldPage() {
       <ShieldPageTracker />
       <main>
         {/* Hero */}
-        <section className="relative overflow-hidden px-6 pb-12 pt-24 sm:pb-16 sm:pt-32">
+        <section className="relative overflow-hidden px-6 pb-10 pt-20 sm:pb-16 sm:pt-32">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-primary/5 via-indigo/5 to-transparent"
@@ -393,7 +393,7 @@ export default function ShieldPage() {
         </section>
 
         {/* How It Works */}
-        <section className="px-6 py-20 sm:py-28">
+        <section className="px-6 py-14 sm:py-28">
           <div className="mx-auto max-w-content">
             <div className="mb-16 text-center">
               <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
@@ -409,7 +409,7 @@ export default function ShieldPage() {
         </section>
 
         {/* Feature Deep-Dive */}
-        <section className="px-6 pb-20 pt-12 sm:pb-28 sm:pt-16">
+        <section className="px-6 pb-14 pt-8 sm:pb-28 sm:pt-16">
           <div className="mx-auto max-w-content">
             <div className="text-center">
               <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
@@ -435,7 +435,7 @@ export default function ShieldPage() {
         </section>
 
         {/* Interactive Consent Screen Demo */}
-        <section className="bg-[#0d0d14] px-6 py-20 sm:py-28">
+        <section className="bg-[#0d0d14] px-6 py-14 sm:py-28">
           <div className="mx-auto max-w-content">
             <div className="mb-16 text-center">
               <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
@@ -451,7 +451,7 @@ export default function ShieldPage() {
         </section>
 
         {/* Dashboard Preview */}
-        <section className="px-6 py-20 sm:py-28">
+        <section className="px-6 py-14 sm:py-28">
           <div className="mx-auto max-w-content">
             <div className="mb-16 text-center">
               <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
@@ -469,7 +469,7 @@ export default function ShieldPage() {
         </section>
 
         {/* Quickstart */}
-        <section className="bg-surface-secondary px-6 py-20 sm:py-28">
+        <section className="bg-surface-secondary px-6 py-14 sm:py-28">
           <div className="mx-auto max-w-content">
             <div className="text-center">
               <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
@@ -550,7 +550,7 @@ export default function ShieldPage() {
         </section>
 
         {/* Proxy Demo */}
-        <section className="px-6 py-20 sm:py-28">
+        <section className="px-6 py-14 sm:py-28">
           <div className="mx-auto max-w-content">
             <div className="mb-12 text-center">
               <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
@@ -599,10 +599,10 @@ export default function ShieldPage() {
         </section>
 
         {/* Social Proof */}
-        <section className="border-y border-border-light px-6 py-16">
+        <section className="border-y border-border-light px-6 py-12 sm:py-16">
           <div className="mx-auto max-w-content">
             <div className="flex flex-col items-center gap-10 sm:flex-row sm:justify-center sm:gap-16">
-              {/* Trust badge */}
+              {/* MIT licensed */}
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-shield/10">
                   <svg
@@ -621,12 +621,12 @@ export default function ShieldPage() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-text-primary">Secured by Multicorn</p>
-                  <p className="text-xs text-text-tertiary">Trust badge for your app</p>
+                  <p className="text-sm font-semibold text-text-primary">MIT licensed</p>
+                  <p className="text-xs text-text-tertiary">Use, modify, and self-host</p>
                 </div>
               </div>
 
-              {/* GitHub stars */}
+              {/* Open source */}
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-text-primary/5">
                   <svg
@@ -640,27 +640,34 @@ export default function ShieldPage() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-text-primary">1.2k+ stars</p>
-                  <p className="text-xs text-text-tertiary">on GitHub</p>
+                  <p className="text-sm font-semibold text-text-primary">Open source</p>
+                  <p className="text-xs text-text-tertiary">Code and issues on GitHub</p>
                 </div>
               </div>
 
-              {/* npm downloads */}
+              {/* Built in Australia */}
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-red/5">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-teal/10">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="h-5 w-5 text-red"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.5}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-5 w-5 text-teal"
                     aria-hidden="true"
                   >
-                    <path d="M0 7.334v8h6.666v1.332H12v-1.332h12v-8H0zm6.666 6.664H5.334v-4H3.999v4H1.335V8.667h5.331v5.331zm4 0h-2.666V8.667h2.666v5.331zm12 0h-2.666v-4h-1.334v4h-1.335v-4h-1.333v4h-2.666V8.667H22.666v5.331zM11.333 8.667h1.334v4h-1.334v-4z" />
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M3 12h18" />
+                    <path d="M12 3a14 14 0 0 1 0 18" />
+                    <path d="M12 3a14 14 0 0 0 0 18" />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-text-primary">5k+ weekly</p>
-                  <p className="text-xs text-text-tertiary">npm downloads</p>
+                  <p className="text-sm font-semibold text-text-primary">Built in Australia</p>
+                  <p className="text-xs text-text-tertiary">Designed by the Multicorn team</p>
                 </div>
               </div>
             </div>
@@ -668,7 +675,7 @@ export default function ShieldPage() {
         </section>
 
         {/* Comparison Table */}
-        <section className="bg-surface-secondary px-6 py-20 sm:py-28">
+        <section className="bg-surface-secondary px-6 py-14 sm:py-28">
           <div className="mx-auto max-w-content">
             <div className="text-center">
               <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
@@ -721,7 +728,7 @@ export default function ShieldPage() {
         </section>
 
         {/* CTA */}
-        <section className="px-6 py-20 sm:py-28">
+        <section className="px-6 py-14 sm:py-28">
           <div className="mx-auto max-w-content text-center">
             <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
               Start controlling your AI agents today
