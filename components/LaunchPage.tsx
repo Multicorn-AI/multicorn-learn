@@ -5,7 +5,7 @@ export function LaunchPage() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <main className="flex flex-1 flex-col items-center px-6 pb-8 pt-10 sm:pt-16">
+      <main className="flex flex-1 flex-col items-center justify-center px-6 pb-4 pt-10 sm:pb-8 sm:pt-16">
         <div className="flex max-w-xl flex-col items-center text-center">
           <span className="mb-6 inline-block rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
             Coming Soon
@@ -32,9 +32,7 @@ export function LaunchPage() {
           {hasSignup && (
             <div className="mt-8 w-full max-w-md">
               <EmailSignupForm />
-              <p className="mt-3 text-sm font-medium text-text-secondary">
-                Shield launches March 17
-              </p>
+              <p className="mt-3 text-sm font-medium text-text-secondary">Launching soon</p>
             </div>
           )}
         </div>
