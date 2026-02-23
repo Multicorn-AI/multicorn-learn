@@ -9,6 +9,8 @@ interface Tier {
   readonly cta: string
   readonly href: string
   readonly highlighted: boolean
+  readonly badge?: string
+  readonly disabled?: boolean
 }
 
 const TIERS: readonly Tier[] = [
@@ -75,9 +77,11 @@ const TIERS: readonly Tier[] = [
       'Multi-party approval',
       'Dedicated support',
     ],
-    cta: 'Contact us',
+    cta: 'Register interest',
     href: 'mailto:rachelle@multicorn.ai',
     highlighted: false,
+    badge: 'Coming soon',
+    disabled: true,
   },
 ]
 
@@ -106,6 +110,8 @@ export function Pricing() {
               cta={tier.cta}
               href={tier.href}
               highlighted={tier.highlighted}
+              badge={tier.badge}
+              disabled={tier.disabled}
             />
           ))}
         </div>

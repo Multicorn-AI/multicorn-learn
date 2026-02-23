@@ -3,7 +3,7 @@ import { TrackedCtaLink } from '@/components/TrackedCtaLink'
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden px-6 pb-20 pt-24 sm:pb-28 sm:pt-32">
+    <section className="relative overflow-hidden px-6 pb-12 pt-24 sm:pb-20 sm:pt-32 lg:pb-28">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-primary/5 via-indigo/5 to-transparent"
