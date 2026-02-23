@@ -41,23 +41,24 @@ interface ContactCategory {
 const CONTACT_CATEGORIES: readonly ContactCategory[] = [
   {
     name: 'General enquiries',
-    email: 'rachelle@multicorn.ai',
+    email: 'support@multicorn.ai',
     description: 'Questions about Multicorn, partnerships, or just saying hello.',
   },
   {
     name: 'Enterprise sales',
-    email: 'rachelle@multicorn.ai',
+    email: 'sales@multicorn.ai',
     description: 'Custom plans, volume pricing, or compliance requirements for your organisation.',
+    note: "We're launching enterprise plans soon. Get in touch to discuss early access.",
   },
   {
     name: 'Security issues',
-    email: 'rachelle@multicorn.ai',
+    email: 'security@multicorn.ai',
     description:
       'For security vulnerabilities, please email directly rather than opening a public issue.',
   },
   {
     name: 'Privacy and data requests',
-    email: 'rachelle@multicorn.ai',
+    email: 'legal@multicorn.ai',
     description: 'Data subject access requests (DSARs) and privacy-related enquiries.',
   },
 ]
@@ -81,7 +82,7 @@ export default function ContactPage() {
             </p>
             <div className="mt-10">
               <a
-                href="mailto:rachelle@multicorn.ai"
+                href="mailto:support@multicorn.ai"
                 className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-primary px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
               >
                 <svg
@@ -98,7 +99,7 @@ export default function ContactPage() {
                   <rect x="2" y="4" width="20" height="16" rx="2" />
                   <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                 </svg>
-                rachelle@multicorn.ai
+                support@multicorn.ai
               </a>
             </div>
             <p className="mt-4 text-sm text-text-tertiary">
@@ -121,6 +122,9 @@ export default function ContactPage() {
                 >
                   <h3 className="mb-2 text-lg font-semibold text-text-primary">{category.name}</h3>
                   <p className="mb-4 text-sm text-text-secondary">{category.description}</p>
+                  {category.note && (
+                    <p className="mb-4 text-sm text-text-secondary">{category.note}</p>
+                  )}
                   {category.name === 'Privacy and data requests' && (
                     <p className="mb-4 text-sm text-text-secondary">
                       See our{' '}

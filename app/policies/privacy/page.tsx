@@ -81,8 +81,8 @@ export default function PrivacyPolicyPage() {
                 responsible for making decisions about how your personal information is processed.
                 If you do not agree with our policies and practices, please do not use our Services.
                 If you still have any questions or concerns, please contact us at{' '}
-                <a href="mailto:rachelle@multicorn.ai" className="text-primary hover:underline">
-                  rachelle@multicorn.ai
+                <a href="mailto:legal@multicorn.ai" className="text-primary hover:underline">
+                  legal@multicorn.ai
                 </a>
                 .
               </p>
@@ -178,8 +178,8 @@ export default function PrivacyPolicyPage() {
               <p>
                 <strong className="text-text-primary">How do you exercise your rights?</strong> The
                 easiest way to exercise your rights is by visiting{' '}
-                <a href="mailto:rachelle@multicorn.ai" className="text-primary hover:underline">
-                  rachelle@multicorn.ai
+                <a href="mailto:legal@multicorn.ai" className="text-primary hover:underline">
+                  legal@multicorn.ai
                 </a>
                 , or by contacting us. We will consider and act upon any request in accordance with
                 applicable data protection laws.
@@ -1009,8 +1009,8 @@ export default function PrivacyPolicyPage() {
                 measures to promptly delete such data from our records. If you become aware of any
                 data we may have collected from children under age 18 or the equivalent age as
                 specified by law in your jurisdiction, please contact us at{' '}
-                <a href="mailto:rachelle@multicorn.ai" className="text-primary hover:underline">
-                  rachelle@multicorn.ai
+                <a href="mailto:legal@multicorn.ai" className="text-primary hover:underline">
+                  legal@multicorn.ai
                 </a>
                 .
               </p>
@@ -1154,8 +1154,8 @@ export default function PrivacyPolicyPage() {
               </p>
               <p>
                 If you have questions or comments about your privacy rights, you may email us at{' '}
-                <a href="mailto:rachelle@multicorn.ai" className="text-primary hover:underline">
-                  rachelle@multicorn.ai
+                <a href="mailto:legal@multicorn.ai" className="text-primary hover:underline">
+                  legal@multicorn.ai
                 </a>
                 .
               </p>
@@ -1494,8 +1494,8 @@ export default function PrivacyPolicyPage() {
               </h3>
               <p>
                 To exercise these rights, you can contact us by visiting{' '}
-                <a href="mailto:rachelle@multicorn.ai" className="text-primary hover:underline">
-                  rachelle@multicorn.ai
+                <a href="mailto:legal@multicorn.ai" className="text-primary hover:underline">
+                  legal@multicorn.ai
                 </a>
                 , or by referring to the contact details at the bottom of this document.
               </p>
@@ -1527,8 +1527,8 @@ export default function PrivacyPolicyPage() {
               <p>
                 Under certain US state data protection laws, if we decline to take action regarding
                 your request, you may appeal our decision by emailing us at{' '}
-                <a href="mailto:rachelle@multicorn.ai" className="text-primary hover:underline">
-                  rachelle@multicorn.ai
+                <a href="mailto:legal@multicorn.ai" className="text-primary hover:underline">
+                  legal@multicorn.ai
                 </a>
                 . We will inform you in writing of any action taken or not taken in response to the
                 appeal, including a written explanation of the reasons for the decisions. If your
@@ -1703,8 +1703,8 @@ export default function PrivacyPolicyPage() {
             <div className="space-y-4 text-base leading-relaxed text-text-secondary">
               <p>
                 If you have questions or comments about this notice, you may email us at{' '}
-                <a href="mailto:rachelle@multicorn.ai" className="text-primary hover:underline">
-                  rachelle@multicorn.ai
+                <a href="mailto:legal@multicorn.ai" className="text-primary hover:underline">
+                  legal@multicorn.ai
                 </a>
                 .
               </p>
@@ -1725,8 +1725,8 @@ export default function PrivacyPolicyPage() {
                 processing of your personal information. These rights may be limited in some
                 circumstances by applicable law. To request to review, update, or delete your
                 personal information, please visit:{' '}
-                <a href="mailto:rachelle@multicorn.ai" className="text-primary hover:underline">
-                  rachelle@multicorn.ai
+                <a href="mailto:legal@multicorn.ai" className="text-primary hover:underline">
+                  legal@multicorn.ai
                 </a>
                 .
               </p>

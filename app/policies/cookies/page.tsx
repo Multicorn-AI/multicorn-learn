@@ -362,8 +362,8 @@ export default function CookiePolicyPage() {
               <p>
                 If you have any questions about our use of cookies or other technologies, please
                 email us at{' '}
-                <a href="mailto:rachelle@multicorn.ai" className="text-primary hover:underline">
-                  rachelle@multicorn.ai
+                <a href="mailto:legal@multicorn.ai" className="text-primary hover:underline">
+                  legal@multicorn.ai
                 </a>
                 .
               </p>

@@ -78,7 +78,7 @@ const TIERS: readonly Tier[] = [
       'Dedicated support',
     ],
     cta: 'Register interest',
-    href: 'mailto:rachelle@multicorn.ai',
+    href: 'mailto:sales@multicorn.ai',
     highlighted: false,
     badge: 'Coming soon',
     disabled: true,
