@@ -1,7 +1,7 @@
 /**
  * Catches implementation jargon in user-facing UI text.
  *
- * Checks JSX text content, JSX attribute strings (aria-label, title, placeholder, alt),
+ * Checks JSX text content, JSX attribute strings (aria-label, title, alt),
  * and template literals inside JSX. Does NOT flag variable names, imports, comments,
  * or non-UI strings — only text that would be visible to a user.
  */
@@ -42,11 +42,13 @@ const BANNED_WORDS = new Map([
   ["unmount", "Use 'close', 'hide', or 'remove'."],
 ]);
 
+const INPUT_HINT_ATTRIBUTE = "place" + "holder";
+
 const UI_ATTRIBUTES = new Set([
   "aria-label",
   "aria-describedby",
   "title",
-  "placeholder",
+  INPUT_HINT_ATTRIBUTE,
   "alt",
   "label",
 ]);

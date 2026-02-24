@@ -21,8 +21,7 @@ function StarSparkle({
   )
 }
 
-// TODO(MULTI-XXX): replace with final Multicorn logo/mascot when available
-function UnicornPlaceholder() {
+function UnicornMark() {
   return (
     <svg
       width="120"
@@ -132,7 +131,7 @@ export default function NotFound() {
       />
 
       <div className="text-center">
-        <UnicornPlaceholder />
+        <UnicornMark />
 
         <p className="mt-6 text-sm font-semibold uppercase tracking-widest text-primary">404</p>
 

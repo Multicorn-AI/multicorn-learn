@@ -9,8 +9,8 @@ interface FooterLink {
 
 type FooterSite = 'shield' | 'learn'
 
-const SHIELD_GITHUB_REPO_URL = 'http://github.com/Multicorn-AI/multicorn-shield'
-const LEARN_GITHUB_REPO_URL = 'http://github.com/Multicorn-AI/multicorn-learn'
+const SHIELD_GITHUB_REPO_URL = 'https://github.com/Multicorn-AI/multicorn-shield'
+const LEARN_GITHUB_REPO_URL = 'https://github.com/Multicorn-AI/multicorn-learn'
 
 const PRODUCT_LINKS: readonly FooterLink[] = [
   { label: 'Shield', href: '/shield' },

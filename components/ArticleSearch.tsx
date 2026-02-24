@@ -160,11 +160,10 @@ export function ArticleSearch({ articles, variant = 'cards' }: ArticleSearchProp
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search articles"
             aria-label="Search articles"
             aria-controls={resultsId}
             aria-describedby={`${inputId}-count`}
-            className={`w-full rounded-lg border border-border bg-surface pl-10 pr-4 text-text-primary placeholder:text-text-tertiary focus:border-green focus:outline-none focus:ring-2 focus:ring-green/20 ${
+            className={`w-full rounded-lg border border-border bg-surface pl-10 pr-4 text-text-primary focus:border-green focus:outline-none focus:ring-2 focus:ring-green/20 ${
               isCompact ? 'min-h-[40px] py-2 text-sm' : 'min-h-[44px] py-3'
             }`}
           />

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/og-image.png',
+        url: '/images/og-card.svg',
         width: 1200,
         height: 630,
         alt: 'Contact Multicorn',
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: 'Contact Multicorn',
     description:
       'Get in touch with the Multicorn team. Reach us for general enquiries, enterprise sales, security disclosures, or privacy requests.',
-    images: ['/og-image.png'],
+    images: ['/images/og-card.svg'],
   },
 }
 
@@ -129,7 +129,7 @@ export default function ContactPage() {
                     <p className="mb-4 text-sm text-text-secondary">
                       See our{' '}
                       <Link
-                        href="/privacy"
+                        href="/policies/privacy"
                         className="font-medium text-primary underline underline-offset-2 hover:text-primary-dark"
                       >
                         privacy policy

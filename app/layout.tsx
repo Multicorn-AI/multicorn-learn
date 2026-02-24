@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/og-image.png',
+        url: '/images/og-card.svg',
         width: 1200,
         height: 630,
         alt: 'Multicorn — The trusted layer between humans and AI agents',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Multicorn — The trusted layer between humans and AI agents',
     description: 'Consent screens, spending controls, and activity logging for every AI agent.',
-    images: ['/og-image.png'],
+    images: ['/images/og-card.svg'],
   },
 }
 
