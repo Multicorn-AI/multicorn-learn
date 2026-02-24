@@ -1,12 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { isLaunchGatePublicPath } from './lib/launchGatePaths'
 
 const COOKIE_NAME = 'multicorn_preview'
 const COOKIE_MAX_AGE = 7 * 24 * 60 * 60 // 7 days in seconds
 
+function nextWithRouteHeaders(request: NextRequest) {
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set('x-pathname', request.nextUrl.pathname)
+  requestHeaders.set(
+    'x-launch-gate-public',
+    isLaunchGatePublicPath(request.nextUrl.pathname) ? '1' : '0',
+  )
+
+  return NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  })
+}
+
 export function middleware(request: NextRequest) {
   const preview = request.nextUrl.searchParams.get('preview')
 
-  if (!preview) return NextResponse.next()
+  if (!preview) return nextWithRouteHeaders(request)
 
   const cleanUrl = request.nextUrl.clone()
   cleanUrl.searchParams.delete('preview')
@@ -29,7 +45,7 @@ export function middleware(request: NextRequest) {
     return response
   }
 
-  return NextResponse.next()
+  return nextWithRouteHeaders(request)
 }
 
 export const config = {
