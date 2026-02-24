@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/blog/og-introducing-multicorn-shield.png',
+        url: '/images/og-card.svg',
         width: 1200,
         height: 630,
         alt: 'Multicorn Shield — Permissions, Control & Audit for AI Agents',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     title: 'Multicorn Shield — Permissions, Control & Audit for AI Agents',
     description:
       'Consent screens, granular permissions, spending controls, and activity logging for AI agents.',
-    images: ['/blog/og-introducing-multicorn-shield.png'],
+    images: ['/images/og-card.svg'],
   },
 }
 
@@ -561,7 +561,6 @@ export default function ShieldPage() {
               </p>
             </div>
             <div className="mx-auto max-w-3xl overflow-hidden rounded-xl border border-border bg-surface shadow-lg">
-              {/* Terminal recording placeholder — asset will be created for Product Hunt launch (7.06) */}
               <div className="flex items-center gap-2 border-b border-border bg-surface-secondary px-4 py-3">
                 <span className="h-3 w-3 rounded-full bg-red/60" aria-hidden="true" />
                 <span className="h-3 w-3 rounded-full bg-orange/60" aria-hidden="true" />

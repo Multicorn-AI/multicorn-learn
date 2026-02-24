@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/og-image.png',
+        url: '/images/og-card.svg',
         width: 1200,
         height: 630,
         alt: 'Multicorn Pricing — Free AI Agent Control SDK',

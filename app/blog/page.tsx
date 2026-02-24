@@ -1,5 +1,25 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getAllBlogPosts } from '@/lib/blog'
+
+export const metadata: Metadata = {
+  title: 'Multicorn Blog — Practical AI Agent Guides and Updates',
+  description:
+    'Read plain-English guides to safer AI agent use, product updates, and lessons from real deployments.',
+  openGraph: {
+    title: 'Multicorn Blog — Practical AI Agent Guides and Updates',
+    description:
+      'Read plain-English guides to safer AI agent use, product updates, and lessons from real deployments.',
+    images: [
+      {
+        url: '/images/og-card.svg',
+        width: 1200,
+        height: 630,
+        alt: 'Multicorn blog',
+      },
+    ],
+  },
+}
 
 function formatDate(dateString: string): string {
   return new Date(dateString).toLocaleDateString('en-US', {

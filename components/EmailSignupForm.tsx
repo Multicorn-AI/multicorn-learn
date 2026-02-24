@@ -124,14 +124,13 @@ export function EmailSignupForm() {
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           onBlur={handleBlur}
-          placeholder="you@example.com"
           aria-invalid={validationError ? 'true' : undefined}
           aria-describedby={
             [validationError ? 'email-error' : '', submitError ? 'submit-error' : '']
               .filter(Boolean)
               .join(' ') || undefined
           }
-          className="min-h-[44px] flex-1 rounded-lg border border-border bg-surface px-4 py-3 text-text-primary placeholder:text-text-tertiary focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          className="min-h-[44px] flex-1 rounded-lg border border-border bg-surface px-4 py-3 text-text-primary focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
         />
         <button
           type="submit"
