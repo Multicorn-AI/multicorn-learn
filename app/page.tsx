@@ -7,11 +7,11 @@ import { Pricing } from '@/components/Pricing'
 import { Footer } from '@/components/Footer'
 
 export const metadata: Metadata = {
-  title: 'Multicorn — AI Agent Safety, Permissions, and Spending Controls',
+  title: 'Multicorn: AI Agent Safety, Permissions, and Spending Controls',
   description:
     'Help your team use AI agents safely with clear permissions, spending limits, and activity records.',
   openGraph: {
-    title: 'Multicorn — AI Agent Safety, Permissions, and Spending Controls',
+    title: 'Multicorn: AI Agent Safety, Permissions, and Spending Controls',
     description:
       'Help your team use AI agents safely with clear permissions, spending limits, and activity records.',
     images: [

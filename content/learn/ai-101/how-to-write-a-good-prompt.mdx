@@ -71,7 +71,7 @@ The best way to learn prompting is to see real improvements side by side. Here a
 
 **After:**
 
-> Explain what Kubernetes does in three paragraphs for someone who manages a software team but does not write code. Use a simple analogy in the first paragraph. In the second paragraph, explain the main problem it solves. In the third, give two real situations where a team would benefit from using it. Avoid jargon — if you must use a technical term, define it in parentheses.
+> Explain what Kubernetes does in three paragraphs for someone who manages a software team but does not write code. Use a simple analogy in the first paragraph. In the second paragraph, explain the main problem it solves. In the third, give two real situations where a team would benefit from using it. Avoid jargon. If you must use a technical term, define it in parentheses.
 
 **Why it works:** The rewrite defines the audience (non-technical manager), the structure (three paragraphs with specific purposes), and the language rules (no jargon, or define it). The AI produces a response that the reader can actually use.
 
@@ -95,7 +95,7 @@ The best way to learn prompting is to see real improvements side by side. Here a
 
 **After:**
 
-> Review the following TypeScript function for: (1) correctness — does it handle edge cases like empty arrays and null values? (2) readability — are variable names clear and is the logic easy to follow? (3) performance — are there obvious inefficiencies? Format your review as a numbered list of specific issues. For each issue, quote the line, explain the problem, and suggest a fix. If there are no issues in a category, say so explicitly.
+> Review the following TypeScript function for: (1) correctness: does it handle edge cases like empty arrays and null values? (2) readability: are variable names clear and is the logic easy to follow? (3) performance: are there obvious inefficiencies? Format your review as a numbered list of specific issues. For each issue, quote the line, explain the problem, and suggest a fix. If there are no issues in a category, say so explicitly.
 
 **Why it works:** "Review this code" invites a generic response. The rewrite tells the AI exactly what to evaluate, how to structure the feedback, and what to do when there are no issues. This produces actionable, specific feedback instead of vague observations.
 
@@ -103,21 +103,21 @@ The best way to learn prompting is to see real improvements side by side. Here a
 
 Beyond the four principles, a few prompt patterns consistently produce better results:
 
-**"Act as..."** — Giving the AI a role shapes its tone, vocabulary, and depth. "Act as a senior product manager reviewing this feature spec" produces very different output from "Review this document."
+**"Act as..."** Giving the AI a role shapes its tone, vocabulary, and depth. "Act as a senior product manager reviewing this feature spec" produces very different output from "Review this document."
 
-**"Here is an example of what I want..."** — Showing one good example of the output format (sometimes called one-shot prompting) is faster and more reliable than describing the format in words.
+**"Here is an example of what I want..."** Showing one good example of the output format (sometimes called one-shot prompting) is faster and more reliable than describing the format in words.
 
-**"Do not include..."** — Explicitly excluding things you do not want (disclaimers, introductions, bullet points, analogies) prevents the AI from padding its response.
+**"Do not include..."** Explicitly excluding things you do not want (disclaimers, introductions, bullet points, analogies) prevents the AI from padding its response.
 
-**"Step by step..."** — Asking the AI to work through a problem step by step often produces more accurate results for tasks that require reasoning or calculation.
+**"Step by step..."** Asking the AI to work through a problem step by step often produces more accurate results for tasks that require reasoning or calculation.
 
-**"Before answering, list your assumptions..."** — This forces the AI to surface what it is guessing about, giving you a chance to correct misunderstandings before it writes the full response.
+**"Before answering, list your assumptions..."** This forces the AI to surface what it is guessing about, giving you a chance to correct misunderstandings before it writes the full response.
 
 ## When good prompting is not enough
 
-Better prompts get you better responses, but they do not solve every problem. AI models can still produce incorrect information (see [What Are AI Hallucinations and Why Do They Happen?](/learn/ai-101/what-are-ai-hallucinations)), and they cannot take real-world actions on their own — unless they are connected to tools as AI agents.
+Better prompts get you better responses, but they do not solve every problem. AI models can still produce incorrect information (see [What Are AI Hallucinations and Why Do They Happen?](/learn/ai-101/what-are-ai-hallucinations)), and they cannot take real-world actions on their own, unless they are connected to tools as AI agents.
 
-As you start using AI not just for generating text but for taking actions — sending emails, making purchases, managing data — the stakes go up. The next article explains how the major AI models compare so you can choose the right one for your needs.
+As you start using AI not just for generating text but for taking actions like sending emails, making purchases, and managing data, the stakes go up. The next article explains how the major AI models compare so you can choose the right one for your needs.
 
 ## Key takeaways
 
@@ -125,6 +125,6 @@ As you start using AI not just for generating text but for taking actions — se
 - Small changes in how you ask can dramatically change the quality of what you get back.
 - Use the before-and-after rewrites as templates for your own prompts.
 - Patterns like "Act as...", "Do not include...", and "Step by step..." consistently improve results.
-- Always review AI output, even from well-crafted prompts — better prompts reduce errors but do not eliminate them.
+- Always review AI output, even from well-crafted prompts. Better prompts reduce errors but do not eliminate them.
 
-**Next up:** [ChatGPT vs Claude vs Gemini — What Is the Difference?](/learn/ai-101/chatgpt-vs-claude-vs-gemini)
+**Next up:** [ChatGPT vs Claude vs Gemini: What Is the Difference?](/learn/ai-101/chatgpt-vs-claude-vs-gemini)

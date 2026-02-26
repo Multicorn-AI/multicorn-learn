@@ -2,11 +2,11 @@ import type { Metadata } from 'next'
 import { Footer } from '@/components/Footer'
 
 export const metadata: Metadata = {
-  title: 'About Multicorn — The Trust Layer for AI Agents',
+  title: 'About Multicorn: The Trust Layer for AI Agents',
   description:
     "Multicorn AI builds the trust layer for AI agents. Founded by Rachelle Rathbone, a backend engineer from Atlassian's Rovo Agents team and former primary school teacher.",
   openGraph: {
-    title: 'About Multicorn — The Trust Layer for AI Agents',
+    title: 'About Multicorn: The Trust Layer for AI Agents',
     description:
       "Multicorn AI builds the trust layer for AI agents. Founded by Rachelle Rathbone, a backend engineer from Atlassian's Rovo Agents team and former primary school teacher.",
     url: 'https://multicorn.ai/about',
@@ -17,13 +17,13 @@ export const metadata: Metadata = {
         url: '/images/og-card.svg',
         width: 1200,
         height: 630,
-        alt: 'About Multicorn — The Trust Layer for AI Agents',
+        alt: 'About Multicorn: The Trust Layer for AI Agents',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'About Multicorn — The Trust Layer for AI Agents',
+    title: 'About Multicorn: The Trust Layer for AI Agents',
     description:
       "Multicorn AI builds the trust layer for AI agents. Founded by Rachelle Rathbone, a backend engineer from Atlassian's Rovo Agents team and former primary school teacher.",
     images: ['/images/og-card.svg'],

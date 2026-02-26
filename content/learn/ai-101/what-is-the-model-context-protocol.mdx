@@ -15,30 +15,30 @@ The Model Context Protocol (MCP) is a standard way for AI models to connect to e
 
 ## The problem MCP solves
 
-As we covered in earlier articles, AI agents are different from chatbots because they can [take real-world actions](/learn/ai-101/what-is-an-ai-agent) — sending emails, managing calendars, querying databases, and more. Each of these capabilities requires the AI to connect to an external service through a **tool**.
+As we covered in earlier articles, AI agents are different from chatbots because they can [take real-world actions](/learn/ai-101/what-is-an-ai-agent) like sending emails, managing calendars, querying databases, and more. Each of these capabilities requires the AI to connect to an external service through a **tool**.
 
 Before MCP, every connection between an AI model and an external tool was custom-built. If you wanted Claude to read your email, someone had to build a specific integration between Claude and your email provider. If you wanted ChatGPT to do the same thing, someone had to build a completely separate integration for ChatGPT.
 
 This created a fragmented landscape. Tool developers had to build and maintain separate integrations for every AI model. AI model providers had to support a growing list of one-off connections. And users were stuck with whichever integrations their chosen AI tool happened to support.
 
-MCP solves this by defining a shared protocol — a common language — that any AI model and any tool can use to communicate. Think of it like USB for physical devices. Before USB, every device had its own proprietary connector. USB gave us one standard that works everywhere. MCP does the same thing for AI tool connections.
+MCP solves this by defining a shared protocol (a common language) that any AI model and any tool can use to communicate. Think of it like USB for physical devices. Before USB, every device had its own proprietary connector. USB gave us one standard that works everywhere. MCP does the same thing for AI tool connections.
 
 ## How MCP works (in plain English)
 
 MCP defines three roles:
 
-**The host** is the AI application you are using — for example, a chat interface, a code editor with AI features, or an AI-powered productivity tool. The host is what you interact with.
+**The host** is the AI application you are using, for example, a chat interface, a code editor with AI features, or an AI-powered productivity tool. The host is what you interact with.
 
 **The client** is the part of the host that manages connections to external tools. It handles the communication protocol and keeps track of which tools are available.
 
-**The server** is the external tool or service that the AI connects to. An MCP server exposes specific capabilities — like "read email," "search files," or "create calendar event" — that the AI can request.
+**The server** is the external tool or service that the AI connects to. An MCP server exposes specific capabilities like "read email," "search files," or "create calendar event" that the AI can request.
 
 When you ask an AI agent to do something that requires an external tool, the flow works like this:
 
 1. You make a request: "Check my inbox for anything urgent."
 2. The host (your AI app) recognises that this task requires the email tool.
 3. The client sends a structured request to the email MCP server.
-4. The server processes the request — reading your inbox — and sends back the results.
+4. The server processes the request (reading your inbox) and sends back the results.
 5. The host uses the results to generate a response for you.
 
 The important thing is that step 3 and step 4 follow a standard format defined by MCP. Any AI model that speaks MCP can use any tool that speaks MCP. The connections are interchangeable.
@@ -59,7 +59,7 @@ If you are building a tool or service, you expose it as an MCP server once, and 
 
 ### For teams managing AI agents
 
-MCP creates a single, well-defined point where you can enforce rules about what an agent is allowed to do. Instead of managing permissions across dozens of custom integrations, you manage them at the protocol level — one set of rules that applies to every tool connection.
+MCP creates a single, well-defined point where you can enforce rules about what an agent is allowed to do. Instead of managing permissions across dozens of custom integrations, you manage them at the protocol level: one set of rules that applies to every tool connection.
 
 This is where Multicorn Shield connects to MCP.
 
@@ -73,11 +73,11 @@ Here is what that looks like in practice:
 
 **When the agent makes a tool request,** Shield checks whether the agent has permission to make that specific request. If the agent tries to send an email but only has permission to read emails, Shield blocks the request before it reaches the email service.
 
-**If the request involves spending money,** Shield checks the spending limits you have configured. Per-action limits, daily limits, and monthly limits are all enforced before the action happens — not after.
+**If the request involves spending money,** Shield checks the spending limits you have configured. Per-action limits, daily limits, and monthly limits are all enforced before the action happens, not after.
 
 **Every request is logged.** Shield records what the agent tried to do, whether it was approved or blocked, which tool was involved, and when it happened. You can review this activity log at any time.
 
-Because Shield works at the MCP protocol level, it applies to every tool the agent connects to — not just specific integrations. Add a new MCP tool, and Shield's permission controls automatically cover it.
+Because Shield works at the MCP protocol level, it applies to every tool the agent connects to, not just specific integrations. Add a new MCP tool, and Shield's permission controls automatically cover it.
 
 ## MCP and the future of AI agents
 
@@ -89,12 +89,12 @@ The combination of a standard protocol (MCP) and a control layer (Shield) means 
 
 ## What comes next
 
-Now that you understand how agents connect to tools through MCP, the next question is: what should those agents actually be allowed to do? The remaining articles in this series shift from understanding how AI works to the practical question of keeping it safe — permissions, spending controls, audit trails, and how to evaluate whether an agent is ready for your team.
+Now that you understand how agents connect to tools through MCP, the next question is: what should those agents actually be allowed to do? The remaining articles in this series shift from understanding how AI works to the practical question of keeping it safe: permissions, spending controls, audit trails, and how to evaluate whether an agent is ready for your team.
 
 ## Key takeaways
 
 - MCP is a standard protocol that lets any AI model connect to any external tool using a shared set of rules.
-- Before MCP, every AI-to-tool connection had to be built from scratch — MCP eliminates this duplication.
+- Before MCP, every AI-to-tool connection had to be built from scratch. MCP eliminates this duplication.
 - MCP defines three roles: the host (your AI app), the client (the connection manager), and the server (the external tool).
 - [Multicorn Shield](/shield) works at the MCP protocol level, providing consent screens, permissions, spending controls, and activity logging for every tool connection.
 - MCP is an important foundation for the safe, scalable growth of the AI agent ecosystem.

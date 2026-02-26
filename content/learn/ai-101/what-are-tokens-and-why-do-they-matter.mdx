@@ -11,7 +11,7 @@ series: 'ai-101'
 
 ## The short version
 
-Every time you use an AI tool, your text is broken into small pieces called tokens. Tokens determine how much text the model can process at once, how much your usage costs, and why long conversations sometimes lose track of earlier details. This article explains what tokens are and why they matter — in plain English.
+Every time you use an AI tool, your text is broken into small pieces called tokens. Tokens determine how much text the model can process at once, how much your usage costs, and why long conversations sometimes lose track of earlier details. This article explains what tokens are and why they matter, in plain English.
 
 ## What is a token?
 
@@ -24,13 +24,13 @@ As a rough guide:
 - A short sentence like "The cat sat on the mat." is about seven tokens.
 - A typical page of English text is roughly 300-400 tokens.
 
-The model does not read words the way you do. Before it processes anything, your text is run through a **tokeniser** — a tool that breaks the text into tokens based on patterns the model learned during training. Common words stay whole. Longer or less common words get split into pieces.
+The model does not read words the way you do. Before it processes anything, your text is run through a **tokeniser**, a tool that breaks the text into tokens based on patterns the model learned during training. Common words stay whole. Longer or less common words get split into pieces.
 
 You do not need to memorise the exact rules. The key takeaway is: tokens are the basic unit of measurement for everything an AI model does.
 
 ## What is a context window?
 
-The context window is the total number of tokens a model can handle in a single conversation. Think of it as the model's working memory — everything that fits inside the window is what the model can "see" at once.
+The context window is the total number of tokens a model can handle in a single conversation. Think of it as the model's working memory: everything that fits inside the window is what the model can "see" at once.
 
 The context window includes everything: your messages, the AI's responses, any instructions or system prompts running in the background, and any documents or text you have pasted in.
 
@@ -48,7 +48,7 @@ If you have ever had a long conversation with an AI tool and noticed that it "fo
 
 As a conversation grows, it eventually approaches the edge of the context window. When that happens, the oldest parts of the conversation may be dropped or given less attention by the model. The result: the AI loses track of details you mentioned early on.
 
-This is not a bug — it is a fundamental constraint of how these models work. The model can only process a fixed amount of text at once. When the conversation exceeds that limit, something has to give.
+This is not a bug. It is a fundamental constraint of how these models work. The model can only process a fixed amount of text at once. When the conversation exceeds that limit, something has to give.
 
 **Practical tip:** If you are having a long conversation and the AI seems to be forgetting earlier context, restate the important details in your latest message. Do not assume the model remembers everything from the beginning of the conversation.
 
@@ -60,23 +60,23 @@ Here is why this matters:
 
 **Longer prompts cost more.** If you paste a 50-page document and ask the AI to summarise it, you are paying for all 50 pages of input tokens plus the summary output tokens.
 
-**Longer responses cost more.** If you ask for a detailed, comprehensive answer, the AI generates more output tokens, which increases the cost.
+**Longer responses cost more.** If you ask for a detailed, thorough answer, the AI generates more output tokens, which increases the cost.
 
 **Repeated context adds up.** Every time you send a new message in a conversation, the AI typically reprocesses the entire conversation history. Message 20 in a conversation costs more than message 1 because the model is processing all 19 previous messages again.
 
-For casual use on a fixed-price plan (like ChatGPT Plus at $20/month), token costs are invisible — you pay a flat fee regardless of how many tokens you use, up to a usage cap. But for businesses building applications with the API, or for teams with heavy usage, token costs become a real line item in the budget.
+For casual use on a fixed-price plan (like ChatGPT Plus at $20/month), token costs are invisible: you pay a flat fee regardless of how many tokens you use, up to a usage cap. But for businesses building applications with the API, or for teams with heavy usage, token costs become a real line item in the budget.
 
 ## Tokens and AI agents
 
 For AI agents (covered in [What Is an AI Agent?](/learn/ai-101/what-is-an-ai-agent) and [What Can AI Agents Actually Do Today?](/learn/ai-101/what-can-ai-agents-do-today)), tokens matter even more.
 
-An agent that manages your email, calendar, and Slack might process thousands of tokens per action — reading messages, analysing context, generating responses, and logging results. Over a workday, that adds up to tens of thousands of tokens. Over a month, it can be millions.
+An agent that manages your email, calendar, and Slack might process thousands of tokens per action: reading messages, analysing context, generating responses, and logging results. Over a workday, that adds up to tens of thousands of tokens. Over a month, it can be millions.
 
 This has two practical consequences:
 
 **Cost control matters.** An agent running without token awareness can generate large bills quickly. Understanding tokens helps you estimate costs and set appropriate limits.
 
-**Context window limits affect agent quality.** An agent working on a complex, multi-step task needs to keep track of what it has done so far, what it still needs to do, and the details of each step. If the task exceeds the context window, the agent may lose track of earlier steps and make mistakes — just like a chatbot forgetting the beginning of a long conversation.
+**Context window limits affect agent quality.** An agent working on a complex, multi-step task needs to keep track of what it has done so far, what it still needs to do, and the details of each step. If the task exceeds the context window, the agent may lose track of earlier steps and make mistakes, just like a chatbot forgetting the beginning of a long conversation.
 
 ## Practical tips for managing tokens
 
@@ -90,7 +90,7 @@ This has two practical consequences:
 
 ## Key takeaways
 
-- Tokens are the small text chunks that AI models process — roughly three-quarters of a word on average.
+- Tokens are the small text chunks that AI models process, roughly three-quarters of a word on average.
 - The context window is the maximum number of tokens a model can handle at once. When conversations exceed it, the model loses track of earlier content.
 - Token usage directly affects cost, especially for API users and businesses running AI agents at scale.
 - Agents consume tokens continuously as they work, making cost control and context management important considerations.

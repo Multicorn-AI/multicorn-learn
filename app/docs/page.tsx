@@ -2,11 +2,11 @@ import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
-  title: 'Multicorn Docs — Set Up AI Agent Controls Step by Step',
+  title: 'Multicorn Docs: Set Up AI Agent Controls Step by Step',
   description:
     'Follow step-by-step docs to add consent screens, permissions, and spending limits to your AI agents.',
   openGraph: {
-    title: 'Multicorn Docs — Set Up AI Agent Controls Step by Step',
+    title: 'Multicorn Docs: Set Up AI Agent Controls Step by Step',
     description:
       'Follow step-by-step docs to add consent screens, permissions, and spending limits to your AI agents.',
     images: [

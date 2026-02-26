@@ -3,11 +3,11 @@ import type { Metadata } from 'next'
 import { Footer } from '@/components/Footer'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — Multicorn',
+  title: 'Privacy Policy: Multicorn',
   description:
     'How Multicorn collects, uses, and protects your data. Privacy policy for multicorn.ai and the Multicorn Shield SDK.',
   openGraph: {
-    title: 'Privacy Policy — Multicorn',
+    title: 'Privacy Policy: Multicorn',
     description:
       'How Multicorn collects, uses, and protects your data. Privacy policy for multicorn.ai and the Multicorn Shield SDK.',
     url: 'https://multicorn.ai/policies/privacy',
@@ -809,8 +809,8 @@ export default function PrivacyPolicyPage() {
                 As part of our Services, we offer products, features, or tools powered by artificial
                 intelligence, machine learning, or similar technologies (collectively, &quot;AI
                 Products&quot;). These tools are designed to enhance your experience and provide you
-                with innovative solutions. The terms in this Privacy Notice govern your use of the
-                AI Products within our Services.
+                with new solutions. The terms in this Privacy Notice govern your use of the AI
+                Products within our Services.
               </p>
             </div>
 

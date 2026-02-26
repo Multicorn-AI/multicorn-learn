@@ -9,11 +9,11 @@ import { ShieldPageTracker } from '@/components/ShieldPageTracker'
 import { QuickstartTabs } from '@/components/QuickstartTabs'
 
 export const metadata: Metadata = {
-  title: 'Multicorn Shield — Permissions, Control & Audit for AI Agents',
+  title: 'Multicorn Shield: Permissions, Control & Audit for AI Agents',
   description:
     'Multicorn Shield gives developers consent screens, granular permissions, spending controls, and activity logging for AI agents. Open-source SDK, enterprise-grade controls.',
   openGraph: {
-    title: 'Multicorn Shield — Permissions, Control & Audit for AI Agents',
+    title: 'Multicorn Shield: Permissions, Control & Audit for AI Agents',
     description:
       'Consent screens, granular permissions, spending controls, and activity logging for AI agents. Open-source SDK, enterprise-grade controls.',
     url: 'https://multicorn.ai/shield',
@@ -24,13 +24,13 @@ export const metadata: Metadata = {
         url: '/images/og-card.svg',
         width: 1200,
         height: 630,
-        alt: 'Multicorn Shield — Permissions, Control & Audit for AI Agents',
+        alt: 'Multicorn Shield: Permissions, Control & Audit for AI Agents',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Multicorn Shield — Permissions, Control & Audit for AI Agents',
+    title: 'Multicorn Shield: Permissions, Control & Audit for AI Agents',
     description:
       'Consent screens, granular permissions, spending controls, and activity logging for AI agents.',
     images: ['/images/og-card.svg'],
@@ -47,7 +47,7 @@ const CAPABILITIES: readonly Capability[] = [
   {
     name: 'Consent screens',
     description:
-      'A drop-in approval screen so users can review and approve what an agent wants to do — before it acts. Framework-agnostic, works everywhere.',
+      'A drop-in approval screen so users can review and approve what an agent wants to do, before it acts. Framework-agnostic, works everywhere.',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -89,7 +89,7 @@ const CAPABILITIES: readonly Capability[] = [
   {
     name: 'Activity logging',
     description:
-      'A tamper-evident audit trail of every action every agent takes. See what happened, when, and why — with hash-chain integrity.',
+      'A tamper-evident audit trail of every action every agent takes. See what happened, when, and why, with hash-chain integrity.',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +113,7 @@ const CAPABILITIES: readonly Capability[] = [
   {
     name: 'Permission management',
     description:
-      'Define exactly what each agent can access — Gmail, Calendar, Slack, GitHub — with granular, per-service permissions.',
+      'Define exactly what each agent can access, like Gmail, Calendar, Slack, and GitHub, with granular, per-service permissions.',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -360,7 +360,7 @@ export default function ShieldPage() {
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-text-secondary sm:text-xl">
               Multicorn Shield gives your team consent screens, spending controls, and activity
-              logging for every AI agent. One SDK — full oversight.
+              logging for every AI agent. One SDK for full oversight.
             </p>
             <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <TrackedCtaLink
@@ -400,7 +400,7 @@ export default function ShieldPage() {
                 How It Works
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-lg text-text-secondary">
-                Two paths to add Shield — pick the one that fits your setup. Both give you the same
+                Two paths to add Shield. Pick the one that fits your setup. Both give you the same
                 dashboard, the same controls, the same peace of mind.
               </p>
             </div>
@@ -459,7 +459,7 @@ export default function ShieldPage() {
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-lg text-text-secondary">
                 The Shield dashboard gives you a real-time view of every agent, every action, and
-                every permission — all in one place.
+                every permission, all in one place.
               </p>
             </div>
             <div className="mx-auto max-w-3xl">

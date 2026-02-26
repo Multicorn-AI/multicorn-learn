@@ -3,11 +3,11 @@ import Link from 'next/link'
 import { getAllBlogPosts } from '@/lib/blog'
 
 export const metadata: Metadata = {
-  title: 'Multicorn Blog — Practical AI Agent Guides and Updates',
+  title: 'Multicorn Blog: Practical AI Agent Guides and Updates',
   description:
     'Read plain-English guides to safer AI agent use, product updates, and lessons from real deployments.',
   openGraph: {
-    title: 'Multicorn Blog — Practical AI Agent Guides and Updates',
+    title: 'Multicorn Blog: Practical AI Agent Guides and Updates',
     description:
       'Read plain-English guides to safer AI agent use, product updates, and lessons from real deployments.',
     images: [

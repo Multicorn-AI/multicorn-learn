@@ -11,13 +11,13 @@ series: 'ai-101'
 
 ## The short version
 
-Before you let an AI agent access your email, calendar, files, or payment methods, you should evaluate it the same way you would evaluate a new employee or a new piece of software. This article provides a practical checklist of questions to ask before deploying any agent on your team — covering permissions, data handling, spending, oversight, and the ability to shut things down quickly.
+Before you let an AI agent access your email, calendar, files, or payment methods, you should evaluate it the same way you would evaluate a new employee or a new piece of software. This article provides a practical checklist of questions to ask before deploying any agent on your team, covering permissions, data handling, spending, oversight, and the ability to shut things down quickly.
 
 ## Why evaluation matters
 
 Over the past few articles, we have covered the ways agents can go wrong: [sending the wrong email](/learn/ai-101/what-happens-when-an-ai-agent-makes-a-mistake), exceeding [spending limits](/learn/ai-101/how-to-set-a-spending-limit-for-an-ai-agent), and acting without a proper [audit trail](/learn/ai-101/what-is-an-audit-trail). In each case, the root cause was the same: the agent was deployed without sufficient evaluation of what it could do and what controls were in place.
 
-Evaluating an agent before deployment is not about slowing down adoption. It is about making sure the agent is set up to succeed — and that your team is set up to catch problems before they become crises.
+Evaluating an agent before deployment is not about slowing down adoption. It is about making sure the agent is set up to succeed, and that your team is set up to catch problems before they become crises.
 
 ## The evaluation checklist
 
@@ -25,7 +25,7 @@ Work through these questions for any agent before granting it access to your tea
 
 ### 1. What permissions does this agent request?
 
-Ask the agent provider — or check the documentation — for a complete list of permissions the agent requires. Then ask yourself:
+Ask the agent provider, or check the documentation, for a complete list of permissions the agent requires. Then ask yourself:
 
 - Does the agent need all of these permissions for the tasks I want it to do?
 - Can I reduce the permission set? (See [What Permissions Does Your AI Agent Actually Need?](/learn/ai-101/what-permissions-does-your-ai-agent-need))
@@ -51,7 +51,7 @@ If the agent can make purchases, trigger paid services, or incur costs of any ki
 
 - Can you set per-transaction spending limits?
 - Can you set daily and monthly caps?
-- What happens when the agent hits a limit — is the action blocked before it happens, or just flagged after?
+- What happens when the agent hits a limit? Is the action blocked before it happens, or just flagged after?
 - Can you configure approval thresholds for spending above a certain amount?
 
 **Red flag:** The agent can spend money on your behalf with no built-in limits or approval steps.
@@ -62,7 +62,7 @@ You need to know what the agent is doing:
 
 - Does the agent record every action it takes?
 - Can you review the activity in a dashboard or interface that non-technical team members can understand?
-- Are records tamper-evident — can they be edited or deleted after the fact?
+- Are records tamper-evident? Can they be edited or deleted after the fact?
 - Can you export records for compliance or incident review?
 
 **Red flag:** There is no built-in activity record, or the record only shows successful actions and not blocked ones.
@@ -84,8 +84,8 @@ For actions that are difficult or impossible to reverse:
 
 - Can you configure the agent to pause and request approval before certain actions?
 - Can you define which actions require approval and which can proceed automatically?
-- How are approval requests delivered — email, dashboard notification, messaging app?
-- What happens if no one approves within a certain time — does the action proceed or stay paused?
+- How are approval requests delivered? Email, dashboard notification, messaging app?
+- What happens if no one approves within a certain time? Does the action proceed or stay paused?
 
 **Red flag:** The agent acts autonomously on all actions with no option for human review on sensitive ones.
 
@@ -106,29 +106,29 @@ When you need help:
 
 - Is there a dedicated support channel for security or permission issues?
 - What is the response time for critical incidents?
-- Is documentation comprehensive and up to date?
+- Is documentation complete and up to date?
 - Can you get help from the community (forums, open-source contributors) as well as the vendor?
 
 **Red flag:** Support is limited to a chatbot or a generic email address with multi-day response times.
 
 ## Putting it into practice
 
-You do not need to treat this checklist as a formal audit for every agent you try. For a low-risk experiment — say, testing a scheduling agent with your personal calendar — a quick review of the first five questions is enough.
+You do not need to treat this checklist as a formal audit for every agent you try. For a low-risk experiment (say, testing a scheduling agent with your personal calendar), a quick review of the first five questions is enough.
 
 For agents that will have access to sensitive data, customer communications, or payment methods, work through every question. Write down the answers. Share them with your team. The evaluation becomes a reference document that you can revisit as the agent's role expands.
 
 [Multicorn Shield](/shield) helps with many of these evaluation criteria out of the box. Shield provides granular permission controls, spending limits, a tamper-evident activity trail, instant revocation, and a consent screen that makes permissions visible before any access is granted. If the agent you are evaluating does not offer these controls natively, Shield can provide them as a layer between the agent and your services.
 
-**Evaluating an agent for your team?** [Try Multicorn Shield](/shield) to add permission controls, spending limits, and activity records to any agent — even if the agent does not support them natively.
+**Evaluating an agent for your team?** [Try Multicorn Shield](/shield) to add permission controls, spending limits, and activity records to any agent, even if the agent does not support them natively.
 
 ## Key takeaways
 
-- Evaluate every AI agent before deploying it — the same way you would evaluate a new employee or a new piece of software.
+- Evaluate every AI agent before deploying it, the same way you would evaluate a new employee or a new piece of software.
 - The eight key areas to evaluate: permissions, data handling, spending limits, activity records, revocation, human review, track record, and vendor support.
 - Red flags include all-or-nothing permissions, vague data policies, no spending controls, no activity visibility, and no way to stop the agent quickly.
 - For low-risk experiments, a quick review is enough. For agents accessing sensitive data or payments, work through the full checklist.
-- [Multicorn Shield](/shield) provides permission controls, spending limits, audit trails, and instant revocation — filling the gaps when agents do not offer these controls themselves.
+- [Multicorn Shield](/shield) provides permission controls, spending limits, audit trails, and instant revocation, filling the gaps when agents do not offer these controls themselves.
 
-**Next up:** [AI Agents for Small Teams — A Practical Guide](/learn/ai-101/ai-agents-for-small-teams)
+**Next up:** [AI Agents for Small Teams: A Practical Guide](/learn/ai-101/ai-agents-for-small-teams)
 
 **Previous:** [What Is an Audit Trail and Why Does Your Agent Need One?](/learn/ai-101/what-is-an-audit-trail)
