@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import remarkGfm from 'remark-gfm'
 import { getBlogPost, getAllBlogSlugs } from '@/lib/blog'
 import { blogComponents } from '@/lib/mdx-blog-components'
 import { EmailSignupForm } from '@/components/EmailSignupForm'
@@ -119,7 +120,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </header>
 
         <div className="prose-multicorn">
-          <MDXRemote source={post.content} components={blogComponents} />
+          <MDXRemote
+            source={post.content}
+            components={blogComponents}
+            options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+          />
         </div>
 
         <section className="mt-16 border-t border-border pt-10">

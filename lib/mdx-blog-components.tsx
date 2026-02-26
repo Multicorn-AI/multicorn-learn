@@ -1,5 +1,6 @@
 import { useMDXComponents } from '@/mdx-components'
 import { CopyButton } from '@/components/CopyButton'
+import { IncidentTimeline } from '@/components/IncidentTimeline'
 
 function extractTextFromChildren(children: React.ReactNode): string {
   if (typeof children === 'string') return children
@@ -29,6 +30,7 @@ const baseComponents = useMDXComponents({})
 
 export const blogComponents = {
   ...baseComponents,
+  IncidentTimeline,
   pre: ({ children }: { children: React.ReactNode }) => {
     const codeElement = children as React.ReactElement<{
       children: React.ReactNode
