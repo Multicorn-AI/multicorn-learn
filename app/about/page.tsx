@@ -99,6 +99,13 @@ export default function AboutPage() {
               Multicorn exists to close that gap — not by slowing agents down, but by making their
               actions visible, auditable, and revocable.
             </p>
+            <p className="mt-6 text-lg leading-relaxed text-text-secondary">
+              An AI agent connected to your Gmail can read, send, and delete your emails with no
+              oversight. An agent with access to your company&apos;s tools can spend money, publish
+              content, and access sensitive data - all without asking. Shield gives you a consent
+              screen to choose what each agent can do, a live dashboard to see what it&apos;s doing,
+              and a kill switch to stop it instantly.
+            </p>
           </div>
         </section>
 
