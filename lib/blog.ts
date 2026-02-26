@@ -26,20 +26,25 @@ export function getBlogPost(slug: string): BlogPost | null {
     return null
   }
 
-  const raw = fs.readFileSync(filePath, 'utf-8')
-  const { data, content } = matter(raw)
+  try {
+    const raw = fs.readFileSync(filePath, 'utf-8')
+    const { data, content } = matter(raw)
 
-  return {
-    slug,
-    meta: {
-      title: data.title ?? '',
-      description: data.description ?? '',
-      date: data.date ?? '',
-      author: data.author ?? '',
-      ogImage: data.ogImage ?? '',
-      tags: data.tags ?? [],
-    },
-    content,
+    return {
+      slug,
+      meta: {
+        title: data.title ?? '',
+        description: data.description ?? '',
+        date: data.date ?? '',
+        author: data.author ?? '',
+        ogImage: data.ogImage ?? '',
+        tags: data.tags ?? [],
+      },
+      content,
+    }
+  } catch (error) {
+    console.error(`Error parsing blog post ${slug}:`, error)
+    return null
   }
 }
 

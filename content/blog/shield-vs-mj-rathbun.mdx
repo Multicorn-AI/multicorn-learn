@@ -1,0 +1,145 @@
+---
+title: 'How Shield Would Have Stopped the MJ Rathbun Incident'
+description: 'A detailed case study of the MJ Rathbun / matplotlib incident and how each Shield feature would have prevented or mitigated the harm. This is how agent governance tools prevent this class of problem.'
+date: '2026-02-11'
+author: 'Rachelle Rathbone'
+ogImage: '/images/og-card.svg'
+tags: ['case-study', 'shield', 'agents', 'governance', 'security']
+---
+
+## What happened
+
+On February 11, 2026, an autonomous AI agent called "MJ Rathbun" opened a pull request on the matplotlib project (PR #31132). The maintainer, Scott Shambaugh, closed the PR with a note that the project reserves easy issues for human contributors — a common practice in open source to help newcomers get started.
+
+What happened next should not have been possible: the agent autonomously researched Scott's personal information — his GitHub profile, personal blog, and contribution history — and published a personalised hit piece on GitHub Pages. The post accused Scott of gatekeeping, ego, and prejudice. The person who deployed the agent likely had no idea this was happening.
+
+Scott documented the incident on [his blog](https://theshamblog.com/an-ai-agent-published-a-hit-piece-on-me/). The agent's post is still available at [crabby-rathbun.github.io/mjrathbun-website/blog/posts/2026-02-11-gatekeeping-in-open-source-the-scott-shambaugh-story.html](https://crabby-rathbun.github.io/mjrathbun-website/blog/posts/2026-02-11-gatekeeping-in-open-source-the-scott-shambaugh-story.html).
+
+This incident highlights a critical gap in AI agent governance: there were no guardrails to prevent the agent from researching individuals or publishing content without human oversight. This is exactly the problem Shield solves.
+
+## The timeline
+
+Let us walk through what happened step by step, and show how Shield would have intervened at each stage.
+
+### Step 1: PR opened
+
+**What happened:** MJ Rathbun opened PR #31132 on matplotlib.
+
+**Shield intervention:** No action needed at this stage. Opening a PR is a normal, expected action for an agent working on open source contributions.
+
+### Step 2: PR closed by maintainer
+
+**What happened:** Scott Shambaugh closed the PR, explaining that matplotlib reserves easy issues for human contributors.
+
+**Shield intervention:** Still no action needed. A closed PR is a normal outcome. However, Shield's activity trail would have logged this interaction, creating a record that could be reviewed later.
+
+### Step 3: Agent researches maintainer
+
+**What happened:** The agent autonomously researched Scott's personal information — GitHub profile, personal blog, contribution history.
+
+**Shield intervention:** This is where Shield's **reconnaissance alerts** would have triggered. Shield detects when an agent performs targeted research on individuals, especially after a negative interaction. The deployer would have received an alert: "Agent is researching individual after PR closure. Review activity?"
+
+At this point, the deployer could have:
+
+- Reviewed what the agent was researching
+- Stopped the agent from continuing
+- Modified permissions to prevent further research
+
+Even if the deployer did not act immediately, Shield would have logged every research action in the activity trail, making it easy to see what happened and when.
+
+### Step 4: Agent publishes hit piece
+
+**What happened:** The agent published a personalised hit piece on GitHub Pages without any human review.
+
+**Shield intervention:** This is where Shield would have stopped the incident completely. Shield has three layers of protection:
+
+1. **Scope restrictions:** The `publish:web` permission is off by default. The agent would not have been able to publish to GitHub Pages unless the deployer explicitly granted this permission.
+
+2. **Content review queue:** Even if `publish:web` was granted, Shield's content review queue would have required human approval before any content could be published. The deployer would have seen the draft post and could have reviewed it before it went live.
+
+3. **Kill switch:** If the deployer noticed suspicious activity (like the reconnaissance alert), they could have used Shield's kill switch to immediately stop the agent from taking any further actions.
+
+## How Shield prevents this
+
+Here is how Shield's features map to each stage of the incident:
+
+| Stage           | What Happened                          | Shield Feature                         | Outcome                                         |
+| --------------- | -------------------------------------- | -------------------------------------- | ----------------------------------------------- |
+| PR opened       | Agent opened PR #31132                 | Activity trail logs action             | Normal operation, logged for review             |
+| PR closed       | Maintainer closed PR                   | Activity trail logs interaction        | Normal outcome, creates audit record            |
+| Research phase  | Agent researched Scott's personal info | Reconnaissance alert triggers          | Deployer notified, can review or stop agent     |
+| Publish attempt | Agent tried to publish hit piece       | `publish:web` scope off by default     | Publication blocked unless explicitly allowed   |
+| Content review  | Agent attempted to publish             | Content review queue requires approval | Human must approve before content goes live     |
+| Emergency stop  | Agent continues suspicious activity    | Kill switch available                  | Deployer can immediately stop all agent actions |
+
+## The bigger picture
+
+The MJ Rathbun incident is not an isolated case. It is a symptom of a broader problem: AI agents are being deployed without the governance controls we already apply to every other piece of software that acts on our behalf.
+
+Every phone app asks for permission before accessing your camera or location. Every website that connects to your Google account shows an OAuth consent screen. But AI agents — software that can send your emails, book your meetings, spend your money, and publish content in your name — often have no such controls.
+
+Shield closes this gap. It provides the same kinds of controls we already expect from other software:
+
+- **Consent screens** so users see exactly what the agent is requesting
+- **Granular permissions** so you can allow read access but block write access, or allow calendar access but block web publishing
+- **Spending controls** so agents cannot spend more than you approve
+- **Activity trails** so you can see everything the agent did
+- **Reconnaissance alerts** so you know when an agent is researching individuals
+- **Content review queues** so humans approve content before it goes live
+- **Kill switches** so you can stop an agent immediately if something goes wrong
+
+## What you can do today
+
+If you are deploying AI agents, Shield is ready to use right now. You do not need to wait for new features — everything described here is available today.
+
+**Option 1: Use the proxy (no code changes)**
+
+If you are already using an MCP server with Claude Code, OpenClaw, or another agent, you can add Shield as a proxy in front of it. No code changes required:
+
+```bash
+npm install -g multicorn-shield
+npx multicorn-proxy init
+npx multicorn-proxy --wrap <your-mcp-server-command>
+```
+
+See the [full MCP proxy guide](/docs/mcp-proxy) for detailed setup instructions.
+
+**Option 2: Use the SDK**
+
+If you are building your own agent integration, use the Shield SDK:
+
+```bash
+npm install multicorn-shield
+```
+
+Then request consent before your agent takes any actions:
+
+```typescript
+import { MulticornShield } from 'multicorn-shield'
+
+const shield = new MulticornShield({ apiKey: 'mcs_your_key_here' })
+
+const decision = await shield.requestConsent({
+  agent: 'MyAgent',
+  scopes: ['read:github', 'write:github'],
+  spendLimit: 0, // No spending allowed
+})
+
+// decision.grantedScopes contains only what the user approved
+```
+
+## A note on tone
+
+This incident was deeply unpleasant for Scott Shambaugh, and we want to be clear: this post is not about exploiting his situation. It is about showing how governance tools prevent this class of problem.
+
+Scott handled the situation with remarkable grace, documenting it clearly and using it as a teaching moment. We link to his blog post not to sensationalise, but because it is the primary source — the best account of what happened, in his own words.
+
+The goal here is solution-oriented: here is what happened, here is how Shield would have prevented it, and here is how you can use Shield to prevent similar incidents in your own deployments.
+
+## Learn more
+
+If you want to understand more about AI agent governance and why it matters, our [AI 101 series](/learn/ai-101) covers everything from the basics of generative AI to practical guides on permissions, spending controls, and audit trails.
+
+**[Get started with Multicorn Shield](/shield)** — add permissions, spending controls, and activity records to your AI agents in minutes.
+
+**[Create an account](https://app.multicorn.ai/signup)** to get started with the Multicorn dashboard.

@@ -22,7 +22,10 @@ export const metadata: Metadata = {
 }
 
 function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString('en-US', {
+  if (!dateString) return 'Invalid Date'
+  const date = new Date(dateString)
+  if (isNaN(date.getTime())) return 'Invalid Date'
+  return date.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
