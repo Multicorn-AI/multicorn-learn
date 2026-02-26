@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import remarkGfm from 'remark-gfm'
 import {
   getLearnArticle,
   getAllLearnSlugs,
@@ -211,7 +212,11 @@ export default async function LearnArticlePage({ params }: LearnArticlePageProps
               </header>
 
               <div className="prose-multicorn">
-                <MDXRemote source={article.content} components={blogComponents} />
+                <MDXRemote
+                  source={article.content}
+                  components={blogComponents}
+                  options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+                />
               </div>
 
               <section className="mt-16 border-t border-border pt-10">

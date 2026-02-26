@@ -4,7 +4,20 @@ description: 'A detailed case study of the MJ Rathbun / matplotlib incident and 
 date: '2026-02-11'
 author: 'Rachelle Rathbone'
 ogImage: '/images/og-card.svg'
-tags: ['case-study', 'shield', 'agents', 'governance', 'security']
+tags:
+  [
+    'case-study',
+    'shield',
+    'agents',
+    'governance',
+    'security',
+    'AI agent governance',
+    'agent permissions',
+    'MJ Rathbun',
+    'OpenClaw safety',
+    'AI agent hit piece',
+    'matplotlib incident',
+  ]
 ---
 
 ## What happened
@@ -20,6 +33,8 @@ This incident highlights a critical gap in AI agent governance: there were no gu
 ## The timeline
 
 Let us walk through what happened step by step, and show how Shield would have intervened at each stage.
+
+<IncidentTimeline />
 
 ### Step 1: PR opened
 
@@ -64,7 +79,7 @@ Even if the deployer did not act immediately, Shield would have logged every res
 Here is how Shield's features map to each stage of the incident:
 
 | Stage           | What Happened                          | Shield Feature                         | Outcome                                         |
-| --------------- | -------------------------------------- | -------------------------------------- | ----------------------------------------------- |
+| :-------------- | :------------------------------------- | :------------------------------------- | :---------------------------------------------- |
 | PR opened       | Agent opened PR #31132                 | Activity trail logs action             | Normal operation, logged for review             |
 | PR closed       | Maintainer closed PR                   | Activity trail logs interaction        | Normal outcome, creates audit record            |
 | Research phase  | Agent researched Scott's personal info | Reconnaissance alert triggers          | Deployer notified, can review or stop agent     |
