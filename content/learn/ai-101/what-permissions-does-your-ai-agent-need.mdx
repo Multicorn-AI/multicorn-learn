@@ -11,13 +11,13 @@ series: 'ai-101'
 
 ## The short version
 
-When you give an AI agent access to a service like your email or calendar, it usually gets full access by default — read, write, delete, everything. That is far more than most agents need to do their job. This article explains why agents ask for broad access, why that is a problem, and how to think about giving each agent only the permissions it actually requires.
+When you give an AI agent access to a service like your email or calendar, it usually gets full access by default: read, write, delete, everything. That is far more than most agents need to do their job. This article explains why agents ask for broad access, why that is a problem, and how to think about giving each agent only the permissions it actually requires.
 
 ## Why agents ask for everything
 
-Think about the last time you installed an app on your phone. It probably asked for access to your camera, microphone, contacts, and location — even if you only downloaded it to scan a QR code. The app asked for broad access because the developer built it to handle many possible use cases, and it is simpler to request everything upfront than to ask permission for each individual action later.
+Think about the last time you installed an app on your phone. It probably asked for access to your camera, microphone, contacts, and location, even if you only downloaded it to scan a QR code. The app asked for broad access because the developer built it to handle many possible use cases, and it is simpler to request everything upfront than to ask permission for each individual action later.
 
-AI agents work the same way. When you connect an agent to Gmail, the default behaviour in most platforms is to grant full access to your entire mailbox — reading, composing, sending, and deleting. The agent might only need to read your inbox to summarise new messages each morning, but it receives the keys to the entire building.
+AI agents work the same way. When you connect an agent to Gmail, the default behaviour in most platforms is to grant full access to your entire mailbox: reading, composing, sending, and deleting. The agent might only need to read your inbox to summarise new messages each morning, but it receives the keys to the entire building.
 
 This happens for a few reasons:
 
@@ -31,9 +31,9 @@ This happens for a few reasons:
 
 If an agent only needs to read your inbox, but it also has the ability to send emails, two things can go wrong.
 
-First, if the agent makes a mistake — misinterprets a prompt, [hallucinates](/learn/ai-101/what-are-ai-hallucinations) a response, or encounters a bug — it can take actions you never intended. An agent with send access that was only supposed to read might draft and send a reply to your biggest client with incorrect information.
+First, if the agent makes a mistake (misinterprets a prompt, [hallucinates](/learn/ai-101/what-are-ai-hallucinations) a response, or encounters a bug), it can take actions you never intended. An agent with send access that was only supposed to read might draft and send a reply to your biggest client with incorrect information.
 
-Second, if the agent is compromised — through a vulnerability in the agent itself, the platform it runs on, or a connected service — the attacker inherits every permission the agent has. An agent with delete access to your entire inbox is a much bigger risk than one that can only read.
+Second, if the agent is compromised (through a vulnerability in the agent itself, the platform it runs on, or a connected service), the attacker inherits every permission the agent has. An agent with delete access to your entire inbox is a much bigger risk than one that can only read.
 
 This is not a theoretical concern. As we covered in [What Can AI Agents Do Today?](/learn/ai-101/what-can-ai-agents-do-today), agents are connected to real services and take real actions. The more permissions an agent has, the larger the blast radius when something goes wrong.
 
@@ -89,7 +89,7 @@ Many agent platforms today still offer only broad, all-or-nothing access toggles
 
 - Most AI agents request broader access than they need, because it is simpler for the developer and the platform defaults to it.
 - Broad access increases risk: mistakes and security compromises have a larger blast radius.
-- Apply the principle of least privilege — give each agent only the permissions it needs for its specific tasks.
+- Apply the principle of least privilege: give each agent only the permissions it needs for its specific tasks.
 - Ask three questions: what does it need to do, which services does it need, and what level of access for each?
 - If your platform does not support granular permissions, use a tool like [Multicorn Shield](/shield) to add that control layer.
 
