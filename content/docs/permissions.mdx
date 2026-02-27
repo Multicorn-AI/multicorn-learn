@@ -12,20 +12,24 @@ Every permission in Shield is expressed as a scope string with the format `permi
 read:gmail
 write:calendar
 execute:payments
+publish:web
+create:public_content
 ```
 
 A scope has two parts:
 
-- **Permission level** — what kind of access: `read`, `write`, or `execute`
+- **Permission level** — what kind of access: `read`, `write`, `execute`, `publish`, or `create`
 - **Service** — the target service: a lowercase identifier using letters, digits, hyphens, or underscores
 
 ### Permission levels
 
-| Level     | Meaning                           | Example                                           |
-| --------- | --------------------------------- | ------------------------------------------------- |
-| `read`    | Observe data without modification | Reading emails, viewing calendar events           |
-| `write`   | Create or modify data             | Creating calendar events, updating contacts       |
-| `execute` | Trigger side-effects              | Sending emails, making payments, posting messages |
+| Level     | Meaning                                       | Example                                                      |
+| --------- | --------------------------------------------- | ------------------------------------------------------------ |
+| `read`    | Observe data without modification             | Reading emails, viewing calendar events                      |
+| `write`   | Create or modify data                         | Creating calendar events, updating contacts                  |
+| `execute` | Trigger side-effects                          | Sending emails, making payments, posting messages            |
+| `publish` | Make existing content publicly accessible     | Deploying to GitHub Pages, publishing a blog post            |
+| `create`  | Create new content that is immediately public | Sending a tweet, posting to a forum, pushing a public commit |
 
 ### Service names
 
@@ -43,6 +47,24 @@ const decision = await shield.requestConsent({
 })
 ```
 
+## High-risk scopes
+
+Some scopes are classified as **high-risk** because they allow agents to publish content publicly on the internet. These scopes require explicit opt-in and default to OFF in the consent screen:
+
+- `publish:web` — Publishing content accessible on the open internet (e.g., deploying to GitHub Pages, publishing a blog post)
+- `create:public_content` — Creating content that is immediately public (e.g., sending a tweet, posting to a forum, pushing a public commit)
+
+When an agent requests high-risk scopes, the consent screen displays a warning: "This agent is requesting permission to publish content publicly on the internet". These scopes are disabled by default, and users must explicitly enable them.
+
+```typescript
+const decision = await shield.requestConsent({
+  agent: 'BlogBot',
+  scopes: ['publish:web', 'create:public_content'],
+  spendLimit: 100,
+})
+// User will see a warning and must explicitly enable these scopes
+```
+
 If any scope string is malformed, `requestConsent()` throws a `ScopeParseError` with a descriptive message:
 
 ```typescript
@@ -51,7 +73,7 @@ await shield.requestConsent({
   scopes: ['delete:gmail'], // "delete" is not a valid permission level
 })
 // ScopeParseError: Unknown permission level "delete" in scope string "delete:gmail".
-// Valid permission levels are: read, write, execute.
+// Valid permission levels are: read, write, execute, publish, create.
 ```
 
 ## Checking granted scopes

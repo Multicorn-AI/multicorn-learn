@@ -44,7 +44,7 @@ const VALUES: readonly Value[] = [
   {
     name: 'User control',
     description:
-      'People — not agents — decide what happens. Every action should be reviewable, every permission revocable.',
+      'People, not agents, decide what happens. Every action should be reviewable, every permission revocable.',
   },
   {
     name: 'Privacy by default',
@@ -96,7 +96,7 @@ export default function AboutPage() {
               AI agents are proliferating faster than the safety infrastructure around them. Today,
               agents can send emails, spend money, and access sensitive data with little oversight.
               Users deserve to know what these agents are doing and have meaningful control over it.
-              Multicorn exists to close that gap — not by slowing agents down, but by making their
+              Multicorn exists to close that gap. Not by slowing agents down, but by making their
               actions visible, auditable, and revocable.
             </p>
             <p className="mt-6 text-lg leading-relaxed text-text-secondary">
@@ -118,14 +118,16 @@ export default function AboutPage() {
             <p className="text-lg leading-relaxed text-text-secondary">
               Multicorn was founded by Rachelle Rathbone. Rachelle is a backend engineer on
               Atlassian&apos;s Rovo Agents team, where she works on the infrastructure that powers
-              AI agents at enterprise scale. Before moving into software engineering, she was a
-              primary school teacher.
+              AI agents at enterprise scale. Before moving into engineering, she spent years as a
+              primary school teacher, which is why Multicorn&apos;s documentation is written for
+              humans, error messages are actionable, and nothing requires a manual to understand.
             </p>
             <p className="mt-6 text-lg leading-relaxed text-text-secondary">
-              That combination — deep experience building agent systems and the ability to explain
-              complex ideas in plain language — shapes everything about Multicorn. The SDK is built
-              by someone who understands agent infrastructure from the inside. The documentation and
-              product are designed by someone who believes clarity is not optional.
+              That background shows in the product. The SDK is built by someone who understands
+              agent infrastructure from the inside. The docs and error messages are written by
+              someone who believes clarity is never optional. That experience is why Multicorn
+              exists - she knew what good agent governance looked like, and saw that nobody had
+              built it for everyone else.
             </p>
           </div>
         </section>
@@ -138,7 +140,7 @@ export default function AboutPage() {
             </h2>
             <p className="text-lg leading-relaxed text-text-secondary">
               Multicorn follows an open-core model. The Shield SDK is free, MIT-licensed, and fully
-              auditable — you can read every line of code, run the tests, and extend it for your
+              auditable. You can read every line of code, run the tests, and extend it for your
               needs. The hosted platform (dashboard, team management, compliance features) is how we
               sustain the business.
             </p>
