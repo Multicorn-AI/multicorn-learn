@@ -3,11 +3,11 @@
     "version": "0.1.0",
     "date": "2026-02-20",
     "added": [
-      "Consent screen web component — drop-in approval UI for AI agent actions",
-      "Permission scopes system — define and enforce what each agent can access",
-      "Action logging — tamper-evident audit trail for every agent action",
-      "Spending controls — per-transaction, daily, and monthly limits",
-      "MCP adapter — middleware for Model Context Protocol servers"
+      "Consent screen web component. Drop-in approval UI for AI agent actions",
+      "Permission scopes system. Define and enforce what each agent can access",
+      "Action logging. Tamper-evident audit trail for every agent action",
+      "Spending controls. Per-transaction, daily, and monthly limits",
+      "MCP adapter. Middleware for Model Context Protocol servers"
     ]
   }
 ]

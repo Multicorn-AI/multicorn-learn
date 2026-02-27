@@ -76,7 +76,7 @@ const FEATURES: readonly Feature[] = [
   {
     name: 'Permission scopes',
     description:
-      'Define exactly what each agent can access — Gmail, Calendar, Slack, GitHub — with type-safe, granular permissions.',
+      'Define exactly what each agent can access: Gmail, Calendar, Slack, GitHub. All with type-safe, granular permissions.',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -186,7 +186,7 @@ export function Features() {
             </h3>
             <p className="mb-8 text-text-secondary">
               The Shield dashboard gives you a real-time view of every agent, every action, and
-              every permission — all in one place.
+              every permission. All in one place.
             </p>
 
             <div className="mb-6 overflow-hidden rounded-lg border border-border bg-text-primary">
