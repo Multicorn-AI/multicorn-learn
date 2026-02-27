@@ -19,7 +19,7 @@ export function Hero() {
 
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-text-secondary sm:text-xl">
           Multicorn Shield gives your team consent screens, spending controls, and activity logging
-          for every AI agent — so you stay in control.
+          for every AI agent. So you stay in control.
         </p>
 
         <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
@@ -29,7 +29,7 @@ export function Hero() {
             eventName="signup_cta_click"
             eventProps={{ location: 'home_hero' }}
           >
-            Get Started — Free
+            Get Started - Free
           </TrackedCtaLink>
           <a
             href="https://github.com/Multicorn-AI/multicorn-shield"
@@ -43,7 +43,7 @@ export function Hero() {
 
         <div className="mx-auto mt-14 max-w-md">
           <p className="mb-3 text-sm font-medium text-text-secondary">
-            Get updates on Multicorn — no spam, ever.
+            Get updates on Multicorn. No spam, ever.
           </p>
           <EmailSignupForm />
         </div>

@@ -6,7 +6,7 @@ import { Footer } from '@/components/Footer'
 export const metadata: Metadata = {
   title: 'Multicorn Shield Changelog',
   description:
-    'Release history for the Multicorn Shield SDK. See what changed in each version — new features, fixes, and security updates.',
+    'Release history for the Multicorn Shield SDK. See what changed in each version: new features, fixes, and security updates.',
   alternates: {
     types: {
       'application/rss+xml': '/changelog/feed.xml',
@@ -51,7 +51,7 @@ export default function ChangelogPage() {
             </h1>
             <p className="mx-auto max-w-2xl text-lg leading-relaxed text-text-secondary">
               Everything that shipped in each release of the Shield SDK. New features, fixes, and
-              security updates — all in one place.
+              security updates. All in one place.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
