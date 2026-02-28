@@ -47,7 +47,7 @@ const SHIELD_TIERS: readonly ShieldTier[] = [
     features: [
       'Consent screens',
       'Basic dashboard',
-      '1 agent',
+      '3 agents',
       '1,000 actions per month',
       'Community support',
     ],
