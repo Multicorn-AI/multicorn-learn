@@ -18,7 +18,22 @@ export async function LaunchGate({ children }: LaunchGateProps) {
     return children
   }
 
-  const isLaunchMode = process.env.NEXT_PUBLIC_LAUNCH_MODE === 'true'
+  // Check feature flag from backend API
+  const apiUrl = process.env.MULTICORN_API_URL || 'https://api.multicorn.ai'
+  let isLaunchMode = false
+  try {
+    const response = await fetch(`${apiUrl}/api/v1/feature-flags/learn_launch`, {
+      cache: 'no-store',
+    })
+    if (response.ok) {
+      const data = await response.json()
+      isLaunchMode = data.data?.enabled === true
+    }
+  } catch {
+    // If flag check fails, default to not launch mode (allow access)
+    isLaunchMode = false
+  }
+
   const isPublicPath =
     publicPathHeader !== null ? publicPathHeader === '1' : isLaunchGatePublicPath(pathname)
 
