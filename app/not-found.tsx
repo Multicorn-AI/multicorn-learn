@@ -21,77 +21,6 @@ function StarSparkle({
   )
 }
 
-function UnicornMark() {
-  return (
-    <svg
-      width="120"
-      height="120"
-      viewBox="0 0 120 120"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      className="mx-auto"
-    >
-      <defs>
-        <linearGradient id="horn-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#8B5CF6" />
-          <stop offset="33%" stopColor="#6366F1" />
-          <stop offset="66%" stopColor="#EC4899" />
-          <stop offset="100%" stopColor="#F59E0B" />
-        </linearGradient>
-        <linearGradient id="body-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#8B5CF6" />
-          <stop offset="100%" stopColor="#A78BFA" />
-        </linearGradient>
-      </defs>
-
-      {/* Horn */}
-      <polygon points="60,4 52,38 68,38" fill="url(#horn-gradient)" />
-
-      {/* Head */}
-      <ellipse cx="60" cy="52" rx="22" ry="18" fill="url(#body-gradient)" />
-
-      {/* Ear left */}
-      <polygon points="42,40 36,28 48,38" fill="#A78BFA" />
-      {/* Ear right */}
-      <polygon points="78,40 84,28 72,38" fill="#A78BFA" />
-
-      {/* Eye left */}
-      <circle cx="52" cy="50" r="3" fill="white" />
-      <circle cx="53" cy="49" r="1.2" fill="#111827" />
-
-      {/* Eye right */}
-      <circle cx="68" cy="50" r="3" fill="white" />
-      <circle cx="69" cy="49" r="1.2" fill="#111827" />
-
-      {/* Smile */}
-      <path
-        d="M54 58 Q60 64 66 58"
-        stroke="white"
-        strokeWidth="2"
-        strokeLinecap="round"
-        fill="none"
-      />
-
-      {/* Body */}
-      <ellipse cx="60" cy="82" rx="28" ry="22" fill="url(#body-gradient)" opacity="0.85" />
-
-      {/* Legs */}
-      <rect x="42" y="96" width="8" height="16" rx="4" fill="#A78BFA" />
-      <rect x="70" y="96" width="8" height="16" rx="4" fill="#A78BFA" />
-
-      {/* Tail */}
-      <path
-        d="M88 78 Q100 70 96 58 Q92 68 86 72"
-        stroke="#EC4899"
-        strokeWidth="3"
-        strokeLinecap="round"
-        fill="none"
-      />
-    </svg>
-  )
-}
-
 export default function NotFound() {
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 py-16">
@@ -131,7 +60,16 @@ export default function NotFound() {
       />
 
       <div className="text-center">
-        <UnicornMark />
+        {/* TODO: Replace with final 404 illustration asset from Mirza once delivered */}
+        {/* Asset should be placed at /public/images/404-unicorn.png */}
+        <img
+          src="/images/404-unicorn.png"
+          alt=""
+          width="120"
+          height="120"
+          className="mx-auto"
+          aria-hidden="true"
+        />
 
         <p className="mt-6 text-sm font-semibold uppercase tracking-widest text-primary">404</p>
 
