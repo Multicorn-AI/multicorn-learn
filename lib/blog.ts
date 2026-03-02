@@ -11,6 +11,7 @@ export interface BlogPostMeta {
   readonly author: string
   readonly ogImage: string
   readonly tags: readonly string[]
+  readonly draft?: boolean
 }
 
 export interface BlogPost {
@@ -39,6 +40,7 @@ export function getBlogPost(slug: string): BlogPost | null {
         author: data.author ?? '',
         ogImage: data.ogImage ?? '',
         tags: data.tags ?? [],
+        draft: data.draft ?? false,
       },
       content,
     }
@@ -58,6 +60,7 @@ export function getAllBlogPosts(): readonly BlogPost[] {
   const posts = files
     .map((file) => getBlogPost(file.replace(/\.mdx$/, '')))
     .filter((post): post is BlogPost => post !== null)
+    .filter((post) => !post.meta.draft)
     .sort((a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime())
 
   return posts

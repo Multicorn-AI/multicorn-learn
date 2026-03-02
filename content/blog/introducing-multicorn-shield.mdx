@@ -1,99 +1,114 @@
 ---
-title: 'Introducing Multicorn Shield — Why We Built It'
-description: 'The story behind Multicorn Shield: an AI agent called OpenClaw, a $200 dinner no one approved, and the open-source permissions layer we built to make sure it never happens again.'
-date: '2026-02-22'
+title: 'Introducing Multicorn Shield - Why We Built It'
+description: 'AI agents can send your emails, book your flights, and spend your money. None of them ask permission first. Shield is the open-source permissions layer that changes that.'
+date: '2026-03-04'
 author: 'Rachelle Rathbone'
 ogImage: '/images/og-card.svg'
 tags: ['launch', 'shield', 'agents', 'open-source']
 ---
 
-## It started with a $200 dinner
+# Introducing Multicorn Shield - Why We Built It
 
-Last year, our team was experimenting with AI agents. We connected an agent called OpenClaw to our Gmail, Calendar, and Slack to handle routine tasks — triaging email, scheduling meetings, posting daily standup summaries.
+## The moment it clicked
 
-OpenClaw was great. For the first few weeks, it saved us hours. Then one Monday morning, I opened the dashboard and found three surprises:
+My husband told me about the OpenClaw acquisition over dinner. A billion dollars. An AI agent that manages your calendar, books flights, replies to emails, and makes purchases on your behalf. OpenAI bought it, 180,000 GitHub stars, and suddenly everyone was installing it.
 
-OpenClaw had sent 14 emails from our team account that no one had reviewed. It had booked a $200 dinner reservation through a connected payments service. And it had posted a message in our company Slack channel that did not quite make sense.
+My first reaction wasn't excitement. It was anxiety.
 
-My first question was: did we authorise any of this? My second question was: how do I figure out what else it did?
+I'm a backend engineer on Atlassian's Rovo Agents team. I spend my days building the infrastructure that powers AI agents at enterprise scale. I know how these systems work. And I know what's missing.
 
-The answer to both was uncomfortable. We had given OpenClaw broad access to our tools — because that was the only option. There was no consent screen listing what it could do. There were no spending limits. There was no activity trail we could review.
+When you install a phone app, it asks permission before accessing your camera or your contacts. When a website connects to your Google account, you see an OAuth consent screen listing exactly what it wants. But AI agents? They get full access to everything. Your email, your calendar, your payment methods. No consent screen. No granular controls. No activity log. No kill switch.
 
-We were a team of engineers building AI tools, and we had no visibility into what our own agent was doing on our behalf. If we did not have this figured out, nobody did.
+I sat there thinking: this is going to go badly for someone.
 
-## The permission gap
+A week later, it did.
 
-That experience made me look at the broader landscape. Every phone app asks for permission before accessing your camera, location, or contacts. Every website that connects to your Google account shows an OAuth consent screen. But AI agents — software that can send your emails, book your meetings, and spend your money — had nothing like this.
+## The Summer Yue incident
 
-I started talking to other teams using agents. The pattern was the same everywhere:
+Summer Yue is the Director of AI Alignment at Meta's Superintelligence Labs. She connected OpenClaw to her email inbox. She told it to suggest what to archive or delete, and to wait for her approval before doing anything.
 
-- Agents got full access to services with no granular controls
-- There was no standard way to set spending limits
-- Activity records were scattered across different services or did not exist at all
-- When something went wrong, teams spent hours piecing together what happened
+It didn't wait. It deleted over 200 emails.
 
-This was not a niche problem. As agents become more common in workplaces, the gap between what they can do and the controls available to govern them was growing every day.
+She typed "Do not do that." Then "Stop don't do anything." Then "STOP OPENCLAW." The agent ignored every command. She had to physically run to her Mac Mini to kill the process.
 
-## So we built Shield
+Her post about it got over 9 million views on X. The reaction was basically universal: if a senior AI safety researcher at Meta can't control her own agent, what chance do the rest of us have?
 
-Multicorn Shield is the tool I wish had existed when we connected OpenClaw to our systems. It is an open-source TypeScript SDK that sits between your application and your AI agents, providing four things that every agent deployment needs:
+The root cause was subtle and that's what makes it scary. The agent had been working fine on a test inbox for weeks. She trusted it with her real inbox. Then context window compaction dropped her safety instruction. The "wait for approval" command was silently discarded to free up tokens. The agent kept doing its job. It just lost the part where it was supposed to ask first.
 
-**A consent screen.** Before an agent gets access to anything, the user sees exactly what it is requesting — which services, what level of access, and any spending limits. They can approve, modify, or deny each permission individually. No more blanket "allow all" toggles.
+This isn't an OpenClaw bug. It's a fundamental problem with how AI agents work today. Safety instructions live in the same context window as everything else. They can be compressed, forgotten, or overridden.
 
-**Granular permissions.** Every permission follows a clear format: what the agent can do and which service it applies to. Read email. Create calendar events. Make purchases up to a certain amount. You define exactly what each agent can and cannot do.
+That dinner conversation turned into a company. The Summer Yue incident confirmed why it needed to exist.
 
-**Spending controls.** Per-transaction limits, daily caps, and monthly maximums. If an agent tries to spend more than the approved limit, Shield blocks the action before it happens — not after the money is already gone. The $200 dinner would never have been booked.
+## What Shield does
 
-**A tamper-evident activity trail.** Every action every agent takes is recorded automatically. Each record is chained to the previous one using cryptographic hashes, so the trail cannot be edited or tampered with. When you need to know what happened, the answer is right there.
+Multicorn Shield is an open-source SDK and hosted platform that sits between you and your AI agents. It provides four things that every agent deployment needs and none of them currently have.
+
+**A consent screen.** Before an agent gets access to anything, you see exactly what it's requesting. Which services, what level of access. Read, write, execute, per service. You approve, modify, or deny each permission individually. No more blanket access.
+
+**Granular permissions.** Read email. Create calendar events. Execute terminal commands. Delete files. Each one is a separate toggle. You decide exactly what each agent can and can't do. And because permissions are enforced at the infrastructure level (not in the system prompt), they can't be compressed away or ignored.
+
+**An approval workflow.** When an agent tries something it doesn't have permission for, Shield doesn't just block it. It creates a checkpoint. You get notified, you review the request in the dashboard, and you choose whether to approve it. When you do, you pick how long the permission lasts: this action only, one hour, 24 hours, or permanent. No accidental permanent grants.
+
+**A tamper-evident activity trail.** Every action every agent takes is recorded automatically. You can see what happened, when, and whether it was approved or blocked. Each record is chained to the previous one using cryptographic hashes, so the trail can't be edited after the fact.
+
+## Why these controls live outside the model
+
+This is the part that matters most, and it's the part most people get wrong.
+
+Summer Yue told her agent to wait for approval. That instruction was in the system prompt. It was a suggestion to a language model. The model decided whether to follow it. And when context window compaction needed to free up space, that suggestion was the first thing to go.
+
+Shield's permissions don't live in the context window. They're enforced at the tool call level, before the action executes. The model never gets to decide whether to follow them. If an agent doesn't have write permission on your filesystem, the tool call is blocked before it runs. It doesn't matter what's in the system prompt, what got compacted, or what the model "decided" to do.
+
+One is a suggestion. The other is a wall.
 
 ## Why open source
 
-We could have built Shield as a closed platform — and honestly, it would have been simpler from a business perspective. But we chose to open-source the SDK because trust requires transparency.
+If you're going to trust a tool to govern your AI agents, you should be able to read the code. You should be able to verify that the consent screen can't be bypassed, that permissions are actually enforced, and that the audit trail is genuinely tamper-evident.
 
-If you are going to trust a tool to govern your AI agents, you should be able to inspect how it works. You should be able to verify that the consent screen cannot be bypassed, that spending limits are enforced correctly, and that the activity trail is genuinely tamper-evident. Open source means you do not have to take our word for it.
+The SDK is MIT-licensed on GitHub. Clone it, read it, run the tests. The hosted dashboard and enterprise features are how we make money. The core permission enforcement is free and open for everyone.
 
-It also means the developer community can contribute. Shield supports the Model Context Protocol out of the box, and we want to add adapters for every major agent framework. That is easier to do with contributions from people who actually use those frameworks every day.
-
-The SDK is [MIT-licensed on GitHub](https://github.com/Multicorn-AI/multicorn-shield). Clone it, read the code, run the tests, and use it in your own projects.
+Shield supports OpenClaw natively through a plugin, and any MCP-compatible agent (Claude Code, custom setups, anything using the Model Context Protocol) through an MCP proxy. Same dashboard, same permissions, same activity feed regardless of which agent you're using.
 
 ## What you get today
 
-Shield is ready to use right now. Here is what is in the current release:
+Everything described above is built and working. Here's what's in the current release:
 
-- **Consent screen** — a drop-in web component that works with any framework (React, Vue, Svelte, vanilla HTML)
-- **Permission enforcement** — define and enforce granular permissions on every agent action
-- **Spending controls** — per-transaction, daily, and monthly limits with integer-cent precision
-- **Activity trail** — automatic, structured, tamper-evident records of every action
-- **MCP adapter** — middleware that enforces permissions on every tool call through the Model Context Protocol
-- **Dashboard** — a web interface where you can see every agent, every action, every permission, and every spending total at a glance
+**Consent screen** - a web component that works with any framework. Shows exactly what an agent is requesting, with per-service read/write/execute toggles.
 
-Install it with a single command:
+**Permission enforcement** - granular controls enforced at the infrastructure level. Not in the prompt. Not in the agent's code. In the tool layer.
+
+**Approval workflows** - missing permissions create a human checkpoint. You review, approve with a time limit, or reject. The agent can't proceed without your decision.
+
+**Spending controls** - per-transaction limits, daily caps, monthly maximums. If an agent tries to exceed the limit, Shield blocks the action before it happens.
+
+**Activity feed** - real-time view of every action every agent takes. Green for approved, red for blocked. Searchable, filterable, exportable.
+
+**Dashboard** - see every agent, every permission, every action at a glance. Manage everything from your browser or your phone.
+
+Install the SDK with:
 
 ```bash
 npm install multicorn-shield
 ```
 
-Full documentation, getting-started guides, and framework-specific examples are in the [GitHub repository](https://github.com/Multicorn-AI/multicorn-shield).
+Full docs and getting-started guides are in the [GitHub repository](https://github.com/multicorn-ai/multicorn-shield).
 
 ## What comes next
 
-Shield is the foundation. We are actively working on:
+Shield is the foundation. We're actively working on team policies for org-wide agent rules, more framework adapters, and alerting when agents do something unexpected.
 
-- **A policy engine** for defining organisation-wide rules that apply to every agent
-- **Team roles** so different people can have different levels of control over agent permissions
-- **More framework adapters** beyond MCP
-- **Alerting** to notify you when an agent does something unexpected
+We're building Multicorn in the open. Contributions, bug reports, and ideas are all welcome.
 
-We are building Multicorn in the open, and we welcome contributions — code, bug reports, or ideas for what to build next.
+## Get started
 
-## The bigger picture
+If you're using AI agents, or thinking about it, Shield gives you the controls that should have existed from day one.
 
-AI agents are powerful and genuinely useful, but they need the same kinds of controls we already apply to every other piece of software that acts on our behalf. Shield is our contribution to closing that gap.
+**GitHub:** [github.com/multicorn-ai/multicorn-shield](https://github.com/multicorn-ai/multicorn-shield)
 
-If you are building with AI agents, evaluating them for your team, or just trying to understand what responsible AI governance looks like — I hope what we have built is useful to you.
+**npm:** `npm install multicorn-shield`
+
+**Dashboard:** [app.multicorn.ai](https://app.multicorn.ai)
 
 If you want to learn more about AI agents and why governance matters, our [AI 101 series](/learn/ai-101) covers everything from the basics of generative AI to practical guides on permissions, spending controls, and audit trails.
 
-**[Get started with Multicorn Shield](/shield)** — add permissions, spending controls, and activity records to your AI agents in minutes.
-
-You can also **[sign up for early access](https://app.multicorn.ai/signup)** to the hosted Multicorn dashboard.
+_Your AI agents are powerful. Shield makes them safe._
