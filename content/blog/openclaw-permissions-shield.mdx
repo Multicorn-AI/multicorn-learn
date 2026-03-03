@@ -41,7 +41,7 @@ A free Multicorn account at [app.multicorn.ai](https://app.multicorn.ai).
 
 Head to [app.multicorn.ai](https://app.multicorn.ai) and create an account. Once you're in, go to Settings and generate an API key. Copy it and keep it somewhere safe. You'll need it in a moment.
 
-**Dashboard settings page showing the API key generation section with copy button**
+![Dashboard settings page showing API key generation](/images/blog/openclaw-shield/shield-settings-api-key.png)
 
 ## Step 2: Install the Shield plugin
 
@@ -62,7 +62,7 @@ openclaw plugins install --link ./dist/openclaw/plugin
 
 That's it. Shield is now installed in OpenClaw.
 
-**Terminal showing the plugin install output and openclaw plugins list confirming multicorn-shield is loaded**
+![Terminal showing openclaw plugins list with multicorn-shield loaded](/images/blog/openclaw-shield/shield-plugin-loaded.png)
 
 ## Step 3: Set your API key
 
@@ -107,7 +107,7 @@ openclaw tui
 
 Ask the agent to do something that uses a tool: read a file, run a command, anything. The first time the agent tries to use a tool, Shield opens a consent screen in your browser:
 
-**The Shield consent screen showing the agent name, requested permissions with read/write/execute toggles per service, and the Authorise button**
+![Shield consent screen showing agent permissions with read/write/execute toggles](/images/blog/openclaw-shield/shield-consent-screen.png)
 
 This is the moment that would have saved Summer Yue's inbox. Instead of the agent silently accessing your email (or filesystem, or anything else), you see exactly what it's asking for and you decide what to allow.
 
@@ -117,7 +117,7 @@ Grant the permissions you're comfortable with and click Authorise.
 
 Open [app.multicorn.ai](https://app.multicorn.ai). Every action your agent takes shows up in the activity feed in real time:
 
-**Dashboard activity feed showing a list of agent actions with timestamps, service names, and green approved status badges**
+![Activity feed showing agent actions with green approved badges](/images/blog/openclaw-shield/shield-activity-feed.png)
 
 You can see what tools were called, what service was accessed, and whether each action was approved or blocked. No more wondering what your agent did while you weren't looking.
 
@@ -125,13 +125,15 @@ You can see what tools were called, what service was accessed, and whether each 
 
 Here's where Shield earns its name. Go to the Permissions tab for your agent in the dashboard. Toggle off write access for a service. Say, filesystem.
 
-**Permissions panel showing the filesystem service with read enabled but write toggled off, displaying R/W/X toggles**
+![Permissions panel showing filesystem with read enabled and write/execute off](/images/blog/openclaw-shield/shield-permissions-panel.png)
 
 Now ask your agent to write a file. It gets blocked. The agent receives a clear error message: "Permission denied: Filesystem write access is not allowed. Visit the Multicorn Shield dashboard to manage permissions."
 
+![Agent blocked in terminal by Multicorn Shield](/images/blog/openclaw-shield/shield-blocked-terminal.png)
+
 The block shows up in your activity feed with a red badge:
 
-**Activity feed showing a blocked action with red blocked badge alongside earlier approved actions in green**
+![Activity log showing blocked actions with red badges alongside approved actions in green](/images/blog/openclaw-shield/shield-blocked-activity-log.png)
 
 Your agent keeps working for everything else. It can still read files, use other tools, do whatever you've allowed. It just can't do the thing you said no to.
 
@@ -143,13 +145,13 @@ Blocking is great for things you know an agent should never do. But what about t
 
 That's where Shield's approval workflow comes in. Instead of a hard block, Shield creates a checkpoint. The agent pauses, you review the request, and you decide whether to let it through.
 
-Here's what that looks like in practice. Say you ask your OpenClaw agent to clean up your files. The agent tries to delete something. Shield intercepts the call, sees there's no delete permission, and creates an approval request instead of just blocking.
+Here's what that looks like in practice. Say you ask your OpenClaw agent to modify a file. The agent tries to run a command. Shield intercepts the call, sees there's no execute permission, and creates an approval request instead of just blocking.
 
 You get an email notification with a link to your dashboard. When you open it, you see the approval card:
 
-**Approval card expanded in the dashboard showing the agent name, the requested action, a plain-language description like "main wants to delete files in your inbox", and a duration selector with "1 hour" selected**
+![Approval card showing pending request with plain-language description and duration selector](/images/blog/openclaw-shield/shield-approval-pending.png)
 
-The card shows you exactly what the agent wants to do, in plain language: "main wants to delete files in your inbox." No raw tool names or API jargon. Just a clear description of the action.
+The card shows you exactly what the agent wants to do, in plain language: "main wants to run a terminal command." No raw tool names or API jargon. Just a clear description of the action.
 
 Here's the part that would have changed everything for Summer Yue: when you approve, you choose how long the permission lasts.
 
@@ -160,9 +162,11 @@ Your options are:
 - **24 hours**: same idea, longer window
 - **Permanent**: the agent keeps this permission until you explicitly revoke it
 
-**Approval card with collapsed status showing "1h access granted" with a timestamp**
-
 This is the Summer Yue fix. She told her agent to wait for approval, and it worked. Until context window compaction silently dropped that instruction. With Shield, the approval isn't an instruction to the model. It's an infrastructure-level gate. The agent literally cannot proceed until you decide, and the permission you grant has a built-in expiry.
+
+Here's what a completed approval looks like. This one was approved with "This action only", so the agent got one-shot access and will need to ask again next time:
+
+![Collapsed approval card showing one-time access granted with decision timestamp](/images/blog/openclaw-shield/shield-approval-approved.png)
 
 Once you approve, the agent retries and the action goes through. After the duration expires, the next attempt creates a new approval request. The agent has to ask again.
 
