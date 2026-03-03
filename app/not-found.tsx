@@ -60,18 +60,7 @@ export default function NotFound() {
       />
 
       <div className="text-center">
-        {/* TODO: Replace with final 404 illustration asset from Mirza once delivered */}
-        {/* Asset should be placed at /public/images/404-unicorn.png */}
-        <img
-          src="/images/404-unicorn.png"
-          alt=""
-          width="120"
-          height="120"
-          className="mx-auto"
-          aria-hidden="true"
-        />
-
-        <p className="mt-6 text-sm font-semibold uppercase tracking-widest text-primary">404</p>
+        <p className="text-sm font-semibold uppercase tracking-widest text-primary">404</p>
 
         <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
           <span className="bg-gradient-to-r from-primary via-indigo to-pink bg-clip-text text-transparent">
