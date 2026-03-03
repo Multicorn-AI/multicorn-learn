@@ -39,16 +39,17 @@
     ]
   },
   "devDependencies": {
-    "eslint-plugin-multicorn-ui": "file:./eslint-plugin-multicorn-ui",
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@typescript-eslint/eslint-plugin": "^8.56.0",
     "@typescript-eslint/parser": "^8.56.0",
     "autoprefixer": "^10.4.20",
+    "canvas": "^3.2.1",
     "eslint": "^8.57.1",
     "eslint-config-next": "^15.0.8",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-multicorn-ui": "file:./eslint-plugin-multicorn-ui",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "postcss": "^8.4.49",
