@@ -15,6 +15,15 @@ export const metadata: Metadata = {
   description:
     'Multicorn Shield gives your team consent screens, spending controls, and activity logging for every AI agent. Open-source SDK, enterprise-grade controls.',
   metadataBase: new URL('https://multicorn.ai'),
+  icons: {
+    icon: [
+      { url: '/learn/favicon.ico', sizes: 'any' },
+      { url: '/learn/favicon.svg', type: 'image/svg+xml' },
+      { url: '/learn/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+    ],
+    apple: [{ url: '/learn/apple-touch-icon.png' }],
+  },
+  manifest: '/learn/site.webmanifest',
   openGraph: {
     title: 'Multicorn — The trusted layer between humans and AI agents',
     description:
