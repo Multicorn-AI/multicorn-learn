@@ -12,7 +12,7 @@ export const metadata: Metadata = {
       'Read plain-English guides to safer AI agent use, product updates, and lessons from real deployments.',
     images: [
       {
-        url: '/images/og-card.svg',
+        url: 'https://multicorn.ai/images/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Multicorn blog',

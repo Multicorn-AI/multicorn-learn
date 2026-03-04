@@ -11,7 +11,7 @@ export const metadata: Metadata = {
       'Follow step-by-step docs to add consent screens, permissions, and spending limits to your AI agents.',
     images: [
       {
-        url: '/images/og-card.svg',
+        url: 'https://multicorn.ai/images/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Multicorn documentation',

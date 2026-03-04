@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/images/og-card.svg',
+        url: 'https://multicorn.ai/images/og-image.png',
         width: 1200,
         height: 630,
         alt: 'About Multicorn: The Trust Layer for AI Agents',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     title: 'About Multicorn: The Trust Layer for AI Agents',
     description:
       "Multicorn AI builds the trust layer for AI agents. Founded by Rachelle Rathbone, a backend engineer from Atlassian's Rovo Agents team and former primary school teacher.",
-    images: ['/images/og-card.svg'],
+    images: ['https://multicorn.ai/images/og-image.png'],
   },
 }
 
