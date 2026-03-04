@@ -393,7 +393,7 @@ export default function ShieldPage() {
         </section>
 
         {/* Built with Shield */}
-        <section className="px-6 py-10 sm:py-14">
+        {/* <section className="px-6 py-10 sm:py-14">
           <div className="mx-auto max-w-content">
             <div className="rounded-card bg-primary px-6 py-8 text-center sm:px-10 sm:py-12">
               <p className="text-lg font-semibold text-white sm:text-xl">
@@ -423,7 +423,7 @@ export default function ShieldPage() {
               </a>
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* How It Works */}
         <section className="px-6 py-14 sm:py-28">
