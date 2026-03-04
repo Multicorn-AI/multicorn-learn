@@ -66,18 +66,30 @@ That's it. Shield is now installed in OpenClaw.
 
 ## Step 3: Set your API key
 
-Open your OpenClaw config file at `~/.openclaw/openclaw.json` and add the Shield plugin configuration:
+Open your OpenClaw config file at `~/.openclaw/openclaw.json` and add the Shield plugin configuration. OpenClaw requires two sections: the API key goes under `hooks.internal.entries` for environment variables, and the plugin is enabled via the `plugins` section.
 
 ```json
 {
+  "hooks": {
+    "internal": {
+      "entries": {
+        "multicorn-shield": {
+          "enabled": true,
+          "env": {
+            "MULTICORN_API_KEY": "mcs_your_api_key_here",
+            "MULTICORN_BASE_URL": "https://api.multicorn.ai"
+          }
+        }
+      }
+    }
+  },
   "plugins": {
+    "load": {
+      "paths": ["./dist/openclaw-plugin/index.js"]
+    },
     "entries": {
       "multicorn-shield": {
-        "enabled": true,
-        "env": {
-          "MULTICORN_API_KEY": "mcs_your_api_key_here",
-          "MULTICORN_BASE_URL": "https://api.multicorn.ai"
-        }
+        "enabled": true
       }
     }
   }
