@@ -16,7 +16,7 @@ export const metadata: Metadata = {
       'Help your team use AI agents safely with clear permissions, spending limits, and activity records.',
     images: [
       {
-        url: '/images/og-card.svg',
+        url: 'https://multicorn.ai/images/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Multicorn platform overview',

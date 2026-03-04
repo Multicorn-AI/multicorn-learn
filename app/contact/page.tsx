@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/images/og-card.svg',
+        url: 'https://multicorn.ai/images/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Contact Multicorn',
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: 'Contact Multicorn',
     description:
       'Get in touch with the Multicorn team. Reach us for general enquiries, enterprise sales, security disclosures, or privacy requests.',
-    images: ['/images/og-card.svg'],
+    images: ['https://multicorn.ai/images/og-image.png'],
   },
 }
 

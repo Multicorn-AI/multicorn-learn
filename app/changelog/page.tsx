@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/images/og-card.svg',
+        url: 'https://multicorn.ai/images/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Multicorn Shield Changelog',
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Multicorn Shield Changelog',
     description: 'Release history for the Multicorn Shield SDK. See what changed in each version.',
-    images: ['/images/og-card.svg'],
+    images: ['https://multicorn.ai/images/og-image.png'],
   },
 }
 
