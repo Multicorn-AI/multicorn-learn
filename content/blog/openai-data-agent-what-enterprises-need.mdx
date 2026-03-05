@@ -1,0 +1,67 @@
+---
+title: 'What OpenAI Built Internally - And What You Need to Deploy It Safely'
+description: "OpenAI's internal data agent is one of the most aggressive AI deployments inside any company. Here's what they built, where they admit it fails, and what the permission layer looks like."
+date: '2026-03-06'
+author: 'Rachelle Rathbone'
+ogImage: 'https://multicorn.ai/images/og-image.png'
+tags: ['openai', 'shield', 'agents', 'governance', 'enterprise']
+draft: false
+---
+
+OpenAI turned its own AI on itself. Here is what happened.
+
+Last week, VentureBeat published a rare inside look at how OpenAI built and deployed an internal AI data agent - one that is now used by thousands of its employees every day. The interview with Emma Tang, head of data infrastructure, is worth reading in full. It covers how the system works, where it fails, and what it means for any organisation trying to do the same thing.
+
+A few things stood out.
+
+## The problem they were solving
+
+OpenAI's data platform spans more than 600 petabytes across 70,000 datasets. Before the agent existed, a finance analyst who needed to compare revenue across geographies spent hours hunting through datasets, writing SQL queries, and verifying table schemas. Today, the same analyst types a plain-English question into Slack and gets a finished chart in minutes.
+
+Two engineers built the tool in three months. Seventy percent of the code was written by AI. Almost every team at the company uses it.
+
+This is not a prototype. It is one of the most aggressive deployments of an AI data agent inside any company, anywhere.
+
+## The failure modes they found
+
+Tang was candid about where it breaks. The biggest problem is finding the right table among 70,000 datasets. But the most interesting failure is behavioural.
+
+The agent is overconfident. It picks a table and starts running analysis without checking whether it made the right choice. Tang describes it plainly: the model feels certain, goes ahead, and gets it wrong.
+
+Their fix was prompt engineering. They wrote instructions that force the agent to slow down and spend more time in a discovery phase before doing anything. It works, up to a point. But prompt-level constraints have a ceiling: they live in the context window, they can be overridden by a long conversation, and they rely on the model choosing to follow them.
+
+On write access, they were deliberate. The agent operates purely as an interface layer, inheriting the user's personal token. Write access is restricted to a temporary test schema that gets wiped periodically and cannot be shared. Tang put it simply: they do not let it randomly write to systems.
+
+## What this means for enterprises building their own
+
+OpenAI told VentureBeat they have no plans to productize this tool. Their strategy is to provide building blocks and let enterprises construct their own. Tang was explicit: they use the same public APIs any developer can access. You can build this.
+
+That creates an immediate question for every enterprise that tries: what governs what the agent can actually do?
+
+The permission model OpenAI describes - user-scoped tokens, write access sandboxed to a wiped test schema, no public channel access - is a set of manually enforced rules baked into the deployment. They work at OpenAI because a dedicated infrastructure team designed and maintains them. Most teams building on top of OpenAI's APIs do not have that.
+
+The overconfidence problem they describe is not a model problem. It is a control problem. Prompt engineering is a mitigation, not a solution. When the context window is long enough, when the conversation has enough turns, when compaction drops earlier instructions, the guardrail disappears. The agent proceeds.
+
+## Where Shield fits
+
+Multicorn Shield is the permission and approval layer that sits between your agent and the systems it acts on. It does not rely on the model choosing to follow instructions. It enforces at the infrastructure level: before a tool call executes, Shield checks whether it is permitted. If it is not, the call is blocked. If approval is required, the agent pauses and waits.
+
+The failure modes Tang describes are exactly what Shield is designed to prevent:
+
+- An overconfident agent that goes ahead without checking? Shield requires explicit approval before high-risk actions execute.
+- Write access that should be scoped and temporary? Shield's permission expiry means access granted for a task does not silently persist forever.
+- No audit trail of what the agent actually did? Shield logs every action - approved, blocked, and pending - to a tamper-evident audit log.
+
+Tang closed the interview with a warning: companies that adopt AI agents are going to advance very quickly, and companies that do not are going to fall behind. That is almost certainly true.
+
+The question is not whether to deploy agents. The question is whether you know what they are doing when you are not watching.
+
+## Get started
+
+Shield is open source and takes two minutes to add to any agent that supports tool hooks.
+
+```bash
+npm install multicorn-shield
+```
+
+[Read the full VentureBeat article](https://venturebeat.com/technology/openais-ai-data-agent-built-by-two-engineers-now-serves-4-000-employees-and) for the OpenAI interview. Then read the [Shield docs](/shield) to see how the permission layer works.

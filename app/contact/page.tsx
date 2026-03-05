@@ -176,6 +176,8 @@ export default function ContactPage() {
             <div className="mt-8">
               <a
                 href="https://github.com/Multicorn-AI/multicorn-shield/issues"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-semibold text-text-primary transition-colors hover:bg-surface-tertiary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
               >
                 <svg

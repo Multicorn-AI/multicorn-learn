@@ -40,7 +40,12 @@ export function LaunchPage() {
 
       <footer className="mt-auto border-t border-border px-6 py-6 text-center text-sm text-text-tertiary">
         &copy; {new Date().getFullYear()} Multicorn.{' '}
-        <a href="https://multicorn.ai" className="underline hover:text-text-secondary">
+        <a
+          href="https://multicorn.ai"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline hover:text-text-secondary"
+        >
           multicorn.ai
         </a>
       </footer>

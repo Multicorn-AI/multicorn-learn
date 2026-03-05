@@ -57,7 +57,12 @@ export default function TermsOfServicePage() {
               </p>
               <p>
                 We operate the website{' '}
-                <a href="https://multicorn.ai" className="text-primary hover:underline">
+                <a
+                  href="https://multicorn.ai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
                   https://multicorn.ai
                 </a>{' '}
                 (the &quot;Site&quot;), as well as any other related products and services that

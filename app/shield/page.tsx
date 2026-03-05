@@ -404,6 +404,8 @@ export default function ShieldPage() {
               </p>
               <a
                 href="https://multicorn.ai/blog/agents"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="mt-6 inline-flex min-h-[44px] items-center gap-2 rounded text-base font-medium text-white underline decoration-white/40 underline-offset-4 transition-colors hover:decoration-white focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-primary"
               >
                 Read how

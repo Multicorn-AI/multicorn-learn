@@ -151,6 +151,8 @@ export default function AboutPage() {
             <div className="mt-8">
               <a
                 href="https://github.com/Multicorn-AI"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-semibold text-text-primary transition-colors hover:bg-surface-tertiary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
               >
                 <svg
@@ -204,6 +206,8 @@ export default function AboutPage() {
               </a>
               <a
                 href="https://github.com/Multicorn-AI"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-border px-8 py-3 text-base font-semibold text-text-primary transition-colors hover:bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
               >
                 <svg

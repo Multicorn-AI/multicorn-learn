@@ -57,6 +57,8 @@ export default function ChangelogPage() {
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <a
                 href="https://github.com/Multicorn-AI/multicorn-shield/releases"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-border px-5 py-2.5 text-sm font-semibold text-text-primary transition-colors hover:bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
               >
                 <svg
@@ -72,6 +74,8 @@ export default function ChangelogPage() {
               </a>
               <a
                 href="https://www.npmjs.com/package/multicorn-shield"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-border px-5 py-2.5 text-sm font-semibold text-text-primary transition-colors hover:bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
               >
                 <svg
