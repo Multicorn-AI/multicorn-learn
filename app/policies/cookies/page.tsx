@@ -53,7 +53,12 @@ export default function CookiePolicyPage() {
                 <strong className="text-text-primary">us</strong>,&quot; and &quot;
                 <strong className="text-text-primary">our</strong>&quot;) uses cookies and similar
                 technologies to recognize you when you visit our website at{' '}
-                <a href="https://multicorn.ai" className="text-primary hover:underline">
+                <a
+                  href="https://multicorn.ai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
                   https://multicorn.ai
                 </a>{' '}
                 (&quot;<strong className="text-text-primary">Website</strong>&quot;). It explains

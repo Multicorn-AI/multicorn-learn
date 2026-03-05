@@ -14,14 +14,22 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <h3 className="mb-3 mt-8 text-2xl font-semibold text-text-primary">{children}</h3>
     ),
     p: ({ children }) => <p className="mb-4 leading-relaxed text-text-secondary">{children}</p>,
-    a: ({ href, children }) => (
-      <a
-        href={href}
-        className="font-medium text-primary underline decoration-primary/30 hover:decoration-primary"
-      >
-        {children}
-      </a>
-    ),
+    a: ({ href, children }) => {
+      const isExternal =
+        typeof href === 'string' && (href.startsWith('http://') || href.startsWith('https://'))
+      return (
+        <a
+          href={href}
+          className="font-medium text-primary underline decoration-primary/30 hover:decoration-primary"
+          {...(isExternal && {
+            target: '_blank',
+            rel: 'noopener noreferrer',
+          })}
+        >
+          {children}
+        </a>
+      )
+    },
     code: ({ children, className, ...rest }) => {
       if (className && className.startsWith('language-')) {
         return (

@@ -62,7 +62,12 @@ export default function PrivacyPolicyPage() {
               <ul className="list-disc space-y-2 pl-6">
                 <li>
                   Visit our website at{' '}
-                  <a href="https://multicorn.ai" className="text-primary hover:underline">
+                  <a
+                    href="https://multicorn.ai"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline"
+                  >
                     https://multicorn.ai
                   </a>{' '}
                   or any website of ours that links to this Privacy Notice

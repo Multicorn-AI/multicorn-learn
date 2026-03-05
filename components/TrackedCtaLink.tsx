@@ -21,12 +21,16 @@ export function TrackedCtaLink({
   rel,
   children,
 }: TrackedCtaLinkProps) {
+  const isExternal = href.startsWith('http://') || href.startsWith('https://')
+  const effectiveTarget = target ?? (isExternal ? '_blank' : undefined)
+  const effectiveRel = rel ?? (isExternal ? 'noopener noreferrer' : undefined)
+
   return (
     <a
       href={href}
       className={className}
-      target={target}
-      rel={rel}
+      target={effectiveTarget}
+      rel={effectiveRel}
       onClick={() => trackEvent(eventName, eventProps)}
     >
       {children}
