@@ -45,47 +45,26 @@ Head to [app.multicorn.ai](https://app.multicorn.ai) and create an account. Once
 
 ## Step 2: Install the Shield plugin
 
-Open your terminal and clone the Shield repo:
+Install Shield globally via npm:
 
 ```bash
-git clone https://github.com/multicorn-ai/multicorn-shield.git
-cd multicorn-shield
-npm install
+npm install -g multicorn-shield
+```
+
+Then build the OpenClaw plugin:
+
+```bash
+cd $(npm root -g)/multicorn-shield
 npm run build
 ```
 
-Then install it as a linked OpenClaw plugin:
-
-```bash
-openclaw plugins install --link ./dist/openclaw/plugin
-```
-
-That's it. Shield is now installed in OpenClaw.
-
-![Terminal showing openclaw plugins list with multicorn-shield loaded](/images/blog/openclaw-shield/shield-plugin-loaded.png)
-
-## Step 3: Set your API key
-
-Open your OpenClaw config file at `~/.openclaw/openclaw.json` and add the Shield plugin configuration. OpenClaw requires two sections: the API key goes under `hooks.internal.entries` for environment variables, and the plugin is enabled via the `plugins` section.
+Add the plugin to your OpenClaw config. Open `~/.openclaw/openclaw.json` and add the plugins section:
 
 ```json
 {
-  "hooks": {
-    "internal": {
-      "entries": {
-        "multicorn-shield": {
-          "enabled": true,
-          "env": {
-            "MULTICORN_API_KEY": "mcs_your_api_key_here",
-            "MULTICORN_BASE_URL": "https://api.multicorn.ai"
-          }
-        }
-      }
-    }
-  },
   "plugins": {
     "load": {
-      "paths": ["./dist/openclaw-plugin/index.js"]
+      "paths": ["<path-to-global-node-modules>/multicorn-shield/dist/openclaw-plugin/index.js"]
     },
     "entries": {
       "multicorn-shield": {
@@ -96,7 +75,9 @@ Open your OpenClaw config file at `~/.openclaw/openclaw.json` and add the Shield
 }
 ```
 
-Then restart the gateway so it picks up the plugin:
+Find your exact path with: `npm root -g`
+
+Restart the gateway so it picks up the plugin:
 
 ```bash
 openclaw gateway restart
@@ -108,6 +89,26 @@ Verify the plugin is loaded:
 openclaw plugins list
 # Should show: multicorn-shield - loaded
 ```
+
+![Terminal showing openclaw plugins list with multicorn-shield loaded](/images/blog/openclaw-shield/shield-plugin-loaded.png)
+
+## Step 3: Set your API key
+
+Run the Shield setup command:
+
+```bash
+npx multicorn-proxy init
+```
+
+It will ask for your API key (the one you copied from the dashboard) and save it to `~/.multicorn/config.json`. The plugin reads this file automatically on every tool call.
+
+Restart the gateway to pick up the new config:
+
+```bash
+openclaw gateway restart
+```
+
+**Manual configuration:** You can also set the API key by editing `~/.openclaw/openclaw.json` and adding `hooks.internal.entries.multicorn-shield.env` with `MULTICORN_API_KEY` and `MULTICORN_BASE_URL`. The plugin reads from both locations, but `npx multicorn-proxy init` is the recommended path.
 
 ## Step 4: Run your agent
 
@@ -132,24 +133,6 @@ Open [app.multicorn.ai](https://app.multicorn.ai). Every action your agent takes
 ![Activity feed showing agent actions with green approved badges](/images/blog/openclaw-shield/shield-activity-feed.png)
 
 You can see what tools were called, what service was accessed, and whether each action was approved or blocked. No more wondering what your agent did while you weren't looking.
-
-## Blocking an action
-
-Here's where Shield earns its name. Go to the Permissions tab for your agent in the dashboard. Toggle off write access for a service. Say, filesystem.
-
-![Permissions panel showing filesystem with read enabled and write/execute off](/images/blog/openclaw-shield/shield-permissions-panel.png)
-
-Now ask your agent to write a file. It gets blocked. The agent receives a clear error message: "Permission denied: Filesystem write access is not allowed. Visit the Multicorn Shield dashboard to manage permissions."
-
-![Agent blocked in terminal by Multicorn Shield](/images/blog/openclaw-shield/shield-blocked-terminal.png)
-
-The block shows up in your activity feed with a red badge:
-
-![Activity log showing blocked actions with red badges alongside approved actions in green](/images/blog/openclaw-shield/shield-blocked-activity-log.png)
-
-Your agent keeps working for everything else. It can still read files, use other tools, do whatever you've allowed. It just can't do the thing you said no to.
-
-If Summer Yue had Shield running, she could have revoked OpenClaw's delete permission from her phone in the dashboard. And the next deletion attempt would have been blocked instantly. No running to the Mac Mini. No "STOP OPENCLAW" messages that get ignored. The permission is enforced at the tool call level, outside the model's context window. It can't be compressed away.
 
 ## When blocking isn't enough: the approval workflow
 
@@ -183,6 +166,26 @@ Here's what a completed approval looks like. This one was approved with "This ac
 Once you approve, the agent retries and the action goes through. After the duration expires, the next attempt creates a new approval request. The agent has to ask again.
 
 No permanent grants by accident. No "I approved read access and somehow it got delete access too." Each approval is scoped to a specific agent, a specific service, a specific action type, and a specific duration.
+
+## Blocking an action
+
+Shield blocks unauthorized actions automatically. When your agent tries something it doesn't have permission for, it gets an immediate block with a link to your dashboard. You can also manually revoke permissions at any time:
+
+Go to the Permissions tab for your agent in the dashboard. Toggle off write access for a service. Say, filesystem.
+
+![Permissions panel showing filesystem with read enabled and write/execute off](/images/blog/openclaw-shield/shield-permissions-panel.png)
+
+Now ask your agent to write a file. It gets blocked. The agent receives a clear error message: "Permission denied: Filesystem write access is not allowed. Visit the Multicorn Shield dashboard to manage permissions."
+
+![Agent blocked in terminal by Multicorn Shield](/images/blog/openclaw-shield/shield-blocked-terminal.png)
+
+The block shows up in your activity feed with a red badge:
+
+![Activity log showing blocked actions with red badges alongside approved actions in green](/images/blog/openclaw-shield/shield-blocked-activity-log.png)
+
+Your agent keeps working for everything else. It can still read files, use other tools, do whatever you've allowed. It just can't do the thing you said no to.
+
+If Summer Yue had Shield running, she could have revoked OpenClaw's delete permission from her phone in the dashboard. And the next deletion attempt would have been blocked instantly. No running to the Mac Mini. No "STOP OPENCLAW" messages that get ignored. The permission is enforced at the tool call level, outside the model's context window. It can't be compressed away.
 
 ## Why this works when system prompts don't
 
