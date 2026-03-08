@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Shield } from 'lucide-react'
 import { Footer } from '@/components/Footer'
 import { ConsentScreenDemo } from '@/components/ConsentScreenDemo'
 import { FeatureCard } from '@/components/FeatureCard'
@@ -628,6 +629,30 @@ export default function ShieldPage() {
                 </p>
                 <p className="mt-4 animate-pulse text-text-tertiary">█</p>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* We Run Shield on Shield */}
+        <section className="px-6 py-14 sm:py-28">
+          <div className="mx-auto max-w-content">
+            <div className="text-center">
+              <div className="mb-4 flex justify-center">
+                <Shield className="h-12 w-12 text-primary" aria-hidden="true" />
+              </div>
+              <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
+                We Run Shield on Shield
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-lg text-text-secondary">
+                Every production deployment of Multicorn runs through Shield. When a deploy touches
+                authentication code, security configuration, or database migrations, Shield pauses
+                the pipeline and sends an approval request. Outside business hours, every deploy
+                requires approval regardless of what changed.
+              </p>
+              <p className="mx-auto mt-4 max-w-2xl text-lg text-text-secondary">
+                No code reaches production without passing through the same permission checks, audit
+                trail, and approval flow that Shield provides to your team.
+              </p>
             </div>
           </div>
         </section>
