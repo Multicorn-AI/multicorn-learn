@@ -1,13 +1,15 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import { usePathname } from 'next/navigation'
 import { trackEvent } from '@/lib/plausible'
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.multicorn.ai'
 
 const FORM_STATES = {
   idle: 'idle',
   submitting: 'submitting',
   success: 'success',
-  duplicate: 'duplicate',
   error: 'error',
 } as const
 
@@ -17,11 +19,22 @@ function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
 
-interface SubscribeResponse {
-  readonly status: 'success' | 'already_subscribed' | 'error'
+function deriveSource(pathname: string): string {
+  if (pathname === '/' || pathname === '') return 'learn-landing'
+  if (pathname.startsWith('/blog') || pathname.startsWith('/learn')) return 'learn-blog'
+  if (pathname.startsWith('/docs') || pathname.startsWith('/shield')) return 'shield-docs'
+  if (pathname.startsWith('/pricing')) return 'shield-pricing'
+  return 'learn-other'
 }
 
-export function EmailSignupForm() {
+interface EmailSignupFormProps {
+  readonly source?: string
+}
+
+export function EmailSignupForm({ source: sourceProp }: EmailSignupFormProps = {}) {
+  const pathname = usePathname()
+  const source = sourceProp ?? deriveSource(pathname ?? '')
+
   const [formState, setFormState] = useState<FormState>(FORM_STATES.idle)
   const [email, setEmail] = useState('')
   const [validationError, setValidationError] = useState('')
@@ -56,21 +69,22 @@ export function EmailSignupForm() {
     setSubmitError('')
 
     try {
-      const response = await fetch('/api/subscribe', {
+      const response = await fetch(`${API_URL}/api/v1/newsletter/subscribe`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, source }),
       })
 
-      const data = (await response.json()) as SubscribeResponse
-
-      if (data.status === 'already_subscribed') {
-        setFormState(FORM_STATES.duplicate)
+      if (response.status === 429) {
+        setFormState(FORM_STATES.error)
+        setSubmitError('Too many requests. Please try again in a moment.')
         return
       }
 
       if (!response.ok) {
-        throw new Error('Subscription failed')
+        setFormState(FORM_STATES.error)
+        setSubmitError('Something went wrong. Please try again.')
+        return
       }
 
       setFormState(FORM_STATES.success)
@@ -87,22 +101,9 @@ export function EmailSignupForm() {
         role="status"
         className="rounded-lg border border-green/20 bg-green/5 px-6 py-4 text-center"
       >
-        <p className="font-medium text-text-primary">You&apos;re on the list!</p>
-        <p className="mt-1 text-sm text-text-secondary">
-          Check your inbox (and spam folder) for a confirmation email.
+        <p className="font-medium text-text-primary">
+          Check your inbox to confirm your subscription.
         </p>
-      </div>
-    )
-  }
-
-  if (formState === FORM_STATES.duplicate) {
-    return (
-      <div
-        role="status"
-        className="rounded-lg border border-primary/20 bg-primary/5 px-6 py-4 text-center"
-      >
-        <p className="font-medium text-text-primary">Looks like you&apos;re already subscribed.</p>
-        <p className="mt-1 text-sm text-text-secondary">Check your inbox for updates.</p>
       </div>
     )
   }

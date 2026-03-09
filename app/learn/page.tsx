@@ -91,7 +91,7 @@ export default function LearnPage() {
               for teams. Sign up below to get notified when new courses launch.
             </p>
             <div className="mt-6 flex justify-center">
-              <EmailSignupForm />
+              <EmailSignupForm source="learn-blog" />
             </div>
           </div>
         </div>
