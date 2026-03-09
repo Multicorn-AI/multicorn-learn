@@ -134,7 +134,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <p className="mb-6 text-sm text-text-secondary">
             Get the latest articles and product updates delivered to your inbox.
           </p>
-          <EmailSignupForm />
+          <EmailSignupForm source="learn-blog" />
         </section>
       </article>
     </main>

@@ -45,7 +45,7 @@ export function Hero() {
           <p className="mb-3 text-sm font-medium text-text-secondary">
             Get updates on Multicorn. No spam, ever.
           </p>
-          <EmailSignupForm />
+          <EmailSignupForm source="learn-landing" />
         </div>
       </div>
     </section>

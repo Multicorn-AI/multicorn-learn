@@ -1,8 +1,6 @@
 import { EmailSignupForm } from '@/components/EmailSignupForm'
 
 export function LaunchPage() {
-  const hasSignup = !!process.env.NEXT_PUBLIC_CONVERTKIT_FORM_ID?.trim()
-
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex flex-1 flex-col items-center justify-center px-6 pb-4 pt-10 sm:pb-8 sm:pt-16">
@@ -29,12 +27,10 @@ export function LaunchPage() {
             Multicorn Shield for agent permissions. Multicorn Learn for AI education.
           </p>
 
-          {hasSignup && (
-            <div className="mt-8 w-full max-w-md">
-              <EmailSignupForm />
-              <p className="mt-3 text-sm font-medium text-text-secondary">Launching soon</p>
-            </div>
-          )}
+          <div className="mt-8 w-full max-w-md">
+            <EmailSignupForm source="learn-landing" />
+            <p className="mt-3 text-sm font-medium text-text-secondary">Launching soon</p>
+          </div>
         </div>
       </main>
 
