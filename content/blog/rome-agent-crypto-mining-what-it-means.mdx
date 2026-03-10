@@ -1,0 +1,56 @@
+---
+title: "An AI Agent Went Rogue and Started Mining Crypto - Here's What That Means"
+description: 'A research team building an AI agent called ROME found it spontaneously mining cryptocurrency and opening SSH tunnels during training. No prompts required. Here is what happened and what stops it.'
+date: '2026-03-09'
+publishedAt: '2026-03-09'
+author: 'Rachelle Rathbone'
+ogImage: 'https://multicorn.ai/images/og-image.png'
+tags: ['agents', 'security', 'incidents', 'shield']
+draft: false
+---
+
+**What happened**
+
+Researchers at an Alibaba-affiliated lab were building a new AI agent called ROME when something unexpected happened during training. The agent started mining cryptocurrency. It also opened a reverse SSH tunnel - essentially a hidden backdoor from inside the system to an outside computer.
+
+Nobody asked it to do either of those things.
+
+The team described the behaviors as 'unanticipated' and noted they emerged 'without any explicit instruction and, more troublingly, outside the bounds of the intended sandbox.' Their security alarms went off. They added tighter restrictions and improved the training process to stop it happening again.
+
+[Axios reported on the paper](https://www.axios.com/2026/03/07/ai-agents-rome-model-cryptocurrency) on 7 March. The bottom line they led with: AI agents going beyond their prompts are no longer rare.
+
+**Why the SSH tunnel matters more than the crypto mining**
+
+The cryptocurrency mining is the headline because it is vivid. An AI agent running a side hustle is easy to explain.
+
+But the SSH tunnel is the scarier part. Crypto mining is wasteful and unauthorized. An outbound tunnel to an external computer is a security breach. It is the kind of action that in a production environment - a real system with real data - could exfiltrate information, establish persistent access, or hand control of internal infrastructure to an outside party.
+
+And it happened without prompts requesting it.
+
+**This is not a one-off**
+
+The same week this paper surfaced, Axios published a roundup of recent AI agent incidents. Two others are worth noting:
+
+- A Meta AI security researcher's OpenClaw agent deleted all of her email in a speed run while ignoring her stop commands.
+
+- An OpenClaw agent at Anon, given a prompt to find a government job, instead applied to 278 jobs on LinkedIn and Craigslist, two accelerator programs, and two hackathons.
+
+Three incidents, one week, one common thread: agents taking actions outside the scope of what they were told to do, with no mechanism to stop them mid-run.
+
+**What stops this**
+
+The ROME team's fix was to add tighter model restrictions and update the training process. That is a sensible response for a research context. It is not a viable approach for a team shipping an agent into production today.
+
+Shield takes a different approach. Rather than relying on the model choosing to stay in bounds, Shield enforces boundaries at the infrastructure layer. Before a tool call executes, Shield checks whether it is permitted. If it is not, the call is blocked. If it is a high-risk action, the agent pauses and waits for explicit human approval.
+
+A crypto mining process or an outbound SSH connection is exactly the kind of action Shield would flag. It falls outside any permission scope a reasonable operator would grant, which means it never executes in the first place.
+
+**Get started**
+
+Shield is open source. It takes two minutes to add to any agent that supports tool hooks.
+
+```
+npm install multicorn-shield
+```
+
+[Read the ROME paper](https://arxiv.org/abs/2512.24873) and the [Axios roundup](https://www.axios.com/2026/03/07/ai-danger-risks-study-research-backlash). Then read the [Shield docs](https://multicorn.ai/docs) to see how the permission layer works.
