@@ -139,11 +139,11 @@ export function EmailSignupForm({ source: sourceProp }: EmailSignupFormProps = {
           aria-label="Sign up for email updates"
           className="min-h-[44px] rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {isSubmitting ? 'Joining…' : 'Join the waitlist'}
+          {isSubmitting ? 'Subscribing…' : 'Subscribe'}
         </button>
       </div>
       <p aria-live="polite" className="sr-only">
-        {isSubmitting ? 'Joining…' : ''}
+        {isSubmitting ? 'Subscribing…' : ''}
       </p>
       {validationError && (
         <p id="email-error" role="alert" className="mt-2 text-sm text-red">

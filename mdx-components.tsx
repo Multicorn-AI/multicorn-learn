@@ -16,7 +16,9 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     p: ({ children }) => <p className="mb-4 leading-relaxed text-text-secondary">{children}</p>,
     a: ({ href, children }) => {
       const isExternal =
-        typeof href === 'string' && (href.startsWith('http://') || href.startsWith('https://'))
+        typeof href === 'string' &&
+        (href.startsWith('http://') || href.startsWith('https://')) &&
+        !href.includes('multicorn.ai')
       return (
         <a
           href={href}
