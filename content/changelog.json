@@ -1,13 +1,111 @@
 [
   {
-    "version": "0.1.0",
-    "date": "2026-02-20",
+    "version": "0.1.13",
+    "date": "2026-03-10",
+    "fixed": [
+      "Consent screen now pre-selects the permission level the agent actually requested",
+      "Scope param parsing supports both service:permission and permission:service formats",
+      "deriveDashboardUrl respects MULTICORN_BASE_URL for local development",
+      "Plugin re-checks permission after consent completes in the blocked path"
+    ]
+  },
+  {
+    "version": "0.1.12",
+    "date": "2026-03-10",
+    "changed": ["Version bump only (failed publish on 0.1.11)"]
+  },
+  {
+    "version": "0.1.11",
+    "date": "2026-03-10",
+    "fixed": [
+      "Approval flow handling in consent and plugin",
+      "Flaky tests stabilised across handler, plugin, proxy blocking, and edge-case suites"
+    ]
+  },
+  {
+    "version": "0.1.10",
+    "date": "2026-03-05",
+    "fixed": [
+      "Plugin fail mode now defaults to closed (block on API error, never fail open)",
+      "approval_id field name corrected from camelCase to snake_case to match backend API",
+      "Plugin beforeToolCall wrapped in try/catch so errors block instead of crashing silently",
+      "Config cascade documented: ~/.multicorn/config.json takes priority over openclaw.json plugin env"
+    ]
+  },
+  {
+    "version": "0.1.9",
+    "date": "2026-03-04",
+    "fixed": ["API key resolution from config.json when openclaw.json env block is not available"]
+  },
+  {
+    "version": "0.1.8",
+    "date": "2026-03-04",
+    "fixed": [
+      "Destructive exec commands (rm, mv, sudo, chmod) now map to terminal:write instead of terminal:execute",
+      "Approval descriptions show human-readable summaries instead of raw shell commands",
+      "Agent polling removed in favour of immediate block with dashboard redirect"
+    ]
+  },
+  {
+    "version": "0.1.7",
+    "date": "2026-03-04",
+    "added": ["README header SVG banner"],
+    "changed": ["Consent flow updated for OpenClaw Plugin API"],
+    "fixed": ["Handler and plugin consent test alignment with new Plugin API structure"]
+  },
+  {
+    "version": "0.1.6",
+    "date": "2026-03-04",
+    "added": ["Comprehensive plugin test suite for beforeToolCall and afterToolCall hooks"],
+    "fixed": ["Plugin registration and lifecycle handling with OpenClaw Plugin API"]
+  },
+  {
+    "version": "0.1.5",
+    "date": "2026-03-04",
+    "fixed": ["Test stability improvements across the full suite"],
+    "changed": ["Package metadata updates for npm listing"]
+  },
+  {
+    "version": "0.1.4",
+    "date": "2026-03-04",
+    "changed": ["MCP proxy improved for edge cases in tool call interception"],
+    "fixed": ["Proxy test reliability"]
+  },
+  {
+    "version": "0.1.3",
+    "date": "2026-03-04",
     "added": [
-      "Consent screen web component. Drop-in approval UI for AI agent actions",
-      "Permission scopes system. Define and enforce what each agent can access",
-      "Action logging. Tamper-evident audit trail for every agent action",
-      "Spending controls. Per-transaction, daily, and monthly limits",
-      "MCP adapter. Middleware for Model Context Protocol servers"
+      "Shield API client for permission checks and action logging from the plugin",
+      "Consent flow module with browser-open and polling for user authorization",
+      "OpenClaw Plugin API integration (beforeToolCall/afterToolCall hooks)",
+      "Tool name mapper: OpenClaw tools mapped to Shield service scopes",
+      "Hook documentation (HOOK.md)"
+    ],
+    "fixed": ["OpenClaw integration issues discovered during end-to-end testing"]
+  },
+  {
+    "version": "0.1.2",
+    "date": "2026-03-04",
+    "changed": ["Version bump only (testing OIDC trusted publishing workflow)"]
+  },
+  {
+    "version": "0.1.1",
+    "date": "2026-03-04",
+    "fixed": ["Plugin loading path resolution for OpenClaw"],
+    "changed": ["Publish workflow switched to OIDC trusted publishing via GitHub Actions"]
+  },
+  {
+    "version": "0.1.0",
+    "date": "2026-02-18",
+    "added": [
+      "Consent screen web component with Shadow DOM isolation, focus trapping, and keyboard navigation",
+      "Scope system with hierarchical definitions, parsing, and validation",
+      "Action logger for audit-trail recording of agent activity",
+      "Spending controls with per-agent and per-scope limit checking",
+      "MCP adapter for Model Context Protocol integration",
+      "TypeScript strict mode with full type safety across all modules",
+      "ESM and CJS dual-format builds via tsup",
+      "Full test suite with >85% coverage thresholds"
     ]
   }
 ]
