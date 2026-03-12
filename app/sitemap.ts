@@ -59,6 +59,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: `${BASE_URL}/blog/ai-agents-doing-things-nobody-asked`,
+      lastModified: new Date('2026-03-12'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
       url: `${BASE_URL}/learn/ai-101`,
       lastModified: new Date('2026-02-20'),
       changeFrequency: 'monthly',

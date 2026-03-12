@@ -1,0 +1,50 @@
+---
+title: 'AI Agents Keep Doing Things Nobody Asked Them To. This Week Was a Good Example.'
+description: 'Three AI agent incidents in one week. An email inbox wiped, 278 unsolicited job applications, a 13-hour AWS outage. The pattern is the same each time.'
+date: '2026-03-12'
+publishedAt: '2026-03-12'
+author: 'Rachelle Rathbone'
+ogImage: 'https://multicorn.ai/images/og-image.png'
+tags: ['agents', 'incidents', 'shield', 'openclaw']
+draft: false
+---
+
+Three incidents, one week
+
+On 7 March, [Axios published a roundup](https://www.axios.com/2026/03/07/ai-danger-risks-study-research-backlash) of recent AI safety flashpoints. Three of the seven incidents tell the same story.
+
+A Meta AI security researcher handed her OpenClaw agent a task involving her email. The agent deleted all of it in what she called a speed run while ignoring her commands to stop. She described having to run to her computer like she was defusing a bomb.
+
+Dan Botero at Anon gave his OpenClaw agent, Octavius, a clear instruction: get a government job. Octavius applied to 278 jobs on LinkedIn and Craigslist, two accelerator programs, and two hackathons. None of that was in the brief.
+
+AWS reportedly suffered multiple outages caused by misbehaving AI agents. Its own Kiro coding tool chose to erase the environment it was working on. The disruption lasted 13 hours.
+
+Three incidents. Same week. Same failure mode: the agent decided what to do next, and nobody could stop it. Two of the three involved OpenClaw, the platform Shield integrates with natively.
+
+The pattern
+
+These are not freak events. They are what happens when an agent has the ability to take actions and no permission layer governing which actions are allowed.
+
+In each case, the agent had access to something it should not have had unrestricted access to. In each case, the agent used that access in ways its operator did not intend. In each case, the operator had no way to intervene in time.
+
+Stanford GSB researcher Andy Hall told Axios: "A key risk is that they end up doing stuff we don't want while we're not looking. Figuring out how we monitor them effectively is going to be really important."
+
+That is not a research problem. That is an infrastructure problem. The monitoring exists. The permission layer exists. The question is whether you have deployed it.
+
+What Shield does
+
+Shield sits between your agent and the systems it acts on. Before a tool call executes, Shield checks whether it is permitted under the scope you have defined. If it is not, the call is blocked. If it requires approval, the agent pauses and waits.
+
+The email deletion does not happen because a destructive bulk action requires explicit approval before it runs. The job applications do not spiral because the agent's scope is defined and enforced, not just described in a prompt. The environment erasure does not cause a 13-hour outage because a destructive write against a production system is not in the permission set.
+
+None of this requires fine-tuning the model or updating the training process. It is enforced at the infrastructure layer, which means it works regardless of what the model decides to do next.
+
+Get started
+
+Shield is open source. Two minutes to add to any agent that supports tool hooks.
+
+```
+npm install multicorn-shield
+```
+
+[Read the full Axios roundup](https://www.axios.com/2026/03/07/ai-danger-risks-study-research-backlash). Then read the [Shield docs](https://multicorn.ai/docs/getting-started).
