@@ -65,6 +65,42 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: `${BASE_URL}/blog/the-agent-did-nothing-wrong`,
+      lastModified: new Date('2026-03-13'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/blog/shield-vs-mj-rathbun`,
+      lastModified: new Date('2026-02-11'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/blog/what-your-ai-agent-did`,
+      lastModified: new Date('2026-02-12'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/blog/openclaw-permissions-shield`,
+      lastModified: new Date('2026-03-04'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/blog/openai-data-agent-what-enterprises-need`,
+      lastModified: new Date('2026-03-06'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/blog/rome-agent-crypto-mining-what-it-means`,
+      lastModified: new Date('2026-03-09'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
       url: `${BASE_URL}/learn/ai-101`,
       lastModified: new Date('2026-02-20'),
       changeFrequency: 'monthly',
