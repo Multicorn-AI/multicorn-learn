@@ -1,0 +1,39 @@
+---
+title: 'The Agent Did Nothing Wrong'
+description: 'Claude Code deleted 2.5 years of production data. The agent made a reasonable decision with the information it had. That is the problem.'
+date: '2026-03-13'
+author: 'Rachelle Rathbone'
+ogImage: 'https://multicorn.ai/images/og-image.png'
+tags: ['agents', 'incidents', 'shield', 'terraform', 'infrastructure']
+draft: false
+---
+
+In February 2026, developer Alexey Grigorev asked Claude Code to help migrate DataTalks.Club to AWS. He gave it Terraform access. He gave it a clear task. He had been using AI agents for months.
+
+He lost 2.5 years of production data.
+
+The agent did not go rogue. It did not misunderstand the goal. A Terraform state file was missing from his new laptop - the file that tells Terraform what infrastructure already exists. Without it, Claude Code looked at the environment and saw what appeared to be orphaned resources. It suggested running terraform destroy to clean them up. It executed that command. The entire production database, and its automated snapshots, were gone.
+
+1.9 million rows. Student submissions, projects, leaderboards. Wiped.
+
+AWS Business Support found a hidden backup and restored everything within 24 hours. Grigorev was lucky.
+
+He documented the incident [on Substack](https://alexeyondata.substack.com/p/how-i-dropped-our-production-database) and listed the safeguards he put in place afterward. One of them: requiring manual review for all destructive infrastructure commands.
+
+That is the thing. The safeguard he built after the incident is not a model improvement. It is not a better prompt. It is a checkpoint. A human in the loop before an irreversible action runs.
+
+This incident is different from the ones that get labelled as AI going rogue. There was no rogue behaviour here. The model reasoned correctly given what it could see. The missing piece was not intelligence or alignment. It was infrastructure: a layer that intercepts destructive actions before they execute and requires a human to confirm.
+
+Shield sits at that layer. Before a tool call with destructive scope executes, Shield checks whether it is permitted and, if configured, requires approval. terraform destroy against a production environment does not run until a human says it runs. The agent does not get to decide on its own - not because the agent is untrustworthy, but because that decision should never belong to the agent alone.
+
+Grigorev's post-incident setup is a manual version of that. Shield makes it automatic, enforced, and auditable from the first deploy.
+
+The question is not whether your agent has good intentions. It is whether you have a checkpoint between its inferences and your production database.
+
+## Learn more
+
+If you want to understand more about AI agent governance and why it matters, our [AI 101 series](/learn/ai-101) covers everything from the basics of generative AI to practical guides on permissions, spending controls, and audit trails.
+
+**[Get started with Multicorn Shield](/shield)** - add permissions, spending controls, and activity records to your AI agents in minutes.
+
+**[Create an account](https://app.multicorn.ai/signup)** to get started with the Multicorn dashboard.
