@@ -1,0 +1,85 @@
+---
+title: 'Amazon Now Requires Human Approval for AI Code - You Should Too'
+description: "Amazon's AI coding agents caused multiple outages costing millions. Their response: mandatory human sign-off, access controls, and approval workflows. Shield provides the same safeguards out of the box."
+date: '2026-03-16'
+publishedAt: '2026-03-16'
+author: 'Rachelle Rathbone'
+ogImage: 'https://multicorn.ai/images/og-image.png'
+tags:
+  ['agents', 'incidents', 'shield', 'Amazon', 'AWS', 'Kiro', 'AI governance', 'approval workflows']
+draft: false
+---
+
+In December 2025, an AI coding agent inside Amazon Web Services decided the best way to fix a problem was to delete an entire production environment and start over.
+
+It wasn't joking. And nobody stopped it.
+
+The agent was Amazon's own Kiro AI coding tool. It had been given admin access by an engineer who didn't require peer review. Kiro autonomously deleted and recreated the environment for AWS Cost Explorer in China, [triggering a 13-hour outage](https://the-decoder.com/aws-ai-coding-tool-decided-to-delete-and-recreate-a-customer-facing-system-causing-13-hour-outage-report-says/) that left customers unable to manage their cloud spending. For a broader look at that week's incidents, see [AI Agents Keep Doing Things Nobody Asked Them To](/blog/ai-agents-doing-things-nobody-asked).
+
+That was the first incident. It wasn't the last.
+
+## The timeline
+
+December 2025: Kiro deletes a production environment. 13-hour outage. [Amazon blamed misconfigured access controls](https://www.aboutamazon.com/news/aws/aws-service-outage-ai-bot-kiro) rather than the AI itself.
+
+Late 2025: A second outage involving Amazon Q Developer, another internal AI coding tool. Three AWS employees confirmed to the Financial Times that engineers let the AI resolve an issue without human intervention.
+
+March 5, 2026: [Amazon's e-commerce site went down for six hours](https://www.theregister.com/2026/03/10/amazon_ai_coding_outages/). Orders drop by 99% across the United States. 6.3 million orders lost. Downdetector reports peak at over 21,000 user complaints. The cause: a software deployment that internal review linked to AI-generated code changes.
+
+March 2026: Amazon convenes a company-wide engineering meeting. Dave Treadwell, Senior VP of e-commerce services, emails staff acknowledging that "availability to the site and related infrastructure has not been good recently."
+
+The pattern is clear. AI coding tools are producing changes faster than review processes can keep up with. Teams are skipping reviews. Things are breaking.
+
+## What Amazon built in response
+
+After the outages, Amazon implemented a set of safeguards that might sound familiar:
+
+Mandatory senior sign-off. All AI-assisted code changes [now require review and approval from a senior engineer](https://awesomeagents.ai/news/amazon-ai-code-review-outages-senior-approval/) before deployment. Junior and mid-level engineers can no longer push AI-generated code to production without a human check.
+
+Access control restrictions. AI agents are now restricted from executing infrastructure-level changes without explicit human authorization. The days of an AI tool having admin access with no peer review are over.
+
+Mandatory review meetings. Amazon repurposed its weekly engineering meetings for mandatory attendance by all developers to analyze AI-related failures and establish best practices.
+
+Deployment friction. Treadwell announced "temporary safety protocols that will introduce deliberate friction to modifications in pivotal segments of the Retail experience" alongside "deterministic and agentic safeguards."
+
+These are sensible measures. They are also measures that should have existed before an AI agent was given the ability to delete production environments at a company that generates 57% of its operating profit from cloud services.
+
+## The real problem isn't the AI
+
+Amazon's AI tools weren't broken. [Kiro worked exactly as designed](https://awesomeagents.ai/news/amazon-kiro-ai-aws-outages/). Q Developer did what it was asked to do. The problem was that these tools were deployed into an environment with no governance layer.
+
+No permission boundaries. No approval gates for high-risk actions. No automatic blocks on destructive operations. No audit trail that could catch the pattern before it became a crisis.
+
+The Cloud Native Computing Foundation's 2026 forecast calls for "guardrails as core architecture." These are hard, non-negotiable stops that prevent destructive actions regardless of the agent's reasoning. For any action involving writing to production databases, changing system configuration, or initiating destructive operations, the agent must pause and request explicit human verification.
+
+This isn't a new idea. It's the principle of least privilege, applied to AI agents. The fact that it needs to be restated tells you how fast the industry is moving past basic safety practices.
+
+## Amazon had 21,000 AI agents. How many do you have?
+
+Amazon deployed 21,000 AI agents across its Stores division, claiming $2 billion in cost savings and 4.5x developer velocity. Those numbers made it politically impossible to walk back AI adoption even after the outages started. So they're adding guardrails to an already-deployed system. They are fixing the plane while flying it.
+
+Most companies don't have Amazon's resources to build custom governance infrastructure after something goes wrong. And most companies can't afford a six-hour outage that wipes out 6.3 million orders to learn the lesson.
+
+## What Shield does
+
+Every safeguard Amazon is now building internally is something Multicorn Shield provides out of the box.
+
+Permission scopes. Define exactly what each agent can do: read, write, and execute per service. An agent with read access to your database can't delete it. An agent with access to Gmail can't send emails unless you explicitly allow it.
+
+Approval workflows. High-risk actions route to a human approver before they execute. Your agent wants to deploy to production? You see the change and approve or block it first.
+
+Action logging. Every agent action is logged in real time. You see what each agent did, when, and the outcome. No more finding out about problems after the fact.
+
+Kill switch. Something going wrong? One button freezes the agent immediately. Then you get a summary of everything it did so you can assess the damage.
+
+Audit trail. Every action, every permission change, every approval decision is recorded in an immutable log. For compliance, for debugging, for the post-mortem you hope you never need.
+
+Amazon learned these lessons through production outages that cost millions. You can set up Shield in 2 minutes and learn them for free.
+
+## Learn more
+
+If you want to understand more about AI agent governance and why it matters, our [AI 101 series](/learn/ai-101) covers everything from the basics of generative AI to practical guides on permissions, spending controls, and audit trails.
+
+**[Get started with Multicorn Shield](/shield)** - add permissions, spending controls, and activity records to your AI agents in minutes.
+
+**[Create an account](https://app.multicorn.ai/signup)** to get started with the Multicorn dashboard.
