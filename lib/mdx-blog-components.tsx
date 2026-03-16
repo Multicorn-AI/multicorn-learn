@@ -1,23 +1,6 @@
-import { useMDXComponents } from '@/mdx-components'
+import { extractTextFromChildren, useMDXComponents } from '@/mdx-components'
 import { CopyButton } from '@/components/CopyButton'
 import { IncidentTimeline } from '@/components/IncidentTimeline'
-
-function extractTextFromChildren(children: React.ReactNode): string {
-  if (typeof children === 'string') return children
-  if (typeof children === 'number') return String(children)
-  if (!children) return ''
-
-  if (Array.isArray(children)) {
-    return children.map(extractTextFromChildren).join('')
-  }
-
-  if (typeof children === 'object' && children !== null && 'props' in children) {
-    const element = children as { props: { children?: React.ReactNode } }
-    return extractTextFromChildren(element.props.children)
-  }
-
-  return ''
-}
 
 function extractLanguageFromClassName(className: string | undefined): string {
   if (!className) return ''
