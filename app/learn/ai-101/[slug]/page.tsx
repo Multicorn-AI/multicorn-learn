@@ -10,6 +10,7 @@ import {
   extractTableOfContents,
 } from '@/lib/learn'
 import { blogComponents } from '@/lib/mdx-blog-components'
+import { MobileTableOfContents } from '@/components/MobileTableOfContents'
 import { TableOfContents } from '@/components/TableOfContents'
 import { ArticleNavigation } from '@/components/ArticleNavigation'
 import { EmailSignupForm } from '@/components/EmailSignupForm'
@@ -210,6 +211,10 @@ export default async function LearnArticlePage({ params }: LearnArticlePageProps
                   <time dateTime={article.meta.date}>{formatDate(article.meta.date)}</time>
                 </div>
               </header>
+
+              <div className="mb-6 mt-3">
+                <MobileTableOfContents items={tocItems} />
+              </div>
 
               <div className="prose-multicorn">
                 <MDXRemote

@@ -101,6 +101,14 @@ export function getArticleNavigation(slug: string): ArticleNavigation {
   return { prev, next }
 }
 
+export function slugifyHeading(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+}
+
 export function extractTableOfContents(content: string): readonly TableOfContentsItem[] {
   const headingRegex = /^(#{2,3})\s+(.+)$/gm
   const items: TableOfContentsItem[] = []
@@ -109,13 +117,7 @@ export function extractTableOfContents(content: string): readonly TableOfContent
   while ((match = headingRegex.exec(content)) !== null) {
     const level = (match[1] ?? '##').length
     const text = (match[2] ?? '').trim()
-    const id = text
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-
-    items.push({ id, text, level })
+    items.push({ id: slugifyHeading(text), text, level })
   }
 
   return items

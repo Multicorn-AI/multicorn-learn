@@ -1,18 +1,49 @@
 import type { MDXComponents } from 'mdx/types'
+import { slugifyHeading } from '@/lib/learn'
+
+export function extractTextFromChildren(children: React.ReactNode): string {
+  if (typeof children === 'string') return children
+  if (typeof children === 'number') return String(children)
+  if (!children) return ''
+
+  if (Array.isArray(children)) {
+    return children.map(extractTextFromChildren).join('')
+  }
+
+  if (typeof children === 'object' && children !== null && 'props' in children) {
+    const element = children as { props: { children?: React.ReactNode } }
+    return extractTextFromChildren(element.props.children)
+  }
+
+  return ''
+}
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     h1: ({ children }) => (
       <h1 className="mb-6 text-4xl font-bold tracking-tight text-text-primary">{children}</h1>
     ),
-    h2: ({ children }) => (
-      <h2 className="mb-4 mt-10 text-3xl font-semibold tracking-tight text-text-primary">
-        {children}
-      </h2>
-    ),
-    h3: ({ children }) => (
-      <h3 className="mb-3 mt-8 text-2xl font-semibold text-text-primary">{children}</h3>
-    ),
+    h2: ({ children }) => {
+      const text = extractTextFromChildren(children)
+      const id = text ? slugifyHeading(text) : undefined
+      return (
+        <h2
+          id={id}
+          className="mb-4 mt-10 scroll-mt-24 text-3xl font-semibold tracking-tight text-text-primary"
+        >
+          {children}
+        </h2>
+      )
+    },
+    h3: ({ children }) => {
+      const text = extractTextFromChildren(children)
+      const id = text ? slugifyHeading(text) : undefined
+      return (
+        <h3 id={id} className="mb-3 mt-8 scroll-mt-24 text-2xl font-semibold text-text-primary">
+          {children}
+        </h3>
+      )
+    },
     p: ({ children }) => <p className="mb-4 leading-relaxed text-text-secondary">{children}</p>,
     a: ({ href, children }) => {
       const isExternal =
