@@ -66,7 +66,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${BASE_URL}/blog/the-agent-did-nothing-wrong`,
-      lastModified: new Date('2026-03-13'),
+      lastModified: new Date('2026-03-17'),
       changeFrequency: 'monthly',
       priority: 0.7,
     },
