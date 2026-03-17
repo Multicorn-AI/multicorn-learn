@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import Script from 'next/script'
 import { Inter } from 'next/font/google'
 import { LaunchGate } from '@/components/LaunchGate'
+import { ServiceWorkerRegistrar } from '@/components/ServiceWorkerRegistrar'
+import { PwaMetaTags } from '@/components/PwaMetaTags'
 import './globals.css'
 
 const inter = Inter({
@@ -20,6 +22,8 @@ export const metadata: Metadata = {
       { url: '/learn/favicon.ico', sizes: 'any' },
       { url: '/learn/favicon.svg', type: 'image/svg+xml' },
       { url: '/learn/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+      { url: '/learn/favicon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/learn/favicon-512x512.png', sizes: '512x512', type: 'image/png' },
     ],
     apple: [{ url: '/learn/apple-touch-icon.png' }],
   },
@@ -52,6 +56,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className={inter.variable}>
       <body className="min-h-screen font-sans">
+        <PwaMetaTags />
+        <ServiceWorkerRegistrar />
         <LaunchGate>{children}</LaunchGate>
         {process.env.NODE_ENV === 'production' && (
           <>
