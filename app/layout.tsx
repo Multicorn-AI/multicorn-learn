@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import { LaunchGate } from '@/components/LaunchGate'
 import { ServiceWorkerRegistrar } from '@/components/ServiceWorkerRegistrar'
 import { PwaMetaTags } from '@/components/PwaMetaTags'
+import { InstallBanner } from '@/components/InstallBanner'
 import './globals.css'
 
 const inter = Inter({
@@ -58,6 +59,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className="min-h-screen font-sans">
         <PwaMetaTags />
         <ServiceWorkerRegistrar />
+        <InstallBanner />
         <LaunchGate>{children}</LaunchGate>
         {/* Domain is encoded in the proxy script URL - no data-domain attribute needed */}
         {process.env.NODE_ENV === 'production' && (
