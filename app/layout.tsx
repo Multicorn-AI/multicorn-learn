@@ -59,6 +59,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <PwaMetaTags />
         <ServiceWorkerRegistrar />
         <LaunchGate>{children}</LaunchGate>
+        {/* Domain is encoded in the proxy script URL - no data-domain attribute needed */}
         {process.env.NODE_ENV === 'production' && (
           <>
             <Script

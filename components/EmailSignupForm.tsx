@@ -88,7 +88,7 @@ export function EmailSignupForm({ source: sourceProp }: EmailSignupFormProps = {
       }
 
       setFormState(FORM_STATES.success)
-      trackEvent('email_signup')
+      trackEvent('newsletter_signup')
     } catch {
       setFormState(FORM_STATES.error)
       setSubmitError('Something went wrong. Please try again.')

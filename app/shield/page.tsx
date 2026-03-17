@@ -367,7 +367,7 @@ export default function ShieldPage() {
               <TrackedCtaLink
                 href="https://app.multicorn.ai/signup"
                 className="inline-flex min-h-[44px] items-center rounded-lg bg-primary px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
-                eventName="signup_cta_click"
+                eventName="shield_signup_click"
                 eventProps={{ location: 'shield_hero' }}
               >
                 Start for free
@@ -800,7 +800,7 @@ export default function ShieldPage() {
               <TrackedCtaLink
                 href="https://app.multicorn.ai/signup"
                 className="inline-flex min-h-[44px] items-center rounded-lg bg-primary px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
-                eventName="signup_cta_click"
+                eventName="shield_signup_click"
                 eventProps={{ location: 'shield_bottom_cta' }}
               >
                 Start for free

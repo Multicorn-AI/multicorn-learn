@@ -1,19 +1,29 @@
 'use client'
 
 import { useState } from 'react'
+import { trackEvent } from '@/lib/plausible'
+
+interface AnalyticsEvent {
+  readonly event: string
+  readonly props?: Record<string, string>
+}
 
 interface CopyButtonProps {
   readonly text: string
   readonly label?: string
+  readonly analyticsEvent?: AnalyticsEvent
 }
 
-export function CopyButton({ text, label = 'Copy to clipboard' }: CopyButtonProps) {
+export function CopyButton({ text, label = 'Copy to clipboard', analyticsEvent }: CopyButtonProps) {
   const [copied, setCopied] = useState(false)
 
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(text)
       setCopied(true)
+      if (analyticsEvent) {
+        trackEvent(analyticsEvent.event, analyticsEvent.props)
+      }
       setTimeout(() => setCopied(false), 2000)
     } catch {
       setCopied(false)
