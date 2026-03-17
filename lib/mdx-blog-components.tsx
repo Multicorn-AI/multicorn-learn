@@ -26,7 +26,10 @@ export const blogComponents = {
       <div className="mb-6 overflow-hidden rounded-lg border border-border bg-text-primary">
         <div className="flex items-center justify-between border-b border-white/10 px-4 py-2">
           <span className="text-xs text-text-tertiary">{language || 'code'}</span>
-          <CopyButton text={codeText} />
+          <CopyButton
+            text={codeText}
+            analyticsEvent={{ event: 'prompt_copied', props: { category: 'code_block' } }}
+          />
         </div>
         <pre className="overflow-x-auto px-4 py-3">
           <code className="text-sm text-green">{codeText}</code>
