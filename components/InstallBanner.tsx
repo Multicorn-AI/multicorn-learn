@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>
@@ -10,7 +10,22 @@ interface BeforeInstallPromptEvent extends Event {
 export function InstallBanner() {
   const [canInstall, setCanInstall] = useState(false)
   const [dismissed, setDismissed] = useState(false)
+  const [isStandalone, setIsStandalone] = useState(false)
+  const [standaloneChecked, setStandaloneChecked] = useState(false)
   const installEventRef = useRef<BeforeInstallPromptEvent | null>(null)
+
+  useLayoutEffect(() => {
+    const mq = window.matchMedia('(display-mode: standalone)')
+    const sync = () => {
+      const running =
+        mq.matches || (navigator as Navigator & { standalone?: boolean }).standalone === true
+      setIsStandalone(running)
+      setStandaloneChecked(true)
+    }
+    sync()
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
 
   useEffect(() => {
     const handleBeforeInstall = (e: Event) => {
@@ -39,7 +54,7 @@ export function InstallBanner() {
     if (outcome === 'accepted') setCanInstall(false)
   }
 
-  if (!canInstall || dismissed) return null
+  if (!standaloneChecked || isStandalone || !canInstall || dismissed) return null
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-between bg-violet-600 px-4 py-3 text-white">
