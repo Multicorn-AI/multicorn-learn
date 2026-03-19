@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/og-image.png',
+        url: 'https://multicorn.ai/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Multicorn - AI agent governance for production teams',
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     title: 'Multicorn - AI agent governance for production teams',
     description:
       'Consent screens, spending controls, and audit trails for every AI agent you deploy.',
-    images: ['/og-image.png'],
+    images: ['https://multicorn.ai/og-image.png'],
   },
 }
 
