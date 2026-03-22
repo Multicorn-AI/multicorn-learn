@@ -1,5 +1,34 @@
 [
   {
+    "version": "0.2.0",
+    "date": "2026-03-22",
+    "added": [
+      "Claude Code plugin: PreToolUse hook intercepts tool calls and checks permissions via Shield API before allowing execution",
+      "Claude Code plugin: PostToolUse hook logs completed tool calls to Shield audit trail",
+      "Claude Code plugin: consent screen opens in browser on first tool call for new agents, polls for approval",
+      "Claude Desktop: CLI wizard auto-writes claude_desktop_config.json with MCP proxy config (macOS, Linux, Windows)",
+      "MCP proxy: comprehensive tool name mapper with explicit mappings for filesystem, git, web, terminal, email, and calendar MCP servers",
+      "CLI wizard: connected checkmark for Claude Code and Claude Desktop in platform selection menu"
+    ],
+    "changed": [
+      "Claude Desktop wizard path now auto-writes config instead of showing manual JSON snippet",
+      "MCP proxy tool mapping replaced underscore-split with explicit lookup table"
+    ],
+    "fixed": [
+      "Claude Code plugin install: removed skills array from plugin.json that caused validation error",
+      "Claude Code consent flow: consent screen only opens once per agent, not per scope",
+      "MCP proxy: filesystem server tools now correctly map to filesystem:read/write"
+    ]
+  },
+  {
+    "version": "0.1.16",
+    "date": "2026-03-21",
+    "added": [
+      "Claude Code marketplace manifest and plugin structure",
+      "Repository field in marketplace.json linking to GitHub source"
+    ]
+  },
+  {
     "version": "0.1.15",
     "date": "2026-03-13",
     "changed": [
