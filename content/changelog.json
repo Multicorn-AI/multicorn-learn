@@ -6,154 +6,204 @@
       "Claude Code plugin: PreToolUse hook intercepts tool calls and checks permissions via Shield API before allowing execution",
       "Claude Code plugin: PostToolUse hook logs completed tool calls to Shield audit trail",
       "Claude Code plugin: consent screen opens in browser on first tool call for new agents, polls for approval",
-      "Claude Desktop: CLI wizard auto-writes claude_desktop_config.json with MCP proxy config (macOS, Linux, Windows)",
+      "Claude Code plugin: consent marker file prevents repeated browser opens after initial consent",
+      "Claude Desktop: CLI wizard auto-writes `claude_desktop_config.json` with MCP proxy config (macOS, Linux, Windows paths)",
+      "Claude Desktop: wizard prompts for MCP server command and merges config without clobbering existing entries",
       "MCP proxy: comprehensive tool name mapper with explicit mappings for filesystem, git, web, terminal, email, and calendar MCP servers",
-      "CLI wizard: connected checkmark for Claude Code and Claude Desktop in platform selection menu"
+      "CLI wizard: \"connected\" checkmark for Claude Code and Claude Desktop in platform selection menu",
+      "CLI wizard: Step 3 added to Claude Code output (\"Start Claude Code: claude\")",
+      "Agent name validation: must match /^[a-zA-Z0-9_-]+$/ before use in config files",
+      "`shell` tool name mapping to terminal:execute in Claude Code hook (covers Claude Code's Shell tool variant)"
     ],
     "changed": [
-      "Claude Desktop wizard path now auto-writes config instead of showing manual JSON snippet",
-      "MCP proxy tool mapping replaced underscore-split with explicit lookup table"
+      "Claude Desktop wizard path now auto-writes config instead of showing manual JSON snippet (falls back to manual on invalid JSON or user skip)",
+      "MCP proxy tool mapping replaced: `extractServiceFromToolName`/`extractActionFromToolName` underscore-split replaced with explicit `mapMcpToolToScope` lookup table",
+      "`isClaudeDesktopConnected` uses proper args array inspection instead of substring match on serialized JSON"
     ],
     "fixed": [
-      "Claude Code plugin install: removed skills array from plugin.json that caused validation error",
-      "Claude Code consent flow: consent screen only opens once per agent, not per scope",
-      "MCP proxy: filesystem server tools now correctly map to filesystem:read/write"
-    ]
+      "Claude Code plugin install: removed `skills` array from plugin.json that caused validation error on `claude plugin install`",
+      "Claude Code consent flow: consent screen only opens once per agent (not per scope), subsequent permission requests block with approvals link",
+      "Claude Code hook: localhost:8080 API base URL correctly maps to localhost:5173 dashboard URL for consent and approvals links",
+      "MCP proxy: filesystem server tools (read_file, write_file, list_directory, etc.) now correctly map to filesystem:read/write instead of garbage service names"
+    ],
+    "security": []
   },
   {
     "version": "0.1.16",
     "date": "2026-03-21",
     "added": [
-      "Claude Code marketplace manifest and plugin structure",
-      "Repository field in marketplace.json linking to GitHub source"
-    ]
+      "Claude Code marketplace manifest at `.claude-plugin/marketplace.json`",
+      "Claude Code plugin structure at `plugins/multicorn-shield/` with plugin.json and shield-governance skill",
+      "Repository field added to marketplace.json linking to GitHub source"
+    ],
+    "changed": [],
+    "fixed": [],
+    "security": []
   },
   {
     "version": "0.1.15",
     "date": "2026-03-13",
+    "added": [
+      "`ShieldAuthError` class for clean 401/403 error propagation through `resolveAgentRecord`",
+      "`buildInternalErrorResponse`, `buildServiceUnreachableResponse`, and `buildAuthErrorResponse` in interceptor module",
+      "Early auth-invalid and offline-mode guards at the top of `handleToolCall` (before scope validation)",
+      "`authInvalid` flag on `AgentRecord` for propagating auth failures from consent module to proxy",
+      "`proxy.fail-closed.test.ts` covering service-down, timeout, 500, malformed JSON, 401, 403, and internal error scenarios",
+      "`plugin.fail-closed.test.ts` covering exception handling, 5xx responses, and malformed response blocking"
+    ],
     "changed": [
       "All proxy and plugin failure modes now fail closed (block action when Shield cannot verify permissions)",
-      "handleHttpError returns shouldBlock: true for 429 (rate limit) and 5xx (server error), matching the existing checkActionPermission behavior",
-      "Service-unreachable, auth-error, and internal-error responses use distinct JSON-RPC error codes: -32000, -32002, -32003, -32004",
-      "Plugin output filename changed from index.js to multicorn-shield.js to fix OpenClaw plugin ID mismatch warning"
-    ],
-    "added": [
-      "ShieldAuthError class for clean 401/403 error propagation through resolveAgentRecord",
-      "buildInternalErrorResponse, buildServiceUnreachableResponse, and buildAuthErrorResponse in interceptor module",
-      "Early auth-invalid and offline-mode guards at the top of handleToolCall (before scope validation)",
-      "authInvalid flag on AgentRecord for propagating auth failures from consent module to proxy",
-      "proxy.fail-closed.test.ts covering service-down, timeout, 500, malformed JSON, 401, 403, and internal error scenarios",
-      "plugin.fail-closed.test.ts covering exception handling, 5xx responses, and malformed response blocking"
+      "`handleHttpError` returns `shouldBlock: true` for 429 (rate limit) and 5xx (server error), matching the existing `checkActionPermission` behavior and fixing misleading comments",
+      "Service-unreachable, auth-error, and internal-error responses use distinct JSON-RPC error codes: -32000 (permission denied), -32002 (internal error), -32003 (service unreachable), -32004 (auth error)",
+      "Plugin output filename changed from `index.js` to `multicorn-shield.js` to fix OpenClaw plugin ID mismatch warning"
     ],
     "fixed": [
-      "Proxy handleToolCall no longer hangs or returns wrong error code when service is unreachable at startup",
-      "findAgentByName wraps response.json() in try/catch so malformed responses flow through the offline path instead of throwing unhandled rejections",
+      "Proxy `handleToolCall` no longer hangs or returns wrong error code when service is unreachable at startup",
+      "`findAgentByName` wraps `response.json()` in try/catch so malformed responses flow through the offline path instead of throwing unhandled rejections",
       "Existing test assertions updated to match new error codes (-32003 for service unreachable, -32004 for auth errors)"
-    ]
+    ],
+    "security": []
   },
   {
     "version": "0.1.14",
     "date": "2026-03-12",
+    "added": [],
+    "changed": [],
     "fixed": [
-      "Audit log payload column uses text instead of jsonb to preserve SHA-256 hash chain integrity",
-      "Instant.toString() timestamp precision preserved using DateTimeFormatter with SSSSSS pattern in AuditHasher.formatTimestamp()",
+      "Audit log payload column uses `text` instead of `jsonb` to preserve SHA-256 hash chain integrity (PostgreSQL `jsonb` normalizes key ordering and whitespace)",
+      "`Instant.toString()` timestamp precision preserved using `DateTimeFormatter` with `SSSSSS` pattern in `AuditHasher.formatTimestamp()`",
       "All 40 integration tests passing after audit log migration (V030)"
-    ]
+    ],
+    "security": []
   },
   {
     "version": "0.1.13",
     "date": "2026-03-10",
+    "added": [],
+    "changed": [],
     "fixed": [
-      "Consent screen now pre-selects the permission level the agent actually requested",
-      "Scope param parsing supports both service:permission and permission:service formats",
-      "deriveDashboardUrl respects MULTICORN_BASE_URL for local development",
-      "Plugin re-checks permission after consent completes in the blocked path"
-    ]
+      "Consent screen now pre-selects the permission level the agent actually requested (e.g. terminal:execute pre-selects the Execute button)",
+      "Scope param parsing supports both formats: service:permission (terminal:execute) and permission:service (execute:terminal)",
+      "deriveDashboardUrl respects MULTICORN_BASE_URL env var for local development instead of always resolving to production",
+      "Plugin re-checks permission after consent completes in the blocked path, so the user doesn't have to trigger a second tool call"
+    ],
+    "security": []
   },
   {
     "version": "0.1.12",
     "date": "2026-03-10",
-    "changed": ["Version bump only (failed publish on 0.1.11)"]
+    "added": [],
+    "changed": [],
+    "fixed": [],
+    "security": []
   },
   {
     "version": "0.1.11",
     "date": "2026-03-10",
+    "added": [],
+    "changed": [],
     "fixed": [
-      "Approval flow handling in consent and plugin",
+      "Approval flow: plugin correctly handles consent-then-permission-check sequence",
       "Flaky tests stabilised across handler, plugin, proxy blocking, and edge-case suites"
-    ]
+    ],
+    "security": []
   },
   {
     "version": "0.1.10",
     "date": "2026-03-05",
+    "added": [],
+    "changed": [],
     "fixed": [
       "Plugin fail mode now defaults to closed (block on API error, never fail open)",
       "approval_id field name corrected from camelCase to snake_case to match backend API",
       "Plugin beforeToolCall wrapped in try/catch so errors block instead of crashing silently",
       "Config cascade documented: ~/.multicorn/config.json takes priority over openclaw.json plugin env"
-    ]
+    ],
+    "security": []
   },
   {
     "version": "0.1.9",
     "date": "2026-03-04",
-    "fixed": ["API key resolution from config.json when openclaw.json env block is not available"]
+    "added": [],
+    "changed": [],
+    "fixed": ["API key resolution from config.json when openclaw.json env block is not available"],
+    "security": []
   },
   {
     "version": "0.1.8",
     "date": "2026-03-04",
+    "added": [],
+    "changed": [],
     "fixed": [
-      "Destructive exec commands (rm, mv, sudo, chmod) now map to terminal:write instead of terminal:execute",
-      "Approval descriptions show human-readable summaries instead of raw shell commands",
-      "Agent polling removed in favour of immediate block with dashboard redirect"
-    ]
+      "Plugin correctly maps destructive exec commands (rm, mv, sudo, chmod) to terminal:write instead of terminal:execute",
+      "Approval descriptions now show human-readable summaries instead of raw shell commands",
+      "Agent polling removed in favour of immediate block with dashboard redirect (OpenClaw hook timeout was shorter than human approval time)"
+    ],
+    "security": []
   },
   {
     "version": "0.1.7",
     "date": "2026-03-04",
     "added": ["README header SVG banner"],
-    "changed": ["Consent flow updated for OpenClaw Plugin API"],
-    "fixed": ["Handler and plugin consent test alignment with new Plugin API structure"]
+    "changed": [
+      "Consent flow updated for OpenClaw Plugin API (replaces deprecated gateway hook approach)"
+    ],
+    "fixed": ["Handler and plugin consent test alignment with new Plugin API structure"],
+    "security": []
   },
   {
     "version": "0.1.6",
     "date": "2026-03-04",
     "added": ["Comprehensive plugin test suite for beforeToolCall and afterToolCall hooks"],
-    "fixed": ["Plugin registration and lifecycle handling with OpenClaw Plugin API"]
+    "changed": [],
+    "fixed": ["Plugin registration and lifecycle handling with OpenClaw Plugin API"],
+    "security": []
   },
   {
     "version": "0.1.5",
     "date": "2026-03-04",
+    "added": [],
+    "changed": ["Package metadata updates for npm listing"],
     "fixed": ["Test stability improvements across the full suite"],
-    "changed": ["Package metadata updates for npm listing"]
+    "security": []
   },
   {
     "version": "0.1.4",
     "date": "2026-03-04",
+    "added": [],
     "changed": ["MCP proxy improved for edge cases in tool call interception"],
-    "fixed": ["Proxy test reliability"]
+    "fixed": ["Proxy test reliability"],
+    "security": []
   },
   {
     "version": "0.1.3",
     "date": "2026-03-04",
     "added": [
-      "Shield API client for permission checks and action logging from the plugin",
+      "Shield API client (shield-client.ts) for permission checks and action logging from the plugin",
       "Consent flow module with browser-open and polling for user authorization",
       "OpenClaw Plugin API integration (beforeToolCall/afterToolCall hooks)",
-      "Tool name mapper: OpenClaw tools mapped to Shield service scopes",
+      "Tool name mapper: OpenClaw tools (exec, read, write, browser, message) mapped to Shield service scopes",
       "Hook documentation (HOOK.md)"
     ],
-    "fixed": ["OpenClaw integration issues discovered during end-to-end testing"]
+    "changed": [],
+    "fixed": ["OpenClaw integration issues discovered during end-to-end testing"],
+    "security": []
   },
   {
     "version": "0.1.2",
     "date": "2026-03-04",
-    "changed": ["Version bump only (testing OIDC trusted publishing workflow)"]
+    "added": [],
+    "changed": [],
+    "fixed": [],
+    "security": []
   },
   {
     "version": "0.1.1",
     "date": "2026-03-04",
+    "added": [],
+    "changed": ["Publish workflow switched to OIDC trusted publishing via GitHub Actions"],
     "fixed": ["Plugin loading path resolution for OpenClaw"],
-    "changed": ["Publish workflow switched to OIDC trusted publishing via GitHub Actions"]
+    "security": []
   },
   {
     "version": "0.1.0",
@@ -163,10 +213,13 @@
       "Scope system with hierarchical definitions, parsing, and validation",
       "Action logger for audit-trail recording of agent activity",
       "Spending controls with per-agent and per-scope limit checking",
-      "MCP adapter for Model Context Protocol integration",
+      "MCP protocol adapter for Model Context Protocol integration",
       "TypeScript strict mode with full type safety across all modules",
       "ESM and CJS dual-format builds via tsup",
       "Full test suite with >85% coverage thresholds"
-    ]
+    ],
+    "changed": [],
+    "fixed": [],
+    "security": []
   }
 ]

@@ -8,6 +8,7 @@
   "packageManager": "pnpm@10.29.3",
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/fetch-changelog.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
