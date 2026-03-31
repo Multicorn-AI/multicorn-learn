@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
 import { Inter } from 'next/font/google'
+import { AnalyticsPageview } from '@/components/AnalyticsPageview'
 import { LaunchGate } from '@/components/LaunchGate'
 import { ServiceWorkerRegistrar } from '@/components/ServiceWorkerRegistrar'
 import { PwaMetaTags } from '@/components/PwaMetaTags'
@@ -58,6 +59,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className={inter.variable}>
       <body className="min-h-screen font-sans">
+        <AnalyticsPageview />
         <PwaMetaTags />
         <ServiceWorkerRegistrar />
         <InstallBanner />

@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { usePathname } from 'next/navigation'
+import { trackEvent as trackAnalytics } from '@/lib/analytics'
 import { trackEvent } from '@/lib/plausible'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.multicorn.ai'
@@ -89,6 +90,7 @@ export function EmailSignupForm({ source: sourceProp }: EmailSignupFormProps = {
 
       setFormState(FORM_STATES.success)
       trackEvent('newsletter_signup')
+      trackAnalytics('newsletter_signup', { source })
     } catch {
       setFormState(FORM_STATES.error)
       setSubmitError('Something went wrong. Please try again.')
