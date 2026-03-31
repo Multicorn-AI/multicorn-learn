@@ -1,5 +1,6 @@
 'use client'
 
+import { trackEvent as trackAnalytics } from '@/lib/analytics'
 import { trackEvent } from '@/lib/plausible'
 
 interface TrackedCtaLinkProps {
@@ -31,7 +32,10 @@ export function TrackedCtaLink({
       className={className}
       target={effectiveTarget}
       rel={effectiveRel}
-      onClick={() => trackEvent(eventName, eventProps)}
+      onClick={() => {
+        trackEvent(eventName, eventProps)
+        trackAnalytics(eventName, eventProps)
+      }}
     >
       {children}
     </a>

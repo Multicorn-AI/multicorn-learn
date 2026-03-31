@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { trackEvent as trackAnalytics } from '@/lib/analytics'
 import { trackEvent } from '@/lib/plausible'
 
 interface AnalyticsEvent {
@@ -23,6 +24,7 @@ export function CopyButton({ text, label = 'Copy to clipboard', analyticsEvent }
       setCopied(true)
       if (analyticsEvent) {
         trackEvent(analyticsEvent.event, analyticsEvent.props)
+        trackAnalytics(analyticsEvent.event, analyticsEvent.props)
       }
       setTimeout(() => setCopied(false), 2000)
     } catch {
