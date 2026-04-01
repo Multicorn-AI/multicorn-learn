@@ -20,9 +20,10 @@ export function SiteHeader() {
       <div className="mx-auto flex h-14 max-w-content items-center justify-between px-6">
         <Link
           href="/"
-          className="rounded text-lg font-bold tracking-tight text-text-primary transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+          className="inline-flex items-center gap-2 rounded text-lg font-bold tracking-tight text-text-primary transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
         >
-          Multicorn
+          <img src="/images/logo-icon.png" alt="" className="h-7 w-auto shrink-0" aria-hidden />
+          multicorn
         </Link>
 
         <nav aria-label="Main navigation" className="hidden md:block">

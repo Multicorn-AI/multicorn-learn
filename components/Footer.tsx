@@ -77,8 +77,12 @@ export function Footer({ site = 'shield' }: { readonly site?: FooterSite }) {
       <div className="mx-auto max-w-content">
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-5">
           <div className="sm:col-span-2">
-            <Link href="/" className="text-lg font-bold text-text-primary">
-              Multicorn
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-lg font-bold text-text-primary"
+            >
+              <img src="/images/logo-icon.png" alt="" className="h-7 w-auto shrink-0" aria-hidden />
+              multicorn
             </Link>
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-text-secondary">
               The trusted layer between humans and AI agents. Open-source SDK, enterprise-grade
@@ -96,7 +100,7 @@ export function Footer({ site = 'shield' }: { readonly site?: FooterSite }) {
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row">
           <p className="text-sm text-text-tertiary">
-            &copy; {new Date().getFullYear()} Multicorn. All rights reserved.
+            &copy; {new Date().getFullYear()} multicorn. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             <a
