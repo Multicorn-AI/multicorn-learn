@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { Shield } from 'lucide-react'
 import { Footer } from '@/components/Footer'
 import { ConsentScreenDemo } from '@/components/ConsentScreenDemo'
 import { FeatureCard } from '@/components/FeatureCard'
@@ -638,7 +637,12 @@ export default function ShieldPage() {
           <div className="mx-auto max-w-content">
             <div className="text-center">
               <div className="mb-4 flex justify-center">
-                <Shield className="h-12 w-12 text-primary" aria-hidden="true" />
+                <img
+                  src="/learn/logo-icon-primary.png"
+                  alt=""
+                  aria-hidden="true"
+                  className="h-10 w-auto"
+                />
               </div>
               <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
                 We Run Shield on Shield

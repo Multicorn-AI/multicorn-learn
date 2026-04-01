@@ -60,6 +60,11 @@ export default function NotFound() {
       />
 
       <div className="text-center">
+        <img
+          src="/images/404.png"
+          alt="A confused AI-generated multicorn"
+          className="mx-auto h-48 w-auto"
+        />
         <p className="text-sm font-semibold uppercase tracking-widest text-primary">404</p>
 
         <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
@@ -70,8 +75,9 @@ export default function NotFound() {
         </h1>
 
         <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-text-secondary sm:text-lg">
-          You&apos;ve wandered beyond the Multicorn universe. The page you&apos;re looking for may
-          have moved or never existed.
+          {
+            "You're as lost as an AI trying to draw a unicorn with multiple horns. The page you're looking for may have moved or never existed."
+          }
         </p>
 
         <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
