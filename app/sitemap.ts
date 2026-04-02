@@ -119,6 +119,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: `${BASE_URL}/blog/anthropic-ai-jobs-governance-gap`,
+      lastModified: new Date('2026-04-03'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
       url: `${BASE_URL}/learn/ai-101`,
       lastModified: new Date('2026-02-20'),
       changeFrequency: 'monthly',
