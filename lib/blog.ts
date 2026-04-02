@@ -31,12 +31,17 @@ export function getBlogPost(slug: string): BlogPost | null {
     const raw = fs.readFileSync(filePath, 'utf-8')
     const { data, content } = matter(raw)
 
+    const date =
+      (typeof data.date === 'string' && data.date) ||
+      (typeof data.publishedAt === 'string' && data.publishedAt) ||
+      ''
+
     return {
       slug,
       meta: {
         title: data.title ?? '',
         description: data.description ?? '',
-        date: data.date ?? '',
+        date,
         author: data.author ?? '',
         ogImage: data.ogImage ?? '',
         tags: data.tags ?? [],
