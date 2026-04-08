@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { Code2, Terminal, Waves } from 'lucide-react'
 import { CourseProgressIndicator } from '@/components/CourseProgressIndicator'
+import { ToolPicker } from '@/components/ToolPicker'
 import { ToolPickerCard } from '@/components/ToolPickerCard'
 import { isCourse2Enabled } from '@/lib/feature-flags'
 
@@ -155,6 +156,9 @@ export default function Course2Page() {
               Choose the coding environment you want to learn in. Each track covers the same outcome
               with tool-specific steps. You can switch later if your needs change.
             </p>
+            <div className="mb-10 max-w-2xl">
+              <ToolPicker />
+            </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               <ToolPickerCard
                 name="Cursor"
