@@ -29,4 +29,8 @@
   .animate-flow-dot {
     animation: none !important;
   }
+
+  .tool-picker-step {
+    transition-duration: 0ms !important;
+  }
 }
