@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { Code2 } from 'lucide-react'
 import { getAllLearnArticles } from '@/lib/learn'
+import { isCourse2Enabled } from '@/lib/feature-flags'
 import { ArticleSearch } from '@/components/ArticleSearch'
 import { EmailSignupForm } from '@/components/EmailSignupForm'
 
@@ -17,6 +19,7 @@ export const metadata: Metadata = {
 }
 
 export default function LearnPage() {
+  const course2Enabled = isCourse2Enabled()
   const articles = getAllLearnArticles()
 
   const searchableArticles = articles.map((article) => ({
@@ -84,16 +87,50 @@ export default function LearnPage() {
             </Link>
           </div>
 
-          <div className="mt-6 rounded-card border border-dashed border-border bg-surface p-8 text-center sm:p-10">
-            <p className="text-lg font-semibold text-text-primary">More courses coming soon</p>
-            <p className="mx-auto mt-2 max-w-lg text-sm leading-relaxed text-text-secondary">
-              We are building courses on agent deployment, security best practices, and governance
-              for teams. Sign up below to get notified when new courses launch.
-            </p>
-            <div className="mt-6 flex justify-center">
-              <EmailSignupForm source="learn-blog" />
+          {course2Enabled ? (
+            <div className="mt-6 rounded-card border border-border bg-surface-secondary p-8 sm:p-10">
+              <div className="mb-6 flex items-center gap-3">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+                  <Code2 className="h-5 w-5 text-primary" strokeWidth={1.5} aria-hidden="true" />
+                </span>
+                <div>
+                  <span className="mb-1 inline-block rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-primary">
+                    Course 2
+                  </span>
+                  <h2 className="text-2xl font-bold tracking-tight text-text-primary">
+                    Build your first app with AI
+                  </h2>
+                  <p className="text-sm text-text-secondary">
+                    Vibe coding - from idea to deployed app
+                  </p>
+                </div>
+              </div>
+
+              <p className="mb-8 leading-relaxed text-text-secondary">
+                Move from reading about AI to building with it. You will ship a real web app with
+                help from an AI coding partner, pick up testing and security as you go, and choose a
+                tool track that fits how you like to work.
+              </p>
+
+              <Link
+                href="/learn/course-2"
+                className="inline-flex min-h-[44px] items-center rounded-lg bg-primary px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+              >
+                Start building
+              </Link>
             </div>
-          </div>
+          ) : (
+            <div className="mt-6 rounded-card border border-dashed border-border bg-surface p-8 text-center sm:p-10">
+              <p className="text-lg font-semibold text-text-primary">More courses coming soon</p>
+              <p className="mx-auto mt-2 max-w-lg text-sm leading-relaxed text-text-secondary">
+                We are building courses on agent deployment, security best practices, and governance
+                for teams. Sign up below to get notified when new courses launch.
+              </p>
+              <div className="mt-6 flex justify-center">
+                <EmailSignupForm source="learn-blog" />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </main>
