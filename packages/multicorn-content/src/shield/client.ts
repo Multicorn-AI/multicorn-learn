@@ -132,7 +132,7 @@ export class ShieldClient {
     const res = await fetch(`${this.api}/api/v1/content-outlines/notify`, {
       method: 'POST',
       headers: authHeaders(this.apiKey),
-      body: JSON.stringify({ actionIds }),
+      body: JSON.stringify({ action_ids: actionIds }),
     })
     if (!res.ok) {
       const errText = await res.text()
