@@ -9,7 +9,7 @@ function normalizeProvider(value: string | undefined): string {
 /**
  * Creates an {@link LlmClient} for Anthropic or OpenAI.
  *
- * - `provider` defaults to `LLM_PROVIDER` env var, then `'anthropic'`.
+ * - `provider` defaults to the `LLM_PROVIDER` environment variable, then `'anthropic'`.
  * - `apiKey` defaults to `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` based on provider.
  */
 export function createLlmClient(options?: {
@@ -19,7 +19,7 @@ export function createLlmClient(options?: {
   const provider = normalizeProvider(options?.provider ?? process.env.LLM_PROVIDER) || 'anthropic'
 
   if (provider !== 'anthropic' && provider !== 'openai') {
-    throw new Error(`Invalid LLM provider "${provider}". Expected "anthropic" or "openai".`)
+    throw new Error('Unsupported LLM provider. Accepted values: "anthropic", "openai".')
   }
 
   if (provider === 'anthropic') {

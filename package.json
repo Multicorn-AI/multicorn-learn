@@ -15,7 +15,7 @@
     "lint:fix": "next lint --fix",
     "format": "prettier --write \"**/*.{ts,tsx,css,json,md,mdx}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,css,json,md,mdx}\"",
-    "typecheck": "tsc --noEmit && pnpm --filter @multicorn/llm-adapter run typecheck && pnpm --filter @multicorn/llm-adapter run build && pnpm --filter @multicorn/multicorn-content run typecheck",
+    "typecheck": "tsc --noEmit && pnpm --filter @multicorn/llm-adapter run typecheck && pnpm --filter @multicorn/multicorn-content run typecheck",
     "prepare": "husky"
   },
   "dependencies": {

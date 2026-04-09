@@ -2,13 +2,30 @@ import OpenAI from 'openai'
 import type { ChatCompletionMessageParam } from 'openai/resources/chat/completions'
 import type { LlmClient, LlmCompletionOptions, LlmMessage, LlmResponse } from './types.js'
 
+// Default model. Override per-call via options.model.
+// See https://platform.openai.com/docs/models for current model IDs.
 const DEFAULT_MODEL = 'gpt-4o'
 
+/**
+ * {@link LlmClient} backed by OpenAI Chat Completions.
+ *
+ * @param apiKey - OpenAI API key (typically from `OPENAI_API_KEY`).
+ *
+ * @example
+ * ```ts
+ * const client = new OpenAILlmClient(process.env.OPENAI_API_KEY!)
+ * const { content } = await client.complete(
+ *   [{ role: 'user', content: 'Hello' }],
+ *   { model: 'gpt-4o' },
+ * )
+ * ```
+ */
 export class OpenAILlmClient implements LlmClient {
-  private readonly client: OpenAI
+  private readonly client!: OpenAI
 
   constructor(apiKey: string) {
-    this.client = new OpenAI({ apiKey })
+    const client = new OpenAI({ apiKey })
+    Object.defineProperty(this, 'client', { value: client, enumerable: false, writable: false })
   }
 
   async complete(

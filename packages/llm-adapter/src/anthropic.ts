@@ -1,13 +1,30 @@
 import Anthropic from '@anthropic-ai/sdk'
 import type { LlmClient, LlmCompletionOptions, LlmMessage, LlmResponse } from './types.js'
 
+// Default model. Override per-call via options.model.
+// See https://docs.anthropic.com/en/docs/about-claude/models for current model IDs.
 const DEFAULT_MODEL = 'claude-sonnet-4-20250514'
 
+/**
+ * {@link LlmClient} backed by the Anthropic Messages API (Claude).
+ *
+ * @param apiKey - Anthropic API key (typically from `ANTHROPIC_API_KEY`).
+ *
+ * @example
+ * ```ts
+ * const client = new AnthropicLlmClient(process.env.ANTHROPIC_API_KEY!)
+ * const { content } = await client.complete(
+ *   [{ role: 'user', content: 'Hello' }],
+ *   { model: 'claude-sonnet-4-20250514' },
+ * )
+ * ```
+ */
 export class AnthropicLlmClient implements LlmClient {
-  private readonly client: Anthropic
+  private readonly client!: Anthropic
 
   constructor(apiKey: string) {
-    this.client = new Anthropic({ apiKey })
+    const client = new Anthropic({ apiKey })
+    Object.defineProperty(this, 'client', { value: client, enumerable: false, writable: false })
   }
 
   async complete(
