@@ -1,3 +1,4 @@
+/* eslint-disable no-console -- debug logging for Phase 2 / getApprovedOutlines */
 import type { AgentConfig, Outline } from '../types.js'
 
 const AGENT_NAME = 'multicorn-content'
@@ -153,9 +154,15 @@ export class ShieldClient {
       page: '0',
       size: '100',
     })
-    const res = await fetch(`${this.api}/api/v1/actions?${params}`, {
+    const url = `${this.api}/api/v1/actions?${params}`
+    console.log(`[multicorn-content] getApprovedOutlines: fetching ${url}`)
+    const res = await fetch(url, {
       headers: authHeaders(this.apiKey),
     })
+    const bodyLen = (await res.clone().text()).length
+    console.log(
+      `[multicorn-content] getApprovedOutlines: response status=${res.status}, body length=${bodyLen}`,
+    )
     if (!res.ok) {
       throw new Error(`Shield API: query actions failed (${res.status})`)
     }
@@ -213,6 +220,9 @@ export class ShieldClient {
         continue
       }
     }
+    console.log(
+      `[multicorn-content] getApprovedOutlines: rows from API=${rows.length}, passed validation=${outlines.length}`,
+    )
     return outlines
   }
 

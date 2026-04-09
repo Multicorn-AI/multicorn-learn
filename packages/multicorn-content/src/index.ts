@@ -103,15 +103,28 @@ export async function run(config: AgentConfig, statePath: string): Promise<RunSu
   const prUrls = { ...state.prUrlsByActionId }
 
   try {
+    console.log(`[multicorn-content] Phase 2: polling for approved outlines, agentId=${agentId}`)
     const approved = await withRetries('getApprovedOutlines', () =>
       shield.getApprovedOutlines(agentId),
     )
+    console.log(`[multicorn-content] Phase 2: found ${approved.length} approved outlines`)
 
     for (const outline of approved) {
+      console.log(
+        `[multicorn-content] Phase 2: outline actionId=${outline.actionId}, title=${outline.title}`,
+      )
       const aid = outline.actionId
-      if (!aid || prUrls[aid]) continue
+      if (!aid || prUrls[aid]) {
+        if (aid && prUrls[aid]) {
+          console.log(
+            `[multicorn-content] Phase 2: skipping ${outline.actionId} (PR already exists: ${prUrls[aid]})`,
+          )
+        }
+        continue
+      }
 
       try {
+        console.log(`[multicorn-content] Phase 2: before createDraftPR for actionId=${aid}`)
         let prUrl: string
         try {
           prUrl = await createDraftPR(outline, config)
@@ -119,6 +132,9 @@ export async function run(config: AgentConfig, statePath: string): Promise<RunSu
           console.warn('[multicorn-content] createDraftPR retry once:', first)
           prUrl = await createDraftPR(outline, config)
         }
+        console.log(
+          `[multicorn-content] Phase 2: after createDraftPR for actionId=${aid}, prUrl=${prUrl}`,
+        )
         prUrls[aid] = prUrl
         prsCreated++
       } catch (e) {
