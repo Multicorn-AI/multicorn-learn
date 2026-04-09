@@ -92,6 +92,10 @@ declare class ShieldClient {
    */
   submitForApproval(outline: Outline): Promise<string>
   /**
+   * Triggers the batched content outline approval email for the submitted action IDs.
+   */
+  sendApprovalNotification(actionIds: string[]): Promise<void>
+  /**
    * Loads approved outline submissions for this agent (drafts service) that are ready for PR creation.
    */
   getApprovedOutlines(agentId: string): Promise<Outline[]>

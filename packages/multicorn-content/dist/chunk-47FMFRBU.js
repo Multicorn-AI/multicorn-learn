@@ -355,6 +355,25 @@ var ShieldClient = class {
     return body.data.id;
   }
   /**
+   * Triggers the batched content outline approval email for the submitted action IDs.
+   */
+  async sendApprovalNotification(actionIds) {
+    if (actionIds.length === 0) {
+      return;
+    }
+    const res = await fetch(`${this.api}/api/v1/content-outlines/notify`, {
+      method: "POST",
+      headers: authHeaders(this.apiKey),
+      body: JSON.stringify({ actionIds })
+    });
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(
+        `Shield API: content outline notify failed (${res.status}): ${errText.slice(0, 300)}`
+      );
+    }
+  }
+  /**
    * Loads approved outline submissions for this agent (drafts service) that are ready for PR creation.
    */
   async getApprovedOutlines(agentId) {
@@ -568,6 +587,7 @@ async function run(config, statePath) {
   const agentId = await shield.findOrRegisterAgent();
   let outlinesSubmitted = 0;
   const submittedIds = [...state.submittedReviewIds];
+  const actionIdsThisRun = [];
   for (const outline of outlines) {
     try {
       const actionId = await withRetries(
@@ -575,9 +595,17 @@ async function run(config, statePath) {
         () => shield.submitForApproval(outline)
       );
       submittedIds.push(actionId);
+      actionIdsThisRun.push(actionId);
       outlinesSubmitted++;
     } catch (e) {
       console.warn("[multicorn-content] submitForApproval gave up:", e);
+    }
+  }
+  if (actionIdsThisRun.length > 0) {
+    try {
+      await shield.sendApprovalNotification(actionIdsThisRun);
+    } catch (e) {
+      console.warn("[multicorn-content] sendApprovalNotification failed:", e);
     }
   }
   state = mergeFetchedUrlHashes(state, items);
@@ -634,4 +662,4 @@ export {
   fetchAllFeeds,
   run
 };
-//# sourceMappingURL=chunk-IDUOLJF3.js.map
+//# sourceMappingURL=chunk-47FMFRBU.js.map

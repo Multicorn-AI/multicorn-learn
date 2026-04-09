@@ -6,7 +6,7 @@ import {
   filterRelevant,
   generateOutlines,
   run
-} from "./chunk-IDUOLJF3.js";
+} from "./chunk-47FMFRBU.js";
 export {
   FEEDS,
   ShieldClient,
