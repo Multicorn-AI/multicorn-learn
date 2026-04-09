@@ -1,0 +1,40 @@
+name: Content Agent
+
+on:
+  schedule:
+    - cron: '0 18 * * 0' # Sunday 6pm UTC
+  workflow_dispatch: {}
+
+jobs:
+  content-agent:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm --filter @multicorn/llm-adapter run build
+
+      - run: pnpm --filter @multicorn/multicorn-content run build
+
+      - name: Run content agent
+        run: node packages/multicorn-content/dist/cli.js
+        env:
+          LLM_PROVIDER: ${{ vars.LLM_PROVIDER || 'anthropic' }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SHIELD_API_URL: ${{ secrets.SHIELD_API_URL }}
+          SHIELD_API_KEY: ${{ secrets.SHIELD_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.CONTENT_AGENT_GITHUB_TOKEN }}
+          GITHUB_REPO: ${{ github.repository }}
+          CONTENT_STATE_PATH: .content-state.json

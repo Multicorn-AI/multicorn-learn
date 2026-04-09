@@ -126,6 +126,26 @@ export class ShieldClient {
   }
 
   /**
+   * Triggers the batched content outline approval email for the submitted action IDs.
+   */
+  async sendApprovalNotification(actionIds: string[]): Promise<void> {
+    if (actionIds.length === 0) {
+      return
+    }
+    const res = await fetch(`${this.api}/api/v1/content-outlines/notify`, {
+      method: 'POST',
+      headers: authHeaders(this.apiKey),
+      body: JSON.stringify({ actionIds }),
+    })
+    if (!res.ok) {
+      const errText = await res.text()
+      throw new Error(
+        `Shield API: content outline notify failed (${res.status}): ${errText.slice(0, 300)}`,
+      )
+    }
+  }
+
+  /**
    * Loads approved outline submissions for this agent (drafts service) that are ready for PR creation.
    */
   async getApprovedOutlines(agentId: string): Promise<Outline[]> {

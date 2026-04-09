@@ -73,6 +73,7 @@ export async function run(config: AgentConfig, statePath: string): Promise<RunSu
 
   let outlinesSubmitted = 0
   const submittedIds = [...state.submittedReviewIds]
+  const actionIdsThisRun: string[] = []
 
   for (const outline of outlines) {
     try {
@@ -80,9 +81,18 @@ export async function run(config: AgentConfig, statePath: string): Promise<RunSu
         shield.submitForApproval(outline),
       )
       submittedIds.push(actionId)
+      actionIdsThisRun.push(actionId)
       outlinesSubmitted++
     } catch (e) {
       console.warn('[multicorn-content] submitForApproval gave up:', e)
+    }
+  }
+
+  if (actionIdsThisRun.length > 0) {
+    try {
+      await shield.sendApprovalNotification(actionIdsThisRun)
+    } catch (e) {
+      console.warn('[multicorn-content] sendApprovalNotification failed:', e)
     }
   }
 

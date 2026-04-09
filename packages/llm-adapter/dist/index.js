@@ -4,7 +4,8 @@ var DEFAULT_MODEL = "claude-sonnet-4-20250514";
 var AnthropicLlmClient = class {
   client;
   constructor(apiKey) {
-    this.client = new Anthropic({ apiKey });
+    const client = new Anthropic({ apiKey });
+    Object.defineProperty(this, "client", { value: client, enumerable: false, writable: false });
   }
   async complete(messages, options) {
     const systemParts = messages.filter((m) => m.role === "system").map((m) => m.content.trim()).filter(Boolean);
@@ -42,7 +43,8 @@ var DEFAULT_MODEL2 = "gpt-4o";
 var OpenAILlmClient = class {
   client;
   constructor(apiKey) {
-    this.client = new OpenAI({ apiKey });
+    const client = new OpenAI({ apiKey });
+    Object.defineProperty(this, "client", { value: client, enumerable: false, writable: false });
   }
   async complete(messages, options) {
     const openaiMessages = messages.map((m) => ({
@@ -72,7 +74,7 @@ function normalizeProvider(value) {
 function createLlmClient(options) {
   const provider = normalizeProvider(options?.provider ?? process.env.LLM_PROVIDER) || "anthropic";
   if (provider !== "anthropic" && provider !== "openai") {
-    throw new Error(`Invalid LLM provider "${provider}". Expected "anthropic" or "openai".`);
+    throw new Error('Unsupported LLM provider. Accepted values: "anthropic", "openai".');
   }
   if (provider === "anthropic") {
     const apiKey2 = options?.apiKey ?? process.env.ANTHROPIC_API_KEY;
