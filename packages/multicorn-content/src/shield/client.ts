@@ -68,10 +68,7 @@ export class ShieldClient {
         name: AGENT_NAME,
         colour: '#6366F1',
         platform: 'github-actions',
-        scopes: [
-          { service: 'news', read: true, write: false, execute: false },
-          { service: 'drafts', read: false, write: true, execute: false },
-        ],
+        scopes: [{ service: 'news', read: true, write: false, execute: false }],
       }),
     })
     if (!createRes.ok) {
