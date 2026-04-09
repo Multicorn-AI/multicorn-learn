@@ -1,3 +1,5 @@
+import { format } from 'prettier'
+
 import type { AgentConfig, Outline } from '../types.js'
 
 function parseRepo(full: string): { owner: string; repo: string } {
@@ -71,7 +73,9 @@ export async function createDraftPR(outline: Outline, config: AgentConfig): Prom
   const slug = safeRefSegment(outline.slug)
   const branch = `content/${outline.date}-${slug}`
   const path = `drafts/${outline.date}-${slug}.md`
-  const content = Buffer.from(draftMarkdown(outline), 'utf8').toString('base64')
+  const raw = draftMarkdown(outline)
+  const formatted = await format(raw, { parser: 'markdown', proseWrap: 'always', printWidth: 80 })
+  const content = Buffer.from(formatted, 'utf8').toString('base64')
 
   const createRefRes = await fetch(`${API}/repos/${owner}/${repo}/git/refs`, {
     method: 'POST',

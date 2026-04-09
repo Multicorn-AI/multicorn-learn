@@ -127,6 +127,9 @@ importers:
       '@multicorn/llm-adapter':
         specifier: workspace:*
         version: link:../llm-adapter
+      prettier:
+        specifier: ^3.4.2
+        version: 3.8.1
       rss-parser:
         specifier: ^3.13.0
         version: 3.13.0
