@@ -32,6 +32,14 @@ Pass a specific model per request (overrides each client’s default):
 await client.complete(messages, { model: 'claude-sonnet-4-20250514' })
 ```
 
+## Testing
+
+```bash
+pnpm run test
+```
+
+Tests cover the factory function (provider selection, validation, normalisation) and do not make real API calls.
+
 ## Internal package
 
-This package is **not published to npm**. It is consumed via the workspace from other Multicorn repos and packages.
+This is an internal package used by other packages in the multicorn-learn monorepo via pnpm workspace references. It is not published to npm.
