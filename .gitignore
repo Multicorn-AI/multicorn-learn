@@ -34,5 +34,14 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Vitest / Vite (cache under packages; do not stage results.json for lint-staged)
+**/.vite/
+.eslintcache
+
+# llm-adapter (build output and local installs; lockfile lives at workspace root)
+packages/llm-adapter/dist/
+packages/llm-adapter/node_modules/
+packages/llm-adapter/pnpm-lock.yaml
+
 # local Lighthouse reports
 .cursor-lh-*.json
