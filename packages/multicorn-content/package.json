@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@multicorn/llm-adapter": "workspace:*",
+    "prettier": "^3.4.2",
     "rss-parser": "^3.13.0"
   },
   "devDependencies": {
