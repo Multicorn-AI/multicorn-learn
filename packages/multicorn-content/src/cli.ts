@@ -2,31 +2,32 @@
 import { run } from './index.js'
 import type { AgentConfig, RunSummary } from './types.js'
 
-function requireEnv(name: string): string {
-  const v = process.env[name]
-  if (v === undefined || v.trim() === '') {
-    console.error(`[multicorn-content] Missing required environment variable: ${name}`)
+void (async () => {
+  const missing: string[] = []
+
+  const shieldApiUrl = process.env.SHIELD_API_URL?.trim()
+  const shieldApiKey = process.env.SHIELD_API_KEY?.trim()
+  const githubRepo = process.env.GITHUB_REPO?.trim()
+  const githubToken =
+    process.env.CONTENT_AGENT_GITHUB_TOKEN?.trim() || process.env.GITHUB_TOKEN?.trim()
+
+  if (!shieldApiUrl) missing.push('SHIELD_API_URL')
+  if (!shieldApiKey) missing.push('SHIELD_API_KEY')
+  if (!githubRepo) missing.push('GITHUB_REPO')
+  if (!githubToken) missing.push('GITHUB_TOKEN or CONTENT_AGENT_GITHUB_TOKEN')
+
+  if (missing.length > 0) {
+    console.error(
+      `[multicorn-content] Missing required environment variable(s): ${missing.join(', ')}`,
+    )
     process.exit(1)
   }
-  return v.trim()
-}
 
-function readGithubToken(): string {
-  const fromGithub = process.env.GITHUB_TOKEN?.trim()
-  const fromContentAgent = process.env.CONTENT_AGENT_GITHUB_TOKEN?.trim()
-  if (fromGithub) return fromGithub
-  if (fromContentAgent) return fromContentAgent
-  console.error(
-    '[multicorn-content] Missing required environment variable: GITHUB_TOKEN or CONTENT_AGENT_GITHUB_TOKEN',
-  )
-  process.exit(1)
-}
+  if (!shieldApiUrl || !shieldApiKey || !githubRepo || !githubToken) {
+    console.error('[multicorn-content] Missing required environment variable(s)')
+    process.exit(1)
+  }
 
-function loadConfig(): { config: AgentConfig; statePath: string } {
-  const shieldApiUrl = requireEnv('SHIELD_API_URL')
-  const shieldApiKey = requireEnv('SHIELD_API_KEY')
-  const githubToken = readGithubToken()
-  const githubRepo = requireEnv('GITHUB_REPO')
   const statePath =
     process.env.CONTENT_STATE_PATH === undefined || process.env.CONTENT_STATE_PATH.trim() === ''
       ? '.content-state.json'
@@ -39,12 +40,6 @@ function loadConfig(): { config: AgentConfig; statePath: string } {
     githubRepo,
   }
 
-  return { config, statePath }
-}
-
-async function main(): Promise<void> {
-  const { config, statePath } = loadConfig()
-
   let summary: RunSummary
   try {
     summary = await run(config, statePath)
@@ -55,6 +50,4 @@ async function main(): Promise<void> {
 
   console.log('[multicorn-content] RunSummary:', JSON.stringify(summary))
   process.exit(0)
-}
-
-void main()
+})()

@@ -31,15 +31,6 @@
     "react-dom": "^19.0.0",
     "remark-gfm": "^4.0.1"
   },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{css,json,md,mdx}": [
-      "prettier --write"
-    ]
-  },
   "devDependencies": {
     "@multicorn/multicorn-content": "workspace:*",
     "@types/node": "^22.10.0",
