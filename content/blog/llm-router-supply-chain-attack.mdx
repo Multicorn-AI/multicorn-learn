@@ -1,0 +1,52 @@
+---
+title: 'Researchers Found 26 LLM Routers Injecting Malicious Tool Calls. One Drained $500k.'
+description: 'A new paper studied 428 third-party LLM routers and found active attacks: injected tool calls, stolen credentials, and a drained crypto wallet. Here is what that means for agent security.'
+publishedAt: '2026-04-11'
+author: 'Rachelle Rathbone'
+tags: ['agents', 'security', 'incidents', 'shield']
+draft: false
+---
+
+A research team from UC Santa Barbara, UC San Diego, and Fuzzland published a paper this week that should be required reading for anyone running AI agents in production.
+
+The paper is titled ["Your Agent Is Mine: Measuring Malicious Intermediary Attacks on the LLM Supply Chain"](https://arxiv.org/abs/2604.08407). The researchers bought or collected 428 third-party LLM API routers and tested them for malicious behaviour. What they found was not theoretical.
+
+Nine of the 428 routers were actively injecting malicious tool calls into agent sessions. Two had built evasion mechanisms to avoid detection. Seventeen touched researcher-owned AWS credentials that had been placed as canaries. One drained a crypto wallet to the value of $500,000.
+
+These are not edge cases. These are active attacks running on routers that developers are using today.
+
+## What a malicious router actually does
+
+Most developers using a third-party LLM router think of it as a dumb pipe: you send a request, it forwards it to the model provider, you get a response back.
+
+The problem is that the router sits in the middle of that exchange with full plaintext access to every message in both directions. There is no cryptographic integrity check between your agent client and the upstream model. The router can read everything, and it can modify everything.
+
+The researchers identified two attack classes. The first is payload injection: the router intercepts your agent's request and inserts additional tool calls that your agent never asked for. The second is secret exfiltration: the router reads credentials, tokens, or other sensitive data out of the session and sends them somewhere else.
+
+Both attacks are invisible to the agent. From the model's perspective, the tool call was legitimate. From the agent client's perspective, the response looked normal. The only signal that something went wrong is what actually happened in the world: money moved, credentials were used, actions were taken that nobody authorised.
+
+## What Shield captures
+
+Shield operates at the application layer, not the network layer. A router that intercepts and rewrites traffic before it reaches your agent client can act before Shield sees the request. We are not going to tell you otherwise.
+
+What Shield does give you is the forensic layer that makes these attacks visible and recoverable.
+
+Every tool call that executes gets written to an append-only audit log with a SHA-256 hash chain. The log cannot be edited after the fact. If a malicious router injects a `transfer_funds` call into a session that has no business calling `transfer_funds`, that call is in the log with a timestamp, the agent identity, and the full parameters. You can see exactly when it happened and what it did.
+
+The spending alerts that Shield fires on anomalous financial activity are directly applicable to the $500k scenario in this paper. An agent session that suddenly starts executing high-value financial tool calls outside its normal pattern will trigger an alert before the full damage is done.
+
+The audit trail also matters for what comes after an incident. When something goes wrong with an AI agent and you need to explain to your organisation, your customers, or a regulator exactly what happened, "we have a tamper-evident log of every tool call that executed, signed and timestamped" is a materially different position from "we are not sure."
+
+## The honest scope of the problem
+
+The attack surface this paper describes is real and the fix is not simple. Cryptographic integrity between agent clients and model providers does not exist today. Until it does, the router you choose is a trust decision, and that trust is not currently verifiable.
+
+The practical steps are: use routers from providers you have a contractual relationship with, treat third-party cost-saving routers as untrusted by default, and make sure you have an audit layer that records what actually executed regardless of what was requested.
+
+Shield is the audit layer. It will not stop a malicious router from acting. It will tell you that it did.
+
+[Get started with Shield](https://multicorn.ai/shield) or install the SDK:
+
+```bash
+npm install multicorn-shield
+```
