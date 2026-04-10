@@ -4,6 +4,7 @@ import { ConsentScreenDemo } from '@/components/ConsentScreenDemo'
 import { FeatureCard } from '@/components/FeatureCard'
 import { HowItWorks } from '@/components/HowItWorks'
 import { ShieldDemo } from '@/components/ShieldDemo'
+import { MulticornSignupCta } from '@/components/MulticornSignupCta'
 import { TrackedCtaLink } from '@/components/TrackedCtaLink'
 import { ShieldPageTracker } from '@/components/ShieldPageTracker'
 import { QuickstartTabs } from '@/components/QuickstartTabs'
@@ -218,79 +219,6 @@ const CAPABILITIES: readonly Capability[] = [
   },
 ]
 
-interface ComparisonRow {
-  readonly feature: string
-  readonly shield: 'yes' | 'no' | 'partial'
-  readonly agentGate: 'yes' | 'no' | 'partial'
-  readonly noControl: 'yes' | 'no' | 'partial'
-}
-
-const COMPARISON_ROWS: readonly ComparisonRow[] = [
-  { feature: 'Consent screens', shield: 'yes', agentGate: 'no', noControl: 'no' },
-  { feature: 'Spending controls', shield: 'yes', agentGate: 'partial', noControl: 'no' },
-  { feature: 'Activity logging', shield: 'yes', agentGate: 'yes', noControl: 'no' },
-  { feature: 'Open source', shield: 'yes', agentGate: 'no', noControl: 'no' },
-  { feature: 'MCP support', shield: 'yes', agentGate: 'no', noControl: 'no' },
-  { feature: 'Custom permissions', shield: 'yes', agentGate: 'partial', noControl: 'no' },
-]
-
-function ComparisonCell({ value }: { readonly value: 'yes' | 'no' | 'partial' }) {
-  if (value === 'yes') {
-    return (
-      <span className="inline-flex items-center gap-1.5 text-sm font-medium text-green">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          className="h-4 w-4"
-          aria-hidden="true"
-        >
-          <path
-            fillRule="evenodd"
-            d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
-            clipRule="evenodd"
-          />
-        </svg>
-        Yes
-      </span>
-    )
-  }
-  if (value === 'partial') {
-    return (
-      <span className="inline-flex items-center gap-1.5 text-sm text-orange">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          className="h-4 w-4"
-          aria-hidden="true"
-        >
-          <path
-            fillRule="evenodd"
-            d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-8-5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0v-4.5A.75.75 0 0 1 10 5Zm0 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
-            clipRule="evenodd"
-          />
-        </svg>
-        Limited
-      </span>
-    )
-  }
-  return (
-    <span className="inline-flex items-center gap-1.5 text-sm text-text-tertiary">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        className="h-4 w-4"
-        aria-hidden="true"
-      >
-        <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
-      </svg>
-      No
-    </span>
-  )
-}
-
 const PROXY_QUICKSTART_STEPS = [
   {
     step: '1',
@@ -363,14 +291,13 @@ export default function ShieldPage() {
               logging for every AI agent. One SDK for full oversight.
             </p>
             <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <TrackedCtaLink
-                href="https://app.multicorn.ai/signup"
+              <MulticornSignupCta
                 className="inline-flex min-h-[44px] items-center rounded-lg bg-primary px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
                 eventName="shield_signup_click"
                 eventProps={{ location: 'shield_hero' }}
               >
                 Start for free
-              </TrackedCtaLink>
+              </MulticornSignupCta>
               <a
                 href="https://github.com/Multicorn-AI/multicorn-shield"
                 target="_blank"
@@ -737,55 +664,25 @@ export default function ShieldPage() {
           </div>
         </section>
 
-        {/* Comparison Table */}
+        {/* Compare to alternatives */}
         <section className="bg-surface-secondary px-6 py-14 sm:py-28">
-          <div className="mx-auto max-w-content">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
-                How Shield compares
-              </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-lg text-text-secondary">
-                See how Multicorn Shield stacks up against alternatives.
-              </p>
-            </div>
-            <div className="mx-auto mt-16 max-w-3xl overflow-x-auto rounded-card border border-border bg-surface">
-              <table className="w-full text-left text-sm">
-                <thead>
-                  <tr className="border-b border-border bg-surface-secondary">
-                    <th scope="col" className="px-6 py-4 font-semibold text-text-primary">
-                      Feature
-                    </th>
-                    <th scope="col" className="px-6 py-4 font-semibold text-primary">
-                      Multicorn Shield
-                    </th>
-                    <th scope="col" className="px-6 py-4 font-semibold text-text-primary">
-                      AgentGate
-                    </th>
-                    <th scope="col" className="px-6 py-4 font-semibold text-text-primary">
-                      No control
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {COMPARISON_ROWS.map((row, index) => (
-                    <tr
-                      key={row.feature}
-                      className={index < COMPARISON_ROWS.length - 1 ? 'border-b border-border' : ''}
-                    >
-                      <td className="px-6 py-4 font-medium text-text-primary">{row.feature}</td>
-                      <td className="px-6 py-4">
-                        <ComparisonCell value={row.shield} />
-                      </td>
-                      <td className="px-6 py-4">
-                        <ComparisonCell value={row.agentGate} />
-                      </td>
-                      <td className="px-6 py-4">
-                        <ComparisonCell value={row.noControl} />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+          <div className="mx-auto max-w-content text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
+              Not sure if Shield is right for you?
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-lg text-text-secondary">
+              Different tools solve different problems. See how Shield compares to other AI agent
+              control tools - Agent Safehouse, agentsh, and AgentGate - and find the right fit for
+              your team.
+            </p>
+            <div className="mt-10 flex justify-center">
+              <TrackedCtaLink
+                href="/shield/compare"
+                className="inline-flex min-h-[44px] items-center rounded-lg bg-primary px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+                eventName="shield_page_compare_link_click"
+              >
+                Compare Shield to alternatives
+              </TrackedCtaLink>
             </div>
           </div>
         </section>
@@ -801,14 +698,13 @@ export default function ShieldPage() {
               in minutes.
             </p>
             <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <TrackedCtaLink
-                href="https://app.multicorn.ai/signup"
+              <MulticornSignupCta
                 className="inline-flex min-h-[44px] items-center rounded-lg bg-primary px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
                 eventName="shield_signup_click"
                 eventProps={{ location: 'shield_bottom_cta' }}
               >
                 Start for free
-              </TrackedCtaLink>
+              </MulticornSignupCta>
               <a
                 href="https://github.com/Multicorn-AI/multicorn-shield"
                 target="_blank"

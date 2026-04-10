@@ -1,5 +1,139 @@
 [
   {
+    "version": "0.6.3",
+    "date": "2026-04-10",
+    "added": [
+      "New `/shield/compare` page with use-case-based comparison of AI agent control tools",
+      "`CompareCard` component for structured compare entries (use case, strengths, gaps, optional learn-more link and tracked CTA)"
+    ],
+    "changed": [
+      "Shield marketing page (`/shield`): removed feature comparison matrix table; added section linking to `/shield/compare`"
+    ],
+    "fixed": [],
+    "security": []
+  },
+  {
+    "version": "0.6.2",
+    "date": "2026-04-09",
+    "added": [
+      "`readBaseUrlFromConfig()` helper for reading base URL from partial config files.",
+      "`parseConfigFile()` shared helper eliminating duplicated file read/parse logic between `loadConfig` and `readBaseUrlFromConfig`.",
+      "`isAllowedShieldApiBaseUrl()` exported validator for HTTPS/localhost scheme checks.",
+      "`DEFAULT_SHIELD_API_BASE_URL` named constant replacing hardcoded fallback string.",
+      "HTTPS scheme validation in `runInit()` init flow (previously only enforced in wrap flow)."
+    ],
+    "changed": [
+      "`runInit` parameter changed from `baseUrl = \"https://api.multicorn.ai\"` to `explicitBaseUrl?: string` to distinguish \"no flag\" from \"explicitly passed default.\"",
+      "Base URL resolution priority: explicit flag > full config > partial config > env var > default.",
+      "HTTPS validation error messages no longer include the actual URL value.",
+      "Wrap flow validates `--base-url` before loading config when the flag is present."
+    ],
+    "fixed": [
+      "Proxy CLI `init` command now reads `baseUrl` from `~/.multicorn/config.json` on the new-key path, not just the reuse-key path. Previously required `--base-url` flag as a workaround.",
+      "`--base-url` CLI flag correctly overrides config file value (previously indistinguishable from the default)."
+    ],
+    "security": []
+  },
+  {
+    "version": "0.6.1",
+    "date": "2026-04-08",
+    "added": [],
+    "changed": [],
+    "fixed": ["Updated README badges and npm package metadata to reflect current branding."],
+    "security": []
+  },
+  {
+    "version": "0.6.0",
+    "date": "2026-04-08",
+    "added": [
+      "Multi-agent config support: `~/.multicorn/config.json` now stores an `agents` array with per-platform entries instead of a single `agentName`",
+      "New CLI commands: `npx multicorn-proxy agents` (list configured agents) and `npx multicorn-proxy delete-agent <name>` (remove an agent)",
+      "New exported helpers: `getAgentByPlatform()`, `getDefaultAgent()`, `collectAgentsFromConfig()`, `deleteAgentByName()`",
+      "`AgentEntry` interface exported from the SDK",
+      "Automatic migration: legacy single-agent configs are upgraded to the new format on first read and written back to disk",
+      "Platform-based agent lookup in Claude Code hooks (`pre-tool-use.cjs`, `post-tool-use.cjs`), OpenClaw plugin, and Claude Desktop extension",
+      "CLI agent name sanitisation: `delete-agent` strips non-printable characters before echoing to terminal"
+    ],
+    "changed": [
+      "`ProxyConfig` interface now includes optional `agents` (readonly `AgentEntry[]`) and `defaultAgent` fields",
+      "`agentName` and `platform` fields on `ProxyConfig` are deprecated (kept for backward compatibility during migration)",
+      "`runInit()` appends to the agents array instead of overwriting; detects duplicate platforms and prompts to replace",
+      "Restored inline OpenClaw setup flow with version detection, auto-config of `~/.openclaw/openclaw.json`, and \"Next steps\" instructions (`openclaw gateway restart`, `openclaw tui`)",
+      "Restored inline Claude Code setup instructions (marketplace add, plugin install, start claude, `/plugin` verification)",
+      "\"Next steps\" summary restored at end of init wizard with per-platform instructions",
+      "Help text clarified for non-technical users (\"List configured agents and show which is the default\", \"Remove a saved agent\")",
+      "CJS hook duplication comment updated to explain why shared modules are not possible"
+    ],
+    "fixed": [
+      "Running `npx multicorn-proxy init` for a second platform no longer overwrites the first agent's config",
+      "`delete-agent` clears `defaultAgent` when deleting the default agent instead of leaving a dangling reference"
+    ],
+    "security": [
+      "Agent names from CLI input are sanitised before echoing to stdout/stderr to prevent terminal escape sequence injection"
+    ]
+  },
+  {
+    "version": "0.5.0",
+    "date": "2026-04-08",
+    "added": [],
+    "changed": [],
+    "fixed": [],
+    "security": []
+  },
+  {
+    "version": "0.4.0",
+    "date": "2026-04-08",
+    "added": [],
+    "changed": [
+      "CLI rewrite: extracted platform selection, agent naming, and proxy config prompts into separate helper functions",
+      "Reduced platform options from 4 (OpenClaw, Claude Code, Claude Desktop, Other MCP Agent) to 3 (OpenClaw, Claude Code, Cursor)",
+      "Cursor connection detection via `~/.cursor/mcp.json`",
+      "Claude Code connection detection via `~/.claude/plugins/cache/multicorn-shield`",
+      "Cursor (selection 3) now prompts for target MCP server URL and creates a hosted proxy config via the Shield API",
+      "Platform-specific MCP config snippets shown after proxy config creation",
+      "\"Connect another agent?\" prompt changed from `(y/N)` default-no to `(Y/n)` default-yes",
+      "Setup complete summary now shows agent names and proxy URLs alongside platform labels"
+    ],
+    "fixed": [],
+    "security": []
+  },
+  {
+    "version": "0.3.0",
+    "date": "2026-04-08",
+    "added": [],
+    "changed": [],
+    "fixed": [],
+    "security": []
+  },
+  {
+    "version": "0.2.2",
+    "date": "2026-04-04",
+    "added": [
+      "Claude Desktop Extension (.mcpb) for one-click install. Packages Shield as a Desktop Extension that wraps existing MCP servers, enforces permissions via the Shield API, and logs all tool calls.",
+      "`npx multicorn-shield restore` command to recover original MCP server config after disabling the extension.",
+      "`multicorn-shield/proxy` subpath export with interceptor helpers, consent utilities, logger, scope validator, and tool mapper for hosted proxy consumers.",
+      "HTTP client for hosted proxy URLs (`proxy-client`) supporting Streamable HTTP transport, session management, and JSON-RPC error handling.",
+      "Optional extension setting `base_url` (env `MULTICORN_BASE_URL`) for enterprise or self-hosted Shield API endpoints. Defaults to `https://api.multicorn.ai` when empty."
+    ],
+    "changed": [
+      "Desktop Extension routes tool calls to hosted proxy URLs over Streamable HTTP instead of spawning child MCP processes locally. Permission enforcement and audit logging now run server-side, avoiding sandbox limits in Claude Desktop.",
+      "`runInit` base URL resolution checks config file and `MULTICORN_BASE_URL` env var before falling back to the default API endpoint.",
+      "`platform` field threaded through proxy config and CLI init flow for connection method tracking in the dashboard."
+    ],
+    "fixed": [],
+    "security": []
+  },
+  {
+    "version": "0.2.1",
+    "date": "2026-03-23",
+    "added": [],
+    "changed": [],
+    "fixed": [],
+    "security": [
+      "Claude Code PreToolUse hook now fails closed when the Shield API is unreachable or returns an error. Previously, all error paths exited with code 0 (allow). Now, any error after config is successfully loaded exits with code 2 (block). This matches the fail-closed behaviour of the OpenClaw plugin and MCP proxy since v0.1.15."
+    ]
+  },
+  {
     "version": "0.2.0",
     "date": "2026-03-22",
     "added": [
