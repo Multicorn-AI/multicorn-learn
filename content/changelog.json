@@ -1,18 +1,5 @@
 [
   {
-    "version": "0.6.3",
-    "date": "2026-04-10",
-    "added": [
-      "New `/shield/compare` page with use-case-based comparison of AI agent control tools",
-      "`CompareCard` component for structured compare entries (use case, strengths, gaps, optional learn-more link and tracked CTA)"
-    ],
-    "changed": [
-      "Shield marketing page (`/shield`): removed feature comparison matrix table; added section linking to `/shield/compare`"
-    ],
-    "fixed": [],
-    "security": []
-  },
-  {
     "version": "0.6.2",
     "date": "2026-04-09",
     "added": [

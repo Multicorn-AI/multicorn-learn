@@ -1,0 +1,94 @@
+---
+title: 'AI Agent Security Tools Are Real. Here Is Where Everything Fits.'
+description: 'Five tools are trying to solve AI agent security. They are solving different problems. Here is a map of the space and where Multicorn Shield sits in it.'
+date: '2026-04-07'
+author: 'Rachelle Rathbone'
+ogImage: 'https://multicorn.ai/images/og-image.png'
+tags: ['agents', 'security', 'shield', 'comparison']
+---
+
+Five tools now exist to stop AI agents from doing things they should not be doing. A year ago there were none. The market is moving fast, and if you are trying to figure out which tool does what, the names and categories blur together quickly.
+
+This post maps the space. Not to pick winners, but to make the differences clear. These tools solve different problems for different people at different layers of the stack. Understanding which layer matters for your situation is the first step.
+
+## Three layers of agent security
+
+Think of agent security as three layers, each catching a different class of problem.
+
+<SecurityLayers />
+
+The execution layer catches what the agent's process actually does at the operating system level. File reads, network connections, child processes. If an agent tries to open an SSH tunnel or read your `.env` file, this is where it gets stopped.
+
+The protocol layer catches what the agent asks to do through its tool interface. Before a tool call executes, something checks whether that action is permitted. MCP-aware tools operate here.
+
+The organisation layer answers the questions that matter after the action happens. Who approved it? Which team does this agent belong to? Is there a tamper-evident audit trail? Can you show a compliance auditor what happened last Tuesday?
+
+Most tools cover one layer. Some cover two. Nobody covers all three yet, but the protocol and org layers naturally combine because they share the same data.
+
+## Agent Safehouse: protecting your own machine
+
+[Agent Safehouse](https://agent-safehouse.dev) is a macOS tool that uses kernel-level sandboxing via `sandbox-exec`. It wraps your local coding agent in a deny-first sandbox where nothing is accessible unless you explicitly grant it. Pure Bash, zero dependencies, installs via Homebrew.
+
+It works well for what it does. If you are a developer running Claude Code or Cursor on your Mac and you want to make sure the agent cannot trash your home directory, Safehouse is a good fit. The copy is sharp: "Go full --yolo. We've got you."
+
+The boundaries are clear too. Safehouse is macOS only, local only, and single-user only. There is no dashboard, no audit trail, no team management, no way to see what the agent did after the fact. It protects your machine. It does not govern your agents.
+
+## agentsh: syscall-level enforcement in containers
+
+[agentsh](https://agentsh.org) takes a similar philosophy to Safehouse but targets a different environment: Linux containers and CI pipelines. It is a Go binary that intercepts syscalls (file, network, process) and enforces YAML-based policies before any operation reaches the OS.
+
+The interesting technical choice is the shell shim. agentsh can replace `/bin/bash` in a container so that every command the agent spawns gets intercepted without the agent knowing. Policies support allow, deny, approve (human confirmation via CLI), and redirect (route the operation to a safe alternative instead of just blocking it).
+
+The redirect concept is smart. A pure deny often triggers a retry spiral where the agent tries ten different ways to do the same thing, burns tokens, and eventually gives up or hallucinates success. Redirecting the operation to a safe alternative keeps the agent moving without breaking the flow.
+
+agentsh operates entirely at the execution layer. It does not know what the agent intended, which user authorised the agent, or whether the action fits within an organisation's policy. It knows what syscalls happened. For DevOps teams running agents in containers, that is often enough.
+
+## AgentGate: approval workflows for developers
+
+[AgentGate](https://agentgate.org) is an open-source TypeScript SDK and MCP server that adds approval workflows to AI agents. It supports multi-channel approvals (Slack, Discord, a basic dashboard) and maintains an audit trail.
+
+It sits at the protocol layer, intercepting MCP tool calls and routing them through a policy engine. Developer teams can define which actions need approval and which can proceed automatically.
+
+The gap is on the user-facing side. AgentGate assumes developers will configure everything via code. There is no visual consent experience for end users, no hosted platform, and no path for non-technical users to manage permissions. If your team is all engineers, it works. If your team includes people who do not write code, the options narrow.
+
+## AgentLens: observability
+
+[AgentLens](https://github.com/agentkitai/agentlens), part of the same ecosystem as AgentGate, focuses on the observability piece. MCP-native event logging with tamper-evident hash chains and cost tracking. It tells you what happened. It does not control what happens.
+
+Observability and control are different problems. AgentLens gives you the data. What you do with that data is up to you.
+
+## Where Shield fits
+
+Shield operates at the protocol and organisation layers. It intercepts MCP tool calls (protocol layer), enforces permissions via a visual consent screen (protocol layer), and provides a hosted dashboard with audit trails, approval workflows, and team management (organisation layer).
+
+![Shield consent screen with permission toggles and Authorize and Deny actions](/images/blog/ai-agent-security-tools/shield-consent-permissions.png)
+
+The consent screen is the difference that matters most for non-technical users. When an agent requests new permissions, a visual consent screen opens in the browser. The user sees exactly what the agent is asking for, toggles permissions on or off, and authorises or denies. No YAML files, no CLI prompts, no Slack threads.
+
+![Shield dashboard showing activity feed, agents, and audit trail](/images/blog/ai-agent-security-tools/shield-dashboard-activity.png)
+
+The audit trail is append-only with SHA-256 hash chains. Actions cannot be edited or deleted after the fact. For compliance, the question is never "trust us, the agent only did what it was supposed to." The question is "here is the cryptographic proof of every action, every approval, and every denial."
+
+Shield also includes an education platform ([Multicorn Learn](https://multicorn.ai/learn)) that teaches non-technical users how AI agents work, what permissions mean, and why governance matters. No other tool in this space has an education component. The reasoning is simple: a permission layer is only useful if the person granting permissions understands what they are granting.
+
+## The space is not a competition
+
+These tools are not competing for the same user. A DevOps engineer securing containers has different needs than a team lead who wants to see what agents did last week. A solo developer protecting their laptop has different needs than a startup CEO trying to understand their team's agent activity.
+
+The real question is which layers matter for your situation. If you are a developer working locally on macOS, Agent Safehouse is built for you. If you are running agents in containers and CI, agentsh covers that. If you need org-level governance, consent UX, and audit trails that survive compliance review, that is what Shield is for.
+
+The market existing at all is the signal that matters. Eighteen months ago, none of these tools existed. The fact that five of them do now means the problem is real, the demand is real, and the window for getting agent governance right is open.
+
+## Get started
+
+Shield is open source. Install the SDK and have permissions running in two minutes.
+
+```bash
+npm install multicorn-shield
+```
+
+Read the docs at [multicorn.ai/shield](https://multicorn.ai/shield).
+
+**Try Shield:** [app.multicorn.ai](https://app.multicorn.ai)
+
+**Source:** [github.com/multicorn-ai/multicorn-shield](https://github.com/multicorn-ai/multicorn-shield)
