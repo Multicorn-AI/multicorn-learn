@@ -1,5 +1,26 @@
 [
   {
+    "version": "0.6.4",
+    "date": "2026-04-10",
+    "added": [
+      "Learn site: blog post \"AI Agent Security Tools Are Real. Here Is Where Everything Fits\" (positions Shield at the protocol and organisation layers)",
+      "Learn site: SecurityLayers diagram component for blog MDX"
+    ],
+    "changed": [],
+    "fixed": [],
+    "security": []
+  },
+  {
+    "version": "0.6.3",
+    "date": "2026-04-09",
+    "added": [
+      "Learn site: `/shield/compare` page to compare Multicorn Shield with Agent Safehouse, agentsh, and AgentGate"
+    ],
+    "changed": [],
+    "fixed": [],
+    "security": []
+  },
+  {
     "version": "0.6.2",
     "date": "2026-04-09",
     "added": [

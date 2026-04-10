@@ -1,13 +1,13 @@
 ---
 title: 'AI Agent Security Tools Are Real. Here Is Where Everything Fits.'
 description: 'Five tools are trying to solve AI agent security. They are solving different problems. Here is a map of the space and where Multicorn Shield sits in it.'
-date: '2026-04-07'
+date: '2026-04-10'
 author: 'Rachelle Rathbone'
 ogImage: 'https://multicorn.ai/images/og-image.png'
 tags: ['agents', 'security', 'shield', 'comparison']
 ---
 
-Five tools now exist to stop AI agents from doing things they should not be doing. A year ago there were none. The market is moving fast, and if you are trying to figure out which tool does what, the names and categories blur together quickly.
+Five tools now exist to stop AI agents from doing things they should not be doing. A year ago there were none. The market is moving fast, and if you are trying to figure out which tool does what, the names and categories are difficult to distinguish.
 
 This post maps the space. Not to pick winners, but to make the differences clear. These tools solve different problems for different people at different layers of the stack. Understanding which layer matters for your situation is the first step.
 
@@ -27,17 +27,17 @@ Most tools cover one layer. Some cover two. Nobody covers all three yet, but the
 
 ## Agent Safehouse: protecting your own machine
 
-[Agent Safehouse](https://agent-safehouse.dev) is a macOS tool that uses kernel-level sandboxing via `sandbox-exec`. It wraps your local coding agent in a deny-first sandbox where nothing is accessible unless you explicitly grant it. Pure Bash, zero dependencies, installs via Homebrew.
+[Agent Safehouse](https://agent-safehouse.dev) is a macOS tool that uses kernel-level sandboxing (isolation enforced by the operating system itself, not only by the application) via `sandbox-exec`. It wraps your local coding agent in a deny-first sandbox where nothing is accessible unless you explicitly grant it. Pure Bash, zero dependencies, installs via Homebrew.
 
-It works well for what it does. If you are a developer running Claude Code or Cursor on your Mac and you want to make sure the agent cannot trash your home directory, Safehouse is a good fit. The copy is sharp: "Go full --yolo. We've got you."
+It works well for what it does. If you are a developer running Claude Code or Cursor on your Mac and you want to make sure the agent cannot trash your home directory, Safehouse is a good fit. The marketing message is clear and direct: "Go full --yolo. We've got you." In command-line tooling, `--yolo` usually means turning off safeguards; "we've got you" is an informal way of saying you are protected if something goes wrong.
 
 The boundaries are clear too. Safehouse is macOS only, local only, and single-user only. There is no dashboard, no audit trail, no team management, no way to see what the agent did after the fact. It protects your machine. It does not govern your agents.
 
 ## agentsh: syscall-level enforcement in containers
 
-[agentsh](https://agentsh.org) takes a similar philosophy to Safehouse but targets a different environment: Linux containers and CI pipelines. It is a Go binary that intercepts syscalls (file, network, process) and enforces YAML-based policies before any operation reaches the OS.
+[agentsh](https://agentsh.org) takes a similar philosophy to Safehouse but targets a different environment: Linux containers and CI pipelines. It is a Go binary that intercepts syscalls, the low-level operations a program asks the operating system to perform, for file, network, and process activity, and enforces YAML-based policies before any operation reaches the OS.
 
-The interesting technical choice is the shell shim. agentsh can replace `/bin/bash` in a container so that every command the agent spawns gets intercepted without the agent knowing. Policies support allow, deny, approve (human confirmation via CLI), and redirect (route the operation to a safe alternative instead of just blocking it).
+The interesting technical choice is the shell shim, a small wrapper that intercepts shell commands before they run. agentsh can replace `/bin/bash` in a container so that every command the agent spawns gets intercepted without the agent knowing. Policies support allow, deny, approve (human confirmation via CLI), and redirect (route the operation to a safe alternative instead of just blocking it).
 
 The redirect concept is smart. A pure deny often triggers a retry spiral where the agent tries ten different ways to do the same thing, burns tokens, and eventually gives up or hallucinates success. Redirecting the operation to a safe alternative keeps the agent moving without breaking the flow.
 
@@ -45,7 +45,7 @@ agentsh operates entirely at the execution layer. It does not know what the agen
 
 ## AgentGate: approval workflows for developers
 
-[AgentGate](https://agentgate.org) is an open-source TypeScript SDK and MCP server that adds approval workflows to AI agents. It supports multi-channel approvals (Slack, Discord, a basic dashboard) and maintains an audit trail.
+[AgentGate](https://agentgate.org) is an open-source TypeScript SDK and MCP server (Model Context Protocol: the standard way many AI agents talk to tools) that adds approval workflows to AI agents. It supports multi-channel approvals (Slack, Discord, a basic dashboard) and maintains an audit trail.
 
 It sits at the protocol layer, intercepting MCP tool calls and routing them through a policy engine. Developer teams can define which actions need approval and which can proceed automatically.
 
@@ -53,7 +53,7 @@ The gap is on the user-facing side. AgentGate assumes developers will configure 
 
 ## AgentLens: observability
 
-[AgentLens](https://github.com/agentkitai/agentlens), part of the same ecosystem as AgentGate, focuses on the observability piece. MCP-native event logging with tamper-evident hash chains and cost tracking. It tells you what happened. It does not control what happens.
+[AgentLens](https://github.com/agentkitai/agentlens), part of the same ecosystem as AgentGate, focuses on the observability piece. MCP-native event logging with tamper-evident hash chains (cryptographic links between log entries that make any later edit detectable) and cost tracking. It tells you what happened. It does not control what happens.
 
 Observability and control are different problems. AgentLens gives you the data. What you do with that data is up to you.
 
@@ -92,3 +92,5 @@ Read the docs at [multicorn.ai/shield](https://multicorn.ai/shield).
 **Try Shield:** [app.multicorn.ai](https://app.multicorn.ai)
 
 **Source:** [github.com/multicorn-ai/multicorn-shield](https://github.com/multicorn-ai/multicorn-shield)
+
+Not a developer? See how Shield works without writing any code at [app.multicorn.ai](https://app.multicorn.ai).
