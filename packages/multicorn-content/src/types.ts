@@ -20,8 +20,6 @@ export interface Outline {
   readonly sourceUrl: string
   readonly slug: string
   readonly date: string
-  /** Set when loading from Shield approved actions (PR phase). */
-  readonly actionId?: string
 }
 
 export interface AgentConfig {
@@ -36,6 +34,5 @@ export interface RunSummary {
   readonly articlesFound: number
   readonly newArticles: number
   readonly relevantArticles: number
-  readonly outlinesSubmitted: number
   readonly prsCreated: number
 }

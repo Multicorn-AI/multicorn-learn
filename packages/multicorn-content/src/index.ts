@@ -16,27 +16,6 @@ export { generateOutlines } from './outline/generator.js'
 export { ShieldClient } from './shield/client.js'
 export { createDraftPR } from './github/pr.js'
 
-async function sleep(ms: number): Promise<void> {
-  await new Promise((r) => setTimeout(r, ms))
-}
-
-async function withRetries<T>(label: string, fn: () => Promise<T>, attempts = 3): Promise<T> {
-  let last: Error | undefined
-  for (let i = 0; i < attempts; i++) {
-    try {
-      return await fn()
-    } catch (e) {
-      last = e instanceof Error ? e : new Error(String(e))
-      const delay = 1000 * 4 ** i
-      console.warn(
-        `[multicorn-content] ${label} failed (attempt ${i + 1}/${attempts}): ${last.message}`,
-      )
-      if (i < attempts - 1) await sleep(delay)
-    }
-  }
-  throw last ?? new Error(`${label} failed`)
-}
-
 function mergeFetchedUrlHashes(state: ContentState, items: readonly FeedItem[]): ContentState {
   const now = new Date().toISOString()
   const urlHashes = { ...state.urlHashes }
@@ -47,8 +26,7 @@ function mergeFetchedUrlHashes(state: ContentState, items: readonly FeedItem[]):
 }
 
 /**
- * Phase 1: fetch RSS, dedupe, relevance filter, outline generation, submit to Shield.
- * Phase 2: approved outlines from Shield, create PRs for any not yet drafted.
+ * Single pass: fetch RSS, dedupe, relevance filter, generate outlines, open PRs, log to Shield, notify.
  */
 export async function run(config: AgentConfig, statePath: string): Promise<RunSummary> {
   const llm = createLlmClient()
@@ -69,83 +47,30 @@ export async function run(config: AgentConfig, statePath: string): Promise<RunSu
 
   const outlines = await generateOutlines(relevantItems, llm)
 
-  const agentId = await shield.findOrRegisterAgent()
+  await shield.findOrRegisterAgent()
 
-  let outlinesSubmitted = 0
-  const submittedIds = [...state.submittedReviewIds]
-  const actionIdsThisRun: string[] = []
+  const prRows: Array<{ title: string; prUrl: string }> = []
+  let prsCreated = 0
 
   for (const outline of outlines) {
+    let prUrl: string | null
     try {
-      const actionId = await withRetries('submitForApproval', () =>
-        shield.submitForApproval(outline),
-      )
-      submittedIds.push(actionId)
-      actionIdsThisRun.push(actionId)
-      outlinesSubmitted++
+      prUrl = await createDraftPR(outline, config)
     } catch (e) {
-      console.warn('[multicorn-content] submitForApproval gave up:', e)
+      console.warn('[multicorn-content] createDraftPR failed:', e)
+      continue
     }
+    if (prUrl === null) {
+      continue
+    }
+    prsCreated++
+    void shield.logOutlineCreated(outline, prUrl)
+    prRows.push({ title: outline.title, prUrl })
   }
 
-  if (actionIdsThisRun.length > 0) {
-    try {
-      await shield.sendApprovalNotification(actionIdsThisRun)
-    } catch (e) {
-      console.warn('[multicorn-content] sendApprovalNotification failed:', e)
-    }
-  }
+  await shield.sendPrNotification(prRows)
 
   state = mergeFetchedUrlHashes(state, items)
-  state = { ...state, submittedReviewIds: submittedIds }
-
-  let prsCreated = 0
-  const prUrls = { ...state.prUrlsByActionId }
-
-  try {
-    console.log(`[multicorn-content] Phase 2: polling for approved outlines, agentId=${agentId}`)
-    const approved = await withRetries('getApprovedOutlines', () =>
-      shield.getApprovedOutlines(agentId),
-    )
-    console.log(`[multicorn-content] Phase 2: found ${approved.length} approved outlines`)
-
-    for (const outline of approved) {
-      console.log(
-        `[multicorn-content] Phase 2: outline actionId=${outline.actionId}, title=${outline.title}`,
-      )
-      const aid = outline.actionId
-      if (!aid || prUrls[aid]) {
-        if (aid && prUrls[aid]) {
-          console.log(
-            `[multicorn-content] Phase 2: skipping ${outline.actionId} (PR already exists: ${prUrls[aid]})`,
-          )
-        }
-        continue
-      }
-
-      try {
-        console.log(`[multicorn-content] Phase 2: before createDraftPR for actionId=${aid}`)
-        let prUrl: string
-        try {
-          prUrl = await createDraftPR(outline, config)
-        } catch (first) {
-          console.warn('[multicorn-content] createDraftPR retry once:', first)
-          prUrl = await createDraftPR(outline, config)
-        }
-        console.log(
-          `[multicorn-content] Phase 2: after createDraftPR for actionId=${aid}, prUrl=${prUrl}`,
-        )
-        prUrls[aid] = prUrl
-        prsCreated++
-      } catch (e) {
-        console.warn('[multicorn-content] createDraftPR failed:', e)
-      }
-    }
-  } catch (e) {
-    console.warn('[multicorn-content] phase 2 failed:', e)
-  }
-
-  state = { ...state, prUrlsByActionId: prUrls }
   saveState(statePath, state)
 
   const summary: RunSummary = {
@@ -153,13 +78,12 @@ export async function run(config: AgentConfig, statePath: string): Promise<RunSu
     articlesFound,
     newArticles,
     relevantArticles,
-    outlinesSubmitted,
     prsCreated,
   }
 
   console.log(
     `[multicorn-content] run complete: feeds=${summary.feedsFetched} articles=${summary.articlesFound} ` +
-      `new=${summary.newArticles} relevant=${summary.relevantArticles} submitted=${summary.outlinesSubmitted} prs=${summary.prsCreated}`,
+      `new=${summary.newArticles} relevant=${summary.relevantArticles} prs=${summary.prsCreated}`,
   )
 
   return summary

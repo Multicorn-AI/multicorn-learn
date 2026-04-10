@@ -49,8 +49,9 @@ const API = 'https://api.github.com'
 
 /**
  * Creates a branch, commits the draft outline, opens a PR to main.
+ * Returns null if the branch already exists (PR likely already opened).
  */
-export async function createDraftPR(outline: Outline, config: AgentConfig): Promise<string> {
+export async function createDraftPR(outline: Outline, config: AgentConfig): Promise<string | null> {
   const { owner, repo } = parseRepo(config.githubRepo)
   const token = config.githubToken
   const headers: HeadersInit = {
@@ -58,6 +59,23 @@ export async function createDraftPR(outline: Outline, config: AgentConfig): Prom
     Authorization: `Bearer ${token}`,
     'X-GitHub-Api-Version': '2022-11-28',
     'Content-Type': 'application/json',
+  }
+
+  const slug = safeRefSegment(outline.slug)
+  const branch = `content/${outline.date}-${slug}`
+
+  const branchRefRes = await fetch(
+    `${API}/repos/${owner}/${repo}/git/ref/heads/${encodeURIComponent(branch)}`,
+    { headers },
+  )
+  if (branchRefRes.ok) {
+    return null
+  }
+  if (branchRefRes.status !== 404) {
+    const t = await branchRefRes.text()
+    throw new Error(
+      `GitHub: could not check branch ref (${branchRefRes.status}): ${t.slice(0, 200)}`,
+    )
   }
 
   const refRes = await fetch(`${API}/repos/${owner}/${repo}/git/ref/heads/main`, {
@@ -70,8 +88,6 @@ export async function createDraftPR(outline: Outline, config: AgentConfig): Prom
   const refBody = (await refRes.json()) as { object: { sha: string } }
   const mainSha = refBody.object.sha
 
-  const slug = safeRefSegment(outline.slug)
-  const branch = `content/${outline.date}-${slug}`
   const path = `drafts/${outline.date}-${slug}.md`
   const raw = draftMarkdown(outline)
   const formatted = await format(raw, { parser: 'markdown', proseWrap: 'always', printWidth: 80 })

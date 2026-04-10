@@ -1,4 +1,4 @@
-/* eslint-disable no-console -- debug logging for Phase 2 / getApprovedOutlines */
+/* eslint-disable no-console -- Shield client logs warnings for fire-and-forget calls */
 import type { AgentConfig, Outline } from '../types.js'
 
 const AGENT_NAME = 'multicorn-content'
@@ -84,146 +84,68 @@ export class ShieldClient {
   }
 
   /**
-   * Logs a requires_approval action; server creates a content review. Returns action id (used for PR tracking).
+   * Logs an approved create_draft_pr action for audit. Does not throw; logs a warning on failure.
    */
-  async submitForApproval(outline: Outline): Promise<string> {
-    const metadata = {
-      title: outline.title,
-      summary: outline.summary,
-      sections: [...outline.sections],
-      audience_level: outline.audienceLevel,
-      source_url: outline.sourceUrl,
-      slug: outline.slug,
-      date: outline.date,
+  async logOutlineCreated(outline: Outline, prUrl: string): Promise<void> {
+    try {
+      const metadata: Record<string, unknown> = {
+        title: outline.title,
+        summary: outline.summary,
+        sections: [...outline.sections],
+        audience_level: outline.audienceLevel,
+        source_url: outline.sourceUrl,
+        slug: outline.slug,
+        date: outline.date,
+        pr_url: prUrl,
+      }
+      const res = await fetch(`${this.api}/api/v1/actions`, {
+        method: 'POST',
+        headers: authHeaders(this.apiKey),
+        body: JSON.stringify({
+          agent: AGENT_NAME,
+          service: 'drafts',
+          actionType: 'create_draft_pr',
+          status: 'approved',
+          cost: 0,
+          metadata,
+          platform: 'github-actions',
+        }),
+      })
+      if (!res.ok) {
+        const errText = await res.text()
+        console.warn(
+          `[multicorn-content] logOutlineCreated failed (${res.status}): ${errText.slice(0, 300)}`,
+        )
+      }
+    } catch (e) {
+      console.warn('[multicorn-content] logOutlineCreated failed:', e)
     }
-
-    const res = await fetch(`${this.api}/api/v1/actions`, {
-      method: 'POST',
-      headers: authHeaders(this.apiKey),
-      body: JSON.stringify({
-        agent: AGENT_NAME,
-        service: 'drafts',
-        actionType: 'submit_outline',
-        status: 'requires_approval',
-        cost: 0,
-        metadata,
-        platform: 'github-actions',
-      }),
-    })
-
-    if (!res.ok) {
-      const errText = await res.text()
-      throw new Error(`Shield API: log action failed (${res.status}): ${errText.slice(0, 300)}`)
-    }
-
-    const body = await parseJson<ApiEnvelope<{ id: string }>>(res)
-    if (!body.data?.id) {
-      throw new Error('Shield API: log action response missing data.id')
-    }
-    return body.data.id
   }
 
   /**
-   * Triggers the batched content outline approval email for the submitted action IDs.
+   * Notifies about created PRs. Does not throw; logs a warning on failure.
    */
-  async sendApprovalNotification(actionIds: string[]): Promise<void> {
-    if (actionIds.length === 0) {
+  async sendPrNotification(prs: Array<{ title: string; prUrl: string }>): Promise<void> {
+    if (prs.length === 0) {
       return
     }
-    const res = await fetch(`${this.api}/api/v1/content-outlines/notify`, {
-      method: 'POST',
-      headers: authHeaders(this.apiKey),
-      body: JSON.stringify({ action_ids: actionIds }),
-    })
-    if (!res.ok) {
-      const errText = await res.text()
-      throw new Error(
-        `Shield API: content outline notify failed (${res.status}): ${errText.slice(0, 300)}`,
-      )
-    }
-  }
-
-  /**
-   * Loads approved outline submissions for this agent (drafts service) that are ready for PR creation.
-   */
-  async getApprovedOutlines(agentId: string): Promise<Outline[]> {
-    const params = new URLSearchParams({
-      agent_id: agentId,
-      status: 'approved',
-      service: 'drafts',
-      page: '0',
-      size: '100',
-    })
-    const url = `${this.api}/api/v1/actions?${params}`
-    console.log(`[multicorn-content] getApprovedOutlines: fetching ${url}`)
-    const res = await fetch(url, {
-      headers: authHeaders(this.apiKey),
-    })
-    const bodyLen = (await res.clone().text()).length
-    console.log(
-      `[multicorn-content] getApprovedOutlines: response status=${res.status}, body length=${bodyLen}`,
-    )
-    if (!res.ok) {
-      throw new Error(`Shield API: query actions failed (${res.status})`)
-    }
-    const body = await parseJson<ApiEnvelope<Record<string, unknown>>>(res)
-    const page = body.data
-    const rows = Array.isArray(page?.content) ? page.content : []
-
-    const outlines: Outline[] = []
-    for (const raw of rows) {
-      if (typeof raw !== 'object' || raw === null) continue
-      const row = raw as Record<string, unknown>
-      const id = typeof row.id === 'string' ? row.id : ''
-      const actionType =
-        typeof row.action_type === 'string'
-          ? row.action_type
-          : typeof row.actionType === 'string'
-            ? row.actionType
-            : ''
-      if (actionType !== 'submit_outline' || !row.metadata) continue
-      try {
-        const rawMeta = row.metadata
-        const meta =
-          typeof rawMeta === 'string'
-            ? (JSON.parse(rawMeta) as Record<string, unknown>)
-            : (rawMeta as Record<string, unknown>)
-        const title = typeof meta.title === 'string' ? meta.title : ''
-        const summary = typeof meta.summary === 'string' ? meta.summary : ''
-        const sections = Array.isArray(meta.sections)
-          ? meta.sections.filter((s): s is string => typeof s === 'string')
-          : []
-        const audienceLevel = meta.audience_level
-        const sourceUrl = typeof meta.source_url === 'string' ? meta.source_url : ''
-        const slug = typeof meta.slug === 'string' ? meta.slug : ''
-        const date = typeof meta.date === 'string' ? meta.date : ''
-        if (
-          !title ||
-          sections.length !== 5 ||
-          (audienceLevel !== 'beginner' &&
-            audienceLevel !== 'intermediate' &&
-            audienceLevel !== 'advanced')
-        ) {
-          continue
-        }
-        outlines.push({
-          title,
-          summary,
-          sections,
-          audienceLevel,
-          sourceUrl,
-          slug,
-          date,
-          actionId: id,
-        })
-      } catch {
-        continue
+    try {
+      const res = await fetch(`${this.api}/api/v1/content-outlines/notify-prs`, {
+        method: 'POST',
+        headers: authHeaders(this.apiKey),
+        body: JSON.stringify({
+          prs: prs.map((p) => ({ title: p.title, pr_url: p.prUrl })),
+        }),
+      })
+      if (!res.ok) {
+        const errText = await res.text()
+        console.warn(
+          `[multicorn-content] sendPrNotification failed (${res.status}): ${errText.slice(0, 300)}`,
+        )
       }
+    } catch (e) {
+      console.warn('[multicorn-content] sendPrNotification failed:', e)
     }
-    console.log(
-      `[multicorn-content] getApprovedOutlines: rows from API=${rows.length}, passed validation=${outlines.length}`,
-    )
-    return outlines
   }
 
   getAgentId(): string | null {
