@@ -79,8 +79,15 @@ export function HowItWorks() {
   const [activeView, setActiveView] = useState<ViewId>('sdk')
 
   useEffect(() => {
-    if (window.matchMedia('(min-width: 1024px)').matches) {
-      setActiveView('both')
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+      return
+    }
+    try {
+      if (window.matchMedia('(min-width: 1024px)').matches) {
+        setActiveView('both')
+      }
+    } catch {
+      // matchMedia unavailable or query unsupported
     }
   }, [])
 

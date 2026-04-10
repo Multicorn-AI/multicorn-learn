@@ -79,6 +79,12 @@ export const COMPARE_COMPETITORS: readonly CompareCompetitor[] = [
   },
 ]
 
+for (const competitor of COMPARE_COMPETITORS) {
+  if (competitor.url && !competitor.url.startsWith('https://')) {
+    throw new Error(`Invalid URL for competitor "${competitor.name}": must start with https://`)
+  }
+}
+
 export const SHIELD_COMPARE: CompareShieldEntry = {
   name: 'Multicorn Shield',
   useCase: 'I want org-level governance with consent UX and audit trails.',

@@ -4,6 +4,7 @@ import { ConsentScreenDemo } from '@/components/ConsentScreenDemo'
 import { FeatureCard } from '@/components/FeatureCard'
 import { HowItWorks } from '@/components/HowItWorks'
 import { ShieldDemo } from '@/components/ShieldDemo'
+import { MulticornSignupCta } from '@/components/MulticornSignupCta'
 import { TrackedCtaLink } from '@/components/TrackedCtaLink'
 import { ShieldPageTracker } from '@/components/ShieldPageTracker'
 import { QuickstartTabs } from '@/components/QuickstartTabs'
@@ -290,14 +291,13 @@ export default function ShieldPage() {
               logging for every AI agent. One SDK for full oversight.
             </p>
             <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <TrackedCtaLink
-                href="https://app.multicorn.ai/signup"
+              <MulticornSignupCta
                 className="inline-flex min-h-[44px] items-center rounded-lg bg-primary px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
                 eventName="shield_signup_click"
                 eventProps={{ location: 'shield_hero' }}
               >
                 Start for free
-              </TrackedCtaLink>
+              </MulticornSignupCta>
               <a
                 href="https://github.com/Multicorn-AI/multicorn-shield"
                 target="_blank"
@@ -671,8 +671,9 @@ export default function ShieldPage() {
               Not sure if Shield is right for you?
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-lg text-text-secondary">
-              Different tools solve different problems. See how Shield compares to Agent Safehouse,
-              agentsh, and AgentGate, and find the right fit for your team.
+              Different tools solve different problems. See how Shield compares to other AI agent
+              control tools - Agent Safehouse, agentsh, and AgentGate - and find the right fit for
+              your team.
             </p>
             <div className="mt-10 flex justify-center">
               <TrackedCtaLink
@@ -697,14 +698,13 @@ export default function ShieldPage() {
               in minutes.
             </p>
             <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <TrackedCtaLink
-                href="https://app.multicorn.ai/signup"
+              <MulticornSignupCta
                 className="inline-flex min-h-[44px] items-center rounded-lg bg-primary px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
                 eventName="shield_signup_click"
                 eventProps={{ location: 'shield_bottom_cta' }}
               >
                 Start for free
-              </TrackedCtaLink>
+              </MulticornSignupCta>
               <a
                 href="https://github.com/Multicorn-AI/multicorn-shield"
                 target="_blank"

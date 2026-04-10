@@ -3,22 +3,24 @@ import { CompareCard } from '@/components/CompareCard'
 import { Footer } from '@/components/Footer'
 import { TrackedCtaLink } from '@/components/TrackedCtaLink'
 import { COMPARE_COMPETITORS, SHIELD_COMPARE } from '@/lib/compare-data'
+import { SIGNUP_URL } from '@/lib/urls'
 
 const CANONICAL_URL = 'https://multicorn.ai/shield/compare'
 /** Same default OG asset as other product pages (e.g. /shield, /pricing). */
 const OG_IMAGE_URL = 'https://multicorn.ai/images/og-image.png'
 
+const META_DESCRIPTION =
+  'Compare Multicorn Shield to Agent Safehouse, agentsh, and AgentGate. Find the right AI agent control tool for your team based on what you need to protect.'
+
 export const metadata: Metadata = {
   title: 'Compare tools for AI agent control | Multicorn Shield',
-  description:
-    'Pick a control layer by use case: local machine protection, syscall-level containers, or team governance with consent and audit trails.',
+  description: META_DESCRIPTION,
   alternates: {
     canonical: CANONICAL_URL,
   },
   openGraph: {
     title: 'Compare tools for AI agent control | Multicorn Shield',
-    description:
-      'Pick a control layer by use case: local machine protection, syscall-level containers, or team governance with consent and audit trails.',
+    description: META_DESCRIPTION,
     url: CANONICAL_URL,
     siteName: 'Multicorn',
     type: 'website',
@@ -34,8 +36,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Compare tools for AI agent control | Multicorn Shield',
-    description:
-      'Pick a control layer by use case: local machine protection, syscall-level containers, or team governance with consent and audit trails.',
+    description: META_DESCRIPTION,
     images: [OG_IMAGE_URL],
   },
 }
@@ -56,7 +57,7 @@ export default function ShieldComparePage() {
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-text-secondary sm:text-xl">
               Different jobs need different kinds of control. The sections below are four common
               situations. Each one names a type of tool, what it is good at, and what it does not
-              try to solve. Read them in order, or jump to the one that matches your job.
+              try to solve. Read them in order, or jump to the one that matches your situation.
             </p>
           </div>
         </section>
@@ -83,7 +84,7 @@ export default function ShieldComparePage() {
               gaps={SHIELD_COMPARE.gaps}
               highlight
               trackedCta={{
-                href: 'https://app.multicorn.ai/signup',
+                href: SIGNUP_URL,
                 eventName: 'compare_shield_card_signup_click',
                 eventProps: { location: 'compare_shield_card' },
                 label: 'Sign up for Shield',
@@ -102,8 +103,8 @@ export default function ShieldComparePage() {
             </p>
             <div className="mt-10 flex justify-center">
               <TrackedCtaLink
-                href="https://app.multicorn.ai/signup"
-                className="inline-flex min-h-[44px] items-center rounded-lg bg-primary px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+                href={SIGNUP_URL}
+                className="inline-flex min-h-[44px] items-center rounded-lg bg-primary px-8 py-3 text-base font-semibold text-white shadow-sm hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 motion-safe:transition-colors"
                 eventName="compare_signup_click"
                 eventProps={{ location: 'compare_bottom_cta' }}
               >
