@@ -1,4 +1,4 @@
-import { format } from 'prettier'
+import { format, resolveConfig } from 'prettier'
 
 import type { AgentConfig, Outline } from '../types.js'
 
@@ -90,7 +90,11 @@ export async function createDraftPR(outline: Outline, config: AgentConfig): Prom
 
   const path = `drafts/${outline.date}-${slug}.md`
   const raw = draftMarkdown(outline)
-  const formatted = await format(raw, { parser: 'markdown', proseWrap: 'always', printWidth: 80 })
+  const repoConfig = await resolveConfig(process.cwd())
+  const formatted = await format(raw, {
+    ...repoConfig,
+    parser: 'markdown',
+  })
   const content = Buffer.from(formatted, 'utf8').toString('base64')
 
   const createRefRes = await fetch(`${API}/repos/${owner}/${repo}/git/refs`, {
