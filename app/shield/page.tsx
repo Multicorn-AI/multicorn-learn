@@ -222,16 +222,12 @@ const CAPABILITIES: readonly Capability[] = [
 const PROXY_QUICKSTART_STEPS = [
   {
     step: '1',
-    title: 'Install',
-    code: 'npm install -g multicorn-shield',
+    title: 'Get your API key',
+    code: `# Sign up at app.multicorn.ai, then create a key in Settings
+export MULTICORN_API_KEY=mcs_your_key_here`,
   },
   {
     step: '2',
-    title: 'Set up your API key',
-    code: 'npx multicorn-proxy init',
-  },
-  {
-    step: '3',
     title: 'Wrap your MCP server',
     code: 'npx multicorn-proxy --wrap npx @modelcontextprotocol/server-filesystem /tmp',
   },
@@ -245,15 +241,21 @@ const SDK_QUICKSTART_STEPS = [
   },
   {
     step: '2',
+    title: 'Get your API key',
+    code: `# Sign up at app.multicorn.ai, then create a key in Settings
+export MULTICORN_API_KEY=mcs_your_key_here`,
+  },
+  {
+    step: '3',
     title: 'Initialize Shield',
     code: `import { MulticornShield } from "multicorn-shield";
 
 const shield = new MulticornShield({
-  apiKey: "mcs_your_key_here",
+  apiKey: process.env.MULTICORN_API_KEY,
 });`,
   },
   {
-    step: '3',
+    step: '4',
     title: 'Request consent from users',
     code: `const decision = await shield.requestConsent({
   agent: "OpenClaw",
@@ -261,7 +263,7 @@ const shield = new MulticornShield({
   spendLimit: 200,
 });
 
-// decision.grantedScopes — what the user approved`,
+// decision.grantedScopes - what the user approved`,
   },
 ] as const
 
@@ -454,9 +456,9 @@ export default function ShieldPage() {
                       ...s,
                       language: 'Terminal',
                     })),
-                    note: 'Already using Claude Code, OpenClaw, or another MCP client?',
+                    note: 'Prefer a config file? Run npx multicorn-proxy init and pick "Local MCP / Other".',
                     noteHref: '/docs/mcp-proxy',
-                    noteLinkText: 'See the full guide',
+                    noteLinkText: 'Full MCP proxy guide',
                   },
                   {
                     id: 'sdk',
@@ -465,7 +467,7 @@ export default function ShieldPage() {
                       'For full control over consent screens, spending limits, and action logging in your application code.',
                     steps: SDK_QUICKSTART_STEPS.map((s) => ({
                       ...s,
-                      language: s.step === '1' ? 'Terminal' : 'TypeScript',
+                      language: s.step <= '2' ? 'Terminal' : 'JavaScript',
                     })),
                   },
                 ]}

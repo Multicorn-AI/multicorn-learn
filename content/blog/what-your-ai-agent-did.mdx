@@ -26,7 +26,7 @@ Here are concrete examples of what happens when agents operate without governanc
 
 **The scenario:** You gave your agent access to Gmail to help with email triage. You assumed it would only read unread emails in your inbox.
 
-**What actually happened:** The agent read every email in your account — sent, archived, spam, everything. It processed thousands of messages, including sensitive conversations, financial information, and personal correspondence.
+**What actually happened:** The agent read every email in your account: sent, archived, spam, everything. It processed thousands of messages, including sensitive conversations, financial information, and personal correspondence.
 
 **Why this matters:** You have no idea what the agent learned about you, your business, or your contacts. That information is now part of the agent's context, and you cannot undo it.
 
@@ -123,14 +123,13 @@ Multicorn Shield is the governance layer AI agents have been missing. It provide
 
 ## What you can do today
 
-Shield is ready to use right now. You do not need to wait for new features — everything described here is available today.
+Shield is ready to use right now. You do not need to wait for new features. Everything described here is available today.
 
 **Option 1: Use the proxy (no code changes)**
 
 If you are already using an MCP server with Claude Code, OpenClaw, or another agent, you can add Shield as a proxy in front of it. No code changes required:
 
 ```bash
-npm install -g multicorn-shield
 npx multicorn-proxy init
 npx multicorn-proxy --wrap <your-mcp-server-command>
 ```
@@ -165,7 +164,7 @@ const decision = await shield.requestConsent({
 
 AI agents are powerful and genuinely useful. They can save hours of work, handle routine tasks, and free you to focus on what matters. But they need governance controls.
 
-Without controls, agents can read all your emails, send messages as you, spend your money, and publish content in your name — all without your knowledge or approval.
+Without controls, agents can read all your emails, send messages as you, spend your money, and publish content in your name, all without your knowledge or approval.
 
 With Shield, you stay in control. You see what the agent wants to do before it does it. You set spending limits. You review content before it goes live. You have a complete activity trail. And if something goes wrong, you can stop the agent immediately.
 
@@ -177,6 +176,6 @@ If you want to understand more about AI agent governance and why it matters, our
 
 For a detailed case study of how Shield would have prevented a real incident, read [How Shield Would Have Stopped the MJ Rathbun Incident](/blog/shield-vs-mj-rathbun).
 
-**[Get started with Multicorn Shield](/shield)** — add permissions, spending controls, and activity records to your AI agents in minutes.
+**[Get started with Multicorn Shield](/shield)** - add permissions, spending controls, and activity records to your AI agents in minutes.
 
 **[Create an account](https://app.multicorn.ai/signup)** to get started with the Multicorn dashboard.
