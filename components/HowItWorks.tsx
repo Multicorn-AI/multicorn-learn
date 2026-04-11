@@ -42,7 +42,7 @@ const SDK_STEPS: readonly FlowStep[] = [
 const shield = new MulticornShield({
   apiKey: process.env.MULTICORN_API_KEY,
 });`,
-    codeLanguage: 'TypeScript',
+    codeLanguage: 'JavaScript',
   },
   {
     title: 'Consent screen shown',

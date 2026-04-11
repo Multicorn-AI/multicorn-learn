@@ -466,7 +466,7 @@ export default function ShieldPage() {
                       'For full control over consent screens, spending limits, and action logging in your application code.',
                     steps: SDK_QUICKSTART_STEPS.map((s) => ({
                       ...s,
-                      language: s.step <= '2' ? 'Terminal' : 'TypeScript',
+                      language: s.step <= '2' ? 'Terminal' : 'JavaScript',
                     })),
                   },
                 ]}
