@@ -3,11 +3,18 @@
 import { useState, useEffect } from 'react'
 import { CodeBlock } from '@/components/CodeBlock'
 
+interface FlowStepLink {
+  readonly label: string
+  readonly href: string
+  readonly primary?: boolean
+}
+
 interface FlowStep {
   readonly title: string
   readonly description: string
   readonly code?: string
   readonly codeLanguage?: string
+  readonly links?: readonly FlowStepLink[]
 }
 
 const SDK_STEPS: readonly FlowStep[] = [
@@ -18,12 +25,22 @@ const SDK_STEPS: readonly FlowStep[] = [
     codeLanguage: 'Terminal',
   },
   {
+    title: 'Get your API key',
+    description:
+      'Sign up at app.multicorn.ai and create an API key in Settings. You will paste it into the snippet below.',
+    links: [
+      { label: 'Sign up', href: 'https://app.multicorn.ai/signup', primary: true },
+      { label: 'I already have an account', href: 'https://app.multicorn.ai/settings/api-keys' },
+    ],
+  },
+  {
     title: 'Add to your agent code',
-    description: 'Initialize Shield and request consent from users.',
+    description:
+      'Initialize Shield and request consent from users. Store your key in an environment variable - do not commit it to source control.',
     code: `import { MulticornShield } from "multicorn-shield";
 
 const shield = new MulticornShield({
-  apiKey: "mcs_your_key_here",
+  apiKey: process.env.MULTICORN_API_KEY,
 });`,
     codeLanguage: 'TypeScript',
   },
@@ -44,7 +61,7 @@ const shield = new MulticornShield({
 const PROXY_STEPS: readonly FlowStep[] = [
   {
     title: 'Wrap your MCP server',
-    description: 'Point Shield at your existing MCP server — no code changes.',
+    description: 'Point Shield at your existing MCP server. No code changes needed.',
     code: `npx multicorn-proxy --wrap \\
   npx @modelcontextprotocol/server-filesystem /tmp`,
     codeLanguage: 'Terminal',
@@ -245,6 +262,25 @@ function PathColumn({
           <div className={`min-w-0 flex-1 ${index < steps.length - 1 ? 'pb-6' : 'pb-2'}`}>
             <h4 className="text-sm font-semibold text-text-primary">{step.title}</h4>
             <p className="mt-0.5 text-sm leading-relaxed text-text-secondary">{step.description}</p>
+            {step.links && step.links.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-3">
+                {step.links.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`inline-flex items-center rounded-md px-3 py-1.5 text-xs font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 ${
+                      link.primary
+                        ? 'bg-primary text-white hover:bg-primary-dark'
+                        : 'border border-border text-text-secondary hover:text-text-primary'
+                    }`}
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            )}
             {step.code && step.codeLanguage && (
               <div className="mt-3">
                 <CodeBlock code={step.code} language={step.codeLanguage} />

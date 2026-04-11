@@ -240,15 +240,21 @@ const SDK_QUICKSTART_STEPS = [
   },
   {
     step: '2',
+    title: 'Get your API key',
+    code: `# Sign up at app.multicorn.ai, then create a key in Settings
+export MULTICORN_API_KEY=mcs_your_key_here`,
+  },
+  {
+    step: '3',
     title: 'Initialize Shield',
     code: `import { MulticornShield } from "multicorn-shield";
 
 const shield = new MulticornShield({
-  apiKey: "mcs_your_key_here",
+  apiKey: process.env.MULTICORN_API_KEY,
 });`,
   },
   {
-    step: '3',
+    step: '4',
     title: 'Request consent from users',
     code: `const decision = await shield.requestConsent({
   agent: "OpenClaw",
@@ -256,7 +262,7 @@ const shield = new MulticornShield({
   spendLimit: 200,
 });
 
-// decision.grantedScopes — what the user approved`,
+// decision.grantedScopes - what the user approved`,
   },
 ] as const
 
@@ -460,7 +466,7 @@ export default function ShieldPage() {
                       'For full control over consent screens, spending limits, and action logging in your application code.',
                     steps: SDK_QUICKSTART_STEPS.map((s) => ({
                       ...s,
-                      language: s.step === '1' ? 'Terminal' : 'TypeScript',
+                      language: s.step <= '2' ? 'Terminal' : 'TypeScript',
                     })),
                   },
                 ]}
