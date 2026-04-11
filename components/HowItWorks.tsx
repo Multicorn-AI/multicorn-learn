@@ -15,6 +15,7 @@ interface FlowStep {
   readonly code?: string
   readonly codeLanguage?: string
   readonly links?: readonly FlowStepLink[]
+  readonly note?: string
 }
 
 const SDK_STEPS: readonly FlowStep[] = [
@@ -30,7 +31,7 @@ const SDK_STEPS: readonly FlowStep[] = [
       'Sign up at app.multicorn.ai and create an API key in Settings. You will paste it into the snippet below.',
     links: [
       { label: 'Sign up', href: 'https://app.multicorn.ai/signup', primary: true },
-      { label: 'I already have an account', href: 'https://app.multicorn.ai/settings/api-keys' },
+      { label: 'I already have an account', href: 'https://app.multicorn.ai/settings#api-keys' },
     ],
   },
   {
@@ -62,9 +63,10 @@ const PROXY_STEPS: readonly FlowStep[] = [
   {
     title: 'Wrap your MCP server',
     description: 'Point Shield at your existing MCP server. No code changes needed.',
-    code: `npx multicorn-proxy --wrap \\
+    code: `MULTICORN_API_KEY=mcs_your_key_here npx multicorn-proxy --wrap \\
   npx @modelcontextprotocol/server-filesystem /tmp`,
     codeLanguage: 'Terminal',
+    note: 'Get your API key at app.multicorn.ai/settings#api-keys. Prefer a config file? Run npx multicorn-proxy init and pick "Local MCP / Other".',
   },
   {
     title: 'Agent runs normally',
@@ -285,6 +287,9 @@ function PathColumn({
               <div className="mt-3">
                 <CodeBlock code={step.code} language={step.codeLanguage} />
               </div>
+            )}
+            {step.note && (
+              <p className="mt-2 text-xs leading-relaxed text-text-tertiary">{step.note}</p>
             )}
           </div>
         </div>

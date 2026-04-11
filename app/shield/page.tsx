@@ -222,8 +222,9 @@ const CAPABILITIES: readonly Capability[] = [
 const PROXY_QUICKSTART_STEPS = [
   {
     step: '1',
-    title: 'Set up your API key',
-    code: 'npx multicorn-proxy init',
+    title: 'Get your API key',
+    code: `# Sign up at app.multicorn.ai, then create a key in Settings
+export MULTICORN_API_KEY=mcs_your_key_here`,
   },
   {
     step: '2',
@@ -455,9 +456,9 @@ export default function ShieldPage() {
                       ...s,
                       language: 'Terminal',
                     })),
-                    note: 'Already using Claude Code, OpenClaw, or another MCP client?',
+                    note: 'Prefer a config file? Run npx multicorn-proxy init and pick "Local MCP / Other".',
                     noteHref: '/docs/mcp-proxy',
-                    noteLinkText: 'See the full guide',
+                    noteLinkText: 'Full MCP proxy guide',
                   },
                   {
                     id: 'sdk',
