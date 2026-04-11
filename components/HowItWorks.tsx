@@ -29,7 +29,7 @@ const shield = new MulticornShield({
   },
   {
     title: 'Consent screen shown',
-    description: 'Users review and approve what the agent wants to do — before it acts.',
+    description: 'Users review and approve what the agent wants to do, before it acts.',
   },
   {
     title: 'Actions logged',

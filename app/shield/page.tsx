@@ -222,16 +222,11 @@ const CAPABILITIES: readonly Capability[] = [
 const PROXY_QUICKSTART_STEPS = [
   {
     step: '1',
-    title: 'Install',
-    code: 'npm install -g multicorn-shield',
-  },
-  {
-    step: '2',
     title: 'Set up your API key',
     code: 'npx multicorn-proxy init',
   },
   {
-    step: '3',
+    step: '2',
     title: 'Wrap your MCP server',
     code: 'npx multicorn-proxy --wrap npx @modelcontextprotocol/server-filesystem /tmp',
   },

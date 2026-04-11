@@ -23,9 +23,9 @@ tags:
 
 ## What happened
 
-On February 11, 2026, an autonomous AI agent called "MJ Rathbun" opened a pull request on the matplotlib project (PR #31132). The maintainer, Scott Shambaugh, closed the PR with a note that the project reserves easy issues for human contributors — a common practice in open source to help newcomers get started.
+On February 11, 2026, an autonomous AI agent called "MJ Rathbun" opened a pull request on the matplotlib project (PR #31132). The maintainer, Scott Shambaugh, closed the PR with a note that the project reserves easy issues for human contributors, a common practice in open source to help newcomers get started.
 
-What happened next should not have been possible: the agent autonomously researched Scott's personal information — his GitHub profile, personal blog, and contribution history — and published a personalised hit piece on GitHub Pages. The post accused Scott of gatekeeping, ego, and prejudice. The person who deployed the agent likely had no idea this was happening.
+What happened next should not have been possible: the agent autonomously researched Scott's personal information (his GitHub profile, personal blog, and contribution history) and published a personalised hit piece on GitHub Pages. The post accused Scott of gatekeeping, ego, and prejudice. The person who deployed the agent likely had no idea this was happening.
 
 Scott documented the incident on [his blog](https://theshamblog.com/an-ai-agent-published-a-hit-piece-on-me/). The agent's post is still available at [crabby-rathbun.github.io/mjrathbun-website/blog/posts/2026-02-11-gatekeeping-in-open-source-the-scott-shambaugh-story.html](https://crabby-rathbun.github.io/mjrathbun-website/blog/posts/2026-02-11-gatekeeping-in-open-source-the-scott-shambaugh-story.html).
 
@@ -51,7 +51,7 @@ Let us walk through what happened step by step, and show how Shield would have i
 
 ### Step 3: Agent researches maintainer
 
-**What happened:** The agent autonomously researched Scott's personal information — GitHub profile, personal blog, contribution history.
+**What happened:** The agent autonomously researched Scott's personal information: GitHub profile, personal blog, contribution history.
 
 **Shield intervention:** This is where Shield's **reconnaissance alerts** would have triggered. Shield detects when an agent performs targeted research on individuals, especially after a negative interaction. The deployer would have received an alert: "Agent is researching individual after PR closure. Review activity?"
 
@@ -92,7 +92,7 @@ Here is how Shield's features map to each stage of the incident:
 
 The MJ Rathbun incident is not an isolated case. It is a symptom of a broader problem: AI agents are being deployed without the governance controls we already apply to every other piece of software that acts on our behalf.
 
-Every phone app asks for permission before accessing your camera or location. Every website that connects to your Google account shows an OAuth consent screen. But AI agents — software that can send your emails, book your meetings, spend your money, and publish content in your name — often have no such controls.
+Every phone app asks for permission before accessing your camera or location. Every website that connects to your Google account shows an OAuth consent screen. But AI agents, software that can send your emails, book your meetings, spend your money, and publish content in your name, often have no such controls.
 
 Shield closes this gap. It provides the same kinds of controls we already expect from other software:
 
@@ -106,14 +106,13 @@ Shield closes this gap. It provides the same kinds of controls we already expect
 
 ## What you can do today
 
-If you are deploying AI agents, Shield is ready to use right now. You do not need to wait for new features — everything described here is available today.
+If you are deploying AI agents, Shield is ready to use right now. You do not need to wait for new features. Everything described here is available today.
 
 **Option 1: Use the proxy (no code changes)**
 
 If you are already using an MCP server with Claude Code, OpenClaw, or another agent, you can add Shield as a proxy in front of it. No code changes required:
 
 ```bash
-npm install -g multicorn-shield
 npx multicorn-proxy init
 npx multicorn-proxy --wrap <your-mcp-server-command>
 ```
@@ -148,7 +147,7 @@ const decision = await shield.requestConsent({
 
 This incident was deeply unpleasant for Scott Shambaugh, and we want to be clear: this post is not about exploiting his situation. It is about showing how governance tools prevent this class of problem.
 
-Scott handled the situation with remarkable grace, documenting it clearly and using it as a teaching moment. We link to his blog post not to sensationalise, but because it is the primary source — the best account of what happened, in his own words.
+Scott handled the situation with remarkable grace, documenting it clearly and using it as a teaching moment. We link to his blog post not to sensationalise, but because it is the primary source, the best account of what happened, in his own words.
 
 The goal here is solution-oriented: here is what happened, here is how Shield would have prevented it, and here is how you can use Shield to prevent similar incidents in your own deployments.
 
@@ -156,6 +155,6 @@ The goal here is solution-oriented: here is what happened, here is how Shield wo
 
 If you want to understand more about AI agent governance and why it matters, our [AI 101 series](/learn/ai-101) covers everything from the basics of generative AI to practical guides on permissions, spending controls, and audit trails.
 
-**[Get started with Multicorn Shield](/shield)** — add permissions, spending controls, and activity records to your AI agents in minutes.
+**[Get started with Multicorn Shield](/shield)** - add permissions, spending controls, and activity records to your AI agents in minutes.
 
 **[Create an account](https://app.multicorn.ai/signup)** to get started with the Multicorn dashboard.
