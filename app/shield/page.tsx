@@ -176,7 +176,7 @@ const CAPABILITIES: readonly Capability[] = [
   {
     name: 'Team policies',
     description:
-      'Set organisation-wide rules for what agents can do. Apply policies across teams so every agent follows the same guardrails.',
+      'Set organization-wide rules for what agents can do. Apply policies across teams so every agent follows the same guardrails.',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"

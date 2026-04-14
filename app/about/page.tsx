@@ -54,7 +54,7 @@ const VALUES: readonly Value[] = [
   {
     name: 'Developer experience',
     description:
-      'Safety tools only work if developers actually use them. We build for real workflows, not compliance theatre.',
+      'Safety tools only work if developers actually use them. We build for real workflows, not compliance theater.',
   },
 ]
 

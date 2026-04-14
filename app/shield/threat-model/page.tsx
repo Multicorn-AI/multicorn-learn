@@ -184,9 +184,9 @@ export default function ShieldThreatModelPage() {
             </h2>
             <p className="mt-4 text-base leading-relaxed text-text-secondary">
               The table is read left to right: each row is a situation teams ask about. A check
-              means Shield is positioned to detect, block, or record that class of behaviour in that
-              integration mode. An X means the behaviour can happen without passing through Shield
-              in hosted-proxy mode, so Shield does not see it.
+              means Shield is positioned to detect, block, or record that class of behavior in that
+              integration mode. An × means the behavior can happen without passing through Shield in
+              hosted-proxy mode, so Shield does not see it.
             </p>
             <p className="mt-4 text-base leading-relaxed text-text-secondary">
               Credential replay is a special case. For every action Shield logs, the activity trail
@@ -270,10 +270,7 @@ export default function ShieldThreatModelPage() {
             </p>
             <p>
               <strong className="text-text-primary">Runaway spending on governed actions.</strong>{' '}
-              Limits and alerts attach to the operations Shield sees. On the native plugin path that
-              is the broadest set of spend. On the hosted-proxy path that is spend that flows
-              through MCP under Shield. Both are real controls; the difference is how much of the
-              host&apos;s behaviour Shield can govern.
+              {`Limits and alerts attach to the operations Shield sees. On the native plugin path that is the broadest set of spend. On the hosted-proxy path that is spend that flows through MCP under Shield. Both are real controls; the difference is how much of the host's behavior Shield can govern.`}
             </p>
           </div>
         </section>
@@ -309,7 +306,7 @@ export default function ShieldThreatModelPage() {
           </div>
         </section>
 
-        <section className="px-6 pb-14 sm:pb-24">
+        <section className="px-6 py-14 sm:py-20 sm:pb-24">
           <div className="mx-auto max-w-3xl rounded-card border border-primary/20 bg-primary/5 p-8">
             <h2 className="text-xl font-bold tracking-tight text-text-primary sm:text-2xl">
               When you need full coverage
