@@ -176,7 +176,7 @@ const CAPABILITIES: readonly Capability[] = [
   {
     name: 'Team policies',
     description:
-      'Set organisation-wide rules for what agents can do. Apply policies across teams so every agent follows the same guardrails.',
+      'Set organization-wide rules for what agents can do. Apply policies across teams so every agent follows the same guardrails.',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -677,13 +677,20 @@ export default function ShieldPage() {
               control tools - Agent Safehouse, agentsh, and AgentGate - and find the right fit for
               your team.
             </p>
-            <div className="mt-10 flex justify-center">
+            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <TrackedCtaLink
                 href="/shield/compare"
                 className="inline-flex min-h-[44px] items-center rounded-lg bg-primary px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
                 eventName="shield_page_compare_link_click"
               >
                 Compare Shield to alternatives
+              </TrackedCtaLink>
+              <TrackedCtaLink
+                href="/shield/threat-model"
+                className="inline-flex min-h-[44px] items-center rounded-lg border border-border bg-surface px-8 py-3 text-base font-semibold text-text-primary shadow-sm transition-colors hover:bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+                eventName="shield_page_threat_model_link_click"
+              >
+                Read the threat model
               </TrackedCtaLink>
             </div>
           </div>

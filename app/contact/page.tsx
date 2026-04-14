@@ -47,7 +47,7 @@ const CONTACT_CATEGORIES: readonly ContactCategory[] = [
   {
     name: 'Enterprise sales',
     email: 'sales@multicorn.ai',
-    description: 'Custom plans, volume pricing, or compliance requirements for your organisation.',
+    description: 'Custom plans, volume pricing, or compliance requirements for your organization.',
     note: "We're launching enterprise plans soon. Get in touch to discuss early access.",
   },
   {
@@ -171,7 +171,7 @@ export default function ContactPage() {
             </h2>
             <p className="text-lg leading-relaxed text-text-secondary">
               Found a bug in the Shield SDK or have an idea for a new feature? Open an issue on
-              GitHub. This helps us track and prioritise community feedback in the open.
+              GitHub. This helps us track and prioritize community feedback in the open.
             </p>
             <div className="mt-8">
               <a
