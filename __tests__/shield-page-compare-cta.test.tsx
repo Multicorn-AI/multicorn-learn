@@ -31,7 +31,10 @@ describe('/shield page compare CTA', () => {
       screen.getByRole('heading', { name: /Not sure if Shield is right for you/i }),
     ).toBeInTheDocument()
 
-    const link = screen.getByRole('link', { name: /Compare Shield to alternatives/i })
-    expect(link).toHaveAttribute('href', '/shield/compare')
+    const compareLink = screen.getByRole('link', { name: /Compare Shield to alternatives/i })
+    expect(compareLink).toHaveAttribute('href', '/shield/compare')
+
+    const threatModelLink = screen.getByRole('link', { name: /Read the threat model/i })
+    expect(threatModelLink).toHaveAttribute('href', '/shield/threat-model')
   })
 })
