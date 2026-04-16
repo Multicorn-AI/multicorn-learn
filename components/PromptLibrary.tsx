@@ -1,7 +1,8 @@
 'use client'
 
-import { useMemo, useId, useRef, useState } from 'react'
+import { useMemo, useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import Link from 'next/link'
+import { ExternalLink } from 'lucide-react'
 import { CopyButton } from '@/components/CopyButton'
 import { CATEGORIES, type Category, type Prompt } from '@/content/prompts'
 import { trackEvent as trackAnalytics } from '@/lib/analytics'
@@ -34,9 +35,156 @@ function panelId(category: Category): string {
   return `prompt-panel-${category.toLowerCase()}`
 }
 
+const PLACEHOLDER_PART = /^\[[^\]]+\]$/
+
+function splitPromptTemplate(text: string): readonly string[] {
+  return text.split(/(\[[^\]]+\])/g)
+}
+
+function bracketInner(bracketPart: string): string {
+  return bracketPart.slice(1, -1)
+}
+
+function isBlockField(placeholder: string): boolean {
+  const lower = placeholder.toLowerCase()
+  return /\b(paste|describe|list|state)\b/.test(lower)
+}
+
+function buildCopyablePrompt(template: string, valuesByFieldIndex: Record<number, string>): string {
+  const parts = splitPromptTemplate(template)
+  let fieldIndex = 0
+  return parts
+    .map((part) => {
+      if (PLACEHOLDER_PART.test(part)) {
+        const v = valuesByFieldIndex[fieldIndex] ?? ''
+        fieldIndex += 1
+        return v.trim() === '' ? part : v
+      }
+      return part
+    })
+    .join('')
+}
+
+function renderEditablePromptBody(
+  template: string,
+  values: Record<number, string>,
+  onFieldChange: (fieldIndex: number, value: string) => void,
+  segmentKeyPrefix: string,
+): ReactNode {
+  const parts = splitPromptTemplate(template)
+  let fieldIndex = 0
+  return parts.map((part, i) => {
+    if (PLACEHOLDER_PART.test(part)) {
+      const idx = fieldIndex
+      fieldIndex += 1
+      const inner = bracketInner(part)
+      const ariaLabel = `Fill in: ${inner}`
+      const blockMode = isBlockField(inner)
+      const fieldProps = {
+        value: values[idx] ?? '',
+        onChange: (v: string) => onFieldChange(idx, v),
+        placeholder: inner,
+        ariaLabel,
+        blockMode,
+      } as const
+      return blockMode ? (
+        <div key={`${segmentKeyPrefix}-field-${idx}`} className="my-1 block w-full">
+          <InlinePlaceholderField {...fieldProps} />
+        </div>
+      ) : (
+        <InlinePlaceholderField key={`${segmentKeyPrefix}-field-${idx}`} {...fieldProps} />
+      )
+    }
+    if (part === '') {
+      return null
+    }
+    return (
+      <span key={`${segmentKeyPrefix}-txt-${i}`} className="text-text-primary">
+        {part}
+      </span>
+    )
+  })
+}
+
+function InlinePlaceholderField({
+  value,
+  onChange,
+  placeholder,
+  ariaLabel,
+  blockMode,
+}: {
+  readonly value: string
+  readonly onChange: (value: string) => void
+  readonly placeholder: string
+  readonly ariaLabel: string
+  readonly blockMode: boolean
+}) {
+  const ref = useRef<HTMLTextAreaElement>(null)
+
+  useLayoutEffect(() => {
+    const el = ref.current
+    if (!el) return
+    if (blockMode) {
+      el.style.height = 'auto'
+      el.style.height = `${el.scrollHeight}px`
+      el.style.width = ''
+    } else {
+      el.style.height = 'auto'
+      el.style.height = `${el.scrollHeight}px`
+      el.style.width = 'auto'
+      el.style.width = `${Math.max(80, el.scrollWidth)}px`
+    }
+  }, [value, blockMode, placeholder])
+
+  const sharedFocus =
+    'rounded border border-primary/20 bg-primary/5 px-1.5 py-0.5 font-mono text-sm text-primary placeholder:text-primary/50 focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/30'
+
+  return (
+    <textarea
+      ref={ref}
+      value={value}
+      rows={1}
+      placeholder={placeholder}
+      aria-label={ariaLabel}
+      onChange={(e) => onChange(e.target.value)}
+      onInput={(e) => {
+        const ta = e.target as HTMLTextAreaElement
+        if (blockMode) {
+          ta.style.height = 'auto'
+          ta.style.height = `${ta.scrollHeight}px`
+        } else {
+          ta.style.height = 'auto'
+          ta.style.height = `${ta.scrollHeight}px`
+          ta.style.width = 'auto'
+          ta.style.width = `${Math.max(80, ta.scrollWidth)}px`
+        }
+      }}
+      className={
+        blockMode
+          ? `block w-full min-w-0 resize-none whitespace-pre-wrap break-words ${sharedFocus}`
+          : `inline-block min-w-[80px] max-w-full resize-none overflow-hidden whitespace-nowrap align-middle [field-sizing:content] ${sharedFocus}`
+      }
+    />
+  )
+}
+
+/** When false (default), every prompt is shown as free. Set NEXT_PUBLIC_LEARN_PRO_ENABLED=true to enable Pro gating in the UI. */
+const learnProEnabled = process.env.NEXT_PUBLIC_LEARN_PRO_ENABLED === 'true'
+
+const MAX_CLAUDE_URL_PROMPT_CHARS = 6000
+
+function trackPromptOpenedInClaude(promptItem: Prompt) {
+  const props = { prompt: promptItem.id, category: promptItem.category }
+  trackEvent('prompt_opened_in_claude', props)
+  trackAnalytics('prompt_opened_in_claude', props)
+}
+
 export function PromptLibrary({ prompts }: PromptLibraryProps) {
   const [activeCategory, setActiveCategory] = useState<Category>(CATEGORIES[0])
   const [query, setQuery] = useState('')
+  const [placeholderFields, setPlaceholderFields] = useState<
+    Record<string, Record<number, string>>
+  >({})
   const inputRef = useRef<HTMLInputElement>(null)
   const searchId = useId()
   const resultsId = useId()
@@ -60,7 +208,19 @@ export function PromptLibrary({ prompts }: PromptLibraryProps) {
 
   const activeStats = categoryStats.get(activeCategory) ?? { total: 0, free: 0 }
   const categoryHasLocked =
-    !isSearchActive && prompts.some((p) => p.category === activeCategory && !p.isFree)
+    learnProEnabled &&
+    !isSearchActive &&
+    prompts.some((p) => p.category === activeCategory && !p.isFree)
+
+  function handlePlaceholderFieldChange(promptId: string, fieldIndex: number, value: string) {
+    setPlaceholderFields((prev) => ({
+      ...prev,
+      [promptId]: {
+        ...(prev[promptId] ?? {}),
+        [fieldIndex]: value,
+      },
+    }))
+  }
 
   function handleClearSearch() {
     setQuery('')
@@ -157,7 +317,7 @@ export function PromptLibrary({ prompts }: PromptLibraryProps) {
         </div>
       </div>
 
-      {!isSearchActive && (
+      {!isSearchActive && learnProEnabled && (
         <p className="mb-6 text-sm text-text-secondary">
           {activeStats.free} of {activeStats.total} free in this category
         </p>
@@ -184,7 +344,14 @@ export function PromptLibrary({ prompts }: PromptLibraryProps) {
             <ul className="space-y-6" role="list">
               {filtered.map((prompt) => (
                 <li key={prompt.id}>
-                  <PromptCard prompt={prompt} showCategory onUnlockClick={trackUnlockClick} />
+                  <PromptCard
+                    prompt={prompt}
+                    showCategory
+                    learnProEnabled={learnProEnabled}
+                    fieldValues={placeholderFields[prompt.id] ?? {}}
+                    onPlaceholderFieldChange={handlePlaceholderFieldChange}
+                    onUnlockClick={trackUnlockClick}
+                  />
                 </li>
               ))}
             </ul>
@@ -208,6 +375,9 @@ export function PromptLibrary({ prompts }: PromptLibraryProps) {
                       <PromptCard
                         prompt={prompt}
                         showCategory={false}
+                        learnProEnabled={learnProEnabled}
+                        fieldValues={placeholderFields[prompt.id] ?? {}}
+                        onPlaceholderFieldChange={handlePlaceholderFieldChange}
                         onUnlockClick={trackUnlockClick}
                       />
                     </li>
@@ -241,16 +411,32 @@ export function PromptLibrary({ prompts }: PromptLibraryProps) {
 function PromptCard({
   prompt,
   showCategory,
+  learnProEnabled,
+  fieldValues,
+  onPlaceholderFieldChange,
   onUnlockClick,
 }: {
   readonly prompt: Prompt
   readonly showCategory: boolean
+  readonly learnProEnabled: boolean
+  readonly fieldValues: Record<number, string>
+  readonly onPlaceholderFieldChange: (promptId: string, fieldIndex: number, value: string) => void
   readonly onUnlockClick: (p: Prompt) => void
 }) {
+  const showLockedChrome = learnProEnabled && !prompt.isFree
+
+  function getReconstructedPromptText(): string {
+    return buildCopyablePrompt(prompt.prompt, fieldValues)
+  }
+
+  const reconstructedPromptText = getReconstructedPromptText()
+  const canOpenInClaude = reconstructedPromptText.length <= MAX_CLAUDE_URL_PROMPT_CHARS
+  const claudeHref = `https://claude.ai/new?q=${encodeURIComponent(reconstructedPromptText)}`
+
   return (
     <article
       className="rounded-card border border-border bg-surface-secondary p-6 sm:p-8"
-      {...(!prompt.isFree
+      {...(showLockedChrome
         ? {
             'aria-label': `Locked prompt: ${prompt.title}. Unlock with Learn Pro.`,
           }
@@ -267,15 +453,56 @@ function PromptCard({
             {prompt.title}
           </h2>
         </div>
-        {prompt.isFree && (
-          <CopyButton
-            text={prompt.prompt}
-            label="Copy prompt"
-            analyticsEvent={{
-              event: 'prompt_copied',
-              props: { prompt: prompt.id, category: prompt.category },
-            }}
-          />
+        {!showLockedChrome && (
+          <div className="w-full sm:w-auto sm:shrink-0">
+            {canOpenInClaude ? (
+              <div className="flex w-full items-center gap-2">
+                <a
+                  href={claudeHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => trackPromptOpenedInClaude(prompt)}
+                  className="inline-flex min-h-[44px] flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 sm:flex-initial"
+                >
+                  Open in Claude
+                  <ExternalLink
+                    className="h-3.5 w-3.5 shrink-0 opacity-90"
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  />
+                </a>
+                <div className="shrink-0">
+                  <CopyButton
+                    text={reconstructedPromptText}
+                    label="Copy prompt"
+                    analyticsEvent={{
+                      event: 'prompt_copied',
+                      props: { prompt: prompt.id, category: prompt.category },
+                    }}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">
+                <p
+                  className="text-xs leading-snug text-text-secondary sm:mr-auto sm:max-w-sm"
+                  title="Prompt too long to open directly - copy and paste instead."
+                >
+                  Prompt too long to open directly - copy and paste instead.
+                </p>
+                <div className="shrink-0 self-end sm:self-auto">
+                  <CopyButton
+                    text={reconstructedPromptText}
+                    label="Copy prompt"
+                    analyticsEvent={{
+                      event: 'prompt_copied',
+                      props: { prompt: prompt.id, category: prompt.category },
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
         )}
       </div>
       <p className="mt-3 leading-relaxed text-text-secondary">{prompt.description}</p>
@@ -290,9 +517,14 @@ function PromptCard({
         ))}
       </div>
 
-      {prompt.isFree ? (
+      {!showLockedChrome ? (
         <pre className="mt-4 whitespace-pre-wrap break-words rounded-lg border border-border bg-surface p-4 text-sm text-text-primary">
-          {prompt.prompt}
+          {renderEditablePromptBody(
+            prompt.prompt,
+            fieldValues,
+            (fieldIndex, value) => onPlaceholderFieldChange(prompt.id, fieldIndex, value),
+            prompt.id,
+          )}
         </pre>
       ) : (
         <div className="relative mt-4 min-h-[120px] rounded-lg border border-border bg-surface">

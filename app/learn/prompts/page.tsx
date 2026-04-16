@@ -32,7 +32,20 @@ export default function LearnPromptsPage() {
         </p>
       </div>
 
-      <PromptLibrary prompts={prompts} />
+      <div className="w-full max-w-content">
+        <div className="mb-10 rounded-lg border border-border bg-surface-secondary p-5 sm:p-6">
+          <h2 className="mb-2 text-base font-semibold text-text-primary">
+            How to use these prompts
+          </h2>
+          <p className="text-sm leading-relaxed text-text-secondary">
+            Fill in the highlighted fields with your own content. Click &quot;Open in Claude&quot;
+            to try a prompt, or copy it to use in any AI chat tool. Tweak the wording as you go -
+            these are starting points, not fixed scripts.
+          </p>
+        </div>
+
+        <PromptLibrary prompts={prompts} />
+      </div>
     </main>
   )
 }
