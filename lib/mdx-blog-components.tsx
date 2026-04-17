@@ -1,4 +1,5 @@
-import { extractTextFromChildren, useMDXComponents } from '@/mdx-components'
+import { extractTextFromChildren } from '@/lib/extract-text-from-children'
+import { useMDXComponents } from '@/mdx-components'
 import { CopyButton } from '@/components/CopyButton'
 import { IncidentTimeline } from '@/components/IncidentTimeline'
 import { SecurityLayers } from '@/components/SecurityLayers'

@@ -149,6 +149,48 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: `${BASE_URL}/learn/course-2/cursor`,
+      lastModified: new Date('2026-04-17'),
+      changeFrequency: 'monthly',
+      priority: 0.75,
+    },
+    {
+      url: `${BASE_URL}/learn/course-2/cursor/installing-cursor`,
+      lastModified: new Date('2026-04-17'),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-2/cursor/your-first-prompt`,
+      lastModified: new Date('2026-04-17'),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-2/cursor/reading-the-code`,
+      lastModified: new Date('2026-04-17'),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-2/cursor/iterating-on-your-app`,
+      lastModified: new Date('2026-04-17'),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-2/cursor/writing-tests`,
+      lastModified: new Date('2026-04-17'),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-2/cursor/whats-next`,
+      lastModified: new Date('2026-04-17'),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
       url: `${BASE_URL}/learn/ai-101`,
       lastModified: new Date('2026-02-20'),
       changeFrequency: 'monthly',

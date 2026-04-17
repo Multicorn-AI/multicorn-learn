@@ -1,0 +1,70 @@
+---
+title: 'Your first prompt'
+description: 'Open Composer in Cursor, paste a clear prompt, and compare strong requests with weak ones so the AI builds what you actually want.'
+order: 2
+estimatedMinutes: 15
+outcome: 'You asked Cursor to build a small app feature and you know what separates a helpful prompt from a vague one.'
+date: '2026-04-17'
+---
+
+## What a prompt is
+
+A **prompt** is the instruction you give the AI. In Cursor, the main chat for changing your project is called **Composer**. You open it with **Cmd + I** on Mac or **Ctrl + I** on Windows (unless you changed the shortcut in settings).
+
+Composer can read your project files and suggest edits. You stay in plain English. The AI proposes code; you accept, reject, or ask for changes.
+
+## Try this first prompt
+
+Open Composer and paste the block below. It asks for a simple task tracker in the browser using **React** (a popular library for building interactive web pages).
+
+<CopyablePrompt label="Example prompt you can paste">
+  Build a single-page task tracker in React. I want to add a task with a title and optional due
+  date, see a list of open tasks, mark a task complete, and delete a task. Keep styles minimal:
+  readable fonts, plenty of spacing, and a clear primary button. Put everything in one file if that
+  keeps it simpler for a beginner.
+</CopyablePrompt>
+
+Let Cursor work. When it offers file changes, read the summary. If it asks to create new files, that is normal for a React app.
+
+<SecurityNote title="Prompts you did not write">
+  When you paste prompts from the internet, read them first. A prompt could ask the tool to install
+  software you do not want or to send data somewhere you do not trust. If you do not understand a
+  line, ask Cursor what it does before you accept changes.
+</SecurityNote>
+
+## Good prompts vs weak prompts
+
+| Weak               | Why it struggles                         | Stronger                                                                                                   |
+| ------------------ | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| "Build me an app." | No audience, no features, no constraints | "Build a browser page where I can list wedding RSVP yes/no answers and export them as CSV."                |
+| "Make it pretty."  | "Pretty" is subjective                   | "Use a white background, dark grey text, 16px body font, and one green button for Save."                   |
+| "Fix it."          | No symptom, no expected behaviour        | "When I click Add, nothing appears. I expect the new task to show at the top of the list within a second." |
+
+## Three pairs to learn from
+
+**1. Vague vs specific**
+
+- Bad: "Add tasks."
+- Good: "Add a text field and an Add button. When I click Add, append the trimmed text to a visible list. Show an error message if the field is empty."
+
+**2. Missing context vs clear context**
+
+- Bad: "Use React."
+- Good: "Use React with functional components and hooks. Keep state in the top-level component for now. No backend, browser only."
+
+**3. No success test vs testable outcome**
+
+- Bad: "Improve performance."
+- Good: "The list freezes when I add 50 tasks. Please keep typing smooth and avoid re-rendering the whole list on every keystroke in the input."
+
+## If Composer refuses or stalls
+
+- Check you opened a folder, not a single loose file.
+- Say "propose files one step at a time" if the change list feels overwhelming.
+- Ask "what do you need from me?" The model will often request a missing detail instead of guessing wrong.
+
+## Key takeaway
+
+Short prompts save you typing. Clear prompts save you rework. The extra sentence about who the app is for, what "done" looks like, and what to avoid is what turns a toy answer into something you can use.
+
+**Next:** [Reading the code without writing it](/learn/course-2/cursor/reading-the-code)
