@@ -2,7 +2,6 @@
 
 import { useMemo, useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import Link from 'next/link'
-import { ExternalLink } from 'lucide-react'
 import { CopyButton } from '@/components/CopyButton'
 import { CATEGORIES, type Category, type Prompt } from '@/content/prompts'
 import { trackEvent as trackAnalytics } from '@/lib/analytics'
@@ -170,14 +169,6 @@ function InlinePlaceholderField({
 
 /** When false (default), every prompt is shown as free. Set NEXT_PUBLIC_LEARN_PRO_ENABLED=true to enable Pro gating in the UI. */
 const learnProEnabled = process.env.NEXT_PUBLIC_LEARN_PRO_ENABLED === 'true'
-
-const MAX_CLAUDE_URL_PROMPT_CHARS = 6000
-
-function trackPromptOpenedInClaude(promptItem: Prompt) {
-  const props = { prompt: promptItem.id, category: promptItem.category }
-  trackEvent('prompt_opened_in_claude', props)
-  trackAnalytics('prompt_opened_in_claude', props)
-}
 
 export function PromptLibrary({ prompts }: PromptLibraryProps) {
   const [activeCategory, setActiveCategory] = useState<Category>(CATEGORIES[0])
@@ -425,13 +416,7 @@ function PromptCard({
 }) {
   const showLockedChrome = learnProEnabled && !prompt.isFree
 
-  function getReconstructedPromptText(): string {
-    return buildCopyablePrompt(prompt.prompt, fieldValues)
-  }
-
-  const reconstructedPromptText = getReconstructedPromptText()
-  const canOpenInClaude = reconstructedPromptText.length <= MAX_CLAUDE_URL_PROMPT_CHARS
-  const claudeHref = `https://claude.ai/new?q=${encodeURIComponent(reconstructedPromptText)}`
+  const reconstructedPromptText = buildCopyablePrompt(prompt.prompt, fieldValues)
 
   return (
     <article
@@ -454,54 +439,15 @@ function PromptCard({
           </h2>
         </div>
         {!showLockedChrome && (
-          <div className="w-full sm:w-auto sm:shrink-0">
-            {canOpenInClaude ? (
-              <div className="flex w-full items-center gap-2">
-                <a
-                  href={claudeHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => trackPromptOpenedInClaude(prompt)}
-                  className="inline-flex min-h-[44px] flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 sm:flex-initial"
-                >
-                  Open in Claude
-                  <ExternalLink
-                    className="h-3.5 w-3.5 shrink-0 opacity-90"
-                    strokeWidth={2}
-                    aria-hidden="true"
-                  />
-                </a>
-                <div className="shrink-0">
-                  <CopyButton
-                    text={reconstructedPromptText}
-                    label="Copy prompt"
-                    analyticsEvent={{
-                      event: 'prompt_copied',
-                      props: { prompt: prompt.id, category: prompt.category },
-                    }}
-                  />
-                </div>
-              </div>
-            ) : (
-              <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">
-                <p
-                  className="text-xs leading-snug text-text-secondary sm:mr-auto sm:max-w-sm"
-                  title="Prompt too long to open directly - copy and paste instead."
-                >
-                  Prompt too long to open directly - copy and paste instead.
-                </p>
-                <div className="shrink-0 self-end sm:self-auto">
-                  <CopyButton
-                    text={reconstructedPromptText}
-                    label="Copy prompt"
-                    analyticsEvent={{
-                      event: 'prompt_copied',
-                      props: { prompt: prompt.id, category: prompt.category },
-                    }}
-                  />
-                </div>
-              </div>
-            )}
+          <div className="flex w-full justify-end sm:w-auto sm:shrink-0">
+            <CopyButton
+              text={reconstructedPromptText}
+              label="Copy prompt"
+              analyticsEvent={{
+                event: 'prompt_copied',
+                props: { prompt: prompt.id, category: prompt.category },
+              }}
+            />
           </div>
         )}
       </div>
