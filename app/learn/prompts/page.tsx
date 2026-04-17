@@ -38,9 +38,9 @@ export default function LearnPromptsPage() {
             How to use these prompts
           </h2>
           <p className="text-sm leading-relaxed text-text-secondary">
-            Fill in the highlighted fields with your own content. Click &quot;Open in Claude&quot;
-            to try a prompt, or copy it to use in any AI chat tool. Tweak the wording as you go -
-            these are starting points, not fixed scripts.
+            Fill in the highlighted fields with your own content. Copy the prompt and paste it into
+            any AI chat tool. Tweak the wording as you go, these are starting points, not fixed
+            scripts.
           </p>
         </div>
 
