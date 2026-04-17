@@ -1,10 +1,15 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
+import { COURSE_2_TRACK_SLUGS, type Course2Track } from '@/lib/course-2-track-config'
 
-const CURSOR_LESSONS_DIR = path.join(process.cwd(), 'content', 'learn', 'course-2', 'cursor')
+const COURSE_2_CONTENT_ROOT = path.join(process.cwd(), 'content', 'learn', 'course-2')
 
-export interface CursorLessonMeta {
+function trackDir(track: Course2Track): string {
+  return path.join(COURSE_2_CONTENT_ROOT, track)
+}
+
+export interface Course2LessonMeta {
   readonly title: string
   readonly description: string
   readonly order: number
@@ -13,13 +18,14 @@ export interface CursorLessonMeta {
   readonly date: string
 }
 
-export interface CursorLesson {
+export interface Course2Lesson {
   readonly slug: string
-  readonly meta: CursorLessonMeta
+  readonly track: Course2Track
+  readonly meta: Course2LessonMeta
   readonly content: string
 }
 
-export interface CursorLessonNavigation {
+export interface Course2LessonNavigation {
   readonly prev: { readonly slug: string; readonly title: string } | null
   readonly next: { readonly slug: string; readonly title: string } | null
 }
@@ -27,12 +33,16 @@ export interface CursorLessonNavigation {
 const REQUIRED_STRING_FIELDS = ['title', 'description', 'outcome', 'date'] as const
 const REQUIRED_NUMBER_FIELDS = ['order', 'estimatedMinutes'] as const
 
-function parseFrontmatter(slug: string, data: Record<string, unknown>): CursorLessonMeta {
+function parseFrontmatter(
+  track: Course2Track,
+  slug: string,
+  data: Record<string, unknown>,
+): Course2LessonMeta {
   for (const field of REQUIRED_STRING_FIELDS) {
     const value = data[field]
     if (typeof value !== 'string' || value.trim() === '') {
       throw new Error(
-        `Cursor lesson "${slug}" is missing required string frontmatter field "${field}". Add it to content/learn/course-2/cursor/${slug}.mdx.`,
+        `Course 2 lesson "${track}/${slug}" is missing required string frontmatter field "${field}". Add it to content/learn/course-2/${track}/${slug}.mdx.`,
       )
     }
   }
@@ -40,7 +50,7 @@ function parseFrontmatter(slug: string, data: Record<string, unknown>): CursorLe
     const value = data[field]
     if (typeof value !== 'number' || !Number.isFinite(value) || value < 0) {
       throw new Error(
-        `Cursor lesson "${slug}" is missing required positive number frontmatter field "${field}".`,
+        `Course 2 lesson "${track}/${slug}" is missing required positive number frontmatter field "${field}".`,
       )
     }
   }
@@ -55,8 +65,8 @@ function parseFrontmatter(slug: string, data: Record<string, unknown>): CursorLe
   }
 }
 
-export function getCursorLesson(slug: string): CursorLesson | null {
-  const filePath = path.join(CURSOR_LESSONS_DIR, `${slug}.mdx`)
+export function getCourse2Lesson(track: Course2Track, slug: string): Course2Lesson | null {
+  const filePath = path.join(trackDir(track), `${slug}.mdx`)
 
   if (!fs.existsSync(filePath)) {
     return null
@@ -67,41 +77,45 @@ export function getCursorLesson(slug: string): CursorLesson | null {
 
   return {
     slug,
-    meta: parseFrontmatter(slug, data),
+    track,
+    meta: parseFrontmatter(track, slug, data),
     content,
   }
 }
 
-// Build-time only. Six lessons means per-file existsSync + readFileSync is fine.
-// If this list grows past ~50, batch the read once and cache.
-export function getAllCursorLessons(): readonly CursorLesson[] {
-  if (!fs.existsSync(CURSOR_LESSONS_DIR)) {
+// Build-time only. Six lessons per track means per-file existsSync + readFileSync is fine.
+// If a track grows past ~50 lessons, batch the read once and cache.
+export function getAllCourse2Lessons(track: Course2Track): readonly Course2Lesson[] {
+  const dir = trackDir(track)
+  if (!fs.existsSync(dir)) {
     return []
   }
 
-  const files = fs.readdirSync(CURSOR_LESSONS_DIR).filter((f) => f.endsWith('.mdx'))
+  const files = fs.readdirSync(dir).filter((f) => f.endsWith('.mdx'))
 
-  const lessons = files
-    .map((file) => getCursorLesson(file.replace(/\.mdx$/, '')))
-    .filter((lesson): lesson is CursorLesson => lesson !== null)
+  return files
+    .map((file) => getCourse2Lesson(track, file.replace(/\.mdx$/, '')))
+    .filter((lesson): lesson is Course2Lesson => lesson !== null)
     .sort((a, b) => a.meta.order - b.meta.order)
-
-  return lessons
 }
 
-export function getAllCursorLessonSlugs(): readonly string[] {
-  if (!fs.existsSync(CURSOR_LESSONS_DIR)) {
+export function getAllCourse2LessonSlugs(track: Course2Track): readonly string[] {
+  const dir = trackDir(track)
+  if (!fs.existsSync(dir)) {
     return []
   }
 
   return fs
-    .readdirSync(CURSOR_LESSONS_DIR)
+    .readdirSync(dir)
     .filter((f) => f.endsWith('.mdx'))
     .map((f) => f.replace(/\.mdx$/, ''))
 }
 
-export function getCursorLessonNavigation(slug: string): CursorLessonNavigation {
-  const lessons = getAllCursorLessons()
+export function getCourse2LessonNavigation(
+  track: Course2Track,
+  slug: string,
+): Course2LessonNavigation {
+  const lessons = getAllCourse2Lessons(track)
   const index = lessons.findIndex((l) => l.slug === slug)
 
   if (index === -1) {
@@ -116,3 +130,6 @@ export function getCursorLessonNavigation(slug: string): CursorLessonNavigation 
 
   return { prev, next }
 }
+
+export { COURSE_2_TRACK_SLUGS }
+export type { Course2Track }

@@ -1,0 +1,90 @@
+---
+title: 'Installing Claude Code from your terminal'
+description: 'Install Node.js, install the Claude Code CLI, sign in, and run your first command from the terminal you already use every day.'
+order: 1
+estimatedMinutes: 10
+outcome: 'Claude Code is installed on your machine, signed in to your Anthropic account, and ready to take its first instruction.'
+date: '2026-04-17'
+---
+
+## What you are doing
+
+You are installing **Claude Code**, Anthropic's terminal-first coding agent. It runs in the same shell where you already use `git`, `npm`, and `ls`. There is no separate IDE window. You stay in your terminal, point Claude Code at a project folder, and ask it to read files, edit them, and run commands.
+
+If you have never used a terminal much, this track might feel rough. The [Cursor track](/learn/course-2/cursor) is friendlier for that case. If you already live in zsh or bash, keep reading.
+
+## What you need
+
+- A Mac, Linux, or Windows (WSL) machine with terminal access
+- **Node.js** version 18 or newer
+- An Anthropic account (free tier works to get started, paid plans give more usage)
+
+**Node.js** is a runtime that lets your computer execute JavaScript outside the browser. It ships with `npm`, the package manager Claude Code uses to install itself.
+
+## Install Node.js
+
+If `node -v` already prints `v18.x.x` or higher, skip ahead.
+
+1. Open [https://nodejs.org](https://nodejs.org).
+2. Download the **LTS** build for your operating system.
+3. Run the installer with default options.
+4. Open a fresh terminal window and verify:
+
+```bash
+node -v
+npm -v
+```
+
+Both commands should print version numbers. If either says "command not found," restart your terminal and try again. If it still fails, the Node installer did not finish; rerun it.
+
+## Install Claude Code
+
+With Node working, install the Claude Code CLI globally with npm:
+
+<CopyablePrompt label="Install command">npm install -g @anthropic-ai/claude-code</CopyablePrompt>
+
+This downloads the `claude` binary and puts it on your PATH. Verify it:
+
+```bash
+claude --version
+```
+
+You should see a version number. If you see "command not found," your npm global install path is not on your PATH. The simplest fix is to ask npm where it puts global binaries with `npm config get prefix`, then add `<that path>/bin` to your PATH. Your shell config docs explain how.
+
+## Sign in
+
+The first time you run `claude`, it asks you to authenticate. Run it with no arguments:
+
+```bash
+claude
+```
+
+It opens a browser window for sign-in. Approve the request, return to the terminal, and you should land in an interactive session showing your current directory.
+
+Type `/exit` to leave for now. We will come back in the next lesson.
+
+<SecurityNote title="API keys and your shell">
+  Claude Code stores credentials in your home directory, not in your project folder. Never paste an
+  API key into a chat, screenshot, or public repo. If you also use the Anthropic SDK directly, keep
+  keys in environment variables like `ANTHROPIC_API_KEY` and ask your operating system or a secrets
+  manager to set them. If a tutorial tells you to paste a key into a tracked file, stop and find a
+  different tutorial.
+</SecurityNote>
+
+## Open a project folder
+
+Pick or create a folder for the app you will build. From your terminal:
+
+```bash
+mkdir my-claude-app
+cd my-claude-app
+claude
+```
+
+That last command starts an interactive Claude Code session scoped to this folder. Anything Claude reads or edits will live here.
+
+## Where you are now
+
+You have Node.js, the `claude` CLI, and an authenticated session in a fresh project folder. That is enough to give Claude Code its first real task in the next lesson.
+
+**Next:** [Your first task](/learn/course-2/claude-code/your-first-task)

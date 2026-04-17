@@ -197,6 +197,48 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: `${BASE_URL}/learn/course-2/claude-code`,
+      lastModified: new Date('2026-04-17'),
+      changeFrequency: 'monthly',
+      priority: 0.75,
+    },
+    {
+      url: `${BASE_URL}/learn/course-2/claude-code/installing-claude-code`,
+      lastModified: new Date('2026-04-17'),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-2/claude-code/your-first-task`,
+      lastModified: new Date('2026-04-17'),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-2/claude-code/file-editing-model`,
+      lastModified: new Date('2026-04-17'),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-2/claude-code/using-mcp`,
+      lastModified: new Date('2026-04-17'),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-2/claude-code/writing-tests`,
+      lastModified: new Date('2026-04-17'),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-2/claude-code/whats-next`,
+      lastModified: new Date('2026-04-17'),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
       url: `${BASE_URL}/learn/ai-101`,
       lastModified: new Date('2026-02-20'),
       changeFrequency: 'monthly',

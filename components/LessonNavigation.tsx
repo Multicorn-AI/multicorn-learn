@@ -1,9 +1,9 @@
 import Link from 'next/link'
-import type { CursorLessonNavigation } from '@/lib/course-2'
+import type { Course2LessonNavigation } from '@/lib/course-2'
 
 interface LessonNavigationProps {
   readonly basePath: string
-  readonly navigation: CursorLessonNavigation
+  readonly navigation: Course2LessonNavigation
 }
 
 export function LessonNavigation({ basePath, navigation }: LessonNavigationProps) {

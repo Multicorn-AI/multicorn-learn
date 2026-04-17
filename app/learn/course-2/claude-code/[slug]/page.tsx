@@ -11,7 +11,7 @@ import {
 } from '@/lib/course-2'
 import { getTrackConfig } from '@/lib/course-2-track-config'
 import { extractTableOfContents } from '@/lib/learn'
-import { cursorTrackComponents } from '@/lib/mdx-course2-components'
+import { claudeCodeTrackComponents } from '@/lib/mdx-course2-components'
 import { LessonCompleteButton } from '@/components/LessonProgress'
 import { LessonNavigation } from '@/components/LessonNavigation'
 import { MobileTableOfContents } from '@/components/MobileTableOfContents'
@@ -19,11 +19,11 @@ import { TableOfContents } from '@/components/TableOfContents'
 import { isCourse2Enabled } from '@/lib/feature-flags'
 
 const SITE_URL = 'https://multicorn.ai'
-const TRACK = 'cursor' as const
+const TRACK = 'claude-code' as const
 const trackConfig = getTrackConfig(TRACK)
 const COURSE_ID = `${SITE_URL}${trackConfig.basePath}#course`
 
-interface CursorLessonPageProps {
+interface ClaudeCodeLessonPageProps {
   readonly params: Promise<{ slug: string }>
 }
 
@@ -32,7 +32,7 @@ export async function generateStaticParams() {
   return slugs.map((slug) => ({ slug }))
 }
 
-export async function generateMetadata({ params }: CursorLessonPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: ClaudeCodeLessonPageProps): Promise<Metadata> {
   const { slug } = await params
   const lesson = getCourse2Lesson(TRACK, slug)
 
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: CursorLessonPageProps): Promi
   }
 
   return {
-    title: `${lesson.meta.title} | Cursor track | Multicorn Learn`,
+    title: `${lesson.meta.title} | Claude Code track | Multicorn Learn`,
     description: lesson.meta.description,
     openGraph: {
       title: lesson.meta.title,
@@ -67,7 +67,7 @@ function formatDate(dateString: string): string {
   })
 }
 
-export default async function CursorLessonPage({ params }: CursorLessonPageProps) {
+export default async function ClaudeCodeLessonPage({ params }: ClaudeCodeLessonPageProps) {
   if (!isCourse2Enabled()) {
     redirect('/learn')
   }
@@ -93,9 +93,9 @@ export default async function CursorLessonPage({ params }: CursorLessonPageProps
       {
         '@type': 'Course',
         '@id': COURSE_ID,
-        name: 'Build with Cursor',
+        name: 'Build with Claude Code',
         description:
-          'A beginner-friendly track for building a web app with Cursor: install the editor, prompt an AI partner, read the code, iterate, and run tests locally.',
+          "A terminal-first track for building a web app with Anthropic's Claude Code: install the CLI, drive the agent from your shell, edit real files, connect MCP tools, and run tests locally.",
         provider: {
           '@type': 'Organization',
           name: 'Multicorn',
@@ -170,7 +170,7 @@ export default async function CursorLessonPage({ params }: CursorLessonPageProps
                       href={trackConfig.basePath}
                       className="text-text-secondary transition-colors hover:text-text-primary"
                     >
-                      Cursor
+                      Claude Code
                     </Link>
                   </li>
                   <li aria-hidden="true">
@@ -186,7 +186,7 @@ export default async function CursorLessonPage({ params }: CursorLessonPageProps
 
               <header className="mb-10">
                 {lessonNumber !== null ? (
-                  <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-primary">
+                  <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-indigo">
                     Lesson {lessonNumber} of {lessonsOrdered.length}
                   </p>
                 ) : null}
@@ -218,7 +218,7 @@ export default async function CursorLessonPage({ params }: CursorLessonPageProps
               <div className="prose-multicorn">
                 <MDXRemote
                   source={lesson.content}
-                  components={cursorTrackComponents}
+                  components={claudeCodeTrackComponents}
                   options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
                 />
               </div>

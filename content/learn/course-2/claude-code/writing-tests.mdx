@@ -1,0 +1,84 @@
+---
+title: 'Writing and running tests with Claude Code'
+description: 'Ask Claude Code to add automated tests, run them in the same shell, and read pass-versus-fail output without leaving the terminal.'
+order: 5
+estimatedMinutes: 14
+outcome: 'You can ask Claude Code to add tests, run them with npm, and tell at a glance whether the suite is green or red.'
+date: '2026-04-17'
+---
+
+## What an automated test is
+
+An **automated test** is a small program that checks your main program. Example: "When I add a task titled 'Buy milk', the open-task count goes up by one." If a future change breaks that behaviour, the test fails and you find out before a user does.
+
+Tests are not about distrusting the agent. They are about distrusting complexity. Every new feature can quietly break an old one. Tests act as guardrails inside your codebase, the same way Shield acts as guardrails around it.
+
+<SecurityNote title="Why tests matter for safety">
+  A failing test in your project is far cheaper than a data leak in production. They do not replace
+  security reviews, but they catch the obvious regressions where a change accidentally exposes data,
+  deletes records, or turns off authentication. Run them every time before you ship.
+</SecurityNote>
+
+## Ask Claude Code to add tests
+
+Claude Code can pick a runner, install it, write tests, and wire it into `npm test` in one go. From inside your project session:
+
+<CopyablePrompt label="Prompt for adding tests">
+  Add automated tests for the task tracker. Cover adding a task, marking a task complete, and
+  deleting a task. Use Vitest if no runner exists yet. Keep the config minimal. Wire it up to `npm
+  test` and tell me the exact command I should run after every change.
+</CopyablePrompt>
+
+Read the proposed plan. Approve each step. When it asks to install packages, glance at the names (you should see `vitest` and maybe `@testing-library/something`). Approve.
+
+## Run them in the same terminal
+
+You never left the terminal, so there is nothing new to open. From your project root:
+
+```bash
+npm test
+```
+
+### Reading the output
+
+- **Green** or the word **PASS** means the checks succeeded.
+- **Red** or **FAIL** means at least one check broke. The first failing test usually prints a short diff between expected and actual values, plus the file and line where the assertion ran.
+
+If `npm test` prints `npm error Missing script: "test"`, open `package.json` and look at the `scripts` block. Claude probably named the script differently. Run the exact command from the README it wrote, or ask:
+
+```
+Show me the test command you actually wired up, and update the README so it matches.
+```
+
+## Run tests as part of your loop
+
+Make this a habit, not a special occasion:
+
+1. Ask Claude for a change.
+2. Read the diff. Approve.
+3. Run `npm test`.
+4. If green, commit. If red, paste the failing output back into Claude and ask "fix this without changing what the test asserts."
+
+That fourth step is where the agent earns its keep. Failed tests are a precise description of what went wrong, and Claude is good at reading that signal.
+
+## When a test fails right after a change
+
+It can be hard to tell whether the code is wrong or the test is wrong. Ask:
+
+```
+The test "deletes a task" failed after the last change. Read the test and the code it covers. Tell me whether the test or the implementation is wrong, and explain why.
+```
+
+Then make the call yourself. The agent gives you the analysis; you decide what to fix.
+
+## Good habits
+
+- Run tests before you declare a feature done.
+- Keep test names plain English. "deletes a completed task from the list" beats "test_handler_2".
+- When you fix a real bug, ask Claude to add a test that fails before the fix and passes after. That is how a one-time bug becomes a permanent guardrail.
+
+## What is next
+
+You now have a local app you can change with words, edit with confidence, extend with MCP tools, and check with tests. The last lesson zooms out: what you actually built, and how Course 3 picks up from here.
+
+**Next:** [You have a working local app](/learn/course-2/claude-code/whats-next)

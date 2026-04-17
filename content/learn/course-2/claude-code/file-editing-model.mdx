@@ -1,0 +1,90 @@
+---
+title: 'How Claude Code edits your files'
+description: 'Understand the read, propose, and edit loop Claude Code uses, and why working against real files in real folders is so much faster than copy-and-paste.'
+order: 3
+estimatedMinutes: 12
+outcome: 'You can describe how Claude Code reads and changes files, and you have a habit for asking it to explain code before changing it.'
+date: '2026-04-17'
+---
+
+## The loop in plain English
+
+Every time you ask Claude Code to change something, it does the same three things:
+
+1. **Read** the files it needs to understand the change. It runs the equivalent of `cat path/to/file` against your project.
+2. **Propose** an edit, a new file, or a shell command. It prints what it wants to do and waits for your **y** or **n**.
+3. **Edit** in place once you approve. The change lands directly on disk in your project folder.
+
+There is no clipboard step. There is no second window where you paste an answer. You go from "I want X" to "X is on disk" in the same terminal session.
+
+## Why this matters
+
+Most coding assistants make you copy snippets out of a chat window and paste them into the right file. That works for one-line changes. It breaks down when an answer touches five files, renames a function across the project, or adds a config block to `package.json`.
+
+Claude Code skips that step. It can:
+
+- Open ten files, find the function, and change only the lines that need changing.
+- Add a new component file and update an `index.ts` export at the same time.
+- Run `npm test` between edits to see if it broke anything.
+
+The result is that the unit of work goes from "one snippet" to "one task." That is a different kind of help.
+
+## Tools Claude Code uses on your filesystem
+
+You will see these names in the approval prompts. They are not magic; each one maps to something you could do by hand.
+
+| Tool                 | What it does                               | What you would type                 |
+| -------------------- | ------------------------------------------ | ----------------------------------- |
+| **Read**             | Open a file and look at its contents       | `cat path/to/file`                  |
+| **Glob** or **Grep** | Find files by name or content              | `find` or `rg`                      |
+| **Edit**             | Replace a specific block of text in a file | Open file, change lines, save       |
+| **Write**            | Create or overwrite a whole file           | `> path/to/file` redirect           |
+| **Bash**             | Run a shell command                        | The command you would type yourself |
+
+When Claude asks to use **Bash**, it shows you the exact command first. Read it. If it says `rm -rf` anything you do not recognise, type **n**.
+
+## Habit: explain before you change
+
+Before you ask Claude to refactor a file, ask it to read the file and tell you what it does. This costs nothing and catches a class of mistakes where the agent confidently misreads what you have.
+
+<CopyablePrompt label="Prompt that always works">
+  Read src/components/TaskList.tsx and explain what it does in plain English. List every place state
+  is updated and every event handler. Do not change anything yet.
+</CopyablePrompt>
+
+If the explanation does not match your mental model, that is a useful signal. Either Claude is wrong (correct it) or your mental model is wrong (good to know before you ship). Either way you avoid a confused edit.
+
+## Useful follow-up prompts
+
+- "If I change the way tasks are stored, which other files will I need to touch?"
+- "Show me the diff before you apply it."
+- "Smaller change please. Only update the click handler, leave styling alone."
+- "Undo your last edit and try a different approach."
+
+## Working with files outside the project
+
+By default Claude Code only reads inside the folder where you started the session. That is on purpose. If it needs a file in a sibling folder, it will ask. Approve only what you understand.
+
+<SecurityNote title="What to watch for in big diffs">
+Skim every approval for these signals before typing **y**:
+
+- New entries in `package.json` dependencies you do not recognise.
+- Any change to `.env`, `.env.local`, or files containing tokens.
+- New network calls (look for `fetch`, `axios`, or new server URLs).
+- Files written outside your project folder.
+
+If you spot one, ask "what does this dependency do?" or "why are you writing outside the project?" before approving. Most of the time the answer is fine. The minute it is not fine, you have stopped it.
+
+</SecurityNote>
+
+## Practice drill
+
+Open the project Claude built in Lesson 2. Without changing anything, ask:
+
+1. "What is each top-level file in this project responsible for?"
+2. "Where would I look if the delete button stopped removing tasks?"
+3. "What runs when I type `npm run dev`?"
+
+Reading is the skill that lets you steer. The tool is fast at typing. You stay in charge by understanding what changed and why.
+
+**Next:** [Connecting tools with MCP](/learn/course-2/claude-code/using-mcp)
