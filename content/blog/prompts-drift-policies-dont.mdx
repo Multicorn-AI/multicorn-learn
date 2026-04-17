@@ -1,0 +1,126 @@
+---
+title: "Prompts Drift, Policies Don't. But Which Policies?"
+description: 'agentsh is right that syscall-level enforcement matters. It is not the whole story. Here are the three layers of agent governance and why each one needs its own policy.'
+date: '2026-04-17'
+author: 'Rachelle Rathbone'
+ogImage: 'https://multicorn.ai/images/og-image.png'
+tags:
+  [
+    'agents',
+    'governance',
+    'security',
+    'shield',
+    'AI agent governance',
+    'agent permissions',
+    'syscall enforcement',
+    'MCP',
+    'audit trail',
+    'agent identity',
+  ]
+---
+
+[agentsh](https://agentsh.org) has a tagline that I keep coming back to: the agent proposes, the policy decides. It is the cleanest one-line summary of agent control I have read. The premise is right. Prompts drift. Models change. The same prompt produces different output on Tuesday than it did on Monday. Asking the model to be careful is not a control. A policy that runs outside the model is.
+
+What I want to add is a question: which policy? Because once you say the policy decides, you have to say where the policy lives, what it knows about, and who it answers to.
+
+This post takes agentsh's framing seriously and extends it. Syscall-level enforcement is necessary. It is not sufficient on its own. To govern an agent end to end you need policy at three layers, and each layer answers a different question.
+
+## The premise that holds up
+
+Models are non-deterministic. The same prompt can produce a `git push` one day and a `git push --force` the next. Prompt-based safety - "please do not delete files" - is a hint, not a guarantee. The only reliable controls are the ones the model cannot talk its way out of.
+
+agentsh puts the policy at the operating system. When the agent shells out, the syscall hits a policy engine before it reaches the kernel. Allow, deny, approve, redirect. The agent has no way around it because the agent is not the one making the decision. Landlock and seccomp do the work. The model can ask for anything; the OS will only do what the policy permits.
+
+This is the right architecture for the right problem. If you are running agents in containers, in CI, or in any environment where you do not trust the process to behave, you want enforcement at the lowest layer possible. Anything higher up the stack can be bypassed by a sufficiently creative prompt.
+
+## What the syscall does not know
+
+A syscall knows what is happening. It does not know who is doing it, why, or whether they were allowed to ask.
+
+Consider a single line of agent activity: `POST https://api.github.com/repos/acme/payments/issues`. At the execution layer, this is one HTTPS connection on port 443. The policy at that layer can allow or deny outbound traffic to `api.github.com`. That is a real control.
+
+But there are four other questions that matter, and none of them are visible at the syscall layer:
+
+1. **Identity.** Which agent is this? Claude Code running on Priya's laptop? A scheduled job on a CI runner? An autonomous agent the team forgot was still running? Three agents doing the same syscall are three different governance problems.
+2. **Consent.** Did the user agree to this action, or to a class of actions like it? Did they see what was being requested in plain language before it ran? Or did they grant a blanket "allow everything" once and forget?
+3. **Org context.** Does this team allow agents to file issues in production repositories? Is this repo subject to a change-management process the agent has not been through? Policies that make sense for a hobby project are not the same policies a regulated team needs.
+4. **Audit proof.** Six months from now, when someone asks who approved the agent that filed forty-seven issues over a weekend, can you show them a record that has not been edited? Not "logs we kept", but a tamper-evident chain that a compliance reviewer will accept.
+
+You can write a syscall policy that is perfectly correct and still fail every one of these. The policy permitted the request. The question is whether the request should have been allowed to be made in the first place, and whether you can prove what happened afterwards.
+
+## Three layers of agent governance
+
+The clearest way I have found to think about this is layers, each with its own policy and its own scope. The visual below is the same one we use elsewhere on the site, and it is worth seeing in this context.
+
+<SecurityLayers />
+
+**The execution layer** answers: what is the process actually doing on the machine? File reads, network connections, child processes. agentsh and Agent Safehouse live here. Policies are written against syscalls because that is the only signal the OS exposes. This layer cannot be lied to by a model.
+
+**The protocol layer** answers: what is the agent asking to do through its tool interface? Most modern agents talk to the world through MCP, the Model Context Protocol. Tool calls go through a defined channel before they become syscalls. A policy at this layer sees `github.create_issue({repo, title, body})` instead of an HTTPS POST. That is a more useful unit to write a rule against, because it carries intent.
+
+**The org layer** answers: who is this agent, who approved what it is doing, and what are the rules for this team? This is where identity, consent screens, scoped permissions, spending limits, and audit trails live. It is the layer that turns a single agent into something a team or a company can run together.
+
+The point of the picture is not that one layer is better than another. The point is that they catch different classes of problem and you almost never want to skip any of them.
+
+## What each layer can and cannot stop
+
+It helps to be concrete about what each layer is actually good at.
+
+| Layer     | Catches                                                          | Cannot catch on its own                                                                  |
+| :-------- | :--------------------------------------------------------------- | :--------------------------------------------------------------------------------------- |
+| Execution | Reading `~/.ssh/`, opening reverse shells, fork bombing the host | An MCP tool call that uses an allowed network path to do something the user did not want |
+| Protocol  | A tool call that exceeds the granted scopes, missing consent     | A subprocess the agent spawned that bypasses the MCP layer entirely                      |
+| Org       | Wrong agent, wrong team, no approval on file, no audit record    | Anything the lower layers let through silently                                           |
+
+Read across each row and the picture is clear. A syscall policy will stop an agent from reading your private key. It will not stop a perfectly well-formed MCP call to `slack.send_message` that posts something the user never agreed to. A protocol policy will catch the unapproved Slack message. It will not stop a shell command that the agent runs out-of-band to write the same content to disk and exfiltrate it later. An org policy will tell you which agent did what and prove it. It will not, by itself, stop a single action.
+
+You want all three. The reason is the same reason you want both a lock on the front door and a record of who came in: the lock prevents most problems, the record handles the ones that get through.
+
+## What Shield adds
+
+Shield is what we built for the protocol and org layers. We did not build it because the execution layer does not matter. We built it because the protocol and org layers are where most teams are stuck right now, and because the people who need them are not always the same people who can write a YAML syscall policy.
+
+At the protocol layer, Shield sits in front of MCP servers as a proxy. Tool calls hit Shield first. If the agent is asking for a scope it does not have, Shield opens a consent screen in the browser. The user sees the request in plain language, toggles permissions, approves or denies. No code changes to the agent. No CLI prompts. The decision is captured.
+
+At the org layer, Shield gives the agent an identity, ties that identity to a team, applies the team's policies, and writes every action to a SHA-256 hash chain that cannot be edited after the fact. When someone asks "who authorised this", there is an answer and there is proof.
+
+The Shield consent screen is the thing I would point a non-technical user at first. It is the difference between "the policy decided" and "the user saw what was being decided and said yes". Both matter. Neither replaces the other.
+
+## Where this leaves agentsh
+
+I want to be clear about this: nothing in this post is an argument against agentsh. The opposite. If you are running agents in CI, in containers, or anywhere the process itself is not trusted, you want syscall-level policy. Shield does not do that, and we have no plans to. The kernel is the right place for that control and Landlock and seccomp are the right primitives.
+
+The framing I would offer is this. agentsh and Shield are answering the same parent question - the agent proposes, the policy decides - at different layers of the stack. Run agentsh where you need execution-layer enforcement. Run Shield where you need protocol-layer consent and org-layer audit. They compose. A team running both has a policy at the syscall, a policy at the tool call, and a record of who approved what. That is what end-to-end governance looks like.
+
+The market is small and the field is new. There is no version of this where one tool wins by absorbing every layer. There is a version where a few good tools cover the layers cleanly and teams get to pick the combination that fits their situation. That is the version I want to see happen.
+
+## What to take from this
+
+Three things, if you only remember three.
+
+First, "the agent proposes, the policy decides" is the right mental model. Anyone selling you on prompt-based safety is selling you a hint dressed up as a control.
+
+Second, "the policy" is not one thing. There are at least three policies you need - one at the execution layer, one at the protocol layer, one at the org layer - and each of them answers a different question.
+
+Third, identity, consent, org context, and audit proof are first-class problems. They do not show up at the syscall layer because they cannot. If your governance story stops at "the syscall was allowed", you do not have a governance story yet. You have a sandbox.
+
+## Try Shield
+
+If you want the protocol and org layers in your own deployment, Shield is open source and ready to use today.
+
+```bash
+npm install multicorn-shield
+```
+
+Or add the proxy in front of any MCP server you already run, with no code changes:
+
+```bash
+npx multicorn-proxy init
+npx multicorn-proxy --wrap <your-mcp-server-command>
+```
+
+Read the docs at [multicorn.ai/shield](/shield). For a side-by-side look at how the tools in this space cover different layers, see [our compare page](/shield/compare). For the reasoning behind the design, see the [threat model](/shield/threat-model).
+
+**Try Shield:** [app.multicorn.ai](https://app.multicorn.ai)
+
+**Source:** [github.com/multicorn-ai/multicorn-shield](https://github.com/multicorn-ai/multicorn-shield)
