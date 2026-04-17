@@ -5,15 +5,17 @@ import { Code2 } from 'lucide-react'
 import { CourseProgressIndicator } from '@/components/CourseProgressIndicator'
 import { LessonProgressHub } from '@/components/LessonProgress'
 import { isCourse2Enabled } from '@/lib/feature-flags'
-import { getAllCursorLessons } from '@/lib/course-2'
-import { cursorTrackMeta } from '@/lib/cursor-track-config'
+import { getAllCourse2Lessons } from '@/lib/course-2'
+import { getTrackConfig } from '@/lib/course-2-track-config'
+
+const trackConfig = getTrackConfig('cursor')
 
 export const metadata: Metadata = {
-  title: `${cursorTrackMeta.title} | Multicorn Learn`,
-  description: cursorTrackMeta.description,
+  title: `${trackConfig.title} | Multicorn Learn`,
+  description: trackConfig.description,
   openGraph: {
-    title: `${cursorTrackMeta.title} | Multicorn Learn`,
-    description: cursorTrackMeta.description,
+    title: `${trackConfig.title} | Multicorn Learn`,
+    description: trackConfig.description,
     type: 'website',
   },
 }
@@ -23,7 +25,7 @@ export default function Course2CursorHubPage() {
     redirect('/learn')
   }
 
-  const lessons = getAllCursorLessons()
+  const lessons = getAllCourse2Lessons('cursor')
   const hubItems = lessons.map((l) => ({
     slug: l.slug,
     title: l.meta.title,
@@ -69,10 +71,10 @@ export default function Course2CursorHubPage() {
               Cursor track
             </p>
             <h1 className="mt-1 text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
-              {cursorTrackMeta.title}
+              {trackConfig.title}
             </h1>
             <p className="mt-4 max-w-3xl text-lg leading-relaxed text-text-secondary">
-              {cursorTrackMeta.intro}
+              {trackConfig.intro}
             </p>
           </div>
         </div>
@@ -84,7 +86,11 @@ export default function Course2CursorHubPage() {
           >
             Lessons
           </h2>
-          <LessonProgressHub lessons={hubItems} />
+          <LessonProgressHub
+            lessons={hubItems}
+            basePath={trackConfig.basePath}
+            storageKey={trackConfig.progressStorageKey}
+          />
         </section>
       </div>
     </main>

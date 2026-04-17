@@ -1,0 +1,85 @@
+---
+title: 'Connecting tools with MCP'
+description: 'Learn what the Model Context Protocol is, connect your first MCP server to Claude Code, and see why this is the moment your agent needs guardrails.'
+order: 4
+estimatedMinutes: 14
+outcome: 'You connected an MCP server to Claude Code, you can describe what MCP gives an agent, and you know where Multicorn Shield fits.'
+date: '2026-04-17'
+---
+
+## What MCP actually is
+
+**MCP** stands for **Model Context Protocol**. It is a small, open standard for letting an AI agent talk to outside tools. Think of it as a USB port for agents.
+
+Without MCP, Claude Code can only do what its built-in tools allow: read files, edit files, run shell commands. Useful, but limited.
+
+With MCP, Claude Code can also:
+
+- Query your database
+- Open and comment on GitHub pull requests
+- Read messages in a Slack channel
+- Pull rows from a Google Sheet
+- Use any tool that ships an MCP server
+
+Each tool runs as a small server. You tell Claude Code about it once, and from then on Claude can call that tool the same way it calls Read or Edit.
+
+## Add your first MCP server
+
+The simplest one to try is a filesystem server that gives Claude controlled access to a specific folder. Anthropic ships an example you can install with one command:
+
+<CopyablePrompt label="Add a filesystem MCP server">
+  claude mcp add filesystem npx @modelcontextprotocol/server-filesystem ~/Documents
+</CopyablePrompt>
+
+That command:
+
+- Names the server `filesystem` (your label, you pick it).
+- Tells Claude to launch it with `npx @modelcontextprotocol/server-filesystem`.
+- Scopes it to your `~/Documents` folder.
+
+Restart your `claude` session. Type `/mcp` to see the connected servers. You should see `filesystem` listed with the tools it exposes.
+
+Now ask Claude to use it:
+
+```
+List the top-level files in my Documents folder using the filesystem tool, then summarise what kinds of things are there.
+```
+
+Claude will ask before it calls a tool for the first time. Approve, and watch it use a brand-new capability you just plugged in.
+
+## What this unlocks
+
+You just did something quietly important. You taught your agent a new skill from outside Anthropic. Tomorrow you can teach it to read your database. The day after, you can let it open pull requests. Each MCP server is one more thing your agent can touch.
+
+## And this is the moment to slow down
+
+Every new connection is also a new permission. The same MCP that lets Claude read your Documents folder could let it read your downloads, your `.aws/credentials`, or your private notes if you point it there. The same MCP that opens GitHub pull requests could merge them.
+
+This is not theoretical. People are already running agents that have access to production databases, billing systems, and customer support tools. The agents are useful. The blast radius is large. The thing you need is a layer that decides what the agent is allowed to do, watches what it actually does, and lets you stop it.
+
+<ShieldCallout variant="mcp">
+  When your agent can connect to tools, it needs permissions. That is what Multicorn Shield is for.
+  Approve the tools your agents can reach, see every action they took, and pull the plug the moment
+  something looks wrong.
+</ShieldCallout>
+
+## A safer default for now
+
+Until you have a permissions layer in place, keep these habits:
+
+- **Scope MCP servers narrowly.** A filesystem server pointed at a single project folder is much safer than one pointed at your whole home directory.
+- **Read the tool list.** Run `/mcp` and skim what each server exposes. If a tool name surprises you, look it up.
+- **Approve once, not forever.** Some MCP clients let you remember approvals. For sensitive tools (anything that writes data, sends messages, or touches money), keep the prompt every time.
+
+<SecurityNote title="MCP servers are code from someone else">
+  An MCP server is just a program. When you `claude mcp add` it, you are running someone else's code
+  on your machine with whatever access you give it. Stick to servers from sources you trust (the
+  official Model Context Protocol repo, the vendor whose product you are connecting). For anything
+  else, read the source before you wire it in.
+</SecurityNote>
+
+## Key takeaway
+
+MCP is the moment your agent stops being a coding helper and starts being a real participant in your systems. That is exciting. It is also the point where guardrails go from "nice to have" to "the only reason this is safe."
+
+**Next:** [Writing and running tests](/learn/course-2/claude-code/writing-tests)

@@ -3,17 +3,13 @@
 import Link from 'next/link'
 import { ArrowRight, Check } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
-import {
-  CURSOR_TRACK_BASE_PATH,
-  CURSOR_TRACK_PROGRESS_STORAGE_KEY,
-} from '@/lib/cursor-track-config'
 
-function readCompletedSlugs(): readonly string[] {
+function readCompletedSlugs(storageKey: string): readonly string[] {
   if (typeof window === 'undefined') {
     return []
   }
   try {
-    const raw = window.localStorage.getItem(CURSOR_TRACK_PROGRESS_STORAGE_KEY)
+    const raw = window.localStorage.getItem(storageKey)
     if (raw === null || raw === '') {
       return []
     }
@@ -27,29 +23,30 @@ function readCompletedSlugs(): readonly string[] {
   }
 }
 
-function writeCompletedSlugs(slugs: readonly string[]) {
-  window.localStorage.setItem(CURSOR_TRACK_PROGRESS_STORAGE_KEY, JSON.stringify([...slugs]))
+function writeCompletedSlugs(storageKey: string, slugs: readonly string[]) {
+  window.localStorage.setItem(storageKey, JSON.stringify([...slugs]))
 }
 
 interface LessonCompleteButtonProps {
   readonly slug: string
+  readonly storageKey: string
 }
 
-export function LessonCompleteButton({ slug }: LessonCompleteButtonProps) {
+export function LessonCompleteButton({ slug, storageKey }: LessonCompleteButtonProps) {
   const [completed, setCompleted] = useState(false)
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
-    setCompleted(readCompletedSlugs().includes(slug))
-  }, [slug])
+    setCompleted(readCompletedSlugs(storageKey).includes(slug))
+  }, [slug, storageKey])
 
   const toggle = useCallback(() => {
-    const current = readCompletedSlugs()
+    const current = readCompletedSlugs(storageKey)
     const next = completed ? current.filter((s) => s !== slug) : [...current, slug]
-    writeCompletedSlugs(next)
+    writeCompletedSlugs(storageKey, next)
     setCompleted(!completed)
-  }, [completed, slug])
+  }, [completed, slug, storageKey])
 
   const isCompleted = mounted && completed
   const label = isCompleted ? 'Marked complete' : 'Mark as complete'
@@ -72,7 +69,7 @@ export function LessonCompleteButton({ slug }: LessonCompleteButtonProps) {
   )
 }
 
-export interface CursorLessonListItem {
+export interface Course2LessonListItem {
   readonly slug: string
   readonly title: string
   readonly estimatedMinutes: number
@@ -80,15 +77,17 @@ export interface CursorLessonListItem {
 }
 
 interface LessonProgressHubProps {
-  readonly lessons: readonly CursorLessonListItem[]
+  readonly lessons: readonly Course2LessonListItem[]
+  readonly basePath: string
+  readonly storageKey: string
 }
 
-export function LessonProgressHub({ lessons }: LessonProgressHubProps) {
+export function LessonProgressHub({ lessons, basePath, storageKey }: LessonProgressHubProps) {
   const [completedSet, setCompletedSet] = useState<ReadonlySet<string>>(() => new Set())
 
   useEffect(() => {
-    setCompletedSet(new Set(readCompletedSlugs()))
-  }, [])
+    setCompletedSet(new Set(readCompletedSlugs(storageKey)))
+  }, [storageKey])
 
   return (
     <ol className="list-none space-y-4 p-0">
@@ -97,7 +96,7 @@ export function LessonProgressHub({ lessons }: LessonProgressHubProps) {
         return (
           <li key={lesson.slug}>
             <Link
-              href={`${CURSOR_TRACK_BASE_PATH}/${lesson.slug}`}
+              href={`${basePath}/${lesson.slug}`}
               className="flex min-h-[44px] flex-col gap-2 rounded-card border border-border bg-surface-secondary p-5 transition-colors hover:border-primary/30 hover:bg-surface-tertiary sm:flex-row sm:items-start sm:justify-between sm:gap-6"
             >
               <div className="min-w-0 flex-1">

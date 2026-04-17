@@ -1,0 +1,80 @@
+---
+title: 'Your first task in Claude Code'
+description: 'Give Claude Code its first instruction, watch it propose files, and see how the terminal-first loop differs from a visual IDE.'
+order: 2
+estimatedMinutes: 12
+outcome: 'You asked Claude Code to build a small app from scratch and you understand how the propose-and-approve flow works in the terminal.'
+date: '2026-04-17'
+---
+
+## What an instruction looks like
+
+In Claude Code, you type your request in the terminal session. There is no separate Composer panel and no diff sidebar. Claude reads files, suggests edits, and asks for permission before changing anything that matters. You read the proposal in your terminal, type **y** to approve or **n** to reject.
+
+Open your project folder and start a session:
+
+```bash
+cd my-claude-app
+claude
+```
+
+## Try this first task
+
+Paste this into the session and press Enter:
+
+<CopyablePrompt label="Example task you can paste">
+  Build a small task tracker as a single-page app. I want to add a task with a title and an optional
+  due date, see a list of open tasks, mark a task complete, and delete a task. Use plain HTML, CSS,
+  and TypeScript with Vite as the dev server. Keep styles minimal: readable fonts, plenty of
+  spacing, one primary button. Explain what you are about to do before you start writing files.
+</CopyablePrompt>
+
+Claude should respond with a short plan (the files it wants to create, the dev tools it wants to add). Read the plan. If it makes sense, type **y** when it asks to create or edit each file. If it asks to install npm packages, glance at the names before approving.
+
+## How this differs from Cursor
+
+Cursor lives in an editor window with a file tree and a diff view. Claude Code lives in your terminal and operates directly on the same files you would touch with `vim` or `code`.
+
+| Cursor                          | Claude Code                             |
+| ------------------------------- | --------------------------------------- |
+| Open a folder in the IDE        | `cd` into the folder, then run `claude` |
+| Composer panel for chat         | Interactive prompt in your shell        |
+| Diff view in the sidebar        | Inline diff printed in the terminal     |
+| Click "Apply" to accept an edit | Type **y** at the approval prompt       |
+| Built-in terminal panel         | You are already in the terminal         |
+
+Same outcome - a working local app - different surface.
+
+## When Claude pauses for permission
+
+Claude Code asks before:
+
+- Creating or editing files
+- Running shell commands (like `npm install`, `git commit`, or `rm`)
+- Reading files outside your project folder
+
+Read each prompt. If a step looks larger or scarier than what you asked for, type **n** and tell Claude what you want instead. You can say things like "smaller scope, just make the HTML file first" or "do not install anything yet."
+
+<SecurityNote title="Read the plan before you approve">
+  Claude Code is fast. The terminal scrolls. Slow yourself down on the first approval of a session:
+  read which file is changing, skim the diff, and only then type **y**. The agent is good but not
+  perfect, and an approval inside your shell can run real commands. If you ever lose track of what
+  was changed, ask "summarise every file you have touched in this session."
+</SecurityNote>
+
+## Run what it built
+
+When Claude finishes, it will usually tell you the command to start the dev server. For a Vite project that is:
+
+```bash
+npm install
+npm run dev
+```
+
+Open the printed URL (usually `http://localhost:5173`) in your browser. You should see your task tracker. Add a task. Mark it complete. Delete it. If something is broken, that is fine - the next lessons cover how to read and fix it.
+
+## Key takeaway
+
+Claude Code keeps you in one place: the terminal. The price is that you have to read carefully before you approve. The reward is that you stay in the same environment for editing, running, testing, and shipping.
+
+**Next:** [How Claude Code edits your files](/learn/course-2/claude-code/file-editing-model)
