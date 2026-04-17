@@ -1,0 +1,86 @@
+---
+title: 'Installing Cursor and your first project'
+description: 'Download Cursor, install Node.js so you can run tests later, open the built-in terminal, and create your first project folder and file.'
+order: 1
+estimatedMinutes: 12
+outcome: 'Cursor is installed, Node.js runs on your machine, and you have a project folder open with a simple HTML file.'
+date: '2026-04-17'
+---
+
+## What you are doing
+
+You are setting up **Cursor**, a code editor with AI built in. Think of it like a word processor for software: you type, you open files, and you can ask an AI assistant to help right inside the same window.
+
+You will also install **Node.js**. Node is a free runtime that lets your computer run JavaScript outside the browser. You need it later when you run automated tests. Installing it now means you will not hit a wall in Lesson 5.
+
+## What you need
+
+- A Mac, Windows PC, or Linux machine
+- An internet connection
+- An email address to sign up for Cursor (free tier is enough to start)
+
+## Install Node.js
+
+Node.js ships with **npm** (Node Package Manager), a small tool that downloads libraries and runs test commands for many web projects.
+
+1. Open [https://nodejs.org](https://nodejs.org) in your browser.
+2. Download the **LTS** version (long-term support). That is the stable build most tutorials assume.
+3. Run the installer and accept the defaults.
+
+### Check that Node works
+
+You will use Cursor's **integrated terminal** so everything stays in one app.
+
+1. Open Cursor.
+2. Open the integrated terminal: on Mac press **Ctrl + `** (Control + backtick) or use the menu **Terminal > New Terminal**. On Windows the same shortcut usually works; if not, look under **View** for **Terminal**.
+3. Type `node -v` and press Enter. You should see a version number like `v22.x.x`.
+4. Type `npm -v` and press Enter. You should see another version number.
+
+If either command says "not found," quit Cursor, finish the Node install, then try again.
+
+## Install Cursor
+
+1. Go to [https://cursor.com](https://cursor.com) and download the app for your system.
+2. Install it like any other desktop app.
+3. Open Cursor and sign in or create an account when asked.
+
+<SecurityNote title="Downloads and accounts">
+  Only download Cursor from the official site. Fake download pages show up in search results
+  sometimes. If a site asks for your password in a strange way, stop and go back to cursor.com.
+</SecurityNote>
+
+## Create your first project
+
+A **project** is just a folder on your computer that holds all the files for one app.
+
+1. In Cursor, choose **File > Open Folder** (or **Open...** on some versions).
+2. Create a new empty folder named something like `my-first-app` and select it.
+3. You should see an empty file tree on the side. That sidebar is your map of the project.
+
+## Add your first file
+
+1. Right-click in the file tree (or use the **New File** button) and create a file named `index.html`.
+2. Open `index.html` and type this exactly:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My first page</title>
+  </head>
+  <body>
+    <h1>Hello from my first project</h1>
+  </body>
+</html>
+```
+
+3. Save the file (**Cmd + S** on Mac, **Ctrl + S** on Windows).
+
+You do not need to "run" this file yet. The point is to prove you can create and save something inside Cursor.
+
+## Where you are now
+
+You have Cursor open on a real folder, Node and npm working in the integrated terminal, and a tiny HTML file saved. That is enough to start asking the AI for help in the next lesson.
+
+**Next:** [Your first prompt](/learn/course-2/cursor/your-first-prompt)

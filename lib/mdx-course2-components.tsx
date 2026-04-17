@@ -1,6 +1,9 @@
+import { extractTextFromChildren } from '@/lib/extract-text-from-children'
 import { useMDXComponents } from '@/mdx-components'
 import { CopyButton } from '@/components/CopyButton'
-import { extractTextFromChildren } from '@/lib/extract-text-from-children'
+import { CopyablePrompt } from '@/components/CopyablePrompt'
+import { EmailSignupForm } from '@/components/EmailSignupForm'
+import { SecurityNote } from '@/components/SecurityNote'
 
 function extractLanguageFromClassName(className: string | undefined): string {
   if (!className) return ''
@@ -11,8 +14,12 @@ function extractLanguageFromClassName(className: string | undefined): string {
 // eslint-disable-next-line react-hooks/rules-of-hooks -- useMDXComponents is not a React hook despite the naming convention; it returns a plain object of component overrides
 const baseComponents = useMDXComponents({})
 
-export const docsComponents = {
+export const cursorTrackComponents = {
   ...baseComponents,
+  SecurityNote,
+  CopyablePrompt,
+  CopyButton,
+  EmailSignupForm,
   pre: ({ children }: { children: React.ReactNode }) => {
     const codeElement = children as React.ReactElement<{
       children: React.ReactNode
@@ -25,7 +32,10 @@ export const docsComponents = {
       <div className="mb-6 overflow-hidden rounded-lg border border-border bg-text-primary">
         <div className="flex items-center justify-between border-b border-white/10 px-4 py-2">
           <span className="text-xs text-text-tertiary">{language || 'code'}</span>
-          <CopyButton text={codeText} />
+          <CopyButton
+            text={codeText}
+            analyticsEvent={{ event: 'prompt_copied', props: { category: 'course2_cursor_code' } }}
+          />
         </div>
         <pre className="overflow-x-auto px-4 py-3">
           <code className="text-sm text-green">{codeText}</code>
@@ -47,5 +57,4 @@ export const docsComponents = {
   td: ({ children }: { children: React.ReactNode }) => (
     <td className="border-t border-border px-4 py-3 text-text-secondary">{children}</td>
   ),
-  hr: () => <hr className="my-10 border-border" />,
 }

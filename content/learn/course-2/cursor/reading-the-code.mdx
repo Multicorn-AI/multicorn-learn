@@ -1,0 +1,63 @@
+---
+title: 'Reading the code without writing it'
+description: 'Learn how files fit together, what HTML, CSS, and JavaScript do, and how to ask Cursor to explain any file in plain language.'
+order: 3
+estimatedMinutes: 12
+outcome: 'You can open any file in your project, understand its role, and ask targeted questions when something confuses you.'
+date: '2026-04-17'
+---
+
+## Why reading beats memorising
+
+You do not need to write syntax from scratch. You do need enough reading skill to notice when a change matches what you asked for. Think of it like reviewing a contract: you are not the lawyer, but you still read the clauses that matter.
+
+## The usual shape of a small web app
+
+Most beginner web apps split work into three layers:
+
+- **HTML** (often `.html` files) defines structure: headings, buttons, lists. The file you made in Lesson 1 was HTML.
+- **CSS** (`.css` files) defines presentation: colours, spacing, fonts. Some projects tuck CSS inside the same file as the component; others use separate files.
+- **JavaScript** (`.js`) and **TypeScript** (`.ts`) define behaviour: what happens when someone clicks, types, or submits a form.
+
+**JavaScript** is the language browsers understand natively for interactivity. **TypeScript** is JavaScript plus **type checking**: the editor checks that you are not, for example, passing text where a number is required. Types catch a whole class of mistakes while you edit instead of after you ship.
+
+<SecurityNote title="Secrets live in special files">
+  If you see a file named `.env` or hear "environment variables," that is where API keys and
+  database passwords usually go. Never paste those values into chat, screenshots, or public GitHub
+  repos. If you are unsure, ask Cursor "how do I keep this secret off the internet?"
+</SecurityNote>
+
+## How to skim a file in Cursor
+
+1. Read the file name. `TaskList.tsx` probably renders tasks. `api.ts` might talk to a server.
+2. Scroll to the bottom. Exports at the end often tell you what the file exposes.
+3. Highlight a confusing block and open **chat for that selection** (select text, then use the command palette or right-click menu depending on your Cursor version). Ask: "Explain this section in plain English."
+
+## Questions that always work
+
+- "What is this file responsible for?"
+- "Where is the click handler for the Add button?"
+- "If I change X, what else breaks?"
+- "Point me to the exact lines that control the due date field."
+
+## Folder habits you will see
+
+Names vary by framework, but patterns repeat:
+
+- `src/` or `app/` often holds application code.
+- `public/` holds static assets like images you link directly.
+- `package.json` lists dependencies and scripts such as `npm test`.
+
+You are not expected to memorise these. You are expected to know they are clues.
+
+## Practice drill
+
+Open the file where your task list UI lives. Without changing anything, answer:
+
+1. Where is the list of tasks stored in memory?
+2. What function runs when you click **Add**?
+3. What would you search for if the delete button stopped working?
+
+If you cannot answer, paste each question into Composer with the file open. That is still you steering the tool.
+
+**Next:** [Iterating on your app](/learn/course-2/cursor/iterating-on-your-app)

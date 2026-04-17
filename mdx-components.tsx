@@ -1,22 +1,8 @@
 import type { MDXComponents } from 'mdx/types'
+import { extractTextFromChildren } from '@/lib/extract-text-from-children'
 import { slugifyHeading } from '@/lib/learn'
 
-export function extractTextFromChildren(children: React.ReactNode): string {
-  if (typeof children === 'string') return children
-  if (typeof children === 'number') return String(children)
-  if (!children) return ''
-
-  if (Array.isArray(children)) {
-    return children.map(extractTextFromChildren).join('')
-  }
-
-  if (typeof children === 'object' && children !== null && 'props' in children) {
-    const element = children as { props: { children?: React.ReactNode } }
-    return extractTextFromChildren(element.props.children)
-  }
-
-  return ''
-}
+export { extractTextFromChildren }
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {

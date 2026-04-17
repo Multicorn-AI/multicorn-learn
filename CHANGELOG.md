@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Course 2 Cursor track at `/learn/course-2/cursor`: 6 lessons (install, first prompt, reading code, iterating, writing tests, Course 3 bridge), `SecurityNote`/`CopyablePrompt`/`LessonProgress`/`LessonNavigation` components, localStorage progress tracking under `multicorn_progress_cursor_track_v1`, and build-time frontmatter validation
 - Shared LLM adapter package (`packages/llm-adapter/`) supporting Anthropic and OpenAI providers
 - Content agent package (`packages/multicorn-content/`) for automated article outline generation
 - Weekly GitHub Actions workflow (`content-agent.yml`) with manual dispatch support

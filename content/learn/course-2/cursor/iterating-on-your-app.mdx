@@ -1,0 +1,65 @@
+---
+title: 'Iterating on your app'
+description: 'Ask for changes in everyday language, undo mistakes, and recover when the AI misreads you.'
+order: 4
+estimatedMinutes: 15
+outcome: 'You can run several improvement rounds with Cursor, undo bad edits, and describe fixes even when you do not know the technical word.'
+date: '2026-04-17'
+---
+
+## Iteration is the real skill
+
+**Iteration** means repeating a loop: you describe a change, Cursor applies it, you check the result, then you adjust. Professionals work this way. You are not failing if the first answer is wrong. You are succeeding if you can steer the next pass.
+
+## Ask like a product owner
+
+Use the same clarity you would use with a designer:
+
+- "Move the Add button above the list on mobile."
+- "When a task is overdue, tint the row light red and show the due date in bold."
+- "After I delete a task, show a small 'Undo' toast for five seconds."
+
+Attach screenshots if it helps. Cursor can read images in many setups. If not, describe colours and positions literally.
+
+## Undo paths you should know
+
+1. **Editor undo:** **Cmd + Z** / **Ctrl + Z** steps back through recent typing.
+2. **Reject a Composer change:** When Cursor shows a diff, you can discard the whole suggestion instead of applying it.
+3. **Source control (Git):** Once you start committing work, you can roll back a whole file. If Git is new, ask Cursor "show me how to discard uncommitted changes in this file only."
+
+Pick the shallowest undo that fixes the problem. Editor undo for a typo, diff reject for a bad patch, Git for a bad day.
+
+## When you do not know the word
+
+Describe the user-visible behaviour. Examples:
+
+- Instead of "debounce the input," say "wait until I stop typing for 300 milliseconds before filtering the list."
+- Instead of "memoize," say "do not rebuild the entire list when I change unrelated state."
+- Instead of "normalise dates," say "store due dates in UTC so daylight saving does not shift them."
+
+Cursor will map your plain description to code. If it picks the wrong technique, correct it with the symptom: "That still flickers when I type fast."
+
+## When the AI drifts
+
+- **Narrow the scope:** "Change only the CSS for the header. Do not touch task state."
+- **Add a test sentence:** "After the change, clicking Add still adds a task within one second on my laptop."
+- **Ask for a plan first:** "List the files you will touch and why, then wait for my OK."
+
+<SecurityNote title="Big diffs deserve a second look">
+  Before you accept a large batch of changes, skim for new network calls, new packages in
+  package.json, or anything that sends data off your machine. Ask: "Did this introduce new
+  dependencies or external API calls? If yes, list them." If you do not recognise a package name,
+  search it or ask Cursor what it does.
+</SecurityNote>
+
+## Keep a personal changelog
+
+In a notes doc or the project README, jot down:
+
+- What you asked for
+- What Cursor did
+- What still feels off
+
+That log becomes gold when you need help from a human later. It also trains you to spot patterns in what works.
+
+**Next:** [Writing tests with AI help](/learn/course-2/cursor/writing-tests)

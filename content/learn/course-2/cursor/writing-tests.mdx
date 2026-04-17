@@ -1,0 +1,63 @@
+---
+title: 'Writing tests with AI help'
+description: "Learn what automated tests are, why they matter, and how to run them from Cursor's integrated terminal."
+order: 5
+estimatedMinutes: 16
+outcome: 'You can ask Cursor to add tests, run them with npm, and read pass versus fail output.'
+date: '2026-04-17'
+---
+
+## What a test is
+
+An **automated test** is a small program that checks your main program. Example: "When I add a task titled 'Buy milk', the open-task count increases by one." If someone changes the code later and breaks that behaviour, the test fails and you hear about it before a customer does.
+
+Tests are not about mistrusting Cursor. They are about mistrusting complexity. Every new feature can accidentally break an old one. Tests act as guardrails.
+
+<SecurityNote title="Why tests matter for safety">
+  Tests catch mistakes before they reach real users. If your app ever stores emails, names, health
+  data, or payments, a failing test in your private project is far cheaper than a data leak in
+  production. They do not replace security reviews, but they stop obvious regressions.
+</SecurityNote>
+
+## How to ask Cursor for tests
+
+Open Composer with your project loaded and try:
+
+<CopyablePrompt label="Prompt for adding tests">
+  Add automated tests for the task tracker. Cover adding a task, marking a task complete, and
+  deleting a task. Use the same test runner the project already uses. If no runner exists yet,
+  propose Vitest or Jest with a short reason, wire up npm test, and keep the config minimal.
+</CopyablePrompt>
+
+Let Cursor add or update files. Read the summary. If it wants to install packages, make sure you recognise the names.
+
+## Run tests inside Cursor
+
+You already met the integrated terminal in Lesson 1. Use it again so you never leave Cursor.
+
+1. Open the terminal panel (**Ctrl + `** on Mac and Windows in most setups).
+2. Make sure the prompt path matches your project folder (the same folder you opened with **File > Open Folder**).
+3. Type `npm test` and press Enter.
+
+### Reading the output
+
+- **Green** or the word **PASS** means the checks succeeded.
+- **Red** or **FAIL** means at least one check broke. Scroll to the first stack trace; the error message usually names the test and the line.
+
+If `npm test` says "missing script," open `package.json` and look for a `scripts` block. Cursor may have added `"test": "vitest run"` or similar. Run the exact command Cursor documented in the README or in Composer's summary.
+
+### If nothing runs yet
+
+Ask Cursor: "Wire up npm test for this repo and show me the one command I should run after every change." Accept the smallest setup that works.
+
+## Good habits
+
+- Run tests before you declare a feature "done."
+- When a test fails right after a change, fix the code or fix the test. Ask Cursor which is wrong if you are unsure.
+- Keep tests close to the behaviour they describe. If a test name confuses you, rename it in plain English.
+
+## What is next
+
+You now have a local app you can change with words, read with guidance, iterate safely, and check with tests. The last lesson explains what **deployment** means and how Course 3 will pick up from here.
+
+**Next:** [You have a working local app](/learn/course-2/cursor/whats-next)
