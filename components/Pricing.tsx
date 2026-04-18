@@ -37,6 +37,7 @@ const TIERS: readonly Tier[] = [
     audience: 'For small teams that need more agents and deeper controls.',
     features: [
       'Everything in Free',
+      'Up to 5 team members',
       '10 agents',
       'Unlimited activity logging',
       'Team policies',
@@ -54,6 +55,7 @@ const TIERS: readonly Tier[] = [
     audience: 'For mid-size companies that need advanced governance and compliance.',
     features: [
       'Everything in Pro',
+      'Unlimited team members',
       'Unlimited agents',
       'Role-based access control',
       'SSO integration',
@@ -71,6 +73,7 @@ const TIERS: readonly Tier[] = [
     audience: 'For organizations with custom security, compliance, and scale requirements.',
     features: [
       'Everything in Business',
+      'Unlimited team members',
       'Immutable audit logs',
       'Compliance reporting',
       'Data boundary controls',
