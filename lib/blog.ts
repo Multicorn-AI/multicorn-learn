@@ -55,7 +55,11 @@ export function getBlogPost(slug: string): BlogPost | null {
   }
 }
 
-export function getAllBlogPosts(): readonly BlogPost[] {
+/**
+ * @param includeDrafts - Pass true only in local dev (`next dev`) so draft posts appear on /blog.
+ * Production and `next build` should omit drafts (default false).
+ */
+export function getAllBlogPosts(includeDrafts = false): readonly BlogPost[] {
   if (!fs.existsSync(BLOG_DIR)) {
     return []
   }
@@ -65,7 +69,7 @@ export function getAllBlogPosts(): readonly BlogPost[] {
   const posts = files
     .map((file) => getBlogPost(file.replace(/\.mdx$/, '')))
     .filter((post): post is BlogPost => post !== null)
-    .filter((post) => !post.meta.draft)
+    .filter((post) => includeDrafts || !post.meta.draft)
     .sort((a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime())
 
   return posts
