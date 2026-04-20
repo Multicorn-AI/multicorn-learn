@@ -171,7 +171,7 @@ export function InstallBanner() {
         <button
           type="button"
           onClick={promptInstall}
-          className="min-h-11 rounded bg-white px-4 py-2 text-sm font-medium text-violet-600 hover:bg-violet-50"
+          className="min-h-11 rounded bg-primary-dark px-4 py-2 text-sm font-medium text-white hover:bg-primary"
         >
           Install
         </button>
