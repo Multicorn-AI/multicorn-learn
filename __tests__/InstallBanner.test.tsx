@@ -18,7 +18,7 @@ function mockMatchMedia(standalone: boolean) {
       addListener: vi.fn(),
       removeListener: vi.fn(),
       onchange: null,
-    } as MediaQueryList
+    } as unknown as MediaQueryList
   })
 }
 
