@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { Code2, Library } from 'lucide-react'
+import { Code2, Library, Newspaper } from 'lucide-react'
 import { getAllLearnArticles } from '@/lib/learn'
 import { isCourse2Enabled } from '@/lib/feature-flags'
 import { ArticleSearch } from '@/components/ArticleSearch'
@@ -142,29 +142,48 @@ export default function LearnPage() {
             >
               Resources
             </h2>
-            <Link
-              href="/learn/prompts"
-              className="group flex min-h-[44px] flex-row items-center gap-4 rounded-lg border border-border bg-surface p-4 transition-colors hover:border-primary/25 hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-primary/20 sm:gap-5 sm:p-5"
-            >
-              <span
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border bg-surface-secondary text-primary"
-                aria-hidden="true"
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <Link
+                href="/learn/prompts"
+                className="group flex min-h-[44px] flex-row items-start gap-4 rounded-lg border border-border bg-surface p-4 transition-colors hover:border-primary/25 hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-primary/20 sm:gap-5 sm:p-5"
               >
-                <Library className="h-5 w-5" strokeWidth={1.5} />
-              </span>
-              <div className="min-w-0 flex-1 text-left">
-                <p className="font-semibold text-text-primary group-hover:text-primary">
-                  Prompt Library
-                </p>
-                <p className="mt-0.5 text-sm leading-relaxed text-text-secondary">
-                  Copy-ready prompts for writing, analysis, coding, research, and agents. A free
-                  tier is included.
-                </p>
-              </div>
-              <span className="shrink-0 text-sm font-medium text-primary group-hover:underline">
-                Open
-              </span>
-            </Link>
+                <span
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border bg-surface-secondary text-primary"
+                  aria-hidden="true"
+                >
+                  <Library className="h-5 w-5" strokeWidth={1.5} />
+                </span>
+                <div className="min-w-0 flex-1 text-left">
+                  <p className="font-semibold text-text-primary group-hover:text-primary">
+                    Prompt Library
+                  </p>
+                  <p className="mt-0.5 text-sm leading-relaxed text-text-secondary">
+                    Copy-ready prompts for writing, analysis, coding, research, and agents. A free
+                    tier is included.
+                  </p>
+                </div>
+              </Link>
+
+              <Link
+                href="/learn/news"
+                className="group flex min-h-[44px] flex-row items-start gap-4 rounded-lg border border-border bg-surface p-4 transition-colors hover:border-primary/25 hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-primary/20 sm:gap-5 sm:p-5"
+              >
+                <span
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border bg-surface-secondary text-primary"
+                  aria-hidden="true"
+                >
+                  <Newspaper className="h-5 w-5" strokeWidth={1.5} />
+                </span>
+                <div className="min-w-0 flex-1 text-left">
+                  <p className="font-semibold text-text-primary group-hover:text-primary">
+                    AI News
+                  </p>
+                  <p className="mt-0.5 text-sm leading-relaxed text-text-secondary">
+                    Curated AI and agent stories from across the web. Refreshed every few hours.
+                  </p>
+                </div>
+              </Link>
+            </div>
           </section>
         </div>
       </div>
