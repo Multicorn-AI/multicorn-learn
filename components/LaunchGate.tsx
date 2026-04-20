@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers'
 import { headers } from 'next/headers'
 import { LaunchPage } from '@/components/LaunchPage'
+import { LEARN_LAUNCH_FEATURE_FLAG } from '@/lib/feature-flag-names'
 import { isLaunchGatePublicPath, isLaunchGateStandalonePath } from '@/lib/launchGatePaths'
 import { SiteHeader } from '@/components/SiteHeader'
 
@@ -22,7 +23,7 @@ export async function LaunchGate({ children }: LaunchGateProps) {
   const apiUrl = process.env.MULTICORN_API_URL || 'https://api.multicorn.ai'
   let isLaunchMode = false
   try {
-    const response = await fetch(`${apiUrl}/api/v1/feature-flags/learn_launch`, {
+    const response = await fetch(`${apiUrl}/api/v1/feature-flags/${LEARN_LAUNCH_FEATURE_FLAG}`, {
       cache: 'no-store',
     })
     if (response.ok) {
