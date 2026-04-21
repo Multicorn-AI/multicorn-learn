@@ -1,0 +1,52 @@
+---
+title: 'How to evaluate if an agent is safe to use'
+description: 'A short checklist before you trust an agent with email, code, money, or customer data.'
+date: '2026-04-21'
+author: 'Rachelle Rathbone'
+ogImage: 'https://multicorn.ai/images/og-image.png'
+tags: ['agents', 'safety', 'evaluation']
+order: 3
+series: 'agents'
+---
+
+Before you give an agent access to anything that matters, like your email, your code, your money, your customer data, run through this checklist. If the answers are no, you are taking on more risk than you probably realise.
+
+### Can you see what it is about to do before it does it?
+
+Good agents show you the action before they run it. Bad agents run first and report later, or never. "I have sent the email" is not the same as "I am about to send this email, do you want me to".
+
+For low stakes actions this is fine. For anything that touches money, public content, or other people's data, you want a preview.
+
+### Can you set different rules for different actions?
+
+Reading a file is not the same as deleting one. Sending a message to yourself is not the same as posting to the company Slack. Charging a dollar is not the same as charging a thousand.
+
+A serious permission system lets you say "auto approve reads, ask me about writes, always block deletes of production data". If the agent treats every tool call the same, your options are trust everything or trust nothing.
+
+### Is there an audit log you cannot edit?
+
+After something goes wrong, the first question is what happened. If the only record is the agent's own chat history, and the agent itself can edit that history, you have no evidence. A proper audit log is append only and, ideally, tamper evident. That means if someone changes an entry, you can tell.
+
+This matters less for personal projects. It matters a lot if you ever need to explain to a customer, a regulator, or a court exactly what an AI system did on your behalf.
+
+### Is there a kill switch that actually works?
+
+You should be able to revoke an agent's access in one click and have every subsequent action blocked. Not after it finishes the current task. Not at the next API call. Now.
+
+Test this before you need it. Connect an agent, start a long task, revoke the key, see what happens. If the agent keeps going for another thirty seconds, you do not have a kill switch. You have a suggestion.
+
+### Are there spending limits?
+
+If the agent can spend money, whether that is buying API credits, paying for services, or subscribing to things, there should be a hard cap you control. "I trust it not to go overboard" has cost people real money. A good system blocks the action once the cap is hit, even if the agent thinks spending more is a great idea.
+
+### Does the agent ask before doing something irreversible?
+
+Some actions cannot be undone. Deleting a file. Sending an email. Posting publicly. Making a payment. Transferring data to a third party.
+
+An agent that treats irreversible actions the same as reversible ones is not ready to be trusted with either.
+
+---
+
+If an agent passes this checklist, you can reason about the risk you are taking. If it does not, you are relying on the model to get it right every single time, forever. Models do not get it right every single time.
+
+**Next up:** [What Multicorn Shield does](/learn/agents/what-multicorn-shield-does)

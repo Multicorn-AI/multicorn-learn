@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { Code2, Library, Newspaper } from 'lucide-react'
+import { Code2, Library, Newspaper, ShieldCheck } from 'lucide-react'
 import { getAllLearnArticles } from '@/lib/learn'
 import { isCourse2Enabled } from '@/lib/feature-flags'
 import { ArticleSearch } from '@/components/ArticleSearch'
@@ -76,7 +76,11 @@ export default function LearnPage() {
             </p>
 
             <div className="mb-8">
-              <ArticleSearch articles={searchableArticles} variant="compact" />
+              <ArticleSearch
+                articles={searchableArticles}
+                variant="compact"
+                articleHrefBase="/learn/ai-101"
+              />
             </div>
 
             <Link
@@ -131,6 +135,34 @@ export default function LearnPage() {
               </div>
             </div>
           )}
+
+          <div className="mt-6 rounded-card border border-border bg-surface-secondary p-8 sm:p-10">
+            <div className="mb-6 flex items-center gap-3">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-green/10">
+                <ShieldCheck className="h-5 w-5 text-green" strokeWidth={1.5} aria-hidden="true" />
+              </span>
+              <div>
+                <span className="mb-1 inline-block rounded-full bg-green/10 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-green">
+                  Agent Safety
+                </span>
+                <h2 className="text-2xl font-bold tracking-tight text-text-primary">
+                  Agent Safety Guides
+                </h2>
+              </div>
+            </div>
+
+            <p className="mb-8 leading-relaxed text-text-secondary">
+              Short guides on AI agents, permissions, and what to check before giving one access to
+              your tools.
+            </p>
+
+            <Link
+              href="/learn/agents"
+              className="inline-flex min-h-[44px] items-center rounded-lg bg-green px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-green/90 focus:outline-none focus:ring-2 focus:ring-green/20 focus:ring-offset-2"
+            >
+              Read the guides
+            </Link>
+          </div>
 
           <section
             className="mt-12 border-t border-border pt-10"

@@ -2,6 +2,8 @@ import { extractTextFromChildren } from '@/lib/extract-text-from-children'
 import { useMDXComponents } from '@/mdx-components'
 import { CopyButton } from '@/components/CopyButton'
 import { IncidentTimeline } from '@/components/IncidentTimeline'
+import { MulticornNavSignupCta } from '@/components/MulticornNavSignupCta'
+import { MulticornSignupCta } from '@/components/MulticornSignupCta'
 import { SecurityLayers } from '@/components/SecurityLayers'
 
 function extractLanguageFromClassName(className: string | undefined): string {
@@ -16,6 +18,8 @@ const baseComponents = useMDXComponents({})
 export const blogComponents = {
   ...baseComponents,
   IncidentTimeline,
+  MulticornNavSignupCta,
+  MulticornSignupCta,
   SecurityLayers,
   pre: ({ children }: { children: React.ReactNode }) => {
     const codeElement = children as React.ReactElement<{

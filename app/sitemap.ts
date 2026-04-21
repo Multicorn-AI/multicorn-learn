@@ -1,6 +1,40 @@
 import type { MetadataRoute } from 'next'
+import { getAgentGuide, getAllAgentSlugs } from '@/lib/agents'
 
 const BASE_URL = 'https://multicorn.ai'
+
+function agentSafetyGuideSitemapEntries(): MetadataRoute.Sitemap {
+  const slugs = getAllAgentSlugs()
+  const fallbackDate = new Date('2026-04-21')
+
+  const guideEntries = slugs.map((slug) => {
+    const guide = getAgentGuide(slug)
+    if (!guide) {
+      throw new Error(`sitemap: agent guide missing for slug "${slug}"`)
+    }
+    const parsed = new Date(guide.meta.date)
+    const lastModified = Number.isNaN(parsed.getTime()) ? fallbackDate : parsed
+    return {
+      url: `${BASE_URL}/learn/agents/${slug}`,
+      lastModified,
+      changeFrequency: 'monthly' as const,
+      priority: 0.75,
+    }
+  })
+
+  const times = guideEntries.map((e) => e.lastModified.getTime())
+  const indexLastModified = times.length > 0 ? new Date(Math.max(...times)) : fallbackDate
+
+  return [
+    {
+      url: `${BASE_URL}/learn/agents`,
+      lastModified: indexLastModified,
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    },
+    ...guideEntries,
+  ]
+}
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -244,6 +278,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+    ...agentSafetyGuideSitemapEntries(),
     {
       url: `${BASE_URL}/learn/ai-101/what-is-generative-ai`,
       lastModified: new Date('2026-02-20'),
