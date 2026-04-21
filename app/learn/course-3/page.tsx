@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { Rocket } from 'lucide-react'
 import { CourseProgressIndicator } from '@/components/CourseProgressIndicator'
 import { LessonProgressHub } from '@/components/LessonProgress'
+import { PlatformPicker } from '@/components/PlatformPicker'
 import { isCourse3Enabled } from '@/lib/feature-flags'
 import { COURSE_3 } from '@/lib/course-3-config'
 import { getAllCourse3Lessons } from '@/lib/course-3'
@@ -75,9 +76,28 @@ export default function Course3Page() {
           </div>
         </div>
 
-        <section aria-labelledby="course-3-lessons-heading">
+        <section id="pick-your-platform" className="mx-auto w-full max-w-3xl px-4 pb-12">
           <h2
-            id="course-3-lessons-heading"
+            id="pick-your-platform-heading"
+            className="text-2xl font-bold tracking-tight text-text-primary"
+          >
+            Not sure which platform to use?
+          </h2>
+          <p className="mt-2 text-text-secondary">
+            Answer three short questions and we will recommend one. It takes about 30 seconds.
+          </p>
+          <div className="mt-6">
+            <PlatformPicker ariaLabelledBy="pick-your-platform-heading" />
+          </div>
+        </section>
+
+        <section
+          id="lessons"
+          className="mx-auto w-full max-w-3xl px-4 pb-16"
+          aria-labelledby="lessons-heading"
+        >
+          <h2
+            id="lessons-heading"
             className="mb-6 text-2xl font-bold tracking-tight text-text-primary"
           >
             Lessons
