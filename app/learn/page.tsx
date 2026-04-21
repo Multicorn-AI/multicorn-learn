@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { Code2, Library, Newspaper, ShieldCheck } from 'lucide-react'
+import { Code2, Library, Newspaper, Rocket, ShieldCheck } from 'lucide-react'
 import { getAllLearnArticles } from '@/lib/learn'
-import { isCourse2Enabled } from '@/lib/feature-flags'
+import { isCourse2Enabled, isCourse3Enabled } from '@/lib/feature-flags'
 import { ArticleSearch } from '@/components/ArticleSearch'
 import { EmailSignupForm } from '@/components/EmailSignupForm'
 
@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 
 export default function LearnPage() {
   const course2Enabled = isCourse2Enabled()
+  const course3Enabled = isCourse3Enabled()
   const articles = getAllLearnArticles()
 
   const searchableArticles = articles.map((article) => ({
@@ -135,6 +136,39 @@ export default function LearnPage() {
               </div>
             </div>
           )}
+
+          {course3Enabled ? (
+            <div className="mt-6 rounded-card border border-border bg-surface-secondary p-8 sm:p-10">
+              <div className="mb-6 flex items-center gap-3">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-teal/10">
+                  <Rocket className="h-5 w-5 text-teal" strokeWidth={1.5} aria-hidden="true" />
+                </span>
+                <div>
+                  <span className="mb-1 inline-block rounded-full bg-teal/10 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-teal">
+                    Course 3
+                  </span>
+                  <h2 className="text-2xl font-bold tracking-tight text-text-primary">
+                    Getting to production
+                  </h2>
+                  <p className="text-sm text-text-secondary">
+                    Hosting, domains, HTTPS, and safe secrets
+                  </p>
+                </div>
+              </div>
+
+              <p className="mb-8 leading-relaxed text-text-secondary">
+                Take the app you built locally and put it on the internet with a real URL and
+                domain. Vercel is the main path; you will also see where Netlify or Fly.io fit.
+              </p>
+
+              <Link
+                href="/learn/course-3"
+                className="inline-flex min-h-[44px] items-center rounded-lg bg-teal px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-teal/90 focus:outline-none focus:ring-2 focus:ring-teal/20 focus:ring-offset-2"
+              >
+                Open Course 3
+              </Link>
+            </div>
+          ) : null}
 
           <div className="mt-6 rounded-card border border-border bg-surface-secondary p-8 sm:p-10">
             <div className="mb-6 flex items-center gap-3">
