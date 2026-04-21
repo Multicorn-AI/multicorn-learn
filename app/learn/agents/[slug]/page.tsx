@@ -3,60 +3,56 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import remarkGfm from 'remark-gfm'
-import {
-  getLearnArticle,
-  getAllLearnSlugs,
-  getArticleNavigation,
-  extractTableOfContents,
-} from '@/lib/learn'
+import { getAgentGuide, getAllAgentSlugs, getAgentGuideNavigation } from '@/lib/agents'
+import { extractTableOfContents } from '@/lib/learn'
 import { blogComponents } from '@/lib/mdx-blog-components'
 import { MobileTableOfContents } from '@/components/MobileTableOfContents'
 import { TableOfContents } from '@/components/TableOfContents'
 import { ArticleNavigation } from '@/components/ArticleNavigation'
 import { EmailSignupForm } from '@/components/EmailSignupForm'
 
-interface LearnArticlePageProps {
+interface AgentGuidePageProps {
   readonly params: Promise<{ slug: string }>
 }
 
 export async function generateStaticParams() {
-  const slugs = getAllLearnSlugs()
+  const slugs = getAllAgentSlugs()
   return slugs.map((slug) => ({ slug }))
 }
 
-export async function generateMetadata({ params }: LearnArticlePageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: AgentGuidePageProps): Promise<Metadata> {
   const { slug } = await params
-  const article = getLearnArticle(slug)
+  const guide = getAgentGuide(slug)
 
-  if (!article) {
-    return { title: 'Article not found' }
+  if (!guide) {
+    return { title: 'Guide not found' }
   }
 
   return {
-    title: `${article.meta.title} | Multicorn Learn`,
-    description: article.meta.description,
+    title: `${guide.meta.title} | Multicorn Learn`,
+    description: guide.meta.description,
     openGraph: {
-      title: article.meta.title,
-      description: article.meta.description,
+      title: guide.meta.title,
+      description: guide.meta.description,
       type: 'article',
-      publishedTime: article.meta.date,
-      authors: [article.meta.author],
-      images: article.meta.ogImage
+      publishedTime: guide.meta.date,
+      authors: [guide.meta.author],
+      images: guide.meta.ogImage
         ? [
             {
-              url: article.meta.ogImage,
+              url: guide.meta.ogImage,
               width: 1200,
               height: 630,
-              alt: article.meta.title,
+              alt: guide.meta.title,
             },
           ]
         : [],
     },
     twitter: {
       card: 'summary_large_image',
-      title: article.meta.title,
-      description: article.meta.description,
-      images: article.meta.ogImage ? [article.meta.ogImage] : [],
+      title: guide.meta.title,
+      description: guide.meta.description,
+      images: guide.meta.ogImage ? [guide.meta.ogImage] : [],
     },
   }
 }
@@ -69,34 +65,34 @@ function formatDate(dateString: string): string {
   })
 }
 
-export default async function LearnArticlePage({ params }: LearnArticlePageProps) {
+export default async function AgentSafetyGuidePage({ params }: AgentGuidePageProps) {
   const { slug } = await params
-  const article = getLearnArticle(slug)
+  const guide = getAgentGuide(slug)
 
-  if (!article) {
+  if (!guide) {
     notFound()
   }
 
-  const navigation = getArticleNavigation(slug)
-  const tocItems = extractTableOfContents(article.content)
+  const navigation = getAgentGuideNavigation(slug)
+  const tocItems = extractTableOfContents(guide.content)
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
-    headline: article.meta.title,
-    description: article.meta.description,
-    datePublished: article.meta.date,
+    headline: guide.meta.title,
+    description: guide.meta.description,
+    datePublished: guide.meta.date,
     author: {
       '@type': 'Organization',
-      name: article.meta.author,
+      name: guide.meta.author,
     },
     publisher: {
       '@type': 'Organization',
       name: 'Multicorn',
       url: 'https://multicorn.ai',
     },
-    url: `https://multicorn.ai/learn/ai-101/${article.slug}`,
-    image: article.meta.ogImage ? `https://multicorn.ai${article.meta.ogImage}` : undefined,
+    url: `https://multicorn.ai/learn/agents/${guide.slug}`,
+    image: guide.meta.ogImage ? `https://multicorn.ai${guide.meta.ogImage}` : undefined,
   }
 
   return (
@@ -157,10 +153,10 @@ export default async function LearnArticlePage({ params }: LearnArticlePageProps
                   </li>
                   <li>
                     <Link
-                      href="/learn/ai-101"
+                      href="/learn/agents"
                       className="text-text-secondary transition-colors hover:text-text-primary"
                     >
-                      AI 101
+                      Agent Safety Guides
                     </Link>
                   </li>
                   <li aria-hidden="true">
@@ -179,7 +175,7 @@ export default async function LearnArticlePage({ params }: LearnArticlePageProps
                   </li>
                   <li>
                     <span className="font-medium text-text-primary" aria-current="page">
-                      {article.meta.title}
+                      {guide.meta.title}
                     </span>
                   </li>
                 </ol>
@@ -187,7 +183,7 @@ export default async function LearnArticlePage({ params }: LearnArticlePageProps
 
               <header className="mb-12">
                 <div className="mb-4 flex flex-wrap gap-2">
-                  {article.meta.tags.map((tag) => (
+                  {guide.meta.tags.map((tag) => (
                     <span
                       key={tag}
                       className="rounded-full bg-green/10 px-3 py-1 text-xs font-medium text-green"
@@ -198,17 +194,17 @@ export default async function LearnArticlePage({ params }: LearnArticlePageProps
                 </div>
 
                 <h1 className="mb-4 text-3xl font-bold tracking-tight text-text-primary sm:text-4xl lg:text-5xl">
-                  {article.meta.title}
+                  {guide.meta.title}
                 </h1>
 
                 <p className="mb-6 text-lg leading-relaxed text-text-secondary">
-                  {article.meta.description}
+                  {guide.meta.description}
                 </p>
 
                 <div className="flex items-center gap-3 text-sm text-text-tertiary">
-                  <span>{article.meta.author}</span>
+                  <span>{guide.meta.author}</span>
                   <span aria-hidden="true">&middot;</span>
-                  <time dateTime={article.meta.date}>{formatDate(article.meta.date)}</time>
+                  <time dateTime={guide.meta.date}>{formatDate(guide.meta.date)}</time>
                 </div>
               </header>
 
@@ -218,7 +214,7 @@ export default async function LearnArticlePage({ params }: LearnArticlePageProps
 
               <div className="prose-multicorn">
                 <MDXRemote
-                  source={article.content}
+                  source={guide.content}
                   components={blogComponents}
                   options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
                 />
@@ -234,7 +230,7 @@ export default async function LearnArticlePage({ params }: LearnArticlePageProps
                 <EmailSignupForm source="learn-blog" />
               </section>
 
-              <ArticleNavigation navigation={navigation} articleHrefBase="/learn/ai-101" />
+              <ArticleNavigation navigation={navigation} articleHrefBase="/learn/agents" />
             </article>
 
             <TableOfContents items={tocItems} />

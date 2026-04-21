@@ -1,0 +1,32 @@
+---
+title: 'What is an AI agent?'
+description: 'Plain-English intro to AI agents for people who are new to the idea.'
+date: '2026-04-21'
+author: 'Rachelle Rathbone'
+ogImage: 'https://multicorn.ai/images/og-image.png'
+tags: ['agents', 'safety', 'basics']
+order: 1
+series: 'agents'
+---
+
+An AI agent is a program that uses a language model to decide what to do next, then actually does it.
+
+That second half is the part people miss. A chatbot writes words back to you. An agent reads words, picks a tool, and runs it. Tools are real things in the world, like your email, your code, your calendar, your bank. When the agent finishes one step, it looks at the result and decides what to do next, often without asking you first.
+
+Here is what that looks like in practice.
+
+You ask an AI coding assistant to fix a failing test. A chatbot would show you a diff and let you decide. An agent opens the file itself, edits the code, runs the test, reads the output, and tries again if it failed. It might touch ten files before it stops. Same prompt, very different outcomes.
+
+You ask a research assistant to book a flight. A chatbot lists options. An agent searches, compares, picks one, fills in your details, and charges your card.
+
+The thing that makes something an agent is not how smart the model is. It is the combination of three ingredients:
+
+A model that can reason about what to do. Tools that let it act in the real world. A loop that keeps running until the task is done or something stops it.
+
+Take any of those away and you do not have an agent. A model with no tools is a chatbot. Tools with no model are just an API. A model and tools with no loop is a one shot request.
+
+Most of the AI products you hear about now are trying to become agents. Claude Code, Cursor, OpenClaw, Windsurf, all the vibe coding tools, customer support bots that can actually issue refunds, research assistants that browse the web, email assistants that draft and send. The industry is moving from chatting with an AI to letting an AI do the work.
+
+This shift is why the next question matters so much. Once a program can act on your behalf, you need a way to decide what it is allowed to do, and a way to know what it actually did. That is what the rest of these guides cover.
+
+**Next up:** [Why AI agents need permissions](/learn/agents/why-ai-agents-need-permissions)

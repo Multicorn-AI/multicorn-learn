@@ -5,3 +5,5 @@ public
 pnpm-lock.yaml
 **/.vite/**
 .eslintcache
+# Fetched in prebuild from multicorn-shield; formatting churn is noise
+content/changelog.json

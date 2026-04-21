@@ -1,3 +1,4 @@
-export NODE_OPTIONS="--max-old-space-size=4096 ${NODE_OPTIONS:-}"
+# Prettier + prettier-plugin-tailwindcss on several MDX/JSON files can spike memory; ESLint uses the same heap.
+export NODE_OPTIONS="--max-old-space-size=8192 ${NODE_OPTIONS:-}"
 pnpm exec lint-staged
 pnpm run typecheck

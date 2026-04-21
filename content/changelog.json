@@ -1,5 +1,31 @@
 [
   {
+    "version": "0.10.0",
+    "date": "2026-04-21",
+    "added": [
+      "`requestContentReview()` and supporting types (`ContentReviewResult`, `ContentReviewRequestPayload`, `ContentReviewStatusResponse`) for submitting public-content actions to the Content Review queue and awaiting the human decision.",
+      "`waitForReviewDecision` opt-in flag on `McpAdapterConfig`. When true, the MCP adapter blocks until a human approves or blocks the action (5 minute ceiling) and forwards the call if approved. Default false preserves existing block-fast behaviour.",
+      "Public exports of `requiresContentReview` and `isPublicContentAction` from `src/scopes/content-review-detector.ts`.",
+      "SDK-side mapping of backend `PLAN_TIER_INSUFFICIENT` responses to a distinct `plan_tier_insufficient` reason code with the \"Content review requires an Enterprise plan\" user message."
+    ],
+    "changed": [
+      "`pollContentReviewStatus` fast-fails on 404 (maps to `review_not_found`) instead of retrying, diverging from `pollApprovalStatus` which treats 404 as transient. Content reviews can be hard-deleted by admin action in a way approvals cannot."
+    ],
+    "fixed": [],
+    "security": []
+  },
+  {
+    "version": "0.9.0",
+    "date": "2026-04-15",
+    "added": [
+      "Windsurf native integration via Cascade Hooks (`pre_*` / `post_*` for reads, writes, terminal, and MCP). Hook scripts install to `~/.multicorn/windsurf-hooks/` and add entries to `~/.codeium/windsurf/hooks.json`.",
+      "`npx multicorn-proxy init`: when you pick Windsurf, choose Native plugin (recommended) or Hosted proxy. Native path registers Shield hooks and reminds you to restart Windsurf."
+    ],
+    "changed": [],
+    "fixed": [],
+    "security": []
+  },
+  {
     "version": "0.8.0",
     "date": "2026-04-12",
     "added": [
@@ -61,7 +87,9 @@
     "date": "2026-04-08",
     "added": [],
     "changed": [],
-    "fixed": ["Updated README badges and npm package metadata to reflect current branding."],
+    "fixed": [
+      "Updated README badges and npm package metadata to reflect current branding."
+    ],
     "security": []
   },
   {
@@ -282,7 +310,9 @@
     "date": "2026-03-04",
     "added": [],
     "changed": [],
-    "fixed": ["API key resolution from config.json when openclaw.json env block is not available"],
+    "fixed": [
+      "API key resolution from config.json when openclaw.json env block is not available"
+    ],
     "security": []
   },
   {
@@ -300,35 +330,51 @@
   {
     "version": "0.1.7",
     "date": "2026-03-04",
-    "added": ["README header SVG banner"],
+    "added": [
+      "README header SVG banner"
+    ],
     "changed": [
       "Consent flow updated for OpenClaw Plugin API (replaces deprecated gateway hook approach)"
     ],
-    "fixed": ["Handler and plugin consent test alignment with new Plugin API structure"],
+    "fixed": [
+      "Handler and plugin consent test alignment with new Plugin API structure"
+    ],
     "security": []
   },
   {
     "version": "0.1.6",
     "date": "2026-03-04",
-    "added": ["Comprehensive plugin test suite for beforeToolCall and afterToolCall hooks"],
+    "added": [
+      "Comprehensive plugin test suite for beforeToolCall and afterToolCall hooks"
+    ],
     "changed": [],
-    "fixed": ["Plugin registration and lifecycle handling with OpenClaw Plugin API"],
+    "fixed": [
+      "Plugin registration and lifecycle handling with OpenClaw Plugin API"
+    ],
     "security": []
   },
   {
     "version": "0.1.5",
     "date": "2026-03-04",
     "added": [],
-    "changed": ["Package metadata updates for npm listing"],
-    "fixed": ["Test stability improvements across the full suite"],
+    "changed": [
+      "Package metadata updates for npm listing"
+    ],
+    "fixed": [
+      "Test stability improvements across the full suite"
+    ],
     "security": []
   },
   {
     "version": "0.1.4",
     "date": "2026-03-04",
     "added": [],
-    "changed": ["MCP proxy improved for edge cases in tool call interception"],
-    "fixed": ["Proxy test reliability"],
+    "changed": [
+      "MCP proxy improved for edge cases in tool call interception"
+    ],
+    "fixed": [
+      "Proxy test reliability"
+    ],
     "security": []
   },
   {
@@ -342,7 +388,9 @@
       "Hook documentation (HOOK.md)"
     ],
     "changed": [],
-    "fixed": ["OpenClaw integration issues discovered during end-to-end testing"],
+    "fixed": [
+      "OpenClaw integration issues discovered during end-to-end testing"
+    ],
     "security": []
   },
   {
@@ -357,8 +405,12 @@
     "version": "0.1.1",
     "date": "2026-03-04",
     "added": [],
-    "changed": ["Publish workflow switched to OIDC trusted publishing via GitHub Actions"],
-    "fixed": ["Plugin loading path resolution for OpenClaw"],
+    "changed": [
+      "Publish workflow switched to OIDC trusted publishing via GitHub Actions"
+    ],
+    "fixed": [
+      "Plugin loading path resolution for OpenClaw"
+    ],
     "security": []
   },
   {

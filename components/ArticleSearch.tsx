@@ -13,6 +13,8 @@ interface ArticleItem {
 interface ArticleSearchProps {
   readonly articles: readonly ArticleItem[]
   readonly variant?: 'cards' | 'compact'
+  /** Base path for article links, e.g. `/learn/ai-101` or `/learn/agents`. Required to avoid silent cross-section linking. */
+  readonly articleHrefBase: string
 }
 
 function normalize(text: string): string {
@@ -50,13 +52,15 @@ function EmptyState({ onClear }: { readonly onClear: () => void }) {
 function ArticleCard({
   article,
   index,
+  hrefBase,
 }: {
   readonly article: ArticleItem
   readonly index: number
+  readonly hrefBase: string
 }) {
   return (
     <Link
-      href={`/learn/ai-101/${article.slug}`}
+      href={`${hrefBase}/${article.slug}`}
       className="group block rounded-card border border-border bg-surface-secondary p-6 transition-colors hover:border-green/30 hover:bg-surface-tertiary sm:p-8"
     >
       <div className="flex items-start gap-5">
@@ -87,14 +91,16 @@ function ArticleCard({
 function ArticleListItem({
   article,
   index,
+  hrefBase,
 }: {
   readonly article: ArticleItem
   readonly index: number
+  readonly hrefBase: string
 }) {
   return (
     <li>
       <Link
-        href={`/learn/ai-101/${article.slug}`}
+        href={`${hrefBase}/${article.slug}`}
         className="group flex items-start gap-4 rounded-lg p-3 transition-colors hover:bg-surface-tertiary"
       >
         <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-green/10 text-xs font-bold text-green">
@@ -111,7 +117,11 @@ function ArticleListItem({
   )
 }
 
-export function ArticleSearch({ articles, variant = 'cards' }: ArticleSearchProps) {
+export function ArticleSearch({
+  articles,
+  variant = 'cards',
+  articleHrefBase,
+}: ArticleSearchProps) {
   const [query, setQuery] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   const inputId = useId()
@@ -191,6 +201,7 @@ export function ArticleSearch({ articles, variant = 'cards' }: ArticleSearchProp
                 key={article.slug}
                 article={article}
                 index={articles.indexOf(article)}
+                hrefBase={articleHrefBase}
               />
             ))
           )}
@@ -201,7 +212,12 @@ export function ArticleSearch({ articles, variant = 'cards' }: ArticleSearchProp
             <EmptyState onClear={handleClear} />
           ) : (
             filtered.map((article) => (
-              <ArticleCard key={article.slug} article={article} index={articles.indexOf(article)} />
+              <ArticleCard
+                key={article.slug}
+                article={article}
+                index={articles.indexOf(article)}
+                hrefBase={articleHrefBase}
+              />
             ))
           )}
         </div>
