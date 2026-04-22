@@ -1,0 +1,339 @@
+---
+title: 'Deploying your app'
+description: 'From git push to a live URL, with HTTPS as the default.'
+order: 2
+estimatedMinutes: 12
+outcome: 'You can deploy your project and open a public HTTPS URL.'
+date: '2026-04-22'
+---
+
+<PlatformSwitcherNote />
+
+Time to get your app running somewhere other than your laptop.
+
+## Before you start
+
+You need three things:
+
+- **Your project running on your laptop** from Course 2. If you can start it up and see it work in a browser, you are good. If you cannot, go back and finish Course 2 before continuing.
+- **A GitHub account** with your Course 2 project saved to it. If you followed [Course 2](/learn/course-2), you already have this.
+- **An account on the hosting platform you picked.** Free. You sign up using your GitHub account so the two are linked. Instructions below.
+
+If you are not sure whether your project is on GitHub, open Cursor, look at the bottom-left corner of the window. If you see a branch name (usually `main`), you have Git set up. If you also see a cloud icon or "Synchronize Changes" button that is active, your project is linked to GitHub.
+
+<PlatformContent platform="vercel">
+
+## Deploy to Vercel
+
+This is the guided path. You will do everything through websites (github.com and vercel.com) and Cursor's file menu. No terminal required for the main steps. If you prefer the terminal, each step has a "Prefer the terminal?" expandable with the command-line version.
+
+### Step 1: get your code on GitHub
+
+If your project is already on GitHub from Course 2, skip to Step 2.
+
+If not:
+
+1. Go to [github.com](https://github.com) and log in.
+2. In the top-right corner, click the **+** icon, then **New repository**.
+3. Give your repository a name (anything is fine - it will be part of your URL). Leave everything else at the defaults. Do **NOT** check "Add a README" or "Add .gitignore" - your project already has those files on your laptop.
+4. Click **Create repository**.
+
+GitHub now shows you a page with setup instructions. Keep this tab open.
+
+Go to Cursor. In the menu at the top of your screen, choose **Source Control** (or press `Cmd+Shift+G` on Mac, `Ctrl+Shift+G` on Windows).
+
+In the Source Control sidebar, you will see a button labelled **Publish Branch** or **Publish to GitHub**. Click it. Cursor will ask you to choose the repository you just created on GitHub. Pick it.
+
+**What you should see:** Cursor pushes your code up, a small progress bar appears, and then your GitHub repository page (the tab from earlier) shows your project files when you refresh it.
+
+<TerminalAlternative>
+
+Open Cursor's integrated terminal (View menu → Terminal, or `Ctrl+backtick`). From your project folder, run each of these commands, one at a time, pressing Enter after each:
+
+```
+git init
+```
+
+**What you should see:** a message saying Git has been initialised.
+
+```
+git add .
+```
+
+**What you should see:** nothing visible. No news is good news.
+
+```
+git commit -m "First commit"
+```
+
+**What you should see:** a summary of the files that were committed.
+
+Now, on the GitHub page from earlier, copy the block of commands labelled **push an existing repository from the command line** (there's a small copy icon next to it). Paste into Cursor's terminal and press Enter.
+
+**What you should see:** progress output as Git uploads your files to GitHub. Refresh the GitHub tab and your files should appear.
+
+</TerminalAlternative>
+
+### Step 2: import your project on Vercel
+
+1. Go to [vercel.com](https://vercel.com) and sign up with your GitHub account. Vercel will ask for permission to see your repositories - say yes.
+2. On the Vercel dashboard, click **Add New**, then **Project**.
+3. You will see a list of your GitHub repositories. Find the one you just created and click **Import** next to it.
+4. Vercel looks at your project and detects what kind of app it is (Next.js, React, plain HTML, and others). It is usually right.
+5. Leave the settings as they are and click **Deploy**.
+
+**What you should see:** a page with a live build log. Text scrolls past as Vercel installs your dependencies, runs your build, and uploads the result.
+
+### Step 3: watch it build
+
+The build takes one to three minutes for a first deploy. When it finishes:
+
+- **If you see a green checkmark and a URL**: click the URL. Your app is on the internet. Done.
+- **If you see a red X**: the build failed. Do not panic - this is common on the first try. Click the failed deployment and leave the tab open. Lesson 5 covers reading the error and fixing it.
+
+### From now on
+
+Whenever you save your work to GitHub (Source Control sidebar in Cursor → Commit → Push), Vercel automatically rebuilds and redeploys your app. You do not log in to Vercel again for normal work.
+
+<TerminalAlternative label="Prefer the terminal for future deploys?">
+
+From your project folder, after making changes:
+
+```
+git add .
+git commit -m "Describe what changed"
+git push
+```
+
+Vercel picks up the push and redeploys automatically within about a minute.
+
+</TerminalAlternative>
+
+</PlatformContent>
+
+<PlatformContent platform="netlify">
+
+## Deploy to Netlify
+
+This is the guided path. You will do everything through websites (github.com and netlify.com) and Cursor's file menu. No terminal required for the main steps. If you prefer the terminal, each step has a "Prefer the terminal?" expandable with the command-line version.
+
+### Step 1: get your code on GitHub
+
+If your project is already on GitHub from Course 2, skip to Step 2.
+
+If not:
+
+1. Go to [github.com](https://github.com) and log in.
+2. In the top-right corner, click the **+** icon, then **New repository**.
+3. Give your repository a name (anything is fine - it will be part of your URL). Leave everything else at the defaults. Do **NOT** check "Add a README" or "Add .gitignore" - your project already has those files on your laptop.
+4. Click **Create repository**.
+
+GitHub now shows you a page with setup instructions. Keep this tab open.
+
+Go to Cursor. In the menu at the top of your screen, choose **Source Control** (or press `Cmd+Shift+G` on Mac, `Ctrl+Shift+G` on Windows).
+
+In the Source Control sidebar, you will see a button labelled **Publish Branch** or **Publish to GitHub**. Click it. Cursor will ask you to choose the repository you just created on GitHub. Pick it.
+
+**What you should see:** Cursor pushes your code up, a small progress bar appears, and then your GitHub repository page (the tab from earlier) shows your project files when you refresh it.
+
+<TerminalAlternative>
+
+Open Cursor's integrated terminal (View menu → Terminal, or `Ctrl+backtick`). From your project folder, run each of these commands, one at a time, pressing Enter after each:
+
+```
+git init
+```
+
+**What you should see:** a message saying Git has been initialised.
+
+```
+git add .
+```
+
+**What you should see:** nothing visible. No news is good news.
+
+```
+git commit -m "First commit"
+```
+
+**What you should see:** a summary of the files that were committed.
+
+Now, on the GitHub page from earlier, copy the block of commands labelled **push an existing repository from the command line** (there's a small copy icon next to it). Paste into Cursor's terminal and press Enter.
+
+**What you should see:** progress output as Git uploads your files to GitHub. Refresh the GitHub tab and your files should appear.
+
+</TerminalAlternative>
+
+### Step 2: import your project on Netlify
+
+1. Go to [netlify.com](https://netlify.com) and sign up with your GitHub account. Netlify will ask for permission to see your repositories - say yes.
+2. On the Netlify dashboard, click **Add new site**, then **Import an existing project**.
+3. Choose **Deploy with GitHub**. Netlify may ask you to authorise the connection again - approve it.
+4. You will see a list of your GitHub repositories. Find the one you just created and click it.
+5. Netlify asks about build settings. For most projects, it fills these in correctly. Two common cases:
+   - **Next.js:** build command is `next build`, publish directory is `.next`.
+   - **Vite or React:** build command is `npm run build`, publish directory is `dist` or `build`.
+6. Leave the defaults and click **Deploy site**.
+
+**What you should see:** a page with a live build log. Text scrolls past as Netlify installs your dependencies, runs your build, and uploads the result.
+
+### Step 3: watch it build
+
+The build takes one to three minutes for a first deploy. When it finishes:
+
+- **If you see "Site is live" and a URL:** click the URL. Your app is on the internet. Done. The URL will look like `random-words-123456.netlify.app`. You can rename it from the Netlify dashboard under **Site configuration → Change site name**.
+- **If you see "Site deploy failed":** the build failed. Do not panic - this is common on the first try. Click the failed deploy and leave the tab open. Lesson 5 covers reading the error and fixing it.
+
+### From now on
+
+Whenever you save your work to GitHub (Source Control sidebar in Cursor → Commit → Push), Netlify automatically rebuilds and redeploys your app. You do not log in to Netlify again for normal work.
+
+<TerminalAlternative label="Prefer the terminal for future deploys?">
+
+From your project folder, after making changes:
+
+```
+git add .
+git commit -m "Describe what changed"
+git push
+```
+
+Netlify picks up the push and redeploys automatically within about a minute.
+
+</TerminalAlternative>
+
+</PlatformContent>
+
+<PlatformContent platform="fly-io">
+
+## Deploy to Fly.io
+
+<aside
+  aria-label="Track note"
+  className="border-indigo-500/20 bg-indigo-500/5 mb-6 flex items-start gap-3 rounded-lg border p-4 sm:p-5"
+>
+  <svg
+    className="text-indigo-500 mt-0.5 h-5 w-5 shrink-0"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <rect x="3" y="4" width="18" height="16" rx="2" />
+    <polyline points="7 10 10 13 7 16" />
+    <line x1="13" y1="16" x2="17" y2="16" />
+  </svg>
+  <div className="text-sm leading-relaxed text-text-secondary">
+    <p className="mb-1 font-semibold text-text-primary">
+      Recommended for people comfortable with a terminal
+    </p>
+    <p>
+      Fly.io is terminal-first. There is no web dashboard flow for your first deploy. If you would
+      rather point and click, use the switcher above to go to <strong>Vercel</strong> or{' '}
+      <strong>Netlify</strong> - both offer a fully guided path.
+    </p>
+  </div>
+</aside>
+
+The good news: you only need three commands.
+
+### Step 1: install flyctl
+
+`flyctl` is the command-line tool that talks to Fly.io. Open Cursor's integrated terminal (View menu → Terminal, or `Ctrl+backtick`).
+
+**On macOS:**
+
+```
+brew install flyctl
+```
+
+**On Windows (PowerShell):**
+
+```
+iwr https://fly.io/install.ps1 -useb | iex
+```
+
+**On Linux:**
+
+```
+curl -L https://fly.io/install.sh | sh
+```
+
+**What you should see:** progress messages as the tool downloads and installs. When it finishes, the prompt returns.
+
+Now log in:
+
+```
+fly auth login
+```
+
+**What you should see:** your browser opens. Log in to Fly.io (or sign up if you have not). When you come back to the terminal, it should say you are logged in.
+
+### Step 2: launch the app
+
+From inside your project folder, run:
+
+```
+fly launch
+```
+
+`flyctl` asks you a series of questions. For most, the default answer is correct. The important ones:
+
+- **"App name?"** Pick something short, lowercase, and unique. It becomes part of your URL (`your-name.fly.dev`).
+- **"Region?"** Pick the one closest to you.
+- **"Deploy now?"** Say yes.
+
+**What you should see:** `flyctl` creates a file called `fly.toml` in your project folder. This is the configuration for your Fly.io app. Git will track it automatically - that is fine. Then the terminal shows the build happening live.
+
+### Step 3: watch it deploy
+
+The deploy takes two to four minutes for a first run. When it finishes, the terminal prints a URL like `your-app-name.fly.dev`. Open it in a browser. Your app is on the internet.
+
+**If the deploy fails:** scroll up in the terminal and look for a line starting with `Error:`. Lesson 5 covers the most common causes.
+
+### From now on
+
+When you make changes, run this command from your project folder:
+
+```
+fly deploy
+```
+
+Fly.io rebuilds and redeploys. Unlike Vercel and Netlify, Fly.io does not redeploy automatically when you push to GitHub - you trigger each deploy yourself. This is simpler to understand at first. You can set up automatic deploys later if you want.
+
+</PlatformContent>
+
+<SecurityNote>
+  Look at the URL your app is running on. It starts with `https://`, not `http://`. The `s` stands
+  for secure. It means every piece of information travelling between a visitor's browser and your
+  app is scrambled so nobody watching the connection can read it. Your host switched this on for
+  free. If you ever see a site using plain `http`, be careful what you type into it - passwords and
+  payment details on an `http` site can be read by anyone sharing the same wifi.
+</SecurityNote>
+
+<OtherPlatformsDisclosure>
+  <PlatformContent platform="vercel" inverted>
+
+### On Vercel
+
+Vercel follows the same pattern as Netlify: connect GitHub, pick the repo, click Deploy, get a URL. The only real differences are the button labels and a slightly different default URL shape (`your-app.vercel.app` instead of `your-app.netlify.app`). Vercel is what Multicorn itself runs on.
+
+  </PlatformContent>
+  <PlatformContent platform="netlify" inverted>
+
+### On Netlify
+
+Netlify follows the same pattern as Vercel: connect GitHub, pick the repo, click Deploy, get a URL. The main differences are the button labels and the default URL shape (`your-app.netlify.app` instead of `your-app.vercel.app`). Netlify's free tier gives you slightly more bandwidth.
+
+  </PlatformContent>
+  <PlatformContent platform="fly-io" inverted>
+
+### On Fly.io
+
+Fly.io is different. You install a command-line tool called `flyctl`, run `fly launch` inside your project, and answer a handful of setup questions. You deploy by running `fly deploy`, not by pushing to GitHub. Use Fly.io when your app needs a running server (a backend API, a bot, a service with a database), not for static frontend sites.
+
+  </PlatformContent>
+</OtherPlatformsDisclosure>

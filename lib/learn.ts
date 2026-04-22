@@ -112,12 +112,18 @@ export function slugifyHeading(text: string): string {
 export function extractTableOfContents(content: string): readonly TableOfContentsItem[] {
   const headingRegex = /^(#{2,3})\s+(.+)$/gm
   const items: TableOfContentsItem[] = []
+  const seenIds = new Set<string>()
   let match: RegExpExecArray | null
 
   while ((match = headingRegex.exec(content)) !== null) {
     const level = (match[1] ?? '##').length
     const text = (match[2] ?? '').trim()
-    items.push({ id: slugifyHeading(text), text, level })
+    const id = slugifyHeading(text)
+    if (seenIds.has(id)) {
+      continue
+    }
+    seenIds.add(id)
+    items.push({ id, text, level })
   }
 
   return items

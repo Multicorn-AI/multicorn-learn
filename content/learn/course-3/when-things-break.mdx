@@ -1,0 +1,156 @@
+---
+title: 'What to do when something breaks'
+description: 'Read build and runtime logs, fix common errors, and know when Netlify or Fly differ.'
+order: 5
+estimatedMinutes: 10
+outcome: 'You can use Vercel logs and fix a short list of common deploy failures, with hooks for Netlify or Fly when patterns differ.'
+date: '2026-04-22'
+---
+
+<PlatformSwitcherNote />
+
+Something will break. It breaks for everyone. The people who look like they never have problems are just the people who learned to read the error message instead of panicking at it.
+
+This lesson covers the three things that break most often for first-time deployers, and how to find the message that tells you what is wrong.
+
+## Step zero: read the actual error
+
+Before you change anything, find the error message. It will be in the deploy log or the runtime log (your host has both). Read it. Look for:
+
+- A line that starts with `Error:` or `error`.
+- A file name and a line number.
+- The first message, not the last. Errors cause more errors, and the first one is usually the real problem.
+
+If the message mentions a file and line, open that file and look at that line. You would be surprised how often the answer is right there.
+
+<PlatformContent platform="vercel">
+
+## Where Vercel logs live
+
+**Deploy logs** (things that went wrong while building your app):
+
+1. Open your project on vercel.com.
+2. Click the **Deployments** tab.
+3. Click the deployment that failed (it will have a red X).
+4. Scroll the log. Errors are coloured red.
+
+**Runtime logs** (things that went wrong while your app was running, like a page crashing when someone visited it):
+
+1. From your project page, click the **Logs** tab in the top nav.
+2. Filter by time range. If you know roughly when the problem happened, narrow the window.
+
+</PlatformContent>
+
+<PlatformContent platform="netlify">
+
+## Where Netlify logs live
+
+**Deploy logs** (things that went wrong while building your app):
+
+1. Open your site on app.netlify.com.
+2. Click the **Deploys** tab.
+3. Click the deploy that failed (it will be marked **Failed**).
+4. Scroll the log. Errors are coloured red.
+
+**Runtime logs** (things that went wrong while your app was running, like a function crashing when someone called it):
+
+1. From your site page, click **Logs** in the left sidebar.
+2. Pick **Functions** for function errors or **Edge functions** for edge function errors.
+
+</PlatformContent>
+
+<PlatformContent platform="fly-io">
+
+## Where Fly.io logs live
+
+Fly.io logs come from the terminal.
+
+**Deploy logs** (things that went wrong while building or launching your app):
+
+Scroll back up in the terminal where you ran `fly deploy`. The build log is printed live. If the deploy failed, the error is somewhere in that output.
+
+**Runtime logs** (things that went wrong while your app was running):
+
+```
+fly logs
+```
+
+This streams live logs from your running app. Keep this open in one terminal window while you try to reproduce the problem in a browser.
+
+**If your app has stopped entirely:**
+
+```
+fly status
+```
+
+Shows you whether your app is running and on how many machines. If every machine shows **stopped**, the app crashed on startup.
+
+</PlatformContent>
+
+## The three things that break most often
+
+### 1. A missing environment variable
+
+The error usually looks like `ReferenceError: OPENAI_API_KEY is not defined` or `Cannot read property of undefined`.
+
+Cause: your app needs a secret that is set on your laptop (in `.env`) but not on your host.
+
+Fix: go back to Lesson 3. Set the missing variable on your host. Redeploy.
+
+### 2. A build command that works locally but not on the host
+
+The error usually looks like `Module not found` or `command not found: next`.
+
+Cause: a dependency installed on your laptop is missing from `package.json` (or the `requirements.txt` / `Gemfile` / whatever your language uses). Your host installs only what is listed there.
+
+Fix: on your laptop, run `npm install <the missing package>` (or the equivalent for your language). This adds it to `package.json`. Commit and push. Your host will rebuild and this time find it.
+
+### 3. A typo in an environment variable name
+
+The error is subtle: no crash, just broken behaviour. A page shows empty data. A payment does not go through.
+
+Cause: your code reads `OPENAI_API_KEY` but your host has `OPEN_AI_API_KEY` or `OPENAI_KEY`. The names must match exactly, including underscores and capitalisation.
+
+Fix: open the environment variables page for your host. Check every name matches what your code expects. Rename or re-add as needed. Redeploy.
+
+## When you cannot figure it out
+
+Copy the full error message, paste it into Cursor or Claude Code, and ask what it means. Include these three things in your message:
+
+1. What you were trying to do.
+2. What you expected to happen.
+3. The full error message, copied exactly - with one caveat.
+
+**Before you paste, scan the error for anything sensitive.** Error messages sometimes include parts of a database connection string, an API key, a token, or a file path that could reveal information about your setup. If you see anything that looks like a password, a long random string, or a URL with credentials in it (something like `postgres://user:password@host/db`), replace it with `REDACTED` before pasting. Never paste raw secrets into any AI tool, even a trusted one.
+
+If the error itself is telling you a token is invalid or expired, rotate that token on the service that issued it - assume it is compromised.
+
+This works better than you would expect. Most deployment errors are very common and have well-known fixes.
+
+<OtherPlatformsDisclosure>
+<PlatformContent platform="vercel" inverted>
+
+### On Vercel
+
+**Netlify** also has two places: the **Deploys** tab for build failures (pick a failed deploy, read the log) and the **Logs** tab in the sidebar for runtime errors. Very similar shape to Vercel, different button labels.
+
+**Fly.io** uses the terminal. `fly logs` streams live runtime logs. Build logs appear in whatever terminal window ran `fly deploy`. There is no web dashboard for logs by default.
+
+</PlatformContent>
+<PlatformContent platform="netlify" inverted>
+
+### On Netlify
+
+**Vercel** also has two places: the **Deployments** tab for build failures (pick a failed deployment, read the log) and the **Logs** tab in the top nav for runtime errors. Very similar shape to Netlify, different button labels.
+
+**Fly.io** uses the terminal. `fly logs` streams live runtime logs. Build logs appear in whatever terminal window ran `fly deploy`. There is no web dashboard for logs by default.
+
+</PlatformContent>
+<PlatformContent platform="fly-io" inverted>
+
+### On Fly.io
+
+**Vercel and Netlify** both show logs through their web dashboard. You click on a failed deploy to see the build log, or open a Logs tab in the sidebar for runtime errors. Both allow filtering by time range. Neither needs a command line tool like `fly logs`.
+
+</PlatformContent>
+</OtherPlatformsDisclosure>

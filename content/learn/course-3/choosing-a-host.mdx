@@ -1,0 +1,126 @@
+---
+title: 'Choosing a hosting platform'
+description: 'Compare Vercel, Netlify, and Fly.io and pick a path that matches what you built in Course 2.'
+order: 1
+estimatedMinutes: 10
+outcome: 'You know which platform to use first, with Vercel as the default for a frontend app you built in Course 2.'
+date: '2026-04-22'
+---
+
+<PlatformSwitcherNote />
+
+You finished Course 2 with an app that runs on your computer. When you close the browser, it stops. When you close your laptop, it stops. Other people cannot see it.
+
+A hosting platform is a company that runs your app on their computers so it is always on and anyone with the link can use it. They charge you (sometimes nothing, sometimes a little) and in return they handle the hard parts: keeping your app online, giving it a URL, and making sure the connection is secure.
+
+Three platforms cover almost every app a person might build in Course 2. You do not need to compare every feature. You need to pick one and start.
+
+<PlatformContent platform="vercel">
+
+## Vercel is your platform
+
+You are on the Vercel path. This is what Multicorn itself runs on.
+
+Vercel is built for frontend web apps. If you built something with Next.js, React, Vite, or plain HTML in Course 2, Vercel will deploy it with almost no configuration. You connect your GitHub account, pick your project, and Vercel figures out the rest.
+
+**Why Vercel for you:**
+
+- It is free for personal projects and small apps. You only start paying if your app gets a lot of traffic or you need advanced features.
+- Every time you push code to GitHub, Vercel rebuilds and redeploys automatically. You do not run any commands.
+- HTTPS is on by default. You do not configure it.
+- The dashboard is clean. You will not get lost.
+
+**What you get:**
+
+A public URL like `your-app.vercel.app` that works from any browser in the world. You can share it with anyone. You will connect a custom domain in Lesson 4.
+
+**What to expect in the next lessons:**
+
+Lesson 2 walks through the exact steps to deploy. Lesson 3 shows you where to put secrets (like API keys) so they do not end up in your code. Lesson 4 connects a domain you own. Lesson 5 is what to do when something breaks.
+
+</PlatformContent>
+
+<PlatformContent platform="netlify">
+
+## Netlify is your platform
+
+You are on the Netlify path. It is a close cousin of Vercel with a slightly more generous free tier and a dashboard that some people find easier to navigate.
+
+Netlify is built for frontend web apps. If you built something with Next.js, React, Vite, or plain HTML in Course 2, Netlify will deploy it with almost no configuration. You connect your GitHub account, pick your project, and Netlify figures out the rest.
+
+**Why Netlify for you:**
+
+- It is free for personal projects and small apps. The free tier includes more bandwidth than most alternatives.
+- Every time you push code to GitHub, Netlify rebuilds and redeploys automatically. You do not run any commands.
+- HTTPS is on by default. You do not configure it.
+- The dashboard groups deploy logs, environment variables, and domains in a way that is easy to find your way around.
+
+**What you get:**
+
+A public URL like `your-app.netlify.app` that works from any browser in the world. You can share it with anyone. You will connect a custom domain in Lesson 4.
+
+**What to expect in the next lessons:**
+
+Lesson 2 walks through the exact steps to deploy. Lesson 3 shows you where to put secrets (like API keys) so they do not end up in your code. Lesson 4 connects a domain you own. Lesson 5 is what to do when something breaks.
+
+</PlatformContent>
+
+<PlatformContent platform="fly-io">
+
+## Fly.io is your platform
+
+You are on the Fly.io path. This one is different from the other two.
+
+Fly.io runs backend services. If you built an API, a database-backed service, or something that needs to keep running in the background (not just serve web pages), Fly.io is the right fit. It gives your app a real server in a data centre close to you and keeps it running 24 hours a day.
+
+**Why Fly.io for you:**
+
+- It is designed for apps that run continuously. A web form that posts to a backend needs that backend to be awake when the form is submitted.
+- It has a free tier for small apps. You will usually fit inside it for a first project.
+- HTTPS is on by default. You do not configure it.
+- It uses a command line tool called `flyctl` instead of a visual dashboard for most actions. If you chose Fly.io in the picker, you said terminals are fine.
+
+**What you get:**
+
+A public URL like `your-app.fly.dev` that works from any browser in the world. You will connect a custom domain in Lesson 4.
+
+**What to expect in the next lessons:**
+
+Lesson 2 walks through the exact deploy steps using `flyctl`. Lesson 3 shows you how to set secrets with `fly secrets set`. Lesson 4 connects a domain you own. Lesson 5 is reading Fly.io logs when something goes wrong.
+
+</PlatformContent>
+
+<SecurityNote>
+  Before you push your code anywhere, open your project folder and check two files. First, confirm
+  `.env` is listed in your `.gitignore` file. Second, run `git status` and make sure `.env` is NOT
+  in the list of tracked files. If you see `.env` in either the wrong place, stop and fix it before
+  the next lesson. Lesson 3 covers this in detail, but the check takes ten seconds and it matters.
+</SecurityNote>
+
+<OtherPlatformsDisclosure>
+<PlatformContent platform="vercel" inverted>
+
+### Curious about Netlify or Fly.io?
+
+**Netlify** is the closest alternative to Vercel. Same general model (connect GitHub, auto-deploy, HTTPS included), slightly more free bandwidth, a dashboard some people prefer. If you ever outgrow Vercel or want to try something different, you can redeploy the same project on Netlify in under an hour.
+
+**Fly.io** is a different kind of platform. It runs backend services that need to stay awake. If your next project is an API, a bot, or something that needs a database, Fly.io is the tool for that job. It is not a replacement for Vercel for frontend apps.
+
+</PlatformContent>
+<PlatformContent platform="netlify" inverted>
+
+### Curious about Vercel or Fly.io?
+
+**Vercel** is the closest alternative to Netlify. Same general model (connect GitHub, auto-deploy, HTTPS included). It is what Multicorn itself runs on. If you ever want to try it, you can redeploy the same project on Vercel in under an hour.
+
+**Fly.io** is a different kind of platform. It runs backend services that need to stay awake. If your next project is an API, a bot, or something that needs a database, Fly.io is the tool for that job. It is not a replacement for Netlify for frontend apps.
+
+</PlatformContent>
+<PlatformContent platform="fly-io" inverted>
+
+### Curious about Vercel or Netlify?
+
+**Vercel and Netlify** are both built for frontend web apps (Next.js, React, static sites). They deploy through a connected GitHub account and give you a URL without any server setup. If your next project is a frontend site rather than a running service, one of these is the right fit. Vercel is what Multicorn itself runs on.
+
+</PlatformContent>
+</OtherPlatformsDisclosure>

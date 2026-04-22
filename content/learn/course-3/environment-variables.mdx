@@ -1,0 +1,269 @@
+---
+title: 'Environment variables'
+description: 'What they are, how to set them in Vercel, and how to keep secrets out of the repo.'
+order: 3
+estimatedMinutes: 10
+outcome: 'You can add env vars in Vercel and explain why .env is not committed.'
+date: '2026-04-22'
+---
+
+<PlatformSwitcherNote />
+
+This lesson teaches you how to handle secrets. Not the fun kind. The kind that, if you get them wrong, can cost you money, leak your users' data, or lock you out of your own services.
+
+The good news: the rules are simple. You only need to learn them once.
+
+## What is a key?
+
+Most apps talk to other services. Maybe your app sends messages through a chatbot like Claude or ChatGPT. Maybe it charges credit cards through Stripe. Maybe it saves data in a database hosted somewhere else.
+
+When your app talks to one of those services, the service needs proof that it is really your app making the request. If the service let anyone call it without proof, bad actors could pretend to be you, run up your bill, or steal your data.
+
+The proof is a long string of letters and numbers called a **key** (sometimes called an **API key**, a **token**, or a **secret**, depending on which service you are using - they all mean the same thing in practice). The service gives you a key when you sign up. Your app shows the key every time it makes a request. The service checks the key and says "yes, this is really you" before doing what was asked.
+
+A key looks something like this:
+
+```
+sk-proj-a8Kj2nFdQwE7xYz3BvNmPqRsT5uVwXyZ1aBcDeFgHiJkLmNo
+```
+
+It is meant to be treated like a password. Worse than a password, actually. Because a password is usually tied to one account, but a key often has the power to spend money, create or delete data, and make changes on your behalf - automatically, with no human reviewing each action.
+
+**If someone else gets your key, they can do all of those things as you.**
+
+## Why keys must never live in your code
+
+When you save your work to GitHub, every file in your project goes with it. Every line of code, every config file, every comment.
+
+If your key is written inside any of those files, the key is now on GitHub too. If your repository is public, anyone on the internet can find it. If your repository is private, anyone you ever give access to can find it - and if your account is ever broken into, so can the attacker.
+
+It gets worse. Bots scan GitHub for leaked keys every few seconds. The moment you push a file with a key in it, automated programs have already found it. Real people have lost thousands of dollars to this exact mistake. A developer accidentally commits a key, a bot finds it within minutes, and by the time anyone notices, the attacker has run up a huge bill using their account.
+
+This is not rare. It is common enough that some services send you a warning email the moment they detect your key appearing in public code.
+
+The solution is to keep your keys out of your code entirely.
+
+## What is an environment variable?
+
+An **environment variable** is a value your app can read while it is running, but that does not live inside your code.
+
+Think of it this way. Your code is a recipe. A recipe says "add one cup of milk", not "add the milk that is in the fridge at 12 High Street." The recipe is portable - anyone can follow it with their own milk. The specific milk comes from the environment, not the recipe.
+
+Environment variables work the same way. Your code says "use the key named `OPENAI_API_KEY`." It does not say what the key actually is. The actual key lives somewhere else - on your laptop while you are developing, and in your hosting provider's settings once you deploy. Your code reads whichever value is there at the moment it runs.
+
+This has three benefits:
+
+1. You can share your code publicly without sharing your secrets.
+2. You can use different keys in different places (a test key locally, a real key in production) without changing any code.
+3. If a key leaks, you replace it in one place and everything keeps working.
+
+## The `.env` file on your laptop
+
+On your laptop, you store environment variables in a file called `.env` (a dot, then the letters env, no file extension). It lives in the main folder of your project.
+
+Open Cursor, open your project folder, and create a new file at the top level called `.env`. Inside it, put your keys one per line, in this exact format:
+
+```
+OPENAI_API_KEY=sk-proj-abc123yourrealkeyhere
+DATABASE_URL=postgres://user:password@host:5432/database
+```
+
+A few rules:
+
+- One variable per line.
+- No spaces around the `=` sign. `KEY=value`, not `KEY = value`.
+- No quotes around the value. `KEY=abc123`, not `KEY="abc123"`.
+- Variable names are written in CAPITALS with underscores between words. This is a convention, not a rule, but stick to it - your code will expect it.
+
+Save the file.
+
+**What you should see:** in Cursor's file sidebar, a new file called `.env` in the top level of your project. If you click on it, you should see the lines you just typed.
+
+## The `.gitignore` file (critical)
+
+Now, the most important part of this lesson.
+
+There is a file in every Git project called `.gitignore`. It is a list of files and folders that Git will pretend do not exist. When you save your work to GitHub, anything in `.gitignore` gets left behind.
+
+**Your `.env` file must be in `.gitignore`.** If it is not, your secrets will go straight to GitHub the next time you save your work, and you will have just leaked every key you wrote down.
+
+To check this now, in Cursor:
+
+1. Open the file called `.gitignore` at the top level of your project. (If your project was created with a standard tool like `create-next-app` or `create-react-app`, this file already exists. If it does not, create one.)
+2. Scroll through it. Look for a line that says exactly: `.env`
+3. If you see it, you are safe. Skip to the next section.
+4. If you do not see it, type `.env` on a new line at the end of the file, save, and move on to the next step.
+
+**Now check that Git is not already tracking your `.env` file.** Open Cursor's integrated terminal (View menu → Terminal) and type:
+
+```
+git status
+```
+
+Press Enter. You will see a list of files that have changed recently.
+
+**What you should see:** either a list that does NOT include `.env`, or a message that says something like "nothing to commit, working tree clean."
+
+**What you should NOT see:** the file `.env` in the list, especially not under a heading like "Changes to be committed" or "Untracked files". If you see `.env` in either of those, Git is tracking it, and the next `git push` will send it to GitHub.
+
+If `.env` is in that list, ask Cursor or Claude Code directly: "Please remove .env from git tracking without deleting the file itself." It will run the right command for you. Then run `git status` again and confirm `.env` is gone from the list.
+
+<SecurityNote>
+  If your key is already in your GitHub repository, assume it is compromised. Rotate it right now,
+  before you do anything else. "Rotate" means: go to the service that gave you the key (OpenAI,
+  Stripe, your database provider), delete the old key, generate a new one, and put the new one in
+  your `.env` file. This takes about two minutes and it is the only way to protect yourself.
+  Removing the key from your code without rotating it does nothing - copies of it still exist in
+  your git history, on backup servers, and probably already in the hands of bots that scraped it
+  within seconds of you pushing the commit.
+</SecurityNote>
+
+## Why you must never share keys (even casually)
+
+Your `.env` file is secret. You never send it in an email. You never paste a key into Slack, Discord, iMessage, or any chat app. You never send it "just for a minute so you can test something." You never screenshot a terminal window that has a key in it and share the screenshot.
+
+Here is why each of those is dangerous:
+
+**Email.** Inboxes get hacked. Emails get forwarded. Company email archives are searchable by IT admins. If you send a key by email, you have effectively made it semi-public - there is no way to un-send it, and you have no control over how long it lives in other people's inboxes.
+
+**Slack, Discord, Teams, any chat app.** Messages are stored on someone else's servers. Your workspace might have integrations that read messages (note-takers, AI assistants, automated archivers). Admins can read private messages in most workspaces. If a colleague's account is compromised, the attacker gets your key along with everything else they see.
+
+**"Just for a minute."** Once a key leaves your hands, you cannot control what happens to it. The colleague copies it into a notes app. A Slack integration logs it. A screen recorder catches it. A week later, one of those storage points leaks. You will not remember to rotate that key because you forgot you ever shared it.
+
+**The only safe way to share a key with a teammate** is through a tool built for this, like a password manager (1Password, Bitwarden, LastPass) with a shared vault. These tools encrypt the secret and keep it inside a protected system. If you do not have a password manager, the second-safest option is to share the key verbally, in person or on a voice call, and make sure the other person copies it directly into their own `.env` or password manager without writing it down anywhere else.
+
+**The only safe way to share a key with your deployed app** is through the platform's dashboard. Your hosting provider has a dedicated settings page for this. Every other path is a mistake.
+
+## What happens when a key leaks
+
+If a key leaks and you do not rotate it fast, here is what can happen (and has happened to real people):
+
+- **An attacker runs up your bill.** OpenAI, Anthropic, and most paid APIs charge per request. Someone with your key can make millions of requests in a few hours. Bills of tens of thousands of dollars are possible before you notice.
+- **An attacker deletes or modifies your data.** If the key has write access to a database, an attacker can delete every row, encrypt everything for ransom, or silently corrupt values so your app breaks in subtle ways.
+- **An attacker impersonates your app.** If the key is for something like Stripe, an attacker can trigger refunds, create fraudulent charges on customer cards, or drain money from your account.
+- **An attacker pivots to other services.** Once they have one key, they look for others in the same codebase. One leaked secret often reveals the rest.
+
+The good news: **if you rotate a key the moment you suspect it has leaked, most of this damage is prevented.** That is why rotation is the first thing you do, not the last. Even if you are not sure the key is compromised - rotate it anyway if you think it might be. Rotating a key costs you two minutes. Not rotating a key that was actually leaked costs you everything.
+
+## Setting environment variables on your host
+
+Your `.env` file works on your laptop but does not travel to your host. Because `.gitignore` excluded it from going to GitHub (which is what you want), your deployed app has no idea what your keys are. You have to tell the host directly.
+
+<PlatformContent platform="vercel">
+
+### Setting environment variables in Vercel
+
+1. Go to [vercel.com](https://vercel.com) and log in.
+2. Click on your project.
+3. Click the **Settings** tab at the top.
+4. Click **Environment Variables** in the left sidebar.
+5. For each variable in your `.env` file:
+
+- Type the name (for example, `OPENAI_API_KEY`) in the **Key** field.
+- Copy the value from your `.env` file and paste it into the **Value** field.
+- Under **Environments**, leave all three options checked (Production, Preview, Development) unless you have a specific reason not to.
+- Click **Save**.
+
+**What you should see:** each variable you added appears in a list on the page, with the name visible and the value hidden behind dots.
+
+**Important: Vercel does not automatically rebuild with the new values.** Click the **Deployments** tab at the top. Find your most recent deployment. Click the three-dot menu next to it and choose **Redeploy**. Wait for the green check (usually one to two minutes).
+
+Your deployed app can now read those keys the same way your local app does.
+
+</PlatformContent>
+
+<PlatformContent platform="netlify">
+
+### Setting environment variables in Netlify
+
+1. Go to [app.netlify.com](https://app.netlify.com) and log in.
+2. Click on your site.
+3. Click **Site configuration** in the left sidebar.
+4. Click **Environment variables**.
+5. Click the **Add a variable** button, then choose **Add a single variable**.
+6. For each variable in your `.env` file:
+
+- Type the name (for example, `OPENAI_API_KEY`) in the **Key** field.
+- Copy the value from your `.env` file and paste it into the **Values** field.
+- Under **Scopes**, leave the default (**All scopes**) unless you have a specific reason to change it.
+- Click **Create variable**.
+
+**What you should see:** each variable you added appears in a list on the page, with the name visible and the value hidden.
+
+**Important: Netlify does not automatically rebuild with the new values.** Click the **Deploys** tab at the top. Click the **Trigger deploy** button and choose **Deploy site**. Wait for the build to finish (usually one to two minutes).
+
+Your deployed app can now read those keys the same way your local app does.
+
+</PlatformContent>
+
+<PlatformContent platform="fly-io">
+
+### Setting environment variables in Fly.io
+
+Fly.io handles this from the terminal. Open Cursor's integrated terminal (View menu → Terminal) and run:
+
+```
+fly secrets set OPENAI_API_KEY=sk-proj-your-real-key-here
+```
+
+Replace the part after `=` with your actual key.
+
+**What you should see:** a message that says the secret was set, and then Fly.io automatically redeploys your app with the new value. You do not need to run `fly deploy` separately - Fly.io handles that for you.
+
+**To set several at once:**
+
+```
+fly secrets set OPENAI_API_KEY=sk-proj-abc DATABASE_URL=postgres://...
+```
+
+**To see which secrets are set** (the names only, not the values):
+
+```
+fly secrets list
+```
+
+**To remove one:**
+
+```
+fly secrets unset OPENAI_API_KEY
+```
+
+Fly.io redeploys automatically after every change.
+
+</PlatformContent>
+
+## Test that it worked
+
+Once you have added your variables and redeployed, open your deployed app in a browser and try whatever feature uses the key. If it works, you are done.
+
+If it does not work - for example, if the page shows an empty result or a generic error - do not panic. Lesson 5 covers reading the logs to figure out what went wrong. The most common cause is a typo in the variable name (your code looks for `OPENAI_API_KEY` but you typed `OPEN_AI_API_KEY` in the host's settings). Names must match exactly, including capitalisation and underscores.
+
+<OtherPlatformsDisclosure>
+  <PlatformContent platform="vercel" inverted>
+
+### On Vercel
+
+Vercel stores environment variables in a dashboard page under **Settings → Environment Variables**. You add them one at a time through a form with a Key field and a Value field. You can scope each variable to Production, Preview, or Development, but leaving all three checked is almost always the right choice.
+
+One thing Vercel does differently: **adding a variable does not automatically trigger a new build.** You have to redeploy your app manually (Deployments tab → three-dot menu → Redeploy) before the new values take effect.
+
+  </PlatformContent>
+  <PlatformContent platform="netlify" inverted>
+
+### On Netlify
+
+Netlify stores environment variables in a dashboard page under **Site configuration → Environment variables**. You add them through a form with a Key field and a Values field. You can scope each variable, but leaving the default ("All scopes") is almost always the right choice.
+
+One thing Netlify does differently: **adding a variable does not automatically trigger a new build.** You have to trigger a new deploy manually (Deploys tab → Trigger deploy → Deploy site) before the new values take effect.
+
+  </PlatformContent>
+  <PlatformContent platform="fly-io" inverted>
+
+### On Fly.io
+
+Fly.io does not use a dashboard for environment variables. You run a command in your terminal: `fly secrets set KEY=value`. After each command, Fly.io automatically rebuilds and redeploys your app with the new value - you do not have to trigger the redeploy yourself.
+
+This is different from Vercel and Netlify, which require a manual redeploy after changing variables.
+
+  </PlatformContent>
+</OtherPlatformsDisclosure>
