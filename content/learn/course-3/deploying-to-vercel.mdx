@@ -9,7 +9,7 @@ date: '2026-04-22'
 
 <PlatformSwitcherNote />
 
-Time to put your app on the internet.
+Time to get your app running somewhere other than your laptop.
 
 <PlatformContent platform="vercel">
 
@@ -176,27 +176,27 @@ This rebuilds and redeploys. Unlike Vercel and Netlify, Fly.io does not auto-dep
 </SecurityNote>
 
 <OtherPlatformsDisclosure>
-<PlatformContent platform="vercel">
+<PlatformContent platform="vercel" inverted>
 
-### How Netlify and Fly.io differ
+### On Vercel
 
 **Netlify** follows the same pattern: connect GitHub, pick the repo, click Deploy, get a URL. The only real differences are the button labels and a slightly different default URL shape (`your-app.netlify.app` instead of `your-app.vercel.app`).
 
 **Fly.io** is different. You install a command line tool called `flyctl`, run `fly launch` inside your project, and answer a handful of setup questions. You deploy by running `fly deploy`, not by pushing to GitHub. Use Fly.io when your app needs a running server (a backend API, a bot, a service with a database), not for static frontend sites.
 
 </PlatformContent>
-<PlatformContent platform="netlify">
+<PlatformContent platform="netlify" inverted>
 
-### How Vercel and Fly.io differ
+### On Netlify
 
 **Vercel** follows the same pattern: connect GitHub, pick the repo, click Deploy, get a URL. The only real differences are the button labels and a slightly different default URL shape (`your-app.vercel.app` instead of `your-app.netlify.app`). Vercel is what Multicorn itself runs on.
 
 **Fly.io** is different. You install a command line tool called `flyctl`, run `fly launch` inside your project, and answer a handful of setup questions. You deploy by running `fly deploy`, not by pushing to GitHub. Use Fly.io when your app needs a running server (a backend API, a bot, a service with a database), not for static frontend sites.
 
 </PlatformContent>
-<PlatformContent platform="fly-io">
+<PlatformContent platform="fly-io" inverted>
 
-### How Vercel and Netlify differ
+### On Fly.io
 
 **Vercel and Netlify** both deploy by connecting to GitHub instead of using a command line tool. You click an Import button, they guess your build settings, and every `git push` redeploys automatically. Neither uses `flyctl`. They are the right tools for frontend web apps (Next.js, React, static sites) but cannot run a backend service the way Fly.io does.
 

@@ -124,27 +124,27 @@ That is it. Your deployed app can now read those secrets the same way your local
 </PlatformContent>
 
 <OtherPlatformsDisclosure>
-<PlatformContent platform="vercel">
+<PlatformContent platform="vercel" inverted>
 
-### How Netlify and Fly.io handle secrets
+### On Vercel
 
 **Netlify** has a similar dashboard flow. Settings → Environment variables → Add a variable. The main difference is that Netlify calls it "scopes" where Vercel calls it "environments". Same idea.
 
 **Fly.io** does not use a dashboard for this. You run `fly secrets set KEY=value` from your terminal. Fly.io redeploys automatically after each change (Vercel requires a manual redeploy).
 
 </PlatformContent>
-<PlatformContent platform="netlify">
+<PlatformContent platform="netlify" inverted>
 
-### How Vercel and Fly.io handle secrets
+### On Netlify
 
 **Vercel** has a similar dashboard flow. Settings → Environment Variables → add the key and value. The main difference is that Vercel calls it "environments" where Netlify calls it "scopes". Same idea.
 
 **Fly.io** does not use a dashboard for this. You run `fly secrets set KEY=value` from your terminal. Fly.io redeploys automatically after each change.
 
 </PlatformContent>
-<PlatformContent platform="fly-io">
+<PlatformContent platform="fly-io" inverted>
 
-### How Vercel and Netlify handle secrets
+### On Fly.io
 
 **Vercel and Netlify** both use a dashboard. You open the site settings in a browser, find the Environment Variables section, click a button to add one, and type the key and value. Neither has a command line equivalent as common as `fly secrets set`. Both require you to manually trigger a redeploy after adding a variable — Fly.io does this for you automatically.
 

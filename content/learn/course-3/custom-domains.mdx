@@ -109,27 +109,27 @@ When it says **Configured** and shows a valid certificate, your domain is live. 
 </SecurityNote>
 
 <OtherPlatformsDisclosure>
-<PlatformContent platform="vercel">
+<PlatformContent platform="vercel" inverted>
 
-### How Netlify and Fly.io handle custom domains
+### On Vercel
 
 **Netlify** uses the same pattern: add the domain in a dashboard, copy the DNS records it shows you, paste them into your registrar, wait for the internet to catch up. The buttons are labelled differently but the shape is identical.
 
 **Fly.io** uses the terminal. You run `fly certs add yourname.com`, copy the DNS records it prints, add them at your registrar, then check status with `fly certs show yourname.com`. Same concept, different tool.
 
 </PlatformContent>
-<PlatformContent platform="netlify">
+<PlatformContent platform="netlify" inverted>
 
-### How Vercel and Fly.io handle custom domains
+### On Netlify
 
 **Vercel** uses the same pattern: add the domain in a dashboard, copy the DNS records it shows you, paste them into your registrar, wait for the internet to catch up. The buttons are labelled differently but the shape is identical.
 
 **Fly.io** uses the terminal. You run `fly certs add yourname.com`, copy the DNS records it prints, add them at your registrar, then check status with `fly certs show yourname.com`. Same concept, different tool.
 
 </PlatformContent>
-<PlatformContent platform="fly-io">
+<PlatformContent platform="fly-io" inverted>
 
-### How Vercel and Netlify handle custom domains
+### On Fly.io
 
 **Vercel and Netlify** both handle custom domains through their web dashboard. You click **Add domain**, paste your domain, and the dashboard shows you the DNS records to copy across to your registrar. No command line involved. You refresh the dashboard page to see when the connection goes live.
 

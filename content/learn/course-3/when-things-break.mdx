@@ -132,27 +132,27 @@ This works better than you would expect. Most deployment errors are very common 
 </SecurityNote>
 
 <OtherPlatformsDisclosure>
-<PlatformContent platform="vercel">
+<PlatformContent platform="vercel" inverted>
 
-### How logs work on Netlify and Fly.io
+### On Vercel
 
 **Netlify** also has two places: the **Deploys** tab for build failures (pick a failed deploy, read the log) and the **Logs** tab in the sidebar for runtime errors. Very similar shape to Vercel, different button labels.
 
 **Fly.io** uses the terminal. `fly logs` streams live runtime logs. Build logs appear in whatever terminal window ran `fly deploy`. There is no web dashboard for logs by default.
 
 </PlatformContent>
-<PlatformContent platform="netlify">
+<PlatformContent platform="netlify" inverted>
 
-### How logs work on Vercel and Fly.io
+### On Netlify
 
 **Vercel** also has two places: the **Deployments** tab for build failures (pick a failed deployment, read the log) and the **Logs** tab in the top nav for runtime errors. Very similar shape to Netlify, different button labels.
 
 **Fly.io** uses the terminal. `fly logs` streams live runtime logs. Build logs appear in whatever terminal window ran `fly deploy`. There is no web dashboard for logs by default.
 
 </PlatformContent>
-<PlatformContent platform="fly-io">
+<PlatformContent platform="fly-io" inverted>
 
-### How logs work on Vercel and Netlify
+### On Fly.io
 
 **Vercel and Netlify** both show logs through their web dashboard. You click on a failed deploy to see the build log, or open a Logs tab in the sidebar for runtime errors. Both allow filtering by time range. Neither needs a command line tool like `fly logs`.
 

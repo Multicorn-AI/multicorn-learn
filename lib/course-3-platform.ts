@@ -4,7 +4,15 @@ export const COURSE_3_MD_PLATFORM_STORAGE_KEY = 'multicorn_course3_mdx_platform_
 
 export type Course3Platform = PlatformSlug
 
-const PLATFORM_SET = new Set<Course3Platform>(['vercel', 'netlify', 'fly-io'])
+export const COURSE_3_PLATFORMS: readonly Course3Platform[] = ['vercel', 'netlify', 'fly-io']
+
+export const PLATFORM_LABELS: Record<Course3Platform, string> = {
+  vercel: 'Vercel',
+  netlify: 'Netlify',
+  'fly-io': 'Fly.io',
+}
+
+const PLATFORM_SET = new Set<Course3Platform>(COURSE_3_PLATFORMS)
 
 export function isCourse3Platform(value: string | null | undefined): value is Course3Platform {
   if (value === null || value === undefined) {
@@ -56,6 +64,11 @@ export function clearCourse3MdxPlatformOnClient(): void {
   } catch {
     /* private mode, quota, etc. */
   }
+}
+
+/** Clears the saved Course 3 platform; same as {@link clearCourse3MdxPlatformOnClient}. */
+export function clearChosenPlatform(): void {
+  clearCourse3MdxPlatformOnClient()
 }
 
 export function readCourse3MdxPlatformFromStorageOnClient(): string | null {
