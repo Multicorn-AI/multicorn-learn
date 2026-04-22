@@ -119,17 +119,13 @@ Copy the full error message, paste it into Cursor or Claude Code, and ask what i
 
 1. What you were trying to do.
 2. What you expected to happen.
-3. The full error message, copied exactly.
+3. The full error message, copied exactly - with one caveat.
+
+**Before you paste, scan the error for anything sensitive.** Error messages sometimes include parts of a database connection string, an API key, a token, or a file path that could reveal information about your setup. If you see anything that looks like a password, a long random string, or a URL with credentials in it (something like `postgres://user:password@host/db`), replace it with `REDACTED` before pasting. Never paste raw secrets into any AI tool, even a trusted one.
+
+If the error itself is telling you a token is invalid or expired, rotate that token on the service that issued it - assume it is compromised.
 
 This works better than you would expect. Most deployment errors are very common and have well-known fixes.
-
-<SecurityNote>
-  When you paste an error message into any AI tool, scan it first for anything sensitive. Error
-  messages sometimes include parts of your database connection string, a token, or the path to a
-  file on the host. Replace anything that looks like a secret with `REDACTED` before you send it. If
-  the error itself is about a token being invalid, rotate that token on the service that issued it.
-  Assume it is compromised.
-</SecurityNote>
 
 <OtherPlatformsDisclosure>
 <PlatformContent platform="vercel" inverted>

@@ -12,6 +12,7 @@ import {
 import { OtherPlatformsDisclosure } from '@/components/OtherPlatformsDisclosure'
 import { PlatformContent } from '@/components/PlatformContent'
 import { PlatformSwitcherNote } from '@/components/PlatformSwitcherNote'
+import { TerminalAlternative } from '@/components/TerminalAlternative'
 
 function extractLanguageFromClassName(className: string | undefined): string {
   if (!className) return ''
@@ -26,6 +27,7 @@ export function createCourse2Components(analyticsCategory: string) {
   return {
     ...baseComponents,
     SecurityNote,
+    TerminalAlternative,
     CopyablePrompt,
     CopyButton,
     EmailSignupForm,
