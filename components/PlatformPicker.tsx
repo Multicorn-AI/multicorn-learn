@@ -2,6 +2,10 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import {
+  clearCourse3MdxPlatformOnClient,
+  setCourse3MdxPlatformOnClient,
+} from '@/lib/course-3-platform'
+import {
   getPlatformRecommendation,
   PLATFORM_PICKER_QUESTIONS,
   type PlatformPickerAnswers,
@@ -38,6 +42,7 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
 
   useEffect(() => {
     if (phase === 'result' && recommendation) {
+      setCourse3MdxPlatformOnClient(recommendation.slug)
       const id = requestAnimationFrame(() => {
         resultTitleRef.current?.focus()
       })
@@ -117,6 +122,7 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
       setQ2(null)
       setRecommendation(null)
       setPhase('q1')
+      clearCourse3MdxPlatformOnClient()
     })
   }, [advanceAfterTransition])
 
@@ -222,7 +228,7 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
         <div className="mt-6 border-t border-border pt-4">
           <button
             type="button"
-            className="min-h-[44px] text-sm font-medium text-text-secondary underline-offset-2 transition-colors hover:text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+            className="min-h-[44px] text-sm font-medium text-text-secondary underline underline-offset-2 transition-colors hover:text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
             aria-label="Go back to the previous question"
             onClick={handleBack}
           >

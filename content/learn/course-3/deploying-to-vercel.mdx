@@ -7,8 +7,198 @@ outcome: 'You can deploy a project to Vercel and open a public HTTPS URL.'
 date: '2026-04-22'
 ---
 
-## Draft (stub)
+<PlatformSwitcherNote />
 
-This lesson is not written yet. It will be the step-by-step Vercel path (dashboard and CLI), with HTTPS called out in a security block.
+Time to put your app on the internet.
 
-**TODO:** full lesson copy and `// TODO: RACHELLE` security callout content.
+<PlatformContent platform="vercel">
+
+## Deploy to Vercel
+
+You need three things before you start. A GitHub account with your Course 2 project pushed to it. A Vercel account (free, sign up with your GitHub account at vercel.com). Your project running on your laptop so you know what "working" looks like.
+
+### Step 1: push your code to GitHub
+
+If you already did this in Course 2, skip ahead. If not, inside your project folder run:
+
+```
+git init
+git add .
+git commit -m "First commit"
+```
+
+Then on github.com, create a new repository. Do not add a README or `.gitignore` through the GitHub UI (you already have those locally). Copy the two commands GitHub shows you for an existing repository. They look like:
+
+```
+git remote add origin https://github.com/your-username/your-repo.git
+git branch -M main
+git push -u origin main
+```
+
+Paste those into your terminal. Your code is now on GitHub.
+
+### Step 2: import the project on Vercel
+
+Go to vercel.com and log in. Click **Add New** then **Project**. You will see a list of your GitHub repositories. Find the one you just pushed and click **Import**.
+
+Vercel will guess what kind of project it is (Next.js, Vite, plain HTML). Almost always it guesses right. Leave the settings as they are and click **Deploy**.
+
+### Step 3: watch it build
+
+Vercel shows a live log. You will see it install your dependencies, run your build command, and upload the result. This usually takes one to three minutes for a first deploy.
+
+When it finishes, you get a green check and a URL. Click it. Your app is on the internet.
+
+### From now on
+
+Every time you run `git push`, Vercel rebuilds and redeploys automatically. You do not need to log in to Vercel again for normal work.
+
+</PlatformContent>
+
+<PlatformContent platform="netlify">
+
+## Deploy to Netlify
+
+You need three things before you start. A GitHub account with your Course 2 project pushed to it. A Netlify account (free, sign up with your GitHub account at netlify.com). Your project running on your laptop so you know what "working" looks like.
+
+### Step 1: push your code to GitHub
+
+If you already did this in Course 2, skip ahead. If not, inside your project folder run:
+
+```
+git init
+git add .
+git commit -m "First commit"
+```
+
+Then on github.com, create a new repository. Do not add a README or `.gitignore` through the GitHub UI (you already have those locally). Copy the two commands GitHub shows you for an existing repository. They look like:
+
+```
+git remote add origin https://github.com/your-username/your-repo.git
+git branch -M main
+git push -u origin main
+```
+
+Paste those into your terminal. Your code is now on GitHub.
+
+### Step 2: import the project on Netlify
+
+Go to app.netlify.com and log in. Click **Add new site** then **Import an existing project**. Pick **Deploy with GitHub** and authorise Netlify to see your repositories. Find the one you just pushed and click it.
+
+Netlify will ask about build settings. It usually fills them in correctly based on your project. If you built a Next.js app, the build command is `next build` and the publish directory is `.next`. If you built a Vite app, the build command is `npm run build` and the publish directory is `dist`. Leave the defaults and click **Deploy site**.
+
+### Step 3: watch it build
+
+Netlify shows a live log. You will see it install your dependencies, run your build command, and upload the result. This usually takes one to three minutes for a first deploy.
+
+When it finishes, you get a URL that looks like `random-name-123456.netlify.app`. Click it. Your app is on the internet. You can rename the site from the Netlify dashboard under **Site configuration**.
+
+### From now on
+
+Every time you run `git push`, Netlify rebuilds and redeploys automatically. You do not need to log in to Netlify again for normal work.
+
+</PlatformContent>
+
+<PlatformContent platform="fly-io">
+
+## Deploy to Fly.io
+
+You need three things before you start. A Fly.io account (sign up at fly.io). The `flyctl` command line tool installed. Your project running on your laptop so you know what "working" looks like.
+
+### Step 1: install flyctl
+
+On macOS:
+
+```
+brew install flyctl
+```
+
+On Windows:
+
+```
+iwr https://fly.io/install.ps1 -useb | iex
+```
+
+On Linux:
+
+```
+curl -L https://fly.io/install.sh | sh
+```
+
+Then log in:
+
+```
+fly auth login
+```
+
+This opens your browser. Log in. Come back to the terminal.
+
+### Step 2: launch the app
+
+In your project folder, run:
+
+```
+fly launch
+```
+
+`flyctl` asks you a series of questions. For most of them, the default answer is correct. Key ones:
+
+- **App name:** pick something short and unique. This becomes part of your URL.
+- **Region:** pick the one closest to you geographically.
+- **Do you want to deploy now?** Say yes.
+
+`flyctl` creates a file called `fly.toml` in your project. This is the config for your Fly.io app. Commit it to Git.
+
+### Step 3: watch it deploy
+
+The terminal shows every step. Fly.io builds a container image of your app, uploads it, and starts it on a small server. This usually takes two to four minutes for a first deploy.
+
+When it finishes, you get a URL like `your-app-name.fly.dev`. Open it in a browser. Your app is on the internet.
+
+### From now on
+
+When you make changes, run:
+
+```
+fly deploy
+```
+
+This rebuilds and redeploys. Unlike Vercel and Netlify, Fly.io does not auto-deploy on `git push` by default. You can set that up later if you want it, but running `fly deploy` yourself keeps things simple at the start.
+
+</PlatformContent>
+
+<SecurityNote>
+  Look at your URL. It starts with `https://`, not `http://`. The `s` stands for secure. It means
+  every piece of data travelling between the visitor&apos;s browser and your app is encrypted
+  (scrambled so no one watching the connection can read it). Your host switched this on for free. If
+  you ever see an app on plain `http`, be very careful about what you type into it. Passwords and
+  payment details on an `http` site can be read by anyone on the same wifi.
+</SecurityNote>
+
+<OtherPlatformsDisclosure>
+<PlatformContent platform="vercel">
+
+### How Netlify and Fly.io differ
+
+**Netlify** follows the same pattern: connect GitHub, pick the repo, click Deploy, get a URL. The only real differences are the button labels and a slightly different default URL shape (`your-app.netlify.app` instead of `your-app.vercel.app`).
+
+**Fly.io** is different. You install a command line tool called `flyctl`, run `fly launch` inside your project, and answer a handful of setup questions. You deploy by running `fly deploy`, not by pushing to GitHub. Use Fly.io when your app needs a running server (a backend API, a bot, a service with a database), not for static frontend sites.
+
+</PlatformContent>
+<PlatformContent platform="netlify">
+
+### How Vercel and Fly.io differ
+
+**Vercel** follows the same pattern: connect GitHub, pick the repo, click Deploy, get a URL. The only real differences are the button labels and a slightly different default URL shape (`your-app.vercel.app` instead of `your-app.netlify.app`). Vercel is what Multicorn itself runs on.
+
+**Fly.io** is different. You install a command line tool called `flyctl`, run `fly launch` inside your project, and answer a handful of setup questions. You deploy by running `fly deploy`, not by pushing to GitHub. Use Fly.io when your app needs a running server (a backend API, a bot, a service with a database), not for static frontend sites.
+
+</PlatformContent>
+<PlatformContent platform="fly-io">
+
+### How Vercel and Netlify differ
+
+**Vercel and Netlify** both deploy by connecting to GitHub instead of using a command line tool. You click an Import button, they guess your build settings, and every `git push` redeploys automatically. Neither uses `flyctl`. They are the right tools for frontend web apps (Next.js, React, static sites) but cannot run a backend service the way Fly.io does.
+
+</PlatformContent>
+</OtherPlatformsDisclosure>

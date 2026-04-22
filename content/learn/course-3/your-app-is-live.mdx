@@ -7,8 +7,48 @@ outcome: 'You know what you shipped, what to watch, and what Course 4 will cover
 date: '2026-04-22'
 ---
 
-## Draft (stub)
+Your app is on the internet. It has a URL. It has HTTPS. Anyone in the world can open it.
 
-This lesson is not written yet. It will close the loop, add `EmailSignupForm` for Course 4 interest, and link forward.
+Take a minute to appreciate that. Six months ago you might not have been sure what any of these words meant. Now they are infrastructure you own and operate.
 
-**TODO:** full copy and CTA wiring (same list / source string as you prefer).
+## What changes now
+
+Your app is no longer just something you show your family. Real people might use it. That changes a few things.
+
+**You are responsible for what your app does.** If it sends emails, those emails go to real inboxes. If it takes payments, those payments move real money. If it stores what people type, you now hold data about real humans. None of this is scary, but it is different from localhost.
+
+**Updates are public.** When you push a change, every user sees it within minutes. Which means careless changes break the app for everyone. Most hosts let you preview changes on a temporary URL before they go live. Use that.
+
+**Errors happen in front of other people.** Lesson 5 covered reading logs. You will be reading them more now. That is fine. It is also why you set up HTTPS, environment variables, and all the other things you did. You built a real thing.
+
+## What you have learned
+
+You might not realise how much ground you have covered. In Course 2 you built an app from scratch. In Course 3 you:
+
+- Picked a hosting platform based on what you actually built.
+- Deployed your app to a real URL that anyone can reach.
+- Learned why secrets never belong in code, and where they do belong.
+- Pointed a domain you own at your app.
+- Read your first real error logs and started to recognise the common breakages.
+
+If you showed this list to yourself from a year ago, it would have looked like a different language. It is not any more.
+
+## What comes next: agents
+
+Here is a thing that is probably going to happen to you soon. Someone is going to say, "Can your app do X automatically?" where X is something like sending a follow-up email, updating a spreadsheet, or pulling data from another service.
+
+That is when you meet agents.
+
+An agent is a program (usually powered by an AI model) that can take actions on your behalf. It can send emails. It can edit files. It can call other services. It is different from a chatbot because it does not just talk, it does things.
+
+Agents are powerful. They are also risky in ways a normal app is not. A normal app does what you wrote it to do. An agent decides what to do based on instructions, which means it can decide wrong. It can delete things you did not want deleted. It can send emails you did not mean to send. It can spend money you did not mean to spend.
+
+Course 4 is about agents. How to connect one to an app like the one you just deployed. How to give it only the permissions it needs. How to see what it did and undo it if you need to. How to build with agents without giving them the keys to everything.
+
+That course is being written now. If you want a heads up when it launches, make sure you are subscribed to the Multicorn Learn updates.
+
+## For now, ship something
+
+The best thing you can do right now is put something into the hands of one other person. Send the URL to a friend. Ask them to try it. Watch what they click. You will learn more from one real user than from ten hours of polishing alone.
+
+The rest will come.

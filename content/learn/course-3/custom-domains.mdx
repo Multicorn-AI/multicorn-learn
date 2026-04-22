@@ -7,8 +7,131 @@ outcome: 'You can connect a domain to Vercel and understand basic DNS wait time.
 date: '2026-04-22'
 ---
 
-## Draft (stub)
+<PlatformSwitcherNote />
 
-This lesson is not written yet. It will demystify registrars, records, and verification.
+`your-app.vercel.app` or `your-app.netlify.app` or `your-app.fly.dev` works for sharing with friends. For a real product, you want your own domain. Something like `yourname.com` or `yourapp.io`.
 
-**TODO:** full lesson copy and security callouts.
+This lesson has two parts. First, you buy a domain. Second, you point it at your app. The waiting time between those two steps can feel strange the first time, so this lesson will tell you what is normal.
+
+## Buy a domain
+
+Go to a domain registrar. Common ones are Namecheap, Cloudflare, and Porkbun. Prices are very similar. A `.com` domain costs around 10 to 15 USD per year. Less common endings like `.io` or `.ai` cost more.
+
+Search for the domain you want. If it is available, add it to your cart and pay. If it is taken, try a variation or a different ending.
+
+A few tips:
+
+- Turn on privacy protection (often called WHOIS privacy). It is usually free. Without it, your home address ends up in a public database.
+- Turn on two-factor authentication on your registrar account. Domains are one of the most valuable things you can own online and losing access to them is a long process to recover.
+- Ignore upsells. You do not need hosting from your registrar. You do not need their email service. You do not need their SEO tool.
+
+You now own a domain. It is not connected to anything yet.
+
+<PlatformContent platform="vercel">
+
+## Point your domain at Vercel
+
+1. Open your project on vercel.com.
+2. Click **Settings**, then **Domains** in the left sidebar.
+3. Type your domain (like `yourname.com`) in the box and click **Add**.
+4. Vercel shows you one or two DNS records to add. These look like rows in a table. Each has a **Type** (like `A` or `CNAME`), a **Name** (often `@` for the root domain), and a **Value**.
+
+**Go back to your registrar** (Namecheap, Cloudflare, wherever you bought the domain).
+
+1. Find the DNS settings for your domain. This is usually a tab called **DNS**, **Advanced DNS**, or **Manage DNS**.
+2. Add the records exactly as Vercel showed them. Name goes in the Name column. Value goes in the Value or Target column. Type matches.
+3. Save.
+
+**Wait.** DNS changes do not happen instantly. They usually finish in 10 to 60 minutes. Sometimes they take a few hours. In rare cases, up to 48 hours. This is normal. The internet is slowly telling every computer everywhere that your domain now points at Vercel.
+
+Check back on Vercel. Your domain will show a green tick next to it when the connection is live. Vercel automatically adds HTTPS (that `https://` prefix) within a few minutes of the domain being detected.
+
+</PlatformContent>
+
+<PlatformContent platform="netlify">
+
+## Point your domain at Netlify
+
+1. Open your site on app.netlify.com.
+2. Click **Domain management** in the left sidebar (or **Site configuration** → **Domain management** depending on your dashboard layout).
+3. Under **Custom domains**, click **Add a domain** and type your domain (like `yourname.com`).
+4. Netlify shows you DNS records to add, or offers to become your DNS provider directly. For simplicity, add the records at your registrar. The records look like rows in a table with a **Type** (like `A` or `CNAME`), a **Name** (often `@` for the root domain), and a **Value**.
+
+**Go back to your registrar** (Namecheap, Cloudflare, wherever you bought the domain).
+
+1. Find the DNS settings for your domain. This is usually a tab called **DNS**, **Advanced DNS**, or **Manage DNS**.
+2. Add the records exactly as Netlify showed them. Name goes in the Name column. Value goes in the Value or Target column. Type matches.
+3. Save.
+
+**Wait.** DNS changes do not happen instantly. They usually finish in 10 to 60 minutes. Sometimes they take a few hours. In rare cases, up to 48 hours. This is normal. The internet is slowly telling every computer everywhere that your domain now points at Netlify.
+
+Check back on Netlify. Your domain will show as **Netlify DNS** or **External DNS configured** when the connection is live. Netlify automatically provisions HTTPS (that `https://` prefix) within a few minutes of the domain being detected.
+
+</PlatformContent>
+
+<PlatformContent platform="fly-io">
+
+## Point your domain at Fly.io
+
+Fly.io handles domains from the terminal.
+
+1. Tell Fly.io you want to use a custom domain:
+
+```
+fly certs add yourname.com
+```
+
+Fly.io responds with one or two DNS records you need to add. Copy them.
+
+2. **Go to your registrar** (Namecheap, Cloudflare, wherever you bought the domain).
+   - Find the DNS settings for your domain. This is usually a tab called **DNS**, **Advanced DNS**, or **Manage DNS**.
+   - Add the records exactly as `flyctl` showed them. Name goes in the Name column. Value goes in the Value or Target column. Type matches (usually `A` for the root, `AAAA` for IPv6, or `CNAME`).
+   - Save.
+
+3. **Wait.** DNS changes do not happen instantly. They usually finish in 10 to 60 minutes. Sometimes they take a few hours. In rare cases, up to 48 hours. This is normal. The internet is slowly telling every computer everywhere that your domain now points at Fly.io.
+
+4. Check the status:
+
+```
+fly certs show yourname.com
+```
+
+When it says **Configured** and shows a valid certificate, your domain is live. Fly.io provisions HTTPS automatically.
+
+</PlatformContent>
+
+<SecurityNote>
+  Once your custom domain is live, always visit your own site using `https://yourname.com`, not
+  `http://yourname.com`. Your host handles the automatic upgrade for most visitors, but if you ever
+  see a browser warning that the connection is not secure on your own domain, stop. Do not log in,
+  do not type anything. Something is wrong with the certificate and someone might be intercepting
+  the connection. Fix the domain first.
+</SecurityNote>
+
+<OtherPlatformsDisclosure>
+<PlatformContent platform="vercel">
+
+### How Netlify and Fly.io handle custom domains
+
+**Netlify** uses the same pattern: add the domain in a dashboard, copy the DNS records it shows you, paste them into your registrar, wait for the internet to catch up. The buttons are labelled differently but the shape is identical.
+
+**Fly.io** uses the terminal. You run `fly certs add yourname.com`, copy the DNS records it prints, add them at your registrar, then check status with `fly certs show yourname.com`. Same concept, different tool.
+
+</PlatformContent>
+<PlatformContent platform="netlify">
+
+### How Vercel and Fly.io handle custom domains
+
+**Vercel** uses the same pattern: add the domain in a dashboard, copy the DNS records it shows you, paste them into your registrar, wait for the internet to catch up. The buttons are labelled differently but the shape is identical.
+
+**Fly.io** uses the terminal. You run `fly certs add yourname.com`, copy the DNS records it prints, add them at your registrar, then check status with `fly certs show yourname.com`. Same concept, different tool.
+
+</PlatformContent>
+<PlatformContent platform="fly-io">
+
+### How Vercel and Netlify handle custom domains
+
+**Vercel and Netlify** both handle custom domains through their web dashboard. You click **Add domain**, paste your domain, and the dashboard shows you the DNS records to copy across to your registrar. No command line involved. You refresh the dashboard page to see when the connection goes live.
+
+</PlatformContent>
+</OtherPlatformsDisclosure>

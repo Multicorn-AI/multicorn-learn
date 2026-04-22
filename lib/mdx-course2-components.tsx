@@ -9,6 +9,9 @@ import {
   Course2WhatsNextCourse3Preview,
   Course2WhatsNextStayInLoop,
 } from '@/components/Course2WhatsNextCtaBlocks'
+import { OtherPlatformsDisclosure } from '@/components/OtherPlatformsDisclosure'
+import { PlatformContent } from '@/components/PlatformContent'
+import { PlatformSwitcherNote } from '@/components/PlatformSwitcherNote'
 
 function extractLanguageFromClassName(className: string | undefined): string {
   if (!className) return ''
@@ -71,4 +74,9 @@ export function createCourse2Components(analyticsCategory: string) {
 
 export const cursorTrackComponents = createCourse2Components('course2_cursor_code')
 export const claudeCodeTrackComponents = createCourse2Components('course2_claude_code_code')
-export const course3Components = createCourse2Components('course3_code')
+export const course3Components = {
+  ...createCourse2Components('course3_code'),
+  PlatformContent,
+  PlatformSwitcherNote,
+  OtherPlatformsDisclosure,
+}

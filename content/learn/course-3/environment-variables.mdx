@@ -7,8 +7,146 @@ outcome: 'You can add env vars in Vercel and explain why .env is not committed.'
 date: '2026-04-22'
 ---
 
-## Draft (stub)
+<PlatformSwitcherNote />
 
-This lesson is not written yet. It will cover `.env`, the Vercel dashboard, and rotating keys that touched git.
+If your app talks to another service (OpenAI, Stripe, a database), it needs a password or key to prove who it is. These are called secrets. Secrets must never live in your code.
 
-**TODO:** full lesson copy and RACHELLE security callouts (including .gitignore check command).
+Here is why. When you push your code to GitHub, every file in your project goes with it. If your API key is in a file, the key is on GitHub. If your repo is public, anyone can find it. Bots scan GitHub for leaked keys every few seconds. People have lost thousands of dollars because a secret key ended up in a commit.
+
+The solution is a thing called an environment variable. It is a value your code can read at runtime but is not stored in the code itself. Locally you put these in a file called `.env`. In production, you put them in the dashboard for your host.
+
+<SecurityNote>
+  If your API key is already in your git repository, change it now. Go to whatever service issued
+  the key (OpenAI, Stripe, your database), rotate the key (delete the old one and generate a new
+  one), and update your environment variables with the new value. Do not just remove the key from
+  your code. It is still in your git history. The only safe assumption is that any key that has ever
+  been in a public repository is compromised.
+</SecurityNote>
+
+## The `.env` file (all platforms)
+
+In your project folder, if you do not already have one, create a file called `.env`. Put your secrets in it, one per line:
+
+```
+OPENAI_API_KEY=sk-proj-abc123...
+DATABASE_URL=postgres://user:password@host/db
+```
+
+No quotes. No spaces around the `=`. One per line.
+
+Then open your `.gitignore` file and make sure this line is in it:
+
+```
+.env
+```
+
+Save. Run `git status` in your terminal. You should NOT see `.env` in the list. If you do, it means `.env` is already tracked by Git and `.gitignore` is ignoring it too late. Search online for "git remove file from tracking" or ask Cursor / Claude Code to help you remove it from the index without deleting the file itself.
+
+Your code reads secrets with something like `process.env.OPENAI_API_KEY`. The exact syntax depends on the language your app is written in.
+
+<PlatformContent platform="vercel">
+
+## Set environment variables in Vercel
+
+Your local `.env` file does not ship with your code (because `.gitignore`). That means your deployed app has no idea what your secrets are unless you tell Vercel directly.
+
+**To add a secret:**
+
+1. Open your project on vercel.com.
+2. Click **Settings**, then **Environment Variables** in the left sidebar.
+3. For each secret, type the name (like `OPENAI_API_KEY`) in the Key field and the value in the Value field.
+4. Under **Environments**, leave all three (Production, Preview, Development) checked unless you have a reason not to.
+5. Click **Save**.
+
+**After adding secrets, redeploy.** Vercel does not automatically rebuild with the new values. Go to the **Deployments** tab, find the latest deployment, click the three dots menu, and pick **Redeploy**.
+
+That is it. Your deployed app can now read those secrets the same way your local app does.
+
+</PlatformContent>
+
+<PlatformContent platform="netlify">
+
+## Set environment variables in Netlify
+
+Your local `.env` file does not ship with your code (because `.gitignore`). That means your deployed app has no idea what your secrets are unless you tell Netlify directly.
+
+**To add a secret:**
+
+1. Open your site on app.netlify.com.
+2. Click **Site configuration**, then **Environment variables**.
+3. Click **Add a variable**, then **Add a single variable**.
+4. Type the name (like `OPENAI_API_KEY`) in the Key field and the value in the Values field.
+5. Under **Scopes**, leave the default (All scopes) unless you have a reason not to.
+6. Click **Create variable**.
+
+**After adding secrets, trigger a new deploy.** Netlify does not automatically rebuild with the new values. Go to the **Deploys** tab, click **Trigger deploy**, and pick **Deploy site**.
+
+That is it. Your deployed app can now read those secrets the same way your local app does.
+
+</PlatformContent>
+
+<PlatformContent platform="fly-io">
+
+## Set environment variables in Fly.io
+
+Fly.io calls them secrets rather than environment variables, but they work the same way. You set them with the `flyctl` command line tool.
+
+**To add a secret:**
+
+```
+fly secrets set OPENAI_API_KEY=sk-proj-abc123...
+```
+
+Run this from your project folder. `flyctl` sends the value straight to Fly.io without saving it anywhere on disk.
+
+**To add several at once:**
+
+```
+fly secrets set OPENAI_API_KEY=sk-proj-abc123 DATABASE_URL=postgres://...
+```
+
+**To see which secrets are set (names only, not values):**
+
+```
+fly secrets list
+```
+
+**To remove a secret:**
+
+```
+fly secrets unset OPENAI_API_KEY
+```
+
+After every `fly secrets set` or `unset`, Fly.io automatically redeploys your app with the new values. You do not need to run `fly deploy` separately.
+
+That is it. Your deployed app can now read those secrets the same way your local app does.
+
+</PlatformContent>
+
+<OtherPlatformsDisclosure>
+<PlatformContent platform="vercel">
+
+### How Netlify and Fly.io handle secrets
+
+**Netlify** has a similar dashboard flow. Settings → Environment variables → Add a variable. The main difference is that Netlify calls it "scopes" where Vercel calls it "environments". Same idea.
+
+**Fly.io** does not use a dashboard for this. You run `fly secrets set KEY=value` from your terminal. Fly.io redeploys automatically after each change (Vercel requires a manual redeploy).
+
+</PlatformContent>
+<PlatformContent platform="netlify">
+
+### How Vercel and Fly.io handle secrets
+
+**Vercel** has a similar dashboard flow. Settings → Environment Variables → add the key and value. The main difference is that Vercel calls it "environments" where Netlify calls it "scopes". Same idea.
+
+**Fly.io** does not use a dashboard for this. You run `fly secrets set KEY=value` from your terminal. Fly.io redeploys automatically after each change.
+
+</PlatformContent>
+<PlatformContent platform="fly-io">
+
+### How Vercel and Netlify handle secrets
+
+**Vercel and Netlify** both use a dashboard. You open the site settings in a browser, find the Environment Variables section, click a button to add one, and type the key and value. Neither has a command line equivalent as common as `fly secrets set`. Both require you to manually trigger a redeploy after adding a variable — Fly.io does this for you automatically.
+
+</PlatformContent>
+</OtherPlatformsDisclosure>
