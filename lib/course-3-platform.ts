@@ -2,43 +2,67 @@ import type { PlatformSlug } from '@/lib/platform-picker'
 
 export const COURSE_3_MD_PLATFORM_STORAGE_KEY = 'multicorn_course3_mdx_platform_v1'
 
-export const DEFAULT_COURSE3_PLATFORM: PlatformSlug = 'vercel'
+export type Course3Platform = PlatformSlug
 
-const PLATFORM_SET = new Set<PlatformSlug>(['vercel', 'netlify', 'fly-io'])
+const PLATFORM_SET = new Set<Course3Platform>(['vercel', 'netlify', 'fly-io'])
 
-export function isCourse3PlatformSlug(value: string): value is PlatformSlug {
-  return PLATFORM_SET.has(value as PlatformSlug)
+export function isCourse3Platform(value: string | null | undefined): value is Course3Platform {
+  if (value === null || value === undefined) {
+    return false
+  }
+  return PLATFORM_SET.has(value as Course3Platform)
+}
+
+/** @deprecated use {@link isCourse3Platform} */
+export function isCourse3PlatformSlug(value: string): value is Course3Platform {
+  return isCourse3Platform(value)
 }
 
 /**
- * Read the platform used for Course 3 lesson content (set by the overview picker, or
- * switched in-lesson). Safe on server: returns default.
+ * URL query wins, then localStorage. If neither is a valid platform, no choice.
  */
-export function getCourse3MdxPlatformSnapshot(): PlatformSlug {
-  if (typeof window === 'undefined') {
-    return DEFAULT_COURSE3_PLATFORM
+export function resolveChosenPlatform(
+  searchParam: string | null,
+  storedValue: string | null,
+): Course3Platform | null {
+  if (isCourse3Platform(searchParam)) {
+    return searchParam
   }
-  const raw = window.localStorage.getItem(COURSE_3_MD_PLATFORM_STORAGE_KEY)
-  if (raw && isCourse3PlatformSlug(raw)) {
-    return raw
+  if (isCourse3Platform(storedValue)) {
+    return storedValue
   }
-  return DEFAULT_COURSE3_PLATFORM
+  return null
 }
 
-export function setCourse3MdxPlatformOnClient(platform: PlatformSlug): void {
+export function setCourse3MdxPlatformOnClient(platform: Course3Platform): void {
   if (typeof window === 'undefined') {
     return
   }
-  window.localStorage.setItem(COURSE_3_MD_PLATFORM_STORAGE_KEY, platform)
-  window.dispatchEvent(new Event('multicorn_course3_platform_change'))
+  try {
+    window.localStorage.setItem(COURSE_3_MD_PLATFORM_STORAGE_KEY, platform)
+    window.dispatchEvent(new Event('multicorn_course3_platform_change'))
+  } catch {
+    /* private mode, quota, etc. */
+  }
 }
 
 export function clearCourse3MdxPlatformOnClient(): void {
   if (typeof window === 'undefined') {
     return
   }
-  window.localStorage.removeItem(COURSE_3_MD_PLATFORM_STORAGE_KEY)
-  window.dispatchEvent(new Event('multicorn_course3_platform_change'))
+  try {
+    window.localStorage.removeItem(COURSE_3_MD_PLATFORM_STORAGE_KEY)
+    window.dispatchEvent(new Event('multicorn_course3_platform_change'))
+  } catch {
+    /* private mode, quota, etc. */
+  }
+}
+
+export function readCourse3MdxPlatformFromStorageOnClient(): string | null {
+  if (typeof window === 'undefined') {
+    return null
+  }
+  return window.localStorage.getItem(COURSE_3_MD_PLATFORM_STORAGE_KEY)
 }
 
 export function course3PlatformStoreSubscribe(callback: () => void): () => void {

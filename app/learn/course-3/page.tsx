@@ -58,23 +58,25 @@ export default function Course3Page() {
           <CourseProgressIndicator activeCourse={3} />
         </div>
 
-        <div className="mb-12 flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-6">
-          <div
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary"
-            aria-hidden="true"
-          >
-            <Rocket className="h-6 w-6" strokeWidth={1.5} />
+        <section className="mx-auto mb-12 w-full max-w-3xl px-4">
+          <div className="mb-6 flex items-center gap-4">
+            <span
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary"
+              aria-hidden="true"
+            >
+              <Rocket className="h-6 w-6" strokeWidth={1.5} />
+            </span>
+            <div>
+              <span className="mb-1 inline-block text-xs font-semibold uppercase tracking-wide text-primary">
+                Course 3
+              </span>
+              <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl lg:text-5xl">
+                {COURSE_3.title}
+              </h1>
+            </div>
           </div>
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-wide text-primary">Course 3</p>
-            <h1 className="mt-1 text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
-              {COURSE_3.title}
-            </h1>
-            <p className="mt-4 max-w-3xl text-lg leading-relaxed text-text-secondary">
-              {COURSE_3.intro}
-            </p>
-          </div>
-        </div>
+          <p className="text-lg leading-relaxed text-text-secondary">{COURSE_3.intro}</p>
+        </section>
 
         <section id="pick-your-platform" className="mx-auto w-full max-w-3xl px-4 pb-12">
           <h2

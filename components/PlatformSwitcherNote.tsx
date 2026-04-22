@@ -1,13 +1,14 @@
 'use client'
 
 import Link from 'next/link'
-import { useSyncExternalStore } from 'react'
 import {
-  course3PlatformStoreSubscribe,
-  getCourse3MdxPlatformSnapshot,
-  setCourse3MdxPlatformOnClient,
-} from '@/lib/course-3-platform'
+  useCourse3PlatformLinkHelpers,
+  useLessonPlatform,
+} from '@/components/LessonPlatformProvider'
+import { clearCourse3MdxPlatformOnClient } from '@/lib/course-3-platform'
 import type { PlatformSlug } from '@/lib/platform-picker'
+
+const SLUGS = ['vercel', 'netlify', 'fly-io'] as const satisfies readonly PlatformSlug[]
 
 const LABELS: Record<PlatformSlug, string> = {
   vercel: 'Vercel',
@@ -15,58 +16,79 @@ const LABELS: Record<PlatformSlug, string> = {
   'fly-io': 'Fly.io',
 }
 
-const SERVER_PLATFORM = 'vercel' as const
-
-function clientSnapshot() {
-  return getCourse3MdxPlatformSnapshot()
+function PlatformPills({
+  chosenPlatform,
+  pathname,
+  singleFocusMode,
+}: {
+  readonly chosenPlatform: PlatformSlug | null
+  readonly pathname: string
+  /** When true, active platform is bold; others are links. When false, all are links. */
+  readonly singleFocusMode: boolean
+}) {
+  return (
+    <span className="font-medium text-text-primary">
+      {SLUGS.map((slug, index) => {
+        const isActive = singleFocusMode && chosenPlatform === slug
+        const separator = index > 0 ? ' · ' : ''
+        if (isActive) {
+          return (
+            <span key={slug}>
+              {separator}
+              <span className="font-semibold text-text-primary">{LABELS[slug]}</span>
+            </span>
+          )
+        }
+        return (
+          <span key={slug}>
+            {separator}
+            <Link
+              href={`${pathname}?platform=${slug}`}
+              className="text-primary underline decoration-primary/30 underline-offset-2"
+            >
+              {LABELS[slug]}
+            </Link>
+          </span>
+        )
+      })}
+    </span>
+  )
 }
 
 export function PlatformSwitcherNote() {
-  const platform = useSyncExternalStore(
-    course3PlatformStoreSubscribe,
-    clientSnapshot,
-    () => SERVER_PLATFORM,
-  )
+  const { chosenPlatform } = useLessonPlatform()
+  const { pathname, router } = useCourse3PlatformLinkHelpers()
+
+  const showAllThree = () => {
+    clearCourse3MdxPlatformOnClient()
+    router.replace(pathname, { scroll: false })
+  }
+
+  if (chosenPlatform === null) {
+    return (
+      <div className="mb-8 rounded-lg border border-border bg-surface-secondary p-4 sm:p-5">
+        <p className="text-sm leading-relaxed text-text-secondary">
+          You are seeing all three platforms. Pick one to focus on just that content:{' '}
+          <PlatformPills chosenPlatform={null} pathname={pathname} singleFocusMode={false} />
+        </p>
+      </div>
+    )
+  }
+
   return (
     <div className="mb-8 rounded-lg border border-border bg-surface-secondary p-4 sm:p-5">
       <p className="text-sm leading-relaxed text-text-secondary">
         These lessons use your chosen path:{' '}
-        <span className="font-semibold text-text-primary">{LABELS[platform]}</span>. Picked
-        something else?{' '}
-        <Link
-          href="/learn/course-3#pick-your-platform"
-          className="font-medium text-primary underline decoration-primary/30 underline-offset-2"
+        <span className="font-semibold text-text-primary">{LABELS[chosenPlatform]}</span>. Switch:{' '}
+        <PlatformPills chosenPlatform={chosenPlatform} pathname={pathname} singleFocusMode />.{' '}
+        <button
+          type="button"
+          onClick={showAllThree}
+          className="min-h-[44px] text-sm font-medium text-primary underline decoration-primary/30 underline-offset-2"
         >
-          Open the three questions
-        </Link>
-        {', or switch here:'}
+          Show all three
+        </button>
       </p>
-      <div
-        className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap"
-        role="group"
-        aria-label="Change hosting platform for this lesson"
-      >
-        {(['vercel', 'netlify', 'fly-io'] as const).map((slug) => {
-          const selected = platform === slug
-          return (
-            <button
-              key={slug}
-              type="button"
-              onClick={() => {
-                setCourse3MdxPlatformOnClient(slug)
-              }}
-              className={
-                selected
-                  ? 'inline-flex min-h-[44px] flex-1 items-center justify-center rounded-lg border-2 border-primary bg-primary/10 px-4 py-2.5 text-sm font-semibold text-primary sm:min-w-[120px] sm:flex-none'
-                  : 'inline-flex min-h-[44px] flex-1 items-center justify-center rounded-lg border border-border bg-surface px-4 py-2.5 text-sm font-medium text-text-primary transition-colors hover:border-primary/30 hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 sm:min-w-[120px] sm:flex-none'
-              }
-              aria-pressed={selected}
-            >
-              {LABELS[slug]}
-            </button>
-          )
-        })}
-      </div>
     </div>
   )
 }

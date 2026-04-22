@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import {
   clearCourse3MdxPlatformOnClient,
@@ -42,7 +43,13 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
 
   useEffect(() => {
     if (phase === 'result' && recommendation) {
-      setCourse3MdxPlatformOnClient(recommendation.slug)
+      if (typeof window !== 'undefined') {
+        try {
+          setCourse3MdxPlatformOnClient(recommendation.slug)
+        } catch {
+          /* localStorage can throw in private mode or when quota is exceeded */
+        }
+      }
       const id = requestAnimationFrame(() => {
         resultTitleRef.current?.focus()
       })
@@ -198,12 +205,12 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
               </p>
             </div>
 
-            <a
-              href="#lessons"
-              className="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg bg-primary px-6 py-3 text-center text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 sm:w-auto"
+            <Link
+              href={`/learn/course-3/choosing-a-host?platform=${recommendation.slug}`}
+              className="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg bg-primary px-6 py-3 text-center text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 sm:w-auto"
             >
               Start Lesson 1
-            </a>
+            </Link>
 
             <div>
               <button

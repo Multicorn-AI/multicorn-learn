@@ -16,6 +16,7 @@ import { LessonCompleteButton } from '@/components/LessonProgress'
 import { LessonNavigation } from '@/components/LessonNavigation'
 import { MobileTableOfContents } from '@/components/MobileTableOfContents'
 import { TableOfContents } from '@/components/TableOfContents'
+import { LessonPlatformProvider } from '@/components/LessonPlatformProvider'
 import { isCourse3Enabled } from '@/lib/feature-flags'
 
 const SITE_URL = 'https://multicorn.ai'
@@ -123,101 +124,103 @@ export default async function Course3LessonPage({ params }: Course3LessonPagePro
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <main className="px-6 pb-20 pt-16 sm:pb-28 sm:pt-24">
-        <div className="mx-auto max-w-content">
-          <div className="lg:grid lg:grid-cols-[1fr_250px] lg:gap-12">
-            <article className="mx-auto max-w-3xl lg:mx-0">
-              <nav aria-label="Breadcrumb" className="mb-8">
-                <ol className="flex flex-wrap items-center gap-2 text-sm" role="list">
-                  <li>
-                    <Link
-                      href="/"
-                      className="text-text-secondary transition-colors hover:text-text-primary"
-                    >
-                      Home
-                    </Link>
-                  </li>
-                  <li aria-hidden="true">
-                    <Chevron />
-                  </li>
-                  <li>
-                    <Link
-                      href="/learn"
-                      className="text-text-secondary transition-colors hover:text-text-primary"
-                    >
-                      Learn
-                    </Link>
-                  </li>
-                  <li aria-hidden="true">
-                    <Chevron />
-                  </li>
-                  <li>
-                    <Link
-                      href={COURSE_3.basePath}
-                      className="text-text-secondary transition-colors hover:text-text-primary"
-                    >
-                      Course 3
-                    </Link>
-                  </li>
-                  <li aria-hidden="true">
-                    <Chevron />
-                  </li>
-                  <li>
-                    <span className="font-medium text-text-primary" aria-current="page">
-                      {lesson.meta.title}
-                    </span>
-                  </li>
-                </ol>
-              </nav>
+      <LessonPlatformProvider>
+        <main className="px-6 pb-20 pt-16 sm:pb-28 sm:pt-24">
+          <div className="mx-auto max-w-content">
+            <div className="lg:grid lg:grid-cols-[1fr_250px] lg:gap-12">
+              <article className="mx-auto max-w-3xl lg:mx-0">
+                <nav aria-label="Breadcrumb" className="mb-8">
+                  <ol className="flex flex-wrap items-center gap-2 text-sm" role="list">
+                    <li>
+                      <Link
+                        href="/"
+                        className="text-text-secondary transition-colors hover:text-text-primary"
+                      >
+                        Home
+                      </Link>
+                    </li>
+                    <li aria-hidden="true">
+                      <Chevron />
+                    </li>
+                    <li>
+                      <Link
+                        href="/learn"
+                        className="text-text-secondary transition-colors hover:text-text-primary"
+                      >
+                        Learn
+                      </Link>
+                    </li>
+                    <li aria-hidden="true">
+                      <Chevron />
+                    </li>
+                    <li>
+                      <Link
+                        href={COURSE_3.basePath}
+                        className="text-text-secondary transition-colors hover:text-text-primary"
+                      >
+                        Course 3
+                      </Link>
+                    </li>
+                    <li aria-hidden="true">
+                      <Chevron />
+                    </li>
+                    <li>
+                      <span className="font-medium text-text-primary" aria-current="page">
+                        {lesson.meta.title}
+                      </span>
+                    </li>
+                  </ol>
+                </nav>
 
-              <header className="mb-10">
-                {lessonNumber !== null ? (
-                  <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-primary">
-                    Lesson {lessonNumber} of {lessonsOrdered.length}
-                  </p>
-                ) : null}
-                <h1 className="mb-4 text-3xl font-bold tracking-tight text-text-primary sm:text-4xl lg:text-5xl">
-                  {lesson.meta.title}
-                </h1>
-                <p className="mb-4 text-lg leading-relaxed text-text-secondary">
-                  {lesson.meta.description}
-                </p>
-                <div className="flex flex-wrap items-center gap-3 text-sm text-text-tertiary">
-                  <span>{lesson.meta.estimatedMinutes} min read</span>
-                  {lesson.meta.date ? (
-                    <>
-                      <span aria-hidden="true">&middot;</span>
-                      <time dateTime={lesson.meta.date}>{formatDate(lesson.meta.date)}</time>
-                    </>
+                <header className="mb-10">
+                  {lessonNumber !== null ? (
+                    <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-primary">
+                      Lesson {lessonNumber} of {lessonsOrdered.length}
+                    </p>
                   ) : null}
+                  <h1 className="mb-4 text-3xl font-bold tracking-tight text-text-primary sm:text-4xl lg:text-5xl">
+                    {lesson.meta.title}
+                  </h1>
+                  <p className="mb-4 text-lg leading-relaxed text-text-secondary">
+                    {lesson.meta.description}
+                  </p>
+                  <div className="flex flex-wrap items-center gap-3 text-sm text-text-tertiary">
+                    <span>{lesson.meta.estimatedMinutes} min read</span>
+                    {lesson.meta.date ? (
+                      <>
+                        <span aria-hidden="true">&middot;</span>
+                        <time dateTime={lesson.meta.date}>{formatDate(lesson.meta.date)}</time>
+                      </>
+                    ) : null}
+                  </div>
+                  <p className="mt-4 rounded-lg border border-border bg-surface-secondary px-4 py-3 text-sm font-medium text-text-primary">
+                    <span className="text-text-tertiary">By the end: </span>
+                    {lesson.meta.outcome}
+                  </p>
+                </header>
+
+                <div className="mb-6 mt-3">
+                  <MobileTableOfContents items={tocItems} />
                 </div>
-                <p className="mt-4 rounded-lg border border-border bg-surface-secondary px-4 py-3 text-sm font-medium text-text-primary">
-                  <span className="text-text-tertiary">By the end: </span>
-                  {lesson.meta.outcome}
-                </p>
-              </header>
 
-              <div className="mb-6 mt-3">
-                <MobileTableOfContents items={tocItems} />
-              </div>
+                <div className="prose-multicorn">
+                  <MDXRemote
+                    source={lesson.content}
+                    components={course3Components}
+                    options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+                  />
+                </div>
 
-              <div className="prose-multicorn">
-                <MDXRemote
-                  source={lesson.content}
-                  components={course3Components}
-                  options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
-                />
-              </div>
+                <LessonCompleteButton slug={slug} storageKey={COURSE_3.progressStorageKey} />
 
-              <LessonCompleteButton slug={slug} storageKey={COURSE_3.progressStorageKey} />
+                <LessonNavigation basePath={COURSE_3.basePath} navigation={navigation} />
+              </article>
 
-              <LessonNavigation basePath={COURSE_3.basePath} navigation={navigation} />
-            </article>
-
-            <TableOfContents items={tocItems} />
+              <TableOfContents items={tocItems} />
+            </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </LessonPlatformProvider>
     </>
   )
 }
