@@ -273,8 +273,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
-      url: `${BASE_URL}/learn/ai-101`,
-      lastModified: new Date('2026-02-20'),
+      url: `${BASE_URL}/learn/ai-101/articles`,
+      lastModified: new Date('2026-04-23'),
       changeFrequency: 'monthly',
       priority: 0.8,
     },

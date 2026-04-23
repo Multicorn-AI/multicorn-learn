@@ -15,7 +15,7 @@ A prompt is the text you type into an AI tool to tell it what you want. The way 
 
 ## What is a prompt?
 
-When you type a question into ChatGPT, Claude, or any other AI assistant, that text is your prompt. It is the input — the instruction, question, or request that tells the AI what to do.
+When you type a question into ChatGPT, Claude, or any other AI assistant, that text is your prompt. It is the input: the instruction, question, or request that tells the AI what to do.
 
 The AI reads your prompt, processes it using the patterns it learned during training (covered in our [previous article](/learn/ai-101/what-is-generative-ai)), and generates a response based on what it predicts would be the most helpful continuation.
 
@@ -31,7 +31,7 @@ Both are prompts. The difference is how much context and guidance you give the A
 
 ## Why does the way you ask matter?
 
-An LLM (large language model — the engine behind most AI text tools) does not read your mind. It works with exactly what you give it. If your prompt is vague, the response will be generic. If your prompt is specific, the response will be more targeted and useful.
+An LLM (large language model, the engine behind most AI text tools) does not read your mind. It works with exactly what you give it. If your prompt is vague, the response will be generic. If your prompt is specific, the response will be more targeted and useful.
 
 Think of it like asking a colleague for help. If you say "Can you help me with this?" they will ask follow-up questions because they do not have enough context. But if you say "Can you proofread this two-paragraph email to a client and check that the tone sounds professional?" they know exactly what to do.
 
@@ -47,7 +47,7 @@ Vague prompts produce vague answers. Instead of asking for "something about mark
 
 **Better:** Write a 200-word announcement email for our team about the launch of Multicorn Shield on February 20th. Keep the tone excited but professional. Include three key features: consent screens, spending controls, and activity logging.
 
-The more detail you include — length, tone, audience, format, key points — the closer the output will be to what you actually need.
+The more detail you include (length, tone, audience, format, key points) the closer the output will be to what you actually need.
 
 ### 2. Give the AI a role
 
@@ -61,14 +61,14 @@ This works because the AI adjusts its language, detail level, and assumptions ba
 
 ### 3. Provide examples of what you want
 
-If you have a specific format or style in mind, show the AI an example. This technique is sometimes called "few-shot prompting" — you give the AI a few examples of the pattern you want, and it follows that pattern in its response.
+If you have a specific format or style in mind, show the AI an example. This technique is sometimes called "few-shot prompting". You give the AI a few examples of the pattern you want, and it follows that pattern in its response.
 
 **Example prompt:**
 
 > Convert these notes into a consistent format:
 >
 > Input: "Met with Sarah. Discussed Q3 budget. She'll send numbers Friday."
-> Output: "Meeting with Sarah — Topic: Q3 budget. Action: Sarah to send numbers by Friday."
+> Output: "Meeting with Sarah. Topic: Q3 budget. Action: Sarah to send numbers by Friday."
 >
 > Now convert this: "Call with DevOps team. Deployment blocked by cert issue. Jake investigating."
 
@@ -78,7 +78,7 @@ By showing the AI the format once, it knows exactly how to structure the next co
 
 If you need the AI to do something complicated, break it into smaller pieces. One long, tangled prompt often produces a messy response. A sequence of focused prompts produces better results.
 
-Instead of: "Analyse this data, find trends, create a summary, and suggest three action items" — try asking one thing at a time:
+Instead of: "Analyse this data, find trends, create a summary, and suggest three action items", try asking one thing at a time:
 
 1. "Here is our Q3 sales data. What are the three most notable trends?"
 2. "Based on those trends, write a two-paragraph summary for our leadership team."
@@ -102,7 +102,7 @@ In most AI tools, the conversation has a limited memory window (called "context"
 
 ### Not reviewing the output
 
-AI-generated text can sound confident and polished even when it contains errors. Always review the output before using it — especially for facts, numbers, names, and dates. Treat AI output as a first draft, not a final product.
+AI-generated text can sound confident and polished even when it contains errors. Always review the output before using it, especially for facts, numbers, names, and dates. Treat AI output as a first draft, not a final product.
 
 ### Writing prompts that are too short
 
@@ -110,27 +110,27 @@ Single-word or one-sentence prompts rarely produce great results. You do not nee
 
 ### Giving up after one try
 
-If the first response is not what you wanted, do not give up on the tool. Refine your prompt. Add more detail, give an example, or tell the AI what was wrong with its first attempt. This back-and-forth — sometimes called "iterating" — is a normal part of working with AI tools.
+If the first response is not what you wanted, do not give up on the tool. Refine your prompt. Add more detail, give an example, or tell the AI what was wrong with its first attempt. This back-and-forth (sometimes called "iterating") is a normal part of working with AI tools.
 
 ### Asking for the impossible
 
-Remember from our [previous article](/learn/ai-101/what-is-generative-ai): LLMs predict text patterns. They do not have access to the internet (unless the tool specifically provides that), they cannot read files on your computer, and they cannot take actions in the real world. Asking an AI to "check my inbox" or "book a meeting" will not work unless the tool is specifically connected to those services — which brings us to the topic of AI agents.
+Remember from our [previous article](/learn/ai-101/what-is-generative-ai): LLMs predict text patterns. They do not have access to the internet (unless the tool specifically provides that), they cannot read files on your computer, and they cannot take actions in the real world. Asking an AI to "check my inbox" or "book a meeting" will not work unless the tool is specifically connected to those services. Which brings us to the topic of AI agents.
 
 ## What comes next: from prompts to agents
 
-A regular AI tool waits for your prompt, generates a response, and stops. An AI agent goes further: it can take a prompt, break it into steps, and then actually carry out those steps — sending emails, searching the web, updating spreadsheets, or making purchases.
+A regular AI tool waits for your prompt, generates a response, and stops. An AI agent goes further: it can take a prompt, break it into steps, and then actually carry out those steps. Sending emails, searching the web, updating spreadsheets, or making purchases.
 
 This makes agents far more powerful than a simple chatbot. It also makes them far more risky, because an agent with the wrong permissions can take actions you never intended.
 
-Our next article covers [what AI agents are and why they need permissions](/learn/ai-101/what-are-ai-agents-and-permissions) — and how tools like Multicorn Shield help you stay in control.
+Our next article covers [what AI agents are and why they need permissions](/learn/ai-101/what-are-ai-agents-and-permissions), and how tools like Multicorn Shield help you stay in control.
 
 ## Key takeaways
 
-- A prompt is the text input you give an AI tool — the better the prompt, the better the response.
+- A prompt is the text input you give an AI tool. The better the prompt, the better the response.
 - Be specific: include your goal, audience, format, tone, and constraints.
 - Give the AI a role and provide examples when you have a specific output format in mind.
 - Break complex tasks into smaller steps and iterate if the first result is not right.
-- Always review AI output before using it — treat it as a first draft.
+- Always review AI output before using it. Treat it as a first draft.
 - AI tools respond to text prompts, but AI agents can actually take actions in the real world, which introduces new risks.
 
 **Next up:** [What Are AI Agents and Why Do They Need Permissions?](/learn/ai-101/what-are-ai-agents-and-permissions)

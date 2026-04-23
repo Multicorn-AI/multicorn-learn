@@ -28,14 +28,14 @@ export const PLATFORM_RECOMMENDATIONS: Readonly<Record<PlatformSlug, PlatformRec
     name: 'Vercel',
     reason:
       'Vercel is the easiest path for what you built, and it is what Multicorn itself runs on.',
-    accentClass: 'bg-primary/10',
+    accentClass: 'bg-course-3-accent/10',
   },
   netlify: {
     slug: 'netlify',
     name: 'Netlify',
     reason:
       'Netlify has the most generous free tier and a simpler dashboard if terminals make you nervous.',
-    accentClass: 'bg-teal/10',
+    accentClass: 'bg-course-3-accent/10',
   },
   'fly-io': {
     slug: 'fly-io',

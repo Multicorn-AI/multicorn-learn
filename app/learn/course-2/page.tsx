@@ -29,7 +29,7 @@ export default function Course2Page() {
         <CourseLandingTopNav activeCourse={2} />
 
         <CourseLandingHero
-          variant="primary"
+          variant="course-2"
           icon={<Code2 className="h-6 w-6" strokeWidth={1.5} />}
           courseLabel="Course 2"
           title="Build your first app with AI"
@@ -136,7 +136,7 @@ export default function Course2Page() {
                 bestFor="Visual learners who want to see changes in real time"
                 cost="Free tier available, Pro $20/month"
                 limitation="Requires a local code editor install"
-                accentClass="bg-primary/10 text-primary border-primary/20"
+                accentClass="bg-course-2-accent/10 text-course-2-accent border-course-2-accent/20"
               />
               <ToolPickerCard
                 name="Claude Code"
@@ -145,7 +145,7 @@ export default function Course2Page() {
                 bestFor="People comfortable with a terminal"
                 cost="Free with Claude account, usage limits apply"
                 limitation="Terminal only - no visual editor"
-                accentClass="bg-indigo/10 text-indigo border-indigo/20"
+                accentClass="bg-course-2-accent/10 text-course-2-accent border-course-2-accent/20"
               />
               <ToolPickerCard
                 name="Windsurf"
@@ -154,7 +154,7 @@ export default function Course2Page() {
                 bestFor="Beginners who want the simplest setup"
                 cost="Free tier available"
                 limitation="Smaller model selection than Cursor"
-                accentClass="bg-teal/10 text-teal border-teal/20"
+                accentClass="bg-course-2-accent/10 text-course-2-accent border-course-2-accent/20"
               />
             </div>
           </section>

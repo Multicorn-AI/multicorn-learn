@@ -4,13 +4,17 @@ import { ArrowLeft } from 'lucide-react'
 import { CourseProgressIndicator } from '@/components/CourseProgressIndicator'
 
 const heroVariantStyles = {
-  green: {
-    iconBox: 'bg-green/10 text-green',
-    label: 'text-green',
+  'course-1': {
+    iconBox: 'bg-course-1-accent/10 text-course-1-accent',
+    label: 'text-course-1-accent',
   },
-  primary: {
-    iconBox: 'bg-primary/10 text-primary',
-    label: 'text-primary',
+  'course-2': {
+    iconBox: 'bg-course-2-accent/10 text-course-2-accent',
+    label: 'text-course-2-accent',
+  },
+  'course-3': {
+    iconBox: 'bg-course-3-accent/10 text-course-3-accent',
+    label: 'text-course-3-accent',
   },
 } as const
 

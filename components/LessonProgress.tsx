@@ -3,6 +3,29 @@
 import Link from 'next/link'
 import { ArrowRight, Check } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
+import type { LearnCourseAccent } from '@/lib/learn-course-accents'
+
+const completeButtonAccent: Record<LearnCourseAccent, { hoverBorder: string; ring: string }> = {
+  'course-2': {
+    hoverBorder: 'hover:border-course-2-accent/30',
+    ring: 'focus:ring-course-2-accent/20',
+  },
+  'course-3': {
+    hoverBorder: 'hover:border-course-3-accent/30',
+    ring: 'focus:ring-course-3-accent/20',
+  },
+}
+
+const hubAccent: Record<LearnCourseAccent, { hoverBorder: string; arrow: string }> = {
+  'course-2': {
+    hoverBorder: 'hover:border-course-2-accent/30',
+    arrow: 'text-course-2-accent',
+  },
+  'course-3': {
+    hoverBorder: 'hover:border-course-3-accent/30',
+    arrow: 'text-course-3-accent',
+  },
+}
 
 function readCompletedSlugs(storageKey: string): readonly string[] {
   if (typeof window === 'undefined') {
@@ -30,9 +53,15 @@ function writeCompletedSlugs(storageKey: string, slugs: readonly string[]) {
 interface LessonCompleteButtonProps {
   readonly slug: string
   readonly storageKey: string
+  readonly courseAccent: LearnCourseAccent
 }
 
-export function LessonCompleteButton({ slug, storageKey }: LessonCompleteButtonProps) {
+export function LessonCompleteButton({
+  slug,
+  storageKey,
+  courseAccent,
+}: LessonCompleteButtonProps) {
+  const btn = completeButtonAccent[courseAccent]
   const [completed, setCompleted] = useState(false)
   const [mounted, setMounted] = useState(false)
 
@@ -56,7 +85,7 @@ export function LessonCompleteButton({ slug, storageKey }: LessonCompleteButtonP
       <button
         type="button"
         onClick={toggle}
-        className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg border border-border bg-surface-secondary px-6 py-3 text-base font-semibold text-text-primary transition-colors hover:border-primary/30 hover:bg-surface-tertiary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 sm:w-auto sm:justify-start"
+        className={`flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg border border-border bg-surface-secondary px-6 py-3 text-base font-semibold text-text-primary transition-colors hover:bg-surface-tertiary focus:outline-none focus:ring-2 focus:ring-offset-2 sm:w-auto sm:justify-start ${btn.hoverBorder} ${btn.ring}`}
         aria-pressed={isCompleted}
       >
         {isCompleted ? <Check className="h-4 w-4 text-green" aria-hidden="true" /> : null}
@@ -80,9 +109,16 @@ interface LessonProgressHubProps {
   readonly lessons: readonly Course2LessonListItem[]
   readonly basePath: string
   readonly storageKey: string
+  readonly courseAccent: LearnCourseAccent
 }
 
-export function LessonProgressHub({ lessons, basePath, storageKey }: LessonProgressHubProps) {
+export function LessonProgressHub({
+  lessons,
+  basePath,
+  storageKey,
+  courseAccent,
+}: LessonProgressHubProps) {
+  const hub = hubAccent[courseAccent]
   const [completedSet, setCompletedSet] = useState<ReadonlySet<string>>(() => new Set())
 
   useEffect(() => {
@@ -97,7 +133,7 @@ export function LessonProgressHub({ lessons, basePath, storageKey }: LessonProgr
           <li key={lesson.slug}>
             <Link
               href={`${basePath}/${lesson.slug}`}
-              className="flex min-h-[44px] flex-col gap-2 rounded-card border border-border bg-surface-secondary p-5 transition-colors hover:border-primary/30 hover:bg-surface-tertiary sm:flex-row sm:items-start sm:justify-between sm:gap-6"
+              className={`flex min-h-[44px] flex-col gap-2 rounded-card border border-border bg-surface-secondary p-5 transition-colors hover:bg-surface-tertiary sm:flex-row sm:items-start sm:justify-between sm:gap-6 ${hub.hoverBorder}`}
             >
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-2">
@@ -116,7 +152,7 @@ export function LessonProgressHub({ lessons, basePath, storageKey }: LessonProgr
                 <p className="mt-2 text-sm leading-relaxed text-text-secondary">{lesson.outcome}</p>
               </div>
               <ArrowRight
-                className="h-5 w-5 shrink-0 text-primary sm:self-center"
+                className={`h-5 w-5 shrink-0 sm:self-center ${hub.arrow}`}
                 aria-hidden="true"
               />
             </Link>

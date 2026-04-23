@@ -37,7 +37,7 @@ export default function Course3Page() {
         <CourseLandingTopNav activeCourse={3} />
 
         <CourseLandingHero
-          variant="primary"
+          variant="course-3"
           icon={<Rocket className="h-6 w-6" strokeWidth={1.5} />}
           courseLabel="Course 3"
           title={COURSE_3.title}
@@ -75,6 +75,7 @@ export default function Course3Page() {
             lessons={hubItems}
             basePath={COURSE_3.basePath}
             storageKey={COURSE_3.progressStorageKey}
+            courseAccent="course-3"
           />
         </section>
       </div>

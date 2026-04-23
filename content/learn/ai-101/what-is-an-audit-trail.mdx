@@ -19,7 +19,7 @@ Imagine this: on a Monday morning, a client emails your team asking why they rec
 
 Now you need answers. Which agent sent it? What was the exact message? When was it sent? Was the agent authorised to send emails at all? Did it send similar messages to other clients?
 
-Without an audit trail, you are piecing together clues — checking email outboxes, cross-referencing timestamps, asking team members if they noticed anything. With an audit trail, you open the activity record and see everything in one place: the agent, the action, the service, the timestamp, and whether it was approved or blocked.
+Without an audit trail, you are piecing together clues: checking email outboxes, cross-referencing timestamps, asking team members if they noticed anything. With an audit trail, you open the activity record and see everything in one place: the agent, the action, the service, the timestamp, and whether it was approved or blocked.
 
 This is the core value of an audit trail: **it turns "we are not sure what happened" into "here is exactly what happened."**
 
@@ -33,35 +33,35 @@ A good audit trail captures a consistent set of information for every action:
 - **When it happened** (precise timestamp)
 - **Whether it was approved or blocked** by any permission or spending rules
 - **What the outcome was** (success, failure, or blocked)
-- **Relevant details** — the email recipient, the purchase amount, the file name
+- **Relevant details:** the email recipient, the purchase amount, the file name
 
 Each entry is a self-contained record. You do not need to cross-reference multiple systems to understand what happened.
 
 ## The difference between an activity record and checking after the fact
 
-Some teams say, "We can check if something went wrong — we will just look at the email outbox or the payment history." That is not the same as an audit trail, for three important reasons.
+Some teams say, "We can check if something went wrong. We will just look at the email outbox or the payment history." That is not the same as an audit trail, for three important reasons.
 
 ### Completeness
 
-An email outbox shows you emails that were sent. It does not show you emails that the agent tried to send but was blocked from sending. It does not show you that the agent checked your calendar, read three files, and queried a database before composing the email. An audit trail records every action — including the ones that did not succeed.
+An email outbox shows you emails that were sent. It does not show you emails that the agent tried to send but was blocked from sending. It does not show you that the agent checked your calendar, read three files, and queried a database before composing the email. An audit trail records every action, including the ones that did not succeed.
 
 ### Tamper evidence
 
-If an agent has write access to a service, it could potentially modify or delete the records of its own actions. An email agent that sent a problematic message could also delete that message from the sent folder. A properly built audit trail is tamper-evident — records cannot be edited or deleted after they are created, even by the agent that created them. [Multicorn Shield](/shield) achieves this by chaining each record to the previous one using cryptographic hashes, so any modification to a past record breaks the chain and is immediately detectable.
+If an agent has write access to a service, it could potentially modify or delete the records of its own actions. An email agent that sent a problematic message could also delete that message from the sent folder. A properly built audit trail is tamper-evident. Records cannot be edited or deleted after they are created, even by the agent that created them. [Multicorn Shield](/shield) achieves this by chaining each record to the previous one using cryptographic hashes, so any modification to a past record breaks the chain and is immediately detectable.
 
 ### Single source of truth
 
-When agent actions are scattered across multiple services — some in the email outbox, some in the payment history, some in the file system — there is no single place to review what happened. An audit trail consolidates everything into one structured record that you can search, filter, and review in minutes instead of hours.
+When agent actions are scattered across multiple services (some in the email outbox, some in the payment history, some in the file system), there is no single place to review what happened. An audit trail consolidates everything into one structured record that you can search, filter, and review in minutes instead of hours.
 
 ## Why it matters even if you are not in a regulated industry
 
-When people hear "audit trail," they often think of compliance requirements in healthcare, finance, or government. Those industries do have strict requirements for record-keeping — and an audit trail helps meet them. But the need for an audit trail goes well beyond regulatory compliance.
+When people hear "audit trail," they often think of compliance requirements in healthcare, finance, or government. Those industries do have strict requirements for record-keeping, and an audit trail helps meet them. But the need for an audit trail goes well beyond regulatory compliance.
 
 **Debugging agent behaviour.** When an agent does something unexpected, the audit trail is the first place you look. It shows you the sequence of actions that led to the result, so you can identify whether the problem was a bad instruction, incorrect data, or a permission gap.
 
 **Building trust with your team.** If you are rolling out AI agents to a team that is cautious about automation, showing them a clear activity record builds confidence. They can see exactly what the agents are doing at any time, which makes the technology less opaque and more trustworthy.
 
-**Answering client questions.** If a client or partner asks, "Did your AI send me this email?" or "Why was I charged for this?" — you can give them a precise, factual answer immediately instead of investigating for days.
+**Answering client questions.** If a client or partner asks "Did your AI send me this email?" or "Why was I charged for this?", you can give them a precise, factual answer immediately instead of investigating for days.
 
 **Improving over time.** Activity records show you patterns: which agents are most active, which actions get blocked most often, where spending is concentrated. These patterns help you refine permissions, adjust spending limits, and identify agents that need more restrictive or more permissive configurations.
 
@@ -71,9 +71,9 @@ Not all activity records are created equal. If you are evaluating tools for trac
 
 **Automatic capture.** The audit trail should record actions automatically. If it depends on the agent or the developer to manually write entries, it will have gaps.
 
-**Tamper evidence.** Records should be immutable — no edits, no deletes. Cryptographic chaining (where each record references the previous one) is the gold standard.
+**Tamper evidence.** Records should be immutable. No edits, no deletes. Cryptographic chaining (where each record references the previous one) is the gold standard.
 
-**Structured data.** Entries should follow a consistent format so you can search, filter, and export them. A wall of unstructured text is not an audit trail — it is a messy notebook.
+**Structured data.** Entries should follow a consistent format so you can search, filter, and export them. A wall of unstructured text is not an audit trail. It is a messy notebook.
 
 **Accessible to non-technical users.** An operations manager should be able to open the activity view and understand what is happening without knowing how to read code or query a database.
 
@@ -81,19 +81,19 @@ Not all activity records are created equal. If you are evaluating tools for trac
 
 ## How Multicorn Shield handles audit trails
 
-[Multicorn Shield](/shield) records every agent action automatically in a structured, tamper-evident activity trail. Every time an agent reads data, sends a message, makes a purchase, or gets blocked by a permission or spending rule — Shield records it.
+[Multicorn Shield](/shield) records every agent action automatically in a structured, tamper-evident activity trail. Every time an agent reads data, sends a message, makes a purchase, or gets blocked by a permission or spending rule, Shield records it.
 
 Each record includes the agent, the service, the action, the timestamp, the outcome, and any relevant details like spending amounts or recipient addresses. Records are chained using cryptographic hashes, so any tampering is immediately detectable.
 
-You can review activity through the Multicorn dashboard — a clear, filterable view designed for operations managers, not just developers. Filter by agent, by service, by date range, or by outcome (approved vs blocked). Export records for compliance reviews or incident investigations.
+You can review activity through the Multicorn dashboard, a clear, filterable view designed for operations managers, not just developers. Filter by agent, by service, by date range, or by outcome (approved vs blocked). Export records for compliance reviews or incident investigations.
 
-**Want a tamper-evident activity record for every agent action?** [Get started with Multicorn Shield](/shield) — audit trails are built in from day one.
+**Want a tamper-evident activity record for every agent action?** [Get started with Multicorn Shield](/shield). Audit trails are built in from day one.
 
 ## Key takeaways
 
 - An audit trail is a complete, tamper-evident record of every action your AI agents take.
 - It answers the critical questions: what happened, when, which agent, and was it authorised?
-- Checking email outboxes or payment histories after the fact is not the same — an audit trail is complete, tamper-evident, and consolidated.
+- Checking email outboxes or payment histories after the fact is not the same. An audit trail is complete, tamper-evident, and consolidated.
 - Audit trails matter beyond compliance: they help you debug agent behaviour, build team trust, answer client questions, and improve over time.
 - [Multicorn Shield](/shield) records every action automatically with cryptographic tamper evidence, and presents activity in a dashboard designed for non-technical users.
 

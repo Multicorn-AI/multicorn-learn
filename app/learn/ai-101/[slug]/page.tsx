@@ -157,7 +157,7 @@ export default async function LearnArticlePage({ params }: LearnArticlePageProps
                   </li>
                   <li>
                     <Link
-                      href="/learn/ai-101"
+                      href="/learn/ai-101/articles"
                       className="text-text-secondary transition-colors hover:text-text-primary"
                     >
                       AI 101

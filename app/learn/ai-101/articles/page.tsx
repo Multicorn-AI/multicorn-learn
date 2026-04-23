@@ -5,18 +5,18 @@ import { ArticleSearch } from '@/components/ArticleSearch'
 import { CourseLandingHero, CourseLandingTopNav } from '@/components/CourseLanding'
 
 export const metadata: Metadata = {
-  title: 'AI 101 — Multicorn Learn',
+  title: 'AI 101 | Multicorn Learn',
   description:
     'Foundational guides to generative AI, prompts, and AI agents. Free, plain-English articles for anyone getting started with AI.',
   openGraph: {
-    title: 'AI 101 — Multicorn Learn',
+    title: 'AI 101 | Multicorn Learn',
     description:
       'Foundational guides to generative AI, prompts, and AI agents. Free, plain-English articles for anyone getting started with AI.',
     type: 'website',
   },
 }
 
-export default function AI101IndexPage() {
+export default function AI101ArticlesPage() {
   const articles = getAllLearnArticles()
 
   const searchableArticles = articles.map((article) => ({
@@ -32,14 +32,14 @@ export default function AI101IndexPage() {
         <CourseLandingTopNav activeCourse={1} />
 
         <CourseLandingHero
-          variant="green"
+          variant="course-1"
           icon={<BookOpen className="h-6 w-6" strokeWidth={1.5} />}
           courseLabel="Course 1"
           title="AI 101"
         >
           <p className="text-lg leading-relaxed text-text-secondary">
             Everything you need to understand generative AI, from the basics to AI agents and
-            permissions. Written in plain English — no technical background required.
+            permissions. Written in plain English. No technical background required.
           </p>
         </CourseLandingHero>
 
