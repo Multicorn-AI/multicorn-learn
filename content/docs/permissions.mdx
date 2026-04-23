@@ -18,8 +18,8 @@ create:public_content
 
 A scope has two parts:
 
-- **Permission level** — what kind of access: `read`, `write`, `execute`, `publish`, or `create`
-- **Service** — the target service: a lowercase identifier using letters, digits, hyphens, or underscores
+- **Permission level:** what kind of access: `read`, `write`, `execute`, `publish`, or `create`
+- **Service:** the target service: a lowercase identifier using letters, digits, hyphens, or underscores
 
 ### Permission levels
 
@@ -51,8 +51,8 @@ const decision = await shield.requestConsent({
 
 Some scopes are classified as **high-risk** because they allow agents to publish content publicly on the internet. These scopes require explicit opt-in and default to OFF in the consent screen:
 
-- `publish:web` — Publishing content accessible on the open internet (e.g., deploying to GitHub Pages, publishing a blog post)
-- `create:public_content` — Creating content that is immediately public (e.g., sending a tweet, posting to a forum, pushing a public commit)
+- `publish:web`: Publishing content accessible on the open internet (e.g., deploying to GitHub Pages, publishing a blog post)
+- `create:public_content`: Creating content that is immediately public (e.g., sending a tweet, posting to a forum, pushing a public commit)
 
 When an agent requests high-risk scopes, the consent screen displays a warning: "This agent is requesting permission to publish content publicly on the internet". These scopes are disabled by default, and users must explicitly enable them.
 

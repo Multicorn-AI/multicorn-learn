@@ -186,7 +186,7 @@ export default async function ClaudeCodeLessonPage({ params }: ClaudeCodeLessonP
 
               <header className="mb-10">
                 {lessonNumber !== null ? (
-                  <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-indigo">
+                  <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-course-2-accent">
                     Lesson {lessonNumber} of {lessonsOrdered.length}
                   </p>
                 ) : null}
@@ -223,9 +223,17 @@ export default async function ClaudeCodeLessonPage({ params }: ClaudeCodeLessonP
                 />
               </div>
 
-              <LessonCompleteButton slug={slug} storageKey={trackConfig.progressStorageKey} />
+              <LessonCompleteButton
+                slug={slug}
+                storageKey={trackConfig.progressStorageKey}
+                courseAccent="course-2"
+              />
 
-              <LessonNavigation basePath={trackConfig.basePath} navigation={navigation} />
+              <LessonNavigation
+                basePath={trackConfig.basePath}
+                navigation={navigation}
+                courseAccent="course-2"
+              />
             </article>
 
             <TableOfContents items={tocItems} />

@@ -377,9 +377,9 @@ export default function PrivacyPolicyPage() {
             <div className="space-y-4 text-base leading-relaxed text-text-secondary">
               <p>
                 <em>
-                  <strong className="text-text-primary">In Short:</strong> Some information — such
-                  as your Internet Protocol (IP) address and/or browser and device characteristics —
-                  is collected automatically when you visit our Services.
+                  <strong className="text-text-primary">In Short:</strong> Some information (such as
+                  your Internet Protocol (IP) address and/or browser and device characteristics) is
+                  collected automatically when you visit our Services.
                 </em>
               </p>
               <p>
@@ -1123,7 +1123,7 @@ export default function PrivacyPolicyPage() {
                   HOW CAN YOU CONTACT US ABOUT THIS NOTICE?
                 </a>
                 &quot; below. You will then be removed from the marketing lists. However, we may
-                still communicate with you — for example, to send you service-related messages that
+                still communicate with you, for example to send you service-related messages that
                 are necessary for the administration and use of your account, to respond to service
                 requests, or for other non-marketing purposes.
               </p>

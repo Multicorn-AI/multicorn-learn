@@ -170,7 +170,7 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
                 <button
                   key={opt.id}
                   type="button"
-                  className="inline-flex min-h-[44px] flex-1 items-center justify-center rounded-lg border border-border bg-surface px-4 py-3 text-left text-sm font-medium text-text-primary transition-colors hover:border-primary/30 hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 sm:min-w-[160px] sm:flex-none"
+                  className="inline-flex min-h-[44px] flex-1 items-center justify-center rounded-lg border border-border bg-surface px-4 py-3 text-left text-sm font-medium text-text-primary transition-colors hover:border-course-3-accent/30 hover:bg-course-3-accent/5 focus:outline-none focus:ring-2 focus:ring-course-3-accent/20 focus:ring-offset-2 sm:min-w-[160px] sm:flex-none"
                   aria-label={`${currentQuestion.label} ${opt.label}`}
                   onClick={() => handleSelect(opt.id)}
                 >
@@ -189,7 +189,7 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
               aria-live="polite"
               aria-atomic="true"
             >
-              <span className="mb-3 inline-block rounded-full bg-primary/10 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
+              <span className="mb-3 block w-fit rounded-full bg-course-3-accent/10 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-course-3-accent">
                 Recommended
               </span>
               <h3
@@ -207,7 +207,7 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
 
             <Link
               href={`/learn/course-3/choosing-a-host?platform=${recommendation.slug}`}
-              className="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg bg-primary px-6 py-3 text-center text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 sm:w-auto"
+              className="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg bg-course-3-accent px-6 py-3 text-center text-base font-semibold text-white shadow-sm transition-colors hover:bg-course-3-accent/90 focus:outline-none focus:ring-2 focus:ring-course-3-accent/20 focus:ring-offset-2 sm:w-auto"
             >
               Start Lesson 1
             </Link>
@@ -215,7 +215,7 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
             <div>
               <button
                 type="button"
-                className="min-h-[44px] text-sm font-medium text-text-secondary underline decoration-text-secondary/30 underline-offset-2 transition-colors hover:text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+                className="min-h-[44px] text-sm font-medium text-text-secondary underline decoration-text-secondary/30 underline-offset-2 transition-colors hover:text-text-primary focus:outline-none focus:ring-2 focus:ring-course-3-accent/20 focus:ring-offset-2"
                 aria-label="Start the platform questions over from the first question"
                 onClick={handleStartOver}
               >
@@ -235,7 +235,7 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
         <div className="mt-6 border-t border-border pt-4">
           <button
             type="button"
-            className="min-h-[44px] text-sm font-medium text-text-secondary underline underline-offset-2 transition-colors hover:text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+            className="min-h-[44px] text-sm font-medium text-text-secondary underline underline-offset-2 transition-colors hover:text-text-primary focus:outline-none focus:ring-2 focus:ring-course-3-accent/20 focus:ring-offset-2"
             aria-label="Go back to the previous question"
             onClick={handleBack}
           >

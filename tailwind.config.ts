@@ -14,6 +14,10 @@ const config: Config = {
         'primary-light': '#8B5CF6',
         'primary-dark': '#6D28D9',
         shield: '#7C3AED',
+        /** Learn hub course identity (use in /learn course surfaces; Shield brand stays `primary`) */
+        'course-1-accent': '#22C55E',
+        'course-2-accent': '#6366F1',
+        'course-3-accent': '#14B8A6',
         pink: '#EC4899',
         indigo: '#6366F1',
         orange: '#C2410C',

@@ -1,8 +1,7 @@
-import Link from 'next/link'
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { Rocket } from 'lucide-react'
-import { CourseProgressIndicator } from '@/components/CourseProgressIndicator'
+import { CourseLandingHero, CourseLandingTopNav } from '@/components/CourseLanding'
 import { LessonProgressHub } from '@/components/LessonProgress'
 import { PlatformPicker } from '@/components/PlatformPicker'
 import { isCourse3Enabled } from '@/lib/feature-flags'
@@ -35,48 +34,16 @@ export default function Course3Page() {
   return (
     <main className="flex min-h-screen flex-col items-center px-6 pb-20 pt-16 sm:pb-28 sm:pt-24">
       <div className="w-full max-w-content">
-        <div className="mb-10 flex flex-col items-center gap-6">
-          <Link
-            href="/learn"
-            className="flex items-center justify-center gap-1.5 text-sm font-medium text-text-secondary transition-colors hover:text-text-primary"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              className="h-4 w-4"
-              aria-hidden="true"
-            >
-              <path
-                fillRule="evenodd"
-                d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z"
-                clipRule="evenodd"
-              />
-            </svg>
-            All courses
-          </Link>
-          <CourseProgressIndicator activeCourse={3} />
-        </div>
+        <CourseLandingTopNav activeCourse={3} />
 
-        <section className="mx-auto mb-12 w-full max-w-3xl px-4">
-          <div className="mb-6 flex items-center gap-4">
-            <span
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary"
-              aria-hidden="true"
-            >
-              <Rocket className="h-6 w-6" strokeWidth={1.5} />
-            </span>
-            <div>
-              <span className="mb-1 inline-block text-xs font-semibold uppercase tracking-wide text-primary">
-                Course 3
-              </span>
-              <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl lg:text-5xl">
-                {COURSE_3.title}
-              </h1>
-            </div>
-          </div>
+        <CourseLandingHero
+          variant="course-3"
+          icon={<Rocket className="h-6 w-6" strokeWidth={1.5} />}
+          courseLabel="Course 3"
+          title={COURSE_3.title}
+        >
           <p className="text-lg leading-relaxed text-text-secondary">{COURSE_3.intro}</p>
-        </section>
+        </CourseLandingHero>
 
         <section id="pick-your-platform" className="mx-auto w-full max-w-3xl px-4 pb-12">
           <h2
@@ -108,6 +75,7 @@ export default function Course3Page() {
             lessons={hubItems}
             basePath={COURSE_3.basePath}
             storageKey={COURSE_3.progressStorageKey}
+            courseAccent="course-3"
           />
         </section>
       </div>

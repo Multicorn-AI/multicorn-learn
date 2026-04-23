@@ -61,13 +61,13 @@ export default function Course2ClaudeCodeHubPage() {
 
         <div className="mb-12 flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-6">
           <div
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-indigo/10 text-indigo"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-course-2-accent/10 text-course-2-accent"
             aria-hidden="true"
           >
             <Terminal className="h-6 w-6" strokeWidth={1.5} />
           </div>
           <div>
-            <p className="text-sm font-semibold uppercase tracking-wide text-indigo">
+            <p className="text-sm font-semibold uppercase tracking-wide text-course-2-accent">
               Claude Code track
             </p>
             <h1 className="mt-1 text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
@@ -90,6 +90,7 @@ export default function Course2ClaudeCodeHubPage() {
             lessons={hubItems}
             basePath={trackConfig.basePath}
             storageKey={trackConfig.progressStorageKey}
+            courseAccent="course-2"
           />
         </section>
       </div>

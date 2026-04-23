@@ -169,7 +169,7 @@ export function ToolPicker() {
                 <button
                   key={opt.id}
                   type="button"
-                  className="inline-flex min-h-[44px] flex-1 items-center justify-center rounded-lg border border-border bg-surface px-4 py-3 text-left text-sm font-medium text-text-primary transition-colors hover:border-primary/30 hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 sm:min-w-[140px] sm:flex-none"
+                  className="inline-flex min-h-[44px] flex-1 items-center justify-center rounded-lg border border-border bg-surface px-4 py-3 text-left text-sm font-medium text-text-primary transition-colors hover:border-course-2-accent/30 hover:bg-course-2-accent/5 focus:outline-none focus:ring-2 focus:ring-course-2-accent/20 focus:ring-offset-2 sm:min-w-[140px] sm:flex-none"
                   aria-label={`${currentQuestion.label} ${opt.label}`}
                   onClick={() => handleSelect(opt.id)}
                 >
@@ -197,14 +197,14 @@ export function ToolPicker() {
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <Link
                 href={recommendation.href}
-                className="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg bg-primary px-6 py-3 text-center text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 sm:w-auto"
+                className="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg bg-course-2-accent px-6 py-3 text-center text-base font-semibold text-white shadow-sm transition-colors hover:bg-course-2-accent/90 focus:outline-none focus:ring-2 focus:ring-course-2-accent/20 focus:ring-offset-2 sm:w-auto"
                 aria-label={`Start with ${recommendation.name}`}
               >
                 Start with {recommendation.name}
               </Link>
               <button
                 type="button"
-                className="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg border border-border bg-surface px-6 py-3 text-base font-medium text-text-primary transition-colors hover:bg-surface-tertiary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 sm:w-auto"
+                className="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg border border-border bg-surface px-6 py-3 text-base font-medium text-text-primary transition-colors hover:bg-surface-tertiary focus:outline-none focus:ring-2 focus:ring-course-2-accent/20 focus:ring-offset-2 sm:w-auto"
                 aria-label="Start the tool picker over from the first question"
                 onClick={handleStartOver}
               >
@@ -219,7 +219,7 @@ export function ToolPicker() {
         <div className="mt-6 border-t border-border-light pt-4">
           <button
             type="button"
-            className="text-sm font-medium text-text-secondary underline-offset-2 transition-colors hover:text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+            className="text-sm font-medium text-text-secondary underline-offset-2 transition-colors hover:text-text-primary focus:outline-none focus:ring-2 focus:ring-course-2-accent/20 focus:ring-offset-2"
             aria-label="Go back to the previous question"
             onClick={handleBack}
           >

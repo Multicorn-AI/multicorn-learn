@@ -91,10 +91,11 @@ Lesson 2 walks through the exact deploy steps using `flyctl`. Lesson 3 shows you
 </PlatformContent>
 
 <SecurityNote>
-  Before you push your code anywhere, open your project folder and check two files. First, confirm
-  `.env` is listed in your `.gitignore` file. Second, run `git status` and make sure `.env` is NOT
-  in the list of tracked files. If you see `.env` in either the wrong place, stop and fix it before
-  the next lesson. Lesson 3 covers this in detail, but the check takes ten seconds and it matters.
+  Your app will have secrets in it: API keys, passwords, things that should never be public. Before
+  you deploy, those secrets have to be separated from your code, because anything in your code gets
+  pushed to GitHub and bots scan public repos within seconds. People have had cloud accounts drained
+  for thousands of dollars before they noticed. Lesson 3 walks through exactly how to keep secrets
+  out of what gets shared.
 </SecurityNote>
 
 <OtherPlatformsDisclosure>

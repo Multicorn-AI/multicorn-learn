@@ -21,7 +21,7 @@ export function Course2WhatsNextCourse3Preview({ track }: { readonly track: Cour
         domain, and HTTPS, with a troubleshooting path when a deploy goes wrong.{' '}
         <Link
           href="/learn/course-3"
-          className="font-semibold text-primary underline decoration-primary/30 underline-offset-2 transition-colors hover:text-primary-dark"
+          className="font-semibold text-course-2-accent underline decoration-course-2-accent/30 underline-offset-2 transition-colors hover:text-course-2-accent/90"
         >
           Open Course 3
         </Link>

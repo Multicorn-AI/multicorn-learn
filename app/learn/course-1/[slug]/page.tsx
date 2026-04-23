@@ -12,7 +12,7 @@ import {
 import { blogComponents } from '@/lib/mdx-blog-components'
 import { MobileTableOfContents } from '@/components/MobileTableOfContents'
 import { TableOfContents } from '@/components/TableOfContents'
-import { ArticleNavigation } from '@/components/ArticleNavigation'
+import { LessonNavigation } from '@/components/LessonNavigation'
 import { EmailSignupForm } from '@/components/EmailSignupForm'
 
 interface LearnArticlePageProps {
@@ -95,7 +95,7 @@ export default async function LearnArticlePage({ params }: LearnArticlePageProps
       name: 'Multicorn',
       url: 'https://multicorn.ai',
     },
-    url: `https://multicorn.ai/learn/ai-101/${article.slug}`,
+    url: `https://multicorn.ai/learn/course-1/${article.slug}`,
     image: article.meta.ogImage ? `https://multicorn.ai${article.meta.ogImage}` : undefined,
   }
 
@@ -157,7 +157,7 @@ export default async function LearnArticlePage({ params }: LearnArticlePageProps
                   </li>
                   <li>
                     <Link
-                      href="/learn/ai-101"
+                      href="/learn/course-1"
                       className="text-text-secondary transition-colors hover:text-text-primary"
                     >
                       AI 101
@@ -234,7 +234,11 @@ export default async function LearnArticlePage({ params }: LearnArticlePageProps
                 <EmailSignupForm source="learn-blog" />
               </section>
 
-              <ArticleNavigation navigation={navigation} articleHrefBase="/learn/ai-101" />
+              <LessonNavigation
+                basePath="/learn/course-1"
+                navigation={navigation}
+                courseAccent="course-1"
+              />
             </article>
 
             <TableOfContents items={tocItems} />

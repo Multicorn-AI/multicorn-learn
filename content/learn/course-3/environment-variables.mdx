@@ -109,13 +109,10 @@ Press Enter. You will see a list of files that have changed recently.
 If `.env` is in that list, ask Cursor or Claude Code directly: "Please remove .env from git tracking without deleting the file itself." It will run the right command for you. Then run `git status` again and confirm `.env` is gone from the list.
 
 <SecurityNote>
-  If your key is already in your GitHub repository, assume it is compromised. Rotate it right now,
-  before you do anything else. "Rotate" means: go to the service that gave you the key (OpenAI,
-  Stripe, your database provider), delete the old key, generate a new one, and put the new one in
-  your `.env` file. This takes about two minutes and it is the only way to protect yourself.
-  Removing the key from your code without rotating it does nothing - copies of it still exist in
-  your git history, on backup servers, and probably already in the hands of bots that scraped it
-  within seconds of you pushing the commit.
+  If your key is already on GitHub, treat it as compromised. Rotate it now: log in to the service
+  that issued it, delete the old key, generate a new one, paste it into `.env`. In 2024 Stripe
+  spotted a secret key in a public repo and killed it within minutes, but scanners had already
+  picked it up. Deleting it from your repo does not un-leak it.
 </SecurityNote>
 
 ## Why you must never share keys (even casually)

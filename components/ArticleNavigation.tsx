@@ -3,7 +3,7 @@ import type { ArticleNavigation as ArticleNavigationType } from '@/lib/learn'
 
 interface ArticleNavigationProps {
   readonly navigation: ArticleNavigationType
-  /** Base path for prev/next links, e.g. `/learn/ai-101` or `/learn/agents`. Required to avoid silent cross-section linking. */
+  /** Base path for prev/next links, e.g. `/learn/course-1` or `/learn/agents`. Required to avoid silent cross-section linking. */
   readonly articleHrefBase: string
 }
 

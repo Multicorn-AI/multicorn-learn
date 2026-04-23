@@ -3,11 +3,11 @@ import { PromptLibrary } from '@/components/PromptLibrary'
 import { getPrompts } from '@/content/prompts'
 
 export const metadata: Metadata = {
-  title: 'AI Prompt Library — Multicorn Learn',
+  title: 'AI Prompt Library | Multicorn Learn',
   description:
     'A curated library of prompts for writing, analysis, coding, research, and AI agents. Free tier available, full library with Learn Pro.',
   openGraph: {
-    title: 'AI Prompt Library — Multicorn Learn',
+    title: 'AI Prompt Library | Multicorn Learn',
     description:
       'A curated library of prompts for writing, analysis, coding, research, and AI agents. Free tier available, full library with Learn Pro.',
     type: 'website',

@@ -174,7 +174,7 @@ export default async function Course3LessonPage({ params }: Course3LessonPagePro
 
                 <header className="mb-10">
                   {lessonNumber !== null ? (
-                    <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-primary">
+                    <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-course-3-accent">
                       Lesson {lessonNumber} of {lessonsOrdered.length}
                     </p>
                   ) : null}
@@ -211,9 +211,17 @@ export default async function Course3LessonPage({ params }: Course3LessonPagePro
                   />
                 </div>
 
-                <LessonCompleteButton slug={slug} storageKey={COURSE_3.progressStorageKey} />
+                <LessonCompleteButton
+                  slug={slug}
+                  storageKey={COURSE_3.progressStorageKey}
+                  courseAccent="course-3"
+                />
 
-                <LessonNavigation basePath={COURSE_3.basePath} navigation={navigation} />
+                <LessonNavigation
+                  basePath={COURSE_3.basePath}
+                  navigation={navigation}
+                  courseAccent="course-3"
+                />
               </article>
 
               <TableOfContents items={tocItems} />

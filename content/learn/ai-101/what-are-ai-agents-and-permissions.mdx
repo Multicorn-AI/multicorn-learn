@@ -11,15 +11,15 @@ series: 'ai-101'
 
 ## The short version
 
-An AI agent is software that does not just generate text — it takes actions. It can read your email, create calendar events, post messages in Slack, or make purchases. That power is useful, but it also means an agent can do things you never intended. Permissions are the missing safety layer. This article explains how agents work, why they need guardrails, and what you can do about it today.
+An AI agent is software that does not just generate text. It takes actions. It can read your email, create calendar events, post messages in Slack, or make purchases. That power is useful, but it also means an agent can do things you never intended. Permissions are the missing safety layer. This article explains how agents work, why they need guardrails, and what you can do about it today.
 
 ## From chatbots to agents
 
-In our previous articles, we covered [what generative AI is](/learn/ai-101/what-is-generative-ai) and [how prompts work](/learn/ai-101/what-are-prompts). Those articles focused on AI tools that respond to your input with text. You ask a question, you get an answer. The AI does not do anything beyond generating words on a screen.
+In our previous articles, we covered [what generative AI is](/learn/course-1/what-is-generative-ai) and [how prompts work](/learn/course-1/what-are-prompts). Those articles focused on AI tools that respond to your input with text. You ask a question, you get an answer. The AI does not do anything beyond generating words on a screen.
 
-An AI agent goes a step further. It connects to real-world services — your email, calendar, project management tools, payment systems — and takes actions on those services based on instructions you give it. Instead of just telling you what email to write, an agent can write it and send it. Instead of suggesting a meeting time, it can book the meeting.
+An AI agent goes a step further. It connects to real-world services (your email, calendar, project management tools, payment systems) and takes actions on those services based on instructions you give it. Instead of just telling you what email to write, an agent can write it and send it. Instead of suggesting a meeting time, it can book the meeting.
 
-Here is a concrete example. Imagine you connect an AI agent called "InboxHelper" to your work email and calendar. You tell it: "Every morning, check my inbox for meeting requests and add them to my calendar." The agent reads your emails, identifies meeting requests, and creates calendar events — all without you lifting a finger.
+Here is a concrete example. Imagine you connect an AI agent called "InboxHelper" to your work email and calendar. You tell it: "Every morning, check my inbox for meeting requests and add them to my calendar." The agent reads your emails, identifies meeting requests, and creates calendar events, all without you lifting a finger.
 
 That is genuinely useful. But think about what just happened: you gave a piece of software the ability to read every email in your inbox and create events on your calendar. What else could it do with that access?
 
@@ -30,7 +30,7 @@ When you install an app on your phone, it asks for permission before accessing y
 Most AI agents have nothing like this. When you connect an agent to a service, it typically gets broad access with no fine-grained controls. There is no standard way to:
 
 - **See what an agent wants before you grant access.** Most agents ask for a connection to a service and then have full access to everything in it.
-- **Limit what an agent can do.** If you give an agent access to your email, it can usually read, write, and delete — even if you only wanted it to read.
+- **Limit what an agent can do.** If you give an agent access to your email, it can usually read, write, and delete, even if you only wanted it to read.
 - **Set spending limits.** If an agent has access to a payment method, there is often no built-in cap on how much it can spend.
 - **Track what an agent has done.** Most agents do not keep a detailed, reviewable log of every action they take.
 
@@ -56,7 +56,7 @@ Good agent permissions follow the same principles that make phone app permission
 
 ### Consent before access
 
-Before an agent can access a service, you should see exactly what it is requesting — and be able to approve, modify, or deny each permission individually. Not a blanket "allow all" toggle, but granular control: "Yes, you can read my email. No, you cannot send emails. No, you cannot access payments."
+Before an agent can access a service, you should see exactly what it is requesting, and be able to approve, modify, or deny each permission individually. Not a blanket "allow all" toggle, but granular control: "Yes, you can read my email. No, you cannot send emails. No, you cannot access payments."
 
 ### Scoped access
 
@@ -64,7 +64,7 @@ Permissions should follow the principle of least privilege (giving access to onl
 
 ### Spending limits
 
-If an agent can make purchases or trigger paid services, you should be able to set a per-action limit, a daily limit, and a monthly limit. If the agent tries to spend more than the limit, the action should be blocked before it happens — not flagged after the money is already gone.
+If an agent can make purchases or trigger paid services, you should be able to set a per-action limit, a daily limit, and a monthly limit. If the agent tries to spend more than the limit, the action should be blocked before it happens, not flagged after the money is already gone.
 
 ### Activity logging
 
@@ -80,7 +80,7 @@ You should be able to revoke an agent's access at any time, immediately. No wait
 
 Here is what Shield gives you:
 
-**Consent screens.** Before an agent gets access, your users see a clear screen showing exactly what the agent is requesting. They can toggle individual permissions on or off and set spending limits — all before the agent can do anything.
+**Consent screens.** Before an agent gets access, your users see a clear screen showing exactly what the agent is requesting. They can toggle individual permissions on or off and set spending limits, all before the agent can do anything.
 
 **Scoped permissions.** Every permission follows a clear format: `read:gmail`, `write:calendar`, `execute:payments`. You define exactly what each agent can and cannot do.
 
@@ -118,7 +118,7 @@ The full documentation and framework-specific examples are on [GitHub](https://g
 
 ## The bigger picture
 
-AI agents are going to become more capable and more common. That is not a bad thing — they genuinely save time and handle tedious work so people can focus on what matters. But more capability means more risk if there are no guardrails.
+AI agents are going to become more capable and more common. That is not a bad thing. They genuinely save time and handle tedious work so people can focus on what matters. But more capability means more risk if there are no guardrails.
 
 The good news: we have already solved this problem in other areas of software. Your phone asks before an app accesses your camera. Websites show OAuth consent screens. Bank apps require confirmation before transfers. AI agents just need the same treatment.
 
@@ -126,12 +126,8 @@ Permissions for AI agents are not about limiting what AI can do. They are about 
 
 ## Key takeaways
 
-- AI agents are software that takes real-world actions — reading email, booking meetings, making purchases — not just generating text.
+- AI agents are software that takes real-world actions: reading email, booking meetings, making purchases. Not just generating text.
 - Most agents today operate with broad access and no permission boundaries.
 - Good agent permissions include consent before access, scoped limits, spending caps, activity logs, and instant revocation.
 - [Multicorn Shield](/shield) is an open-source SDK that provides all of these controls in a single integration.
-- As agents become more powerful, permissions become more important — not to limit AI, but to keep humans in control.
-
-**Next up:** [What Are AI Hallucinations and Why Do They Happen?](/learn/ai-101/what-are-ai-hallucinations)
-
-**Previous:** [What Are Prompts and How Do They Work?](/learn/ai-101/what-are-prompts)
+- As agents become more powerful, permissions become more important. Not to limit AI, but to keep humans in control.

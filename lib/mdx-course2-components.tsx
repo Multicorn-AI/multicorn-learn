@@ -23,7 +23,10 @@ function extractLanguageFromClassName(className: string | undefined): string {
 // eslint-disable-next-line react-hooks/rules-of-hooks -- useMDXComponents is not a React hook despite the naming convention; it returns a plain object of component overrides
 const baseComponents = useMDXComponents({})
 
-export function createCourse2Components(analyticsCategory: string) {
+export function createCourse2Components(
+  analyticsCategory: string,
+  codeAccentClass: 'text-course-2-accent' | 'text-course-3-accent',
+) {
   return {
     ...baseComponents,
     SecurityNote,
@@ -52,7 +55,7 @@ export function createCourse2Components(analyticsCategory: string) {
             />
           </div>
           <pre className="overflow-x-auto px-4 py-3">
-            <code className="text-sm text-green">{codeText}</code>
+            <code className={`text-sm ${codeAccentClass}`}>{codeText}</code>
           </pre>
         </div>
       )
@@ -74,10 +77,16 @@ export function createCourse2Components(analyticsCategory: string) {
   }
 }
 
-export const cursorTrackComponents = createCourse2Components('course2_cursor_code')
-export const claudeCodeTrackComponents = createCourse2Components('course2_claude_code_code')
+export const cursorTrackComponents = createCourse2Components(
+  'course2_cursor_code',
+  'text-course-2-accent',
+)
+export const claudeCodeTrackComponents = createCourse2Components(
+  'course2_claude_code_code',
+  'text-course-2-accent',
+)
 export const course3Components = {
-  ...createCourse2Components('course3_code'),
+  ...createCourse2Components('course3_code', 'text-course-3-accent'),
   PlatformContent,
   PlatformSwitcherNote,
   OtherPlatformsDisclosure,

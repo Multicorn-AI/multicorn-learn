@@ -30,7 +30,7 @@ The `spendLimit` value (in dollars) sets the per-transaction limit. Daily and mo
 
 ## Checking spending before an action
 
-Use `checkSpending()` to pre-check whether a proposed spend would be allowed. This is a read-only check — it does not record the spend:
+Use `checkSpending()` to pre-check whether a proposed spend would be allowed. This is a read-only check. It does not record the spend:
 
 ```typescript
 const result = shield.checkSpending('OpenClaw', 50)
@@ -89,11 +89,11 @@ Always use both: call `checkSpending()` in the client for instant feedback, and 
 
 When `checkSpending()` detects a violation, it returns `allowed: false` with a specific reason. The checks are performed in order:
 
-1. **Per-transaction limit** — Is this single action too expensive?
-2. **Per-day limit** — Would this action push today's total over the daily limit?
-3. **Per-month limit** — Would this action push this month's total over the monthly limit?
+1. **Per-transaction limit:** Is this single action too expensive?
+2. **Per-day limit:** Would this action push today's total over the daily limit?
+3. **Per-month limit:** Would this action push this month's total over the monthly limit?
 
-The check fails at the first violated limit. For example, if a $500 action exceeds the $200 per-transaction limit, the response mentions the per-transaction limit — even if the daily limit would also be exceeded.
+The check fails at the first violated limit. For example, if a $500 action exceeds the $200 per-transaction limit, the response mentions the per-transaction limit, even if the daily limit would also be exceeded.
 
 ## No spending limit configured
 

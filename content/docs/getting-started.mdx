@@ -8,9 +8,9 @@ order: 1
 
 Before you begin, make sure you have:
 
-- **Node.js 18+** — Shield uses modern JavaScript features that require Node 18 or later
-- **npm, pnpm, or yarn** — any package manager works
-- **A Multicorn API key** — sign up at [dashboard.multicorn.ai](https://dashboard.multicorn.ai/signup) and create a key under Settings > API Keys
+- **Node.js 18+:** Shield uses modern JavaScript features that require Node 18 or later
+- **npm, pnpm, or yarn:** any package manager works
+- **A Multicorn API key:** sign up at [dashboard.multicorn.ai](https://dashboard.multicorn.ai/signup) and create a key under Settings > API Keys
 
 ## Installation
 
@@ -42,7 +42,7 @@ const shield = new MulticornShield({
 
 | Option      | Type              | Default                      | Description                                                                                        |
 | ----------- | ----------------- | ---------------------------- | -------------------------------------------------------------------------------------------------- |
-| `apiKey`    | `string`          | —                            | Your Multicorn API key. Must start with `mcs_` and be at least 16 characters.                      |
+| `apiKey`    | `string`          | _required_                   | Your Multicorn API key. Must start with `mcs_` and be at least 16 characters.                      |
 | `baseUrl`   | `string`          | `"https://api.multicorn.ai"` | Base URL for the Multicorn API.                                                                    |
 | `timeout`   | `number`          | `5000`                       | Request timeout in milliseconds.                                                                   |
 | `batchMode` | `BatchModeConfig` | `undefined`                  | Optional batch mode for action logging. When enabled, actions are queued and flushed periodically. |
@@ -76,7 +76,7 @@ const decision = await shield.requestConsent({
 })
 
 if (decision.grantedScopes.length > 0) {
-  // The user approved — your agent can now act
+  // The user approved. Your agent can now act
   console.log('Approved scopes:', decision.grantedScopes)
 } else {
   // The user denied the request
@@ -98,9 +98,9 @@ After `destroy()` is called, all subsequent method calls will throw. Create a ne
 
 ## Next steps
 
-- [MCP proxy](/docs/mcp-proxy) — add Shield to your existing MCP agents with no code changes
-- [Consent screen](/docs/consent-screen) — configuration options, display modes, and event handling
-- [Permissions](/docs/permissions) — scope format, defining scopes, and revocation
-- [Action logging](/docs/action-logging) — log every action your agent takes
-- [Spending controls](/docs/spending-controls) — set and enforce spending limits
-- [API reference](/docs/api-reference) — full method reference for the MulticornShield class
+- [MCP proxy](/docs/mcp-proxy): add Shield to your existing MCP agents with no code changes
+- [Consent screen](/docs/consent-screen): configuration options, display modes, and event handling
+- [Permissions](/docs/permissions): scope format, defining scopes, and revocation
+- [Action logging](/docs/action-logging): log every action your agent takes
+- [Spending controls](/docs/spending-controls): set and enforce spending limits
+- [API reference](/docs/api-reference): full method reference for the MulticornShield class

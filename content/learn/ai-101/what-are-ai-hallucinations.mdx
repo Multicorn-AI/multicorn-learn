@@ -15,7 +15,7 @@ AI tools sometimes produce confident, well-written answers that are completely w
 
 ## What is an AI hallucination?
 
-When an AI tool gives you information that sounds correct but is actually false, that is a hallucination. The term comes from the idea that the model is "seeing" something that is not there — like a person hallucinating.
+When an AI tool gives you information that sounds correct but is actually false, that is a hallucination. The term comes from the idea that the model is "seeing" something that is not there, like a person hallucinating.
 
 A more accurate word, used by researchers, is **confabulation**. The model is not lying on purpose. It is filling in gaps with whatever sounds most plausible based on the patterns it learned during training. It does not know the difference between a true statement and a false one that sounds convincing.
 
@@ -30,13 +30,13 @@ The problem is not that the AI says "I don't know." The problem is that it says 
 
 ## Why do hallucinations happen?
 
-To understand hallucinations, it helps to remember how AI models work. As we covered in [What is Generative AI?](/learn/ai-101/what-is-generative-ai), large language models generate text by predicting the next word in a sequence. They are pattern-matching engines, not fact databases.
+To understand hallucinations, it helps to remember how AI models work. As we covered in [What is Generative AI?](/learn/course-1/what-is-generative-ai), large language models generate text by predicting the next word in a sequence. They are pattern-matching engines, not fact databases.
 
 There are a few specific reasons hallucinations occur:
 
 ### The model does not store facts
 
-An LLM does not have a filing cabinet of verified information. It has billions of internal settings (called parameters) that encode statistical patterns from its training data. When you ask it a question, it generates text that follows the patterns it learned — not text that it has verified against a source of truth.
+An LLM does not have a filing cabinet of verified information. It has billions of internal settings (called parameters) that encode statistical patterns from its training data. When you ask it a question, it generates text that follows the patterns it learned, not text that it has verified against a source of truth.
 
 ### Training data has gaps and errors
 
@@ -66,7 +66,7 @@ Hallucinations can be hard to catch because the text reads well. Here are practi
 
 ## How to reduce hallucinations with better prompts
 
-You cannot eliminate hallucinations entirely, but you can significantly reduce them by changing how you ask questions. These techniques build on what we covered in [What Are Prompts and How Do They Work?](/learn/ai-101/what-are-prompts).
+You cannot eliminate hallucinations entirely, but you can significantly reduce them by changing how you ask questions. These techniques build on what we covered in [What Are Prompts and How Do They Work?](/learn/course-1/what-are-prompts).
 
 ### Be specific about what you know and what you need
 
@@ -78,7 +78,7 @@ You can explicitly instruct the model: "If you are not confident about any part 
 
 ### Provide reference material
 
-If you paste in the actual text you want the AI to work with — a document, a policy, a code file — the AI is far less likely to hallucinate because it is working from your source rather than its training data.
+If you paste in the actual text you want the AI to work with (a document, a policy, a code file) the AI is far less likely to hallucinate because it is working from your source rather than its training data.
 
 ### Ask for sources
 
@@ -103,5 +103,3 @@ This is one of the reasons AI agents need permission controls and activity loggi
 - You can spot them by checking specific claims, watching for excessive detail, and comparing across tools.
 - You can reduce them by being specific, providing reference material, asking for sources, and breaking complex questions into smaller parts.
 - Hallucinations are especially risky when AI agents take real-world actions based on faulty information.
-
-**Next up:** [How to Write a Good Prompt](/learn/ai-101/how-to-write-a-good-prompt)

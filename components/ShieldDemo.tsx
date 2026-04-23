@@ -19,7 +19,7 @@ const ACTIVITIES: readonly ActivityRow[] = [
   },
   {
     icon: '💳',
-    action: 'Attempted purchase — $849 MacBook case',
+    action: 'Attempted purchase: $849 MacBook case',
     agent: 'ShopBot',
     service: 'Amazon',
     time: '5m ago',

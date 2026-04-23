@@ -101,11 +101,10 @@ When it says **Configured** and shows a valid certificate, your domain is live. 
 </PlatformContent>
 
 <SecurityNote>
-  Once your custom domain is live, always visit your own site using `https://yourname.com`, not
-  `http://yourname.com`. Your host handles the automatic upgrade for most visitors, but if you ever
-  see a browser warning that the connection is not secure on your own domain, stop. Do not log in,
-  do not type anything. Something is wrong with the certificate and someone might be intercepting
-  the connection. Fix the domain first.
+  If your browser ever warns that the connection to your own domain is not secure, stop. Do not log
+  in. Do not type anything. A broken certificate is one possible cause; an attacker on the same wifi
+  running a fake copy of your site is another, and you cannot tell them apart from the warning
+  alone. Fix the certificate before you trust the page again.
 </SecurityNote>
 
 <OtherPlatformsDisclosure>
