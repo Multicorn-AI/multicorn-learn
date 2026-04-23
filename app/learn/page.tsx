@@ -165,7 +165,7 @@ export default function LearnPage() {
                 href="/learn/course-3"
                 className="inline-flex min-h-[44px] items-center rounded-lg bg-teal px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-teal/90 focus:outline-none focus:ring-2 focus:ring-teal/20 focus:ring-offset-2"
               >
-                Open Course 3
+                Start shipping
               </Link>
             </div>
           ) : null}
