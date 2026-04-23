@@ -80,7 +80,7 @@ function stateFor(courseNum: number, active: number): 'completed' | 'active' | '
 export function CourseProgressIndicator({ activeCourse }: CourseProgressIndicatorProps) {
   const c2on = isCourse2Enabled()
   const c3on = isCourse3Enabled()
-  const href1 = '/learn/ai-101/articles'
+  const href1 = '/learn/course-1'
   const href2 = c2on ? '/learn/course-2' : '/learn'
   const href3 = c3on ? '/learn/course-3' : '/learn'
 

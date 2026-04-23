@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   },
 }
 
-export default function AI101ArticlesPage() {
+export default function Course1Page() {
   const articles = getAllLearnArticles()
 
   const searchableArticles = articles.map((article) => ({
@@ -47,7 +47,7 @@ export default function AI101ArticlesPage() {
           {articles.length === 0 ? (
             <p className="text-center text-text-secondary">No articles yet. Check back soon.</p>
           ) : (
-            <ArticleSearch articles={searchableArticles} articleHrefBase="/learn/ai-101" />
+            <ArticleSearch articles={searchableArticles} articleHrefBase="/learn/course-1" />
           )}
         </div>
       </div>

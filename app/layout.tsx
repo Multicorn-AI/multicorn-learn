@@ -15,7 +15,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Multicorn — The trusted layer between humans and AI agents',
+  title: 'Multicorn: The trusted layer between humans and AI agents',
   description:
     'Multicorn Shield gives your team consent screens, spending controls, and activity logging for every AI agent. Open-source SDK, enterprise-grade controls.',
   metadataBase: new URL('https://multicorn.ai'),

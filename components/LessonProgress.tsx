@@ -6,6 +6,10 @@ import { useCallback, useEffect, useState } from 'react'
 import type { LearnCourseAccent } from '@/lib/learn-course-accents'
 
 const completeButtonAccent: Record<LearnCourseAccent, { hoverBorder: string; ring: string }> = {
+  'course-1': {
+    hoverBorder: 'hover:border-course-1-accent/30',
+    ring: 'focus:ring-course-1-accent/20',
+  },
   'course-2': {
     hoverBorder: 'hover:border-course-2-accent/30',
     ring: 'focus:ring-course-2-accent/20',
@@ -17,6 +21,10 @@ const completeButtonAccent: Record<LearnCourseAccent, { hoverBorder: string; rin
 }
 
 const hubAccent: Record<LearnCourseAccent, { hoverBorder: string; arrow: string }> = {
+  'course-1': {
+    hoverBorder: 'hover:border-course-1-accent/30',
+    arrow: 'text-course-1-accent',
+  },
   'course-2': {
     hoverBorder: 'hover:border-course-2-accent/30',
     arrow: 'text-course-2-accent',

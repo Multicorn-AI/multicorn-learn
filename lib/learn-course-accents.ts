@@ -4,4 +4,4 @@
  * Shield / global UI continues to use `primary` (violet).
  */
 
-export type LearnCourseAccent = 'course-2' | 'course-3'
+export type LearnCourseAccent = 'course-1' | 'course-2' | 'course-3'

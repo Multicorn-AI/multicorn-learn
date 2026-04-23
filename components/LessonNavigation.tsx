@@ -6,6 +6,11 @@ const navAccentClasses: Record<
   LearnCourseAccent,
   { card: string; emphasis: string; ring: string }
 > = {
+  'course-1': {
+    card: 'hover:border-course-1-accent/30',
+    emphasis: 'group-hover:text-course-1-accent',
+    ring: 'focus:ring-course-1-accent/20',
+  },
   'course-2': {
     card: 'hover:border-course-2-accent/30',
     emphasis: 'group-hover:text-course-2-accent',

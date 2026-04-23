@@ -75,7 +75,7 @@ const WRITING: readonly PromptSeed[] = [
   },
   {
     title: 'Outline a long-form article',
-    description: 'Scaffold before you write — much easier than restructuring later.',
+    description: 'Scaffold before you write. Much easier than restructuring later.',
     prompt:
       'I want to write an article about [topic] for [audience]. The core argument is [one-sentence thesis]. Give me a section-by-section outline with a working heading, the main point of each section, and one example or piece of evidence I should find. Flag any sections where the argument is weakest.',
     tags: ['outlines', 'structure'],
@@ -84,12 +84,12 @@ const WRITING: readonly PromptSeed[] = [
     title: 'Edit for active voice',
     description: 'Tighten prose by converting passive constructions where it helps.',
     prompt:
-      'Review the text below and identify every passive voice construction. For each one, decide whether active voice would be clearer (sometimes passive is correct — e.g. when the actor is unknown or unimportant). Show me a before/after for the ones worth changing, and leave the rest.\n\nText:\n[paste text here]',
+      'Review the text below and identify every passive voice construction. For each one, decide whether active voice would be clearer (sometimes passive is correct, e.g. when the actor is unknown or unimportant). Show me a before/after for the ones worth changing, and leave the rest.\n\nText:\n[paste text here]',
     tags: ['editing', 'grammar'],
   },
   {
     title: 'Adapt copy for a different channel',
-    description: 'Same message, different format — without starting from scratch.',
+    description: 'Same message, different format. Without starting from scratch.',
     prompt:
       'Take the content below, originally written for [original channel, e.g. blog post], and adapt it for [target channel, e.g. LinkedIn post, marketing email, product page]. Adjust length, tone, and structure to fit the channel conventions. Keep the core message and any specific details.\n\nContent:\n[paste content here]',
     tags: ['repurposing', 'channels'],
@@ -244,7 +244,7 @@ const CODING: readonly PromptSeed[] = [
     title: 'Generate a commit message',
     description: 'Write commits that your future self and reviewers will thank you for.',
     prompt:
-      'Here is the diff of changes I am about to commit. Write a conventional commit message: a type prefix (feat/fix/docs/refactor/test/chore), a concise summary line under 72 characters, and a body paragraph explaining the why (not the what — the diff shows the what). Flag anything that should probably be split into a separate commit.\n\nDiff:\n[paste diff]',
+      'Here is the diff of changes I am about to commit. Write a conventional commit message: a type prefix (feat/fix/docs/refactor/test/chore), a concise summary line under 72 characters, and a body paragraph explaining the why (not the what, since the diff already shows the what). Flag anything that should probably be split into a separate commit.\n\nDiff:\n[paste diff]',
     tags: ['git', 'commits'],
   },
   {
@@ -359,7 +359,7 @@ const RESEARCH: readonly PromptSeed[] = [
     title: 'Define scope for a research topic',
     description: 'Rein in a topic that wants to sprawl.',
     prompt:
-      'I want to research [broad topic]. Help me narrow it. Propose three different scoping angles — a narrow version, a medium version, and a broad version — and for each, specify the research question, what would be in scope, what would be out, and roughly how much time it would take. Recommend which to pick if my goal is [state goal].',
+      'I want to research [broad topic]. Help me narrow it. Propose three different scoping angles (a narrow version, a medium version, and a broad version), and for each, specify the research question, what would be in scope, what would be out, and roughly how much time it would take. Recommend which to pick if my goal is [state goal].',
     tags: ['scoping', 'planning'],
   },
   {
@@ -404,7 +404,7 @@ const AGENTS: readonly PromptSeed[] = [
     title: 'Draft guardrails for a workflow',
     description: 'Turn "be careful" into specific rules an agent can follow.',
     prompt:
-      "I am setting up an agent workflow for [use case]. Draft guardrails covering: (1) hard limits (actions that should never happen, e.g. spending over $X, touching production data), (2) soft limits (actions that require human approval), (3) escalation triggers (when the agent should stop and ask), (4) audit requirements (what must be logged). Be specific — avoid generic phrases like 'use good judgment'.",
+      "I am setting up an agent workflow for [use case]. Draft guardrails covering: (1) hard limits (actions that should never happen, e.g. spending over $X, touching production data), (2) soft limits (actions that require human approval), (3) escalation triggers (when the agent should stop and ask), (4) audit requirements (what must be logged). Be specific. Avoid generic phrases like 'use good judgment'.",
     tags: ['guardrails', 'governance'],
   },
   {
@@ -416,14 +416,14 @@ const AGENTS: readonly PromptSeed[] = [
   },
   {
     title: 'Plan a human review checkpoint',
-    description: 'Insert the right review at the right moment — not every moment.',
+    description: 'Insert the right review at the right moment. Not every moment.',
     prompt:
       "For an agent doing [task], design human review checkpoints. For each checkpoint, specify: (1) where in the flow it sits, (2) what the human is actually reviewing (not 'everything'), (3) what decision they are being asked to make, (4) what the agent does while waiting. Avoid reviewing things a human cannot meaningfully evaluate faster than re-doing the work.",
     tags: ['human-in-the-loop', 'review'],
   },
   {
     title: 'List permissions an agent needs',
-    description: 'Scope permissions tightly — no more, no less.',
+    description: 'Scope permissions tightly. No more, no less.',
     prompt:
       "I want an agent to [task]. List the minimum permissions it needs: (1) which tools or APIs, (2) scoped to what data or actions (e.g. 'read-only', 'write to this folder only'), (3) any time or rate limits. For each permission, justify why it is needed. Flag any permission that feels broader than strictly required and suggest a tighter alternative.",
     tags: ['permissions', 'security'],
@@ -460,14 +460,14 @@ const AGENTS: readonly PromptSeed[] = [
     title: 'Design an approval flow for sensitive actions',
     description: 'Route risky actions through a human approval step that actually works.',
     prompt:
-      'For an agent that may need to perform [sensitive action type], design an approval flow. Specify: (1) what triggers an approval request (be specific — dollar amount, data type, action category), (2) what information the approver sees (enough to decide, not a wall of logs), (3) who approves and their timeout behaviour, (4) what the agent does while waiting, (5) how the approval is recorded for audit.',
+      'For an agent that may need to perform [sensitive action type], design an approval flow. Specify: (1) what triggers an approval request (be specific: dollar amount, data type, action category), (2) what information the approver sees (enough to decide, not a wall of logs), (3) who approves and their timeout behaviour, (4) what the agent does while waiting, (5) how the approval is recorded for audit.',
     tags: ['approvals', 'governance'],
   },
   {
     title: 'Audit an agent integration for security gaps',
     description: 'Review an existing agent setup the way a security engineer would.',
     prompt:
-      "Here is my agent integration: [describe setup — what the agent does, what it can access, how it is triggered]. Audit it the way a security engineer would. Identify: (1) over-broad permissions, (2) missing validation at trust boundaries, (3) actions that should require approval but currently don't, (4) logging or audit gaps, (5) ways the agent could be prompted or manipulated into unintended actions. Rank findings by severity.",
+      "Here is my agent integration: [describe setup: what the agent does, what it can access, how it is triggered]. Audit it the way a security engineer would. Identify: (1) over-broad permissions, (2) missing validation at trust boundaries, (3) actions that should require approval but currently don't, (4) logging or audit gaps, (5) ways the agent could be prompted or manipulated into unintended actions. Rank findings by severity.",
     tags: ['security', 'audit'],
   },
 ]
@@ -488,7 +488,7 @@ export function countPromptsForCategory(category: Category): {
   readonly total: number
   readonly free: number
 } {
-  // Static data — recalculate if prompts become dynamic
+  // Static data. Recalculate if prompts become dynamic.
   const inCat = ALL_PROMPTS.filter((p) => p.category === category)
   const free = inCat.filter((p) => p.isFree).length
   return { total: inCat.length, free }

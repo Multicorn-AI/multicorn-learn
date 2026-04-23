@@ -15,7 +15,7 @@ Before you let an AI agent access your email, calendar, files, or payment method
 
 ## Why evaluation matters
 
-Over the past few articles, we have covered the ways agents can go wrong: [sending the wrong email](/learn/ai-101/what-happens-when-an-ai-agent-makes-a-mistake), exceeding [spending limits](/learn/ai-101/how-to-set-a-spending-limit-for-an-ai-agent), and acting without a proper [audit trail](/learn/ai-101/what-is-an-audit-trail). In each case, the root cause was the same: the agent was deployed without sufficient evaluation of what it could do and what controls were in place.
+Over the past few articles, we have covered the ways agents can go wrong: [sending the wrong email](/learn/course-1/what-happens-when-an-ai-agent-makes-a-mistake), exceeding [spending limits](/learn/course-1/how-to-set-a-spending-limit-for-an-ai-agent), and acting without a proper [audit trail](/learn/course-1/what-is-an-audit-trail). In each case, the root cause was the same: the agent was deployed without sufficient evaluation of what it could do and what controls were in place.
 
 Evaluating an agent before deployment is not about slowing down adoption. It is about making sure the agent is set up to succeed, and that your team is set up to catch problems before they become crises.
 
@@ -28,7 +28,7 @@ Work through these questions for any agent before granting it access to your tea
 Ask the agent provider, or check the documentation, for a complete list of permissions the agent requires. Then ask yourself:
 
 - Does the agent need all of these permissions for the tasks I want it to do?
-- Can I reduce the permission set? (See [What Permissions Does Your AI Agent Actually Need?](/learn/ai-101/what-permissions-does-your-ai-agent-need))
+- Can I reduce the permission set? (See [What Permissions Does Your AI Agent Actually Need?](/learn/course-1/what-permissions-does-your-ai-agent-need))
 - Does the agent request write or delete access to services where it only needs to read?
 - Can permissions be granted individually, or is it all-or-nothing?
 
@@ -39,7 +39,7 @@ Ask the agent provider, or check the documentation, for a complete list of permi
 Understand where your data goes when the agent handles it:
 
 - Does the agent send data to an external server, or does it process everything locally?
-- Is your data used to train or improve the agent's underlying model? (See [Is My Data Safe with AI Tools?](/learn/ai-101/is-my-data-safe-with-ai-tools))
+- Is your data used to train or improve the agent's underlying model? (See [Is My Data Safe with AI Tools?](/learn/course-1/is-my-data-safe-with-ai-tools))
 - Where is the data stored, and for how long?
 - Can you opt out of data collection?
 
@@ -128,7 +128,3 @@ For agents that will have access to sensitive data, customer communications, or 
 - Red flags include all-or-nothing permissions, vague data policies, no spending controls, no activity visibility, and no way to stop the agent quickly.
 - For low-risk experiments, a quick review is enough. For agents accessing sensitive data or payments, work through the full checklist.
 - [Multicorn Shield](/shield) provides permission controls, spending limits, audit trails, and instant revocation, filling the gaps when agents do not offer these controls themselves.
-
-**Next up:** [AI Agents for Small Teams: A Practical Guide](/learn/ai-101/ai-agents-for-small-teams)
-
-**Previous:** [What Is an Audit Trail and Why Does Your Agent Need One?](/learn/ai-101/what-is-an-audit-trail)

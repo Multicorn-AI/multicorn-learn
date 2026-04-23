@@ -6,8 +6,18 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/learn/ai-101/articles',
+        destination: '/learn/course-1',
+        permanent: true,
+      },
+      {
         source: '/learn/ai-101',
-        destination: '/learn/ai-101/articles',
+        destination: '/learn/course-1',
+        permanent: true,
+      },
+      {
+        source: '/learn/ai-101/:slug',
+        destination: '/learn/course-1/:slug',
         permanent: true,
       },
     ]

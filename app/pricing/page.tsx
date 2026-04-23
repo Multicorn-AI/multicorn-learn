@@ -4,11 +4,11 @@ import { PricingFAQ } from '@/components/PricingFAQ'
 import { Footer } from '@/components/Footer'
 
 export const metadata: Metadata = {
-  title: 'Multicorn Pricing — Free AI Agent Control SDK',
+  title: 'Multicorn Pricing | Free AI Agent Control SDK',
   description:
     'Start free with Multicorn Shield. Pro, Business, and Enterprise tiers for teams that need more agents, controls, and compliance.',
   openGraph: {
-    title: 'Multicorn Pricing — Free AI Agent Control SDK',
+    title: 'Multicorn Pricing | Free AI Agent Control SDK',
     description:
       'Start free with Multicorn Shield. Pro, Business, and Enterprise tiers for teams that need more agents, controls, and compliance.',
     url: 'https://multicorn.ai/pricing',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
         url: 'https://multicorn.ai/images/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Multicorn Pricing — Free AI Agent Control SDK',
+        alt: 'Multicorn Pricing | Free AI Agent Control SDK',
       },
     ],
   },

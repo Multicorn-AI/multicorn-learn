@@ -25,17 +25,17 @@ This happens for a few reasons:
 
 **Unpredictable tasks.** Some agents handle a range of tasks, and the developer does not know in advance exactly which capabilities a specific user will need. So they request everything to avoid breaking later.
 
-**No standard for granular permissions.** Until recently, there was no widely adopted standard for defining what an agent can and cannot do at a fine-grained level. The [Model Context Protocol](/learn/ai-101/what-is-the-model-context-protocol) is changing this, but many agents still operate without structured permission models.
+**No standard for granular permissions.** Until recently, there was no widely adopted standard for defining what an agent can and cannot do at a fine-grained level. The [Model Context Protocol](/learn/course-1/what-is-the-model-context-protocol) is changing this, but many agents still operate without structured permission models.
 
 ## Why broad access is a problem
 
 If an agent only needs to read your inbox, but it also has the ability to send emails, two things can go wrong.
 
-First, if the agent makes a mistake (misinterprets a prompt, [hallucinates](/learn/ai-101/what-are-ai-hallucinations) a response, or encounters a bug), it can take actions you never intended. An agent with send access that was only supposed to read might draft and send a reply to your biggest client with incorrect information.
+First, if the agent makes a mistake (misinterprets a prompt, [hallucinates](/learn/course-1/what-are-ai-hallucinations) a response, or encounters a bug), it can take actions you never intended. An agent with send access that was only supposed to read might draft and send a reply to your biggest client with incorrect information.
 
 Second, if the agent is compromised (through a vulnerability in the agent itself, the platform it runs on, or a connected service), the attacker inherits every permission the agent has. An agent with delete access to your entire inbox is a much bigger risk than one that can only read.
 
-This is not a theoretical concern. As we covered in [What Can AI Agents Do Today?](/learn/ai-101/what-can-ai-agents-do-today), agents are connected to real services and take real actions. The more permissions an agent has, the larger the blast radius when something goes wrong.
+This is not a theoretical concern. As we covered in [What Can AI Agents Do Today?](/learn/course-1/what-can-ai-agents-do-today), agents are connected to real services and take real actions. The more permissions an agent has, the larger the blast radius when something goes wrong.
 
 ## The principle of least privilege
 
@@ -92,7 +92,3 @@ Many agent platforms today still offer only broad, all-or-nothing access toggles
 - Apply the principle of least privilege: give each agent only the permissions it needs for its specific tasks.
 - Ask three questions: what does it need to do, which services does it need, and what level of access for each?
 - If your platform does not support granular permissions, use a tool like [Multicorn Shield](/shield) to add that control layer.
-
-**Next up:** [What Happens When an AI Agent Makes a Mistake?](/learn/ai-101/what-happens-when-an-ai-agent-makes-a-mistake)
-
-**Previous:** [What Is the Model Context Protocol (MCP)?](/learn/ai-101/what-is-the-model-context-protocol)

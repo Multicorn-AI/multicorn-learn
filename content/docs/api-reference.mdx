@@ -40,7 +40,7 @@ shield.requestConsent(options: ConsentOptions): Promise<ConsentDecision>
 | `options.spendLimit` | `number`            | No       | Max spend per transaction in dollars. Default: `0` (no limit). |
 | `options.agentColor` | `string`            | No       | Hex colour for agent icon. Default: `"#8b5cf6"`.               |
 
-**Returns:** `Promise<ConsentDecision>` — resolves with the user's decision. Never rejects.
+**Returns:** `Promise<ConsentDecision>`. Resolves with the user's decision. Never rejects.
 
 ```typescript
 interface ConsentDecision {
@@ -71,7 +71,7 @@ shield.logAction(action: ActionInput): Promise<void>
 | `action.cost`     | `number`                                      | No       | Cost in USD.                                                       |
 | `action.metadata` | `Record<string, string or number or boolean>` | No       | Structured metadata.                                               |
 
-**Returns:** `Promise<void>` — resolves when logged (or queued in batch mode).
+**Returns:** `Promise<void>`. Resolves when logged (or queued in batch mode).
 
 **Throws:** `Error` if the agent does not have a granted scope for the target service. `Error` if the instance has been destroyed.
 
@@ -156,7 +156,7 @@ Clean up the SDK instance. Flushes pending log entries and removes the consent s
 shield.destroy(): void
 ```
 
-Safe to call multiple times — subsequent calls are no-ops. All method calls after `destroy()` will throw.
+Safe to call multiple times. Subsequent calls are no-ops. All method calls after `destroy()` will throw.
 
 ## Types
 

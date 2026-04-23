@@ -6,7 +6,7 @@ order: 3
 
 ## Overview
 
-The consent screen is the moment your users decide whether to trust your agent. It shows the agent name, requested permissions, and spending limit — then lets the user approve, partially approve, or deny.
+The consent screen is the moment your users decide whether to trust your agent. It shows the agent name, requested permissions, and spending limit, then lets the user approve, partially approve, or deny.
 
 Shield renders the consent screen as a `<multicorn-consent>` web component using Shadow DOM. This means it works in any framework (React, Vue, Svelte, vanilla JS) and its styles cannot be affected by your application CSS.
 
@@ -23,14 +23,14 @@ const decision = await shield.requestConsent({
 })
 ```
 
-The method returns a `ConsentDecision` when the user makes their choice. The promise resolves — it never rejects. Check the result to determine what was approved.
+The method returns a `ConsentDecision` when the user makes their choice. The promise resolves. It never rejects. Check the result to determine what was approved.
 
 ## Configuration options
 
 | Option       | Type       | Default     | Description                                                                           |
 | ------------ | ---------- | ----------- | ------------------------------------------------------------------------------------- |
-| `agent`      | `string`   | —           | The name of the agent requesting access. Displayed on the consent screen.             |
-| `scopes`     | `string[]` | —           | Permission strings the agent is requesting. Format: `"permission:service"`.           |
+| `agent`      | `string`   | _required_  | The name of the agent requesting access. Displayed on the consent screen.             |
+| `scopes`     | `string[]` | _required_  | Permission strings the agent is requesting. Format: `"permission:service"`.           |
 | `spendLimit` | `number`   | `0`         | Maximum spend per transaction in dollars. Omit or set to 0 to hide spending controls. |
 | `agentColor` | `string`   | `"#8b5cf6"` | Hex colour for the agent icon on the consent screen.                                  |
 
@@ -91,7 +91,7 @@ const decision = await shield.requestConsent({
 })
 
 if (decision.grantedScopes.length === 0) {
-  // Handle denial — show a message, disable the agent, etc.
+  // Handle denial: show a message, disable the agent, etc.
 }
 ```
 

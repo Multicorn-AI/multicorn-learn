@@ -69,7 +69,7 @@ export default function LearnPage() {
             </p>
 
             <Link
-              href="/learn/ai-101/articles"
+              href="/learn/course-1"
               className="inline-flex min-h-[44px] items-center rounded-lg bg-course-1-accent px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-course-1-accent/90 focus:outline-none focus:ring-2 focus:ring-course-1-accent/20 focus:ring-offset-2"
             >
               Start learning
