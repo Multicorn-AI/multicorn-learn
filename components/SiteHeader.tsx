@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation'
 const NAV_LINKS = [
   { label: 'Shield', href: '/shield' },
   { label: 'Learn', href: '/learn' },
+  { label: 'Pricing', href: '/pricing' },
 ] as const
 
 const SIGNUP_URL = 'https://app.multicorn.ai/signup'
