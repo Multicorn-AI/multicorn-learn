@@ -1,17 +1,21 @@
 /**
- * Data and scoring for the Course 3 platform picker. One track only: answers pick a
- * recommended platform; lessons stay a single Vercel-forward path.
+ * Data and scoring for the Course 3 platform picker. Web answers pick a hosting platform;
+ * choosing "mobile app" on Q1 short-circuits to the mobile deployment track under Course 3.
  */
 
-export type Q1Answer = 'frontend' | 'backend' | 'not_sure'
+export type Q1Answer = 'frontend' | 'backend' | 'not_sure' | 'mobile_app'
 export type Q2Answer = 'free' | 'can_pay' | 'paid_plan'
 export type Q3Answer = 'fine' | 'follow' | 'not_comfortable'
 
-export interface PlatformPickerAnswers {
-  readonly q1: Q1Answer
+/** Answers for the three-question web hosting path (Q1 never `mobile_app` here). */
+export interface WebPlatformPickerAnswers {
+  readonly q1: 'frontend' | 'backend' | 'not_sure'
   readonly q2: Q2Answer
   readonly q3: Q3Answer
 }
+
+/** @deprecated use {@link WebPlatformPickerAnswers} */
+export type PlatformPickerAnswers = WebPlatformPickerAnswers
 
 export type PlatformSlug = 'vercel' | 'netlify' | 'fly-io'
 
@@ -62,6 +66,7 @@ export const PLATFORM_PICKER_QUESTIONS: readonly PlatformPickerQuestion[] = [
     label: 'What did you build in Course 2?',
     options: [
       { id: 'frontend', label: 'A frontend web app (most common)' },
+      { id: 'mobile_app', label: 'A mobile app (iOS / Android)' },
       { id: 'backend', label: 'A backend API or service' },
       { id: 'not_sure', label: "I'm not sure / I skipped Course 2" },
     ],
@@ -86,6 +91,27 @@ export const PLATFORM_PICKER_QUESTIONS: readonly PlatformPickerQuestion[] = [
   },
 ] as const
 
+export type MobileTrackPickerResult = {
+  readonly kind: 'mobile'
+  readonly name: string
+  readonly reason: string
+  readonly accentClass: string
+}
+
+export const MOBILE_TRACK_PICKER_RESULT: MobileTrackPickerResult = {
+  kind: 'mobile',
+  name: 'Mobile app deployment',
+  reason:
+    'Course 3 is mostly about web hosting. The mobile track covers App Store and Play Store accounts, test builds, review, and release for iOS and Android, without mixing that into the Vercel or Netlify path.',
+  accentClass: 'bg-course-3-accent/10',
+}
+
+export function isMobileTrackPickerResult(
+  r: PlatformRecommendation | MobileTrackPickerResult,
+): r is MobileTrackPickerResult {
+  return 'kind' in r && r.kind === 'mobile'
+}
+
 /**
  * | Q1 (built)  | Q2 (pay)    | Q3 (terminal)     | -> Recommendation |
  * | backend     | any         | any               | Fly.io            |
@@ -94,7 +120,9 @@ export const PLATFORM_PICKER_QUESTIONS: readonly PlatformPickerQuestion[] = [
  * | frontend    | can/paid    | any               | Vercel            |
  * | not_sure    | any         | any               | Vercel            |
  */
-export function getPlatformRecommendation(answers: PlatformPickerAnswers): PlatformRecommendation {
+export function getPlatformRecommendation(
+  answers: WebPlatformPickerAnswers,
+): PlatformRecommendation {
   if (answers.q1 === 'backend') {
     return PLATFORM_RECOMMENDATIONS['fly-io']
   }

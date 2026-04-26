@@ -91,3 +91,9 @@ export const course3Components = {
   PlatformSwitcherNote,
   OtherPlatformsDisclosure,
 }
+
+/** Course 3 mobile track: same prose and code treatment as main Course 3, no web hosting shortcodes. */
+export const course3MobileComponents = createCourse2Components(
+  'course3_mobile_code',
+  'text-course-3-accent',
+)

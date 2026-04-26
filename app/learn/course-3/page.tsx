@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { Rocket } from 'lucide-react'
 import { CourseLandingHero, CourseLandingTopNav } from '@/components/CourseLanding'
@@ -6,6 +7,7 @@ import { LessonProgressHub } from '@/components/LessonProgress'
 import { PlatformPicker } from '@/components/PlatformPicker'
 import { isCourse3Enabled } from '@/lib/feature-flags'
 import { COURSE_3 } from '@/lib/course-3-config'
+import { COURSE_3_MOBILE } from '@/lib/course-3-mobile-config'
 import { getAllCourse3Lessons } from '@/lib/course-3'
 
 export const metadata: Metadata = {
@@ -44,6 +46,32 @@ export default function Course3Page() {
         >
           <p className="text-lg leading-relaxed text-text-secondary">{COURSE_3.intro}</p>
         </CourseLandingHero>
+
+        <section
+          className="mx-auto w-full max-w-3xl px-4 pb-10"
+          aria-labelledby="c3-mobile-callout-heading"
+        >
+          <div className="rounded-lg border border-border bg-surface-secondary p-4 sm:p-5">
+            <h2
+              id="c3-mobile-callout-heading"
+              className="text-sm font-semibold uppercase tracking-wide text-text-tertiary"
+            >
+              Mobile app
+            </h2>
+            <p className="mt-2 text-text-secondary">
+              Building a mobile app? The lessons below are for <strong>web</strong> deployment. For
+              App Store and Play Store steps, use the{' '}
+              <Link
+                href={COURSE_3_MOBILE.basePath}
+                className="font-semibold text-course-3-accent underline decoration-course-3-accent/30 underline-offset-2 transition-colors hover:text-course-3-accent/90"
+              >
+                mobile deployment track
+              </Link>
+              . You can also pick &quot;mobile app&quot; in the questions and we will send you
+              there.
+            </p>
+          </div>
+        </section>
 
         <section id="pick-your-platform" className="mx-auto w-full max-w-3xl px-4 pb-12">
           <h2
