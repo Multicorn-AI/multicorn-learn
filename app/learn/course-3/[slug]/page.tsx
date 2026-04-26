@@ -122,7 +122,7 @@ export default async function Course3LessonPage({ params }: Course3LessonPagePro
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
       />
       <LessonPlatformProvider>
         <main className="px-6 pb-20 pt-16 sm:pb-28 sm:pt-24">

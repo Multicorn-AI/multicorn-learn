@@ -124,7 +124,7 @@ export default async function CursorLessonPage({ params }: CursorLessonPageProps
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
       />
       <main className="px-6 pb-20 pt-16 sm:pb-28 sm:pt-24">
         <div className="mx-auto max-w-content">
