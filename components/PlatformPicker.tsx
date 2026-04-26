@@ -6,14 +6,18 @@ import {
   clearCourse3MdxPlatformOnClient,
   setCourse3MdxPlatformOnClient,
 } from '@/lib/course-3-platform'
+import { COURSE_3_MOBILE } from '@/lib/course-3-mobile-config'
 import {
   getPlatformRecommendation,
+  isMobileTrackPickerResult,
+  MOBILE_TRACK_PICKER_RESULT,
   PLATFORM_PICKER_QUESTIONS,
-  type PlatformPickerAnswers,
+  type MobileTrackPickerResult,
   type PlatformRecommendation,
   type Q1Answer,
   type Q2Answer,
   type Q3Answer,
+  type WebPlatformPickerAnswers,
 } from '@/lib/platform-picker'
 
 type PickerPhase = 'q1' | 'q2' | 'q3' | 'result'
@@ -24,11 +28,13 @@ function phaseIndex(phase: PickerPhase): number {
   return PHASE_ORDER.indexOf(phase)
 }
 
+type WebOrMobileResult = PlatformRecommendation | MobileTrackPickerResult
+
 export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: string }) {
   const rootId = useId()
   const [phase, setPhase] = useState<PickerPhase>('q1')
   const [transitioning, setTransitioning] = useState(false)
-  const [recommendation, setRecommendation] = useState<PlatformRecommendation | null>(null)
+  const [recommendation, setRecommendation] = useState<WebOrMobileResult | null>(null)
   const resultTitleRef = useRef<HTMLHeadingElement>(null)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const transitionMs = 200
@@ -45,7 +51,11 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
     if (phase === 'result' && recommendation) {
       if (typeof window !== 'undefined') {
         try {
-          setCourse3MdxPlatformOnClient(recommendation.slug)
+          if (isMobileTrackPickerResult(recommendation)) {
+            clearCourse3MdxPlatformOnClient()
+          } else {
+            setCourse3MdxPlatformOnClient(recommendation.slug)
+          }
         } catch {
           /* localStorage can throw in private mode or when quota is exceeded */
         }
@@ -82,6 +92,14 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
 
       if (phase === 'q1') {
         const value = rawValue as Q1Answer
+        if (value === 'mobile_app') {
+          advanceAfterTransition(() => {
+            setQ1(value)
+            setRecommendation(MOBILE_TRACK_PICKER_RESULT)
+            setPhase('result')
+          })
+          return
+        }
         advanceAfterTransition(() => {
           setQ1(value)
           setPhase('q2')
@@ -102,7 +120,11 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
         if (q1 === null || q2 === null) {
           return
         }
-        const answers: PlatformPickerAnswers = { q1, q2, q3: value }
+        const answers: WebPlatformPickerAnswers = {
+          q1: q1 as WebPlatformPickerAnswers['q1'],
+          q2: q2,
+          q3: value,
+        }
         setRecommendation(getPlatformRecommendation(answers))
         setPhase('result')
       })
@@ -139,6 +161,8 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
   const stepMotionClasses = transitioning
     ? 'tool-picker-step translate-y-1 opacity-0'
     : 'tool-picker-step translate-y-0 opacity-100'
+
+  const mobileFirstLessonHref = `${COURSE_3_MOBILE.basePath}/${COURSE_3_MOBILE.firstLessonSlug}`
 
   return (
     <div
@@ -206,10 +230,16 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
             </div>
 
             <Link
-              href={`/learn/course-3/choosing-a-host?platform=${recommendation.slug}`}
+              href={
+                isMobileTrackPickerResult(recommendation)
+                  ? mobileFirstLessonHref
+                  : `/learn/course-3/choosing-a-host?platform=${recommendation.slug}`
+              }
               className="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg bg-course-3-accent px-6 py-3 text-center text-base font-semibold text-white shadow-sm transition-colors hover:bg-course-3-accent/90 focus:outline-none focus:ring-2 focus:ring-course-3-accent/20 focus:ring-offset-2 sm:w-auto"
             >
-              Start Lesson 1
+              {isMobileTrackPickerResult(recommendation)
+                ? 'Start mobile lesson 1'
+                : 'Start Lesson 1'}
             </Link>
 
             <div>
@@ -224,8 +254,9 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
             </div>
 
             <p className="text-sm leading-relaxed text-text-tertiary">
-              We recommend this path. You can still follow any lesson below if you prefer another
-              platform. The concepts are the same, and Lesson 1 covers the differences.
+              {isMobileTrackPickerResult(recommendation)
+                ? 'The lessons below this page are for web hosting (Vercel, Netlify, Fly.io). Use the mobile track link above for App Store and Play Store steps. You can return here any time to compare options.'
+                : 'We recommend this path. You can still follow any lesson below if you prefer another platform. The concepts are the same, and Lesson 1 covers the differences.'}
             </p>
           </div>
         )}

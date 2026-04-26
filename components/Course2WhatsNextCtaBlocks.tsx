@@ -18,7 +18,9 @@ export function Course2WhatsNextCourse3Preview({ track }: { readonly track: Cour
       <p className="leading-relaxed text-text-secondary">
         <strong>Course 3: Getting to production</strong> is available on the Learn hub. It walks you
         from the app you built in this track to a public URL, environment variables, a custom
-        domain, and HTTPS, with a troubleshooting path when a deploy goes wrong.{' '}
+        domain, and HTTPS, with a troubleshooting path when a deploy goes wrong. If you built a{' '}
+        <strong>mobile app</strong>, the same course includes a separate mobile deployment track
+        (App Store and Google Play) from the Course 3 page.{' '}
         <Link
           href="/learn/course-3"
           className="font-semibold text-course-2-accent underline decoration-course-2-accent/30 underline-offset-2 transition-colors hover:text-course-2-accent/90"
