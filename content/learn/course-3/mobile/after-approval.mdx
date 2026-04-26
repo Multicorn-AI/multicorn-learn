@@ -1,14 +1,70 @@
 ---
 title: 'After approval'
-description: 'Analytics, crash reports, and planning version updates so users stay on a supported build.'
+description: 'Your app is live. Now set up crash reporting, analytics, and a plan for updates.'
 order: 6
-estimatedMinutes: 12
-outcome: 'You know what to watch after go-live and how version numbers and phased rollouts fit together at a conceptual level.'
+estimatedMinutes: 10
+outcome: 'You can monitor crashes, use analytics, ship updates, understand platform revenue and payouts, and keep developer accounts and API levels current.'
 date: '2026-04-26'
 ---
 
-{/* TODO: LC-07 - full lesson content */}
+Your app is on the store. People can find it, download it, and use it. That is a real accomplishment, and you should take a moment to appreciate what you have done. You started Course 2 not knowing how to build software, and now you have a published app.
 
-This lesson will introduce **analytics** and **crash reporting** as product feedback loops, **phased release** (rollout percentage), and what it means to ship a follow-up build when OS requirements change. It will not prescribe a single vendor; the goal is to understand categories of tools and dashboard labels.
+But publishing is not the finish line. The apps people keep on their phones are the ones that get updated, stay stable, and improve over time. This lesson covers the three things you need to set up now, while your app is fresh and working, so you are not caught off guard later.
 
-**Checkpoint (stub):** You will be able to name one metric to watch in week one and one reason to ship a new version that is not “new features.”
+## Crash reporting
+
+Your app will crash. Not because you are a bad developer, but because every app crashes eventually. A user's phone runs out of memory, an API you depend on changes its response format, a screen you never tested on a particular device size overflows. The question is not whether crashes happen but whether you find out about them.
+
+Both Apple and Google provide basic crash data through their developer consoles. In App Store Connect, go to your app, then the Metrics tab, and look at the Crashes section. In the Google Play Console, go to your app, then Android Vitals > Crashes & ANRs.
+
+For more detailed crash reporting, most developers use a dedicated service. Sentry, Firebase Crashlytics, and Bugsnag are the three most common. All three have free tiers that are generous enough for a new app. They capture the full stack trace (the exact sequence of code that led to the crash), the device model, the OS version, and in many cases the steps the user took before the crash happened.
+
+Set up crash reporting before your app has real users, not after you get your first one-star review saying "keeps crashing."
+
+**Checkpoint:** Open your crash reporting dashboard (whether it is the native App Store Connect / Play Console view or a third-party service). Trigger a test crash by adding a temporary crash button to your app, building a new test version, and tapping it. Verify the crash appears in your dashboard within a few minutes. Then remove the test crash button before your next production build.
+
+## Analytics
+
+Crash reporting tells you what broke. Analytics tells you what is being used.
+
+At minimum, you want to know how many people are using your app, which screens they visit, and where they drop off. Both Apple and Google offer built-in analytics. App Store Connect has App Analytics (downloads, sessions, retention). Google Play Console has Statistics and Android Vitals.
+
+If you want more detail, the same services that provide crash reporting often include analytics. Firebase Analytics is free and widely used for mobile apps. It tracks screens, events, and user properties without requiring much setup beyond adding the SDK.
+
+The most useful metric for a new app is **retention**: of the people who downloaded your app this week, how many opened it again the following week? If retention is low, your app has a usability problem or is not solving the problem your users expected it to. No amount of marketing fixes a retention problem.
+
+## Pushing updates
+
+Updating a mobile app follows the same process as the initial submission, but faster.
+
+Increment your version number in your project configuration. Build a new archive (iOS) or app bundle (Android). Upload it to App Store Connect or the Play Console. Submit for review.
+
+Subsequent reviews are faster than the first because the reviewer already has context on your app. Apple typically reviews updates within 24 hours. Google is often even faster.
+
+Every update should include release notes. Keep them short and specific. "Fixed a crash when opening the settings screen" is useful. "Bug fixes and improvements" is not. Users read release notes more often than you might expect, and clear notes build trust.
+
+### Staged rollouts
+
+Google Play supports staged rollouts, where your update goes to a percentage of users first (say 10%) and you can monitor crash rates before rolling out to everyone. If the crash rate spikes, you pause the rollout and fix the issue before it affects all your users.
+
+Apple does not have a built-in staged rollout for most apps, but you can use phased release, which distributes the update to users over a seven-day period. This gives you time to catch problems early.
+
+## Revenue and payments
+
+If your app charges users for anything (a purchase price, subscriptions, or in-app purchases for digital goods), both Apple and Google process those payments through their own systems and take a commission. For most small developers earning under $1 million USD per year on a given platform, the rate is 15 percent. Above that threshold, it rises to 30 percent.
+
+Apple pays out revenue approximately 45 days after the end of the fiscal month in which the sale occurred. Google pays out monthly, typically around the 15th of the following month. Both require you to set up tax and banking information in their respective developer portals before any payouts are processed.
+
+If your app sells physical goods or services (food delivery, ride-hailing, physical product commerce), you can use your own payment system and avoid the platform commission. The commission applies specifically to digital goods and services.
+
+## Keeping your developer accounts active
+
+Your Apple Developer account costs $99 per year. If you forget to renew, Apple will remove your app from the store after a grace period. Set a calendar reminder for 30 days before your renewal date.
+
+Your Google Play account is a one-time payment, but Google does require you to keep your app's target API level current. Every year, Google raises the minimum API level required for new updates. If you do not update your app to target the current API level, you will not be able to push updates (though the existing version stays on the store). The Play Console will notify you when a deadline is approaching.
+
+## What comes next
+
+You have now been through the full journey: from understanding AI in Course 1, to building an app in Course 2, to deploying it on the web in Course 3, to publishing it on mobile in this extension. The skills you picked up along the way (version control, environment variables, signing, testing, working with review processes) are the same skills professional developers use every day.
+
+If your app involves AI features that act on behalf of users (sending emails, modifying files, making purchases), the next thing to think about is governance: what permissions does your AI have, and who controls them? That is what [Course 4](/learn/course-4) and [Multicorn Shield](/shield) are about.

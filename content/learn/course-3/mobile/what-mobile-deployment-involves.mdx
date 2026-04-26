@@ -1,14 +1,84 @@
 ---
 title: 'What mobile deployment actually involves'
-description: 'App stores, review, signing, and how shipping a mobile app differs from putting a site on the web.'
+description: 'App stores are not like web hosting. Before you start, understand what you are signing up for.'
 order: 1
 estimatedMinutes: 12
-outcome: 'You can name the main stages from a built app to a store listing, and you know this track will not re-teach app development from Course 2.'
+outcome: 'You can weigh costs, store fees, the Google closed-testing rule, review rounds, and when a PWA might be enough before committing to native app store release.'
 date: '2026-04-26'
 ---
 
-{/* TODO: LC-07 - full lesson content */}
+If you built a mobile app in Course 2 and just finished the web deployment lessons in Course 3, you might be expecting mobile deployment to follow the same pattern. Push your code, get a URL, share it. That is not how mobile works, and the sooner you understand the differences, the less frustrating the next few lessons will be.
 
-This lesson will set expectations for the rest of the track: what an **app store** is, why **review** exists, and terms like **provisioning** and **signing** in plain language. Examples will stay framework-neutral (React Native, Flutter, Expo, and similar are all in scope; this is not a Swift or Kotlin coding course).
+## Before you start
 
-**Checkpoint (stub):** After you read the full version of this lesson, you should be able to explain the difference between “hosting a website” and “publishing a mobile app” in one sentence.
+Publishing a mobile app is significantly harder, slower, and more expensive than putting a website on the internet. This section is not meant to discourage you. It is meant to set honest expectations so you are not blindsided halfway through the process.
+
+### It costs money
+
+Apple charges $99 USD per year for their Apple Developer Program. This is not a one-time fee. If you stop paying, your app is removed from the App Store. Google charges a one-time $25 USD fee for a Google Play Developer account, which is far cheaper but still a barrier you did not face when deploying to Vercel or Netlify for free.
+
+### Both stores take a cut of your revenue
+
+If your app charges users anything (a purchase price, a subscription, or in-app purchases), Apple and Google each take a 15 to 30 percent commission on every transaction processed through their payment systems. For most small developers, the rate is 15 percent. For apps earning over $1 million USD per year, it rises to 30 percent. You are also required to use their payment systems for digital goods and services in most cases. You cannot simply drop in Stripe the way you would on a website.
+
+### Google Play requires testers before production
+
+This one catches people off guard. Before Google will let you release your app to the public, new developer accounts must run a closed testing track with at least 20 opted-in testers (Google has adjusted this number over time, so check your Play Console dashboard for the exact requirement on your account). Those testers must have been active for at least 14 continuous days.
+
+Finding enough people willing to install a test app, opt in through a Google Play link, and keep it on their phone for two weeks is harder than it sounds. Services like App Hive exist specifically to help developers meet this requirement by providing a pool of testers, but using them adds cost and coordination. Friends and family are the cheapest option, but you need enough of them with Android phones who will actually follow through.
+
+Plan for this requirement before you start building your Play Store listing. It adds at least two to three weeks to your timeline.
+
+### App Store review can be a multi-round process
+
+When Apple reviews your app, they may reject it and ask you to fix something. You fix it, resubmit, and wait another 24 to 48 hours. The second reviewer may then flag a completely different issue that the first reviewer did not mention. This is not a bug in Apple's process. Different reviewers check different things, and automated checks catch issues that manual reviewers do not (and vice versa). It is common for a first app to go through two or three rounds of rejection before approval. Each round costs you days.
+
+Lesson 5 covers the most common rejection reasons and how to minimise the number of rounds, but be prepared for the process to take a week or more from first submission to approval.
+
+### Maybe you do not need the app stores at all
+
+If your app does not need native device features like push notifications, camera access, Bluetooth, or background processing, a progressive web app (PWA) might be a better path. Your web deployment from the earlier Course 3 lessons already works in mobile browsers. Adding a web app manifest file and a service worker turns your site into something users can install directly to their home screen, no App Store or Play Store required.
+
+PWAs skip the developer account fees, the review process, the signing certificates, and the revenue share. The trade-off is that PWAs cannot do everything native apps can (no access to some hardware features, no presence in the app store search results, more limited push notification support on iOS). But for many apps, especially content apps, dashboards, and tools that do not need deep hardware integration, a PWA is the faster and cheaper option.
+
+If that sounds like a better fit for what you built, you can stop here. Your Course 3 web deployment is already most of the way there. Search for "how to add a PWA manifest to [your framework]" and your AI coding tool can walk you through the rest.
+
+If you do need native features, or if being in the app stores matters for your users (many people expect to find apps by searching the App Store or Play Store, and a store listing builds trust), then keep going. The rest of this track will get you there.
+
+## Web deployment vs mobile deployment
+
+When you deployed your web app in Course 3, you pushed your code to a hosting platform and got a live URL within minutes. Anyone with the link could open your app immediately.
+
+Mobile deployment works differently because your app has to pass through a gatekeeper: the App Store (for iPhones and iPads) or the Google Play Store (for Android phones). These stores are run by Apple and Google respectively, and they have rules about what apps are allowed, how they must behave, and what information you must provide before they will list your app.
+
+This is not a bad thing. The review process exists to protect the people who download apps. But it does mean that "deploying" a mobile app is a multi-step process that can take days or weeks, not minutes.
+
+## What you will need
+
+To publish a mobile app, you will need a few things that web deployment did not require.
+
+A **developer account** is your registration with Apple or Google that lets you submit apps. You already know the costs from the section above. You cannot skip this step. Without a developer account, the stores will not accept your app.
+
+A **signing certificate** is a cryptographic file that proves you are who you say you are. When someone downloads your app from the store, their phone checks this certificate to verify that the app genuinely came from you and has not been tampered with. Apple calls theirs a "distribution certificate." Google uses a system called "app signing" that manages keys on your behalf.
+
+A **provisioning profile** (Apple only) connects your certificate, your app, and the devices allowed to run it during testing. This concept does not exist in web deployment and can feel confusing at first. Think of it as a permission slip that says "this specific app, signed by this specific developer, is allowed to run on these specific devices." When you submit to the App Store for public release, the profile changes to allow any device.
+
+An **app bundle** is your compiled app packaged in the format the store expects. Apple uses `.ipa` files (though you will mostly work with Xcode's archive feature). Google uses `.aab` files (Android App Bundle). This is different from web deployment where you upload source code and the hosting platform builds it for you. With mobile, you build locally (or through a cloud build service) and upload the finished product.
+
+## The timeline is different
+
+Web deployment: push code, live in under a minute.
+
+Mobile deployment: build your app, upload it, fill out store listing details (screenshots, description, privacy policy), submit for review, wait for a reviewer to check it, respond to any feedback, and then your app goes live. Factor in the closed testing requirement for Google Play and the possibility of multiple review rounds on the App Store, and your realistic timeline from "ready to submit" to "live in both stores" is two to four weeks for a first app.
+
+## What the next five lessons cover
+
+Lesson 2 walks through getting your app ready for the App Store. Lesson 3 does the same for the Google Play Store. Lesson 4 covers TestFlight and Google Play testing (including how to meet the closed testing requirement), so you can get your app into real people's hands before going public. Lesson 5 prepares you for the review process and the most common reasons apps get rejected. Lesson 6 covers what happens after approval: analytics, crash reports, revenue, and pushing updates.
+
+You do not need to publish on both stores. If you only have an iPhone, start with the App Store. If you only have an Android phone, start with the Play Store. The lessons are written so you can follow one or both.
+
+<SecurityNote>
+
+Your app's signing certificate and its associated private key are the most sensitive files in your entire project. If someone else gets your signing key, they can publish updates to your app that look like they came from you. Never commit signing keys to Git, never email them, never share them in a chat message. Store them in a password manager or let Apple and Google manage them for you through their cloud signing services.
+
+</SecurityNote>

@@ -1,5 +1,19 @@
 [
   {
+    "version": "0.11.0",
+    "date": "2026-04-25",
+    "added": [
+      "`<multicorn-badge>` trust badge web component for embedding in third-party products. Shadow DOM encapsulation, dark/light themes, compact/standard sizes, optional action count display.",
+      "CDN entrypoint (`dist/badge.js`) for single-script-tag embedding: `<script src=\"https://cdn.multicorn.ai/badge.js\" data-agent-id=\"...\"></script>`. Self-contained, no Lit runtime dependency.",
+      "`MulticornBadge` class exported from the main SDK barrel for programmatic usage.",
+      "Shared `shield-tokens.ts` module (`src/shared/`) extracting `SHIELD_COLORS` design tokens for reuse across consent and badge components.",
+      "`size-limit` budget enforcement for `dist/badge.js` at 5 kB gzip (actual ~1.75 kB)."
+    ],
+    "changed": [],
+    "fixed": [],
+    "security": []
+  },
+  {
     "version": "0.10.0",
     "date": "2026-04-21",
     "added": [

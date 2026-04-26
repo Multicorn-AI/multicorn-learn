@@ -1,0 +1,90 @@
+---
+title: 'TestFlight and internal testing'
+description: "Get your app into real people's hands before going public. Both stores have built-in tools for this."
+order: 4
+estimatedMinutes: 14
+outcome: 'You can use TestFlight and Google Play testing tracks, meet the closed testing requirement, gather feedback, and ship updated test builds with new version numbers.'
+date: '2026-04-26'
+---
+
+Before you submit your app for public review, you want real people to try it. Not just you on your own phone. Someone who has never seen your app before, using it the way a stranger would. Both Apple and Google have built-in tools for exactly this.
+
+On Google Play, testing is not just recommended. For new developer accounts, it is required. You cannot publish to production until you have run a closed test with real users. This lesson covers how to set up testing on both platforms and how to meet Google's requirements without losing weeks.
+
+## Why test before publishing
+
+You have been testing your app on a simulator or on your own device throughout Course 2. That is valuable, but it misses things. Your phone has a specific screen size, a specific operating system version, and a specific set of permissions already granted. Someone else's phone might be different on all three counts.
+
+Testing with other people also catches usability problems that you are blind to because you built the app. You know where every button is. A first-time user does not. Watching someone struggle to find a feature that you thought was obvious is one of the most useful things you can do before launch.
+
+## TestFlight (iOS)
+
+TestFlight is Apple's testing platform, and it is free to use. You already uploaded a build to App Store Connect in lesson 2. To make it available for testing, go to App Store Connect, select your app, and open the TestFlight tab.
+
+### Internal testing
+
+Internal testing lets you share the app with up to 100 people from your Apple Developer team. This is the fastest option because internal builds do not go through App Store review. Add testers by their Apple ID email address in the Internal Testing group, and they will receive an email invitation.
+
+Each tester needs to install the TestFlight app (free on the App Store) on their iPhone or iPad. When they open the invitation link, TestFlight installs your app alongside their regular apps, with a small orange dot next to its name to indicate it is a test build.
+
+### External testing
+
+External testing lets you invite up to 10,000 people. External builds require a quick review from Apple (usually less than 24 hours for the first build, nearly instant for subsequent builds of the same app). Create an external testing group, add testers by email, and they receive the same kind of TestFlight invitation.
+
+External testing is useful when you want feedback from people outside your immediate circle. You can share a public link that anyone can use, up to your 10,000 tester limit.
+
+**Checkpoint:** At least one tester (other than yourself) has installed your app through TestFlight and opened it. Ask them to try the main flow of your app and tell you if anything was confusing or broken.
+
+### Collecting feedback
+
+TestFlight has a built-in feedback mechanism. Testers can take a screenshot inside your app and add comments, which are sent to you through App Store Connect. They can also submit feedback directly from the TestFlight app. Check the TestFlight tab in App Store Connect regularly for incoming feedback.
+
+## Google Play closed testing and the tester requirement
+
+If you have a new Google Play Developer account, Google requires you to complete a closed testing program before your app can go to production. The current requirements: at least 20 testers who have opted in, and your app must have been available in closed testing for at least 14 continuous days. Google has changed these numbers in the past, so check your Play Console dashboard for the exact requirement on your account.
+
+This policy exists to reduce low-quality and spam apps on the Play Store. It is frustrating for legitimate developers, but there is no exemption.
+
+### Setting up closed testing
+
+In the Play Console, go to your app, then Release > Testing > Closed testing. Create a new track and upload your `.aab` file (or use the one you already uploaded in lesson 3).
+
+Create an email list of testers. Each tester must have a Google account, and the email you add must match their Google account email. After you publish the closed testing release, Google generates an **opt-in link**. Send this link to your testers. They open the link, agree to join the test, and install the app from the Play Store.
+
+### Finding enough testers
+
+This is the part that trips people up. You need people who will actually opt in, install the app, and keep it on their phone for the required testing period. Here are the realistic options:
+
+**Friends and family** are free but unreliable at scale. If you have 20 or more people with Android phones who will follow through, great. Most people do not.
+
+**Testing services** like App Hive connect you with testers for a fee, typically between $50 and $200 USD. These services guarantee opt-ins within a few days. They solve the numbers problem but read reviews before choosing one, as quality varies. Some services provide testers who opt in but never actually open the app, which may not satisfy Google's activity requirements.
+
+**Online communities** like Reddit's r/androiddev, indie hacker forums, and app development Discord servers sometimes have testing exchange threads where developers test each other's apps. This is free but takes time to coordinate.
+
+**Your existing users**, if you have a web version of the app or an email list. These are the highest-quality testers because they are already interested in what you are building.
+
+Whichever route you choose, start this process early. The 14-day clock does not start until your testers have opted in and the closed testing release is live.
+
+**Checkpoint:** Your closed testing track is live in the Play Console and the required number of testers have opted in. The Play Console shows a countdown or completion status for the testing period requirement.
+
+### Internal testing (no tester requirement)
+
+Google also has an internal testing track that supports up to 100 testers with no minimum tester count and no waiting period. Internal testing releases are not reviewed by Google and go live almost immediately. Use this for quick testing cycles while you wait for your closed testing period to complete. Internal testing does not count toward the closed testing requirement, but it lets you test builds in parallel.
+
+### Open testing
+
+Open testing has no tester limit and goes through a brief Google review (usually a few hours). It is available after you have met the closed testing requirement. For most first-time launches, you will go from closed testing straight to production without needing open testing.
+
+## What to ask your testers
+
+Sending the app to someone with no instructions is better than sending it with a detailed walkthrough. You want to know what someone does when they open the app cold. But after they have tried it on their own, ask these questions:
+
+Was anything confusing when you first opened the app? Did anything not work the way you expected? Was there a moment where you were not sure what to do next? Did it feel slow at any point?
+
+Write down every piece of feedback, even the things you disagree with. If two out of five testers had the same confusion, that is a pattern worth fixing before you submit for public review.
+
+## Updating your test build
+
+When you fix issues based on feedback, you upload a new build and your testers get it automatically. On TestFlight, new builds are pushed to testers as an update notification. On Google Play's internal and closed testing tracks, the Play Store handles the update.
+
+Increment your version number each time you upload a new build. Both stores use version numbers to track which build is newest. If you upload a build with the same version number as the previous one, the stores will reject it.

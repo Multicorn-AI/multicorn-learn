@@ -1,0 +1,72 @@
+---
+title: 'Preparing for the App Store'
+description: 'Set up your Apple Developer account, configure your app in Xcode, and get ready to build for iOS.'
+order: 2
+estimatedMinutes: 14
+outcome: 'You can enrol in the Apple Developer Program, register a bundle ID, sign a build in Xcode, and upload a build to App Store Connect.'
+date: '2026-04-26'
+---
+
+This lesson covers everything you need to do before your iOS app is ready to upload to Apple. If you are only targeting Android, you can skip ahead to lesson 3. You can always come back to this later.
+
+## Creating your Apple Developer account
+
+Go to [developer.apple.com/programs](https://developer.apple.com/programs) and click Enrol. You will need an Apple ID. If you do not have one, you can create one during the process.
+
+Apple charges $99 USD per year. This is a recurring fee, not a one-time payment. If you let your membership lapse, your apps will be removed from the store after a grace period. For a personal account, you will need to verify your identity. For a company account (called an Organisation enrolment), you will also need a D-U-N-S number, which is a free business registration you can request from Dun & Bradstreet.
+
+For most people reading this, the personal/individual enrolment is the right choice. You can always upgrade to an organisation account later.
+
+**Checkpoint:** After enrolment is approved (which can take up to 48 hours), sign in at [developer.apple.com](https://developer.apple.com). You should see a dashboard with options for Certificates, Identifiers, Profiles, and more.
+
+## Registering your app identifier
+
+Before you can build and upload, Apple needs to know about your app. Go to the Identifiers section in your developer account and register a new App ID.
+
+The most important field is the **Bundle ID**. This is a reverse-domain string that uniquely identifies your app across the entire App Store. If your website is example.com and your app is called Planner, your bundle ID would be something like `com.example.planner`. Choose this carefully because you cannot change it after your app is on the store.
+
+Select any capabilities your app needs (push notifications, sign in with Apple, in-app purchases). If you are not sure, leave them unchecked. You can add capabilities later.
+
+**Checkpoint:** Your app identifier should now appear in the Identifiers list on the developer portal.
+
+## Certificates and profiles
+
+If you are using a framework like Expo or React Native with EAS Build, the build service handles certificates and provisioning profiles for you automatically. You can skip this section and move straight to "Building your app" below.
+
+If you are building locally with Xcode, you will need to set up code signing. Open your project in Xcode, go to the Signing & Capabilities tab, and check "Automatically manage signing." Select your developer team from the dropdown. Xcode will create a development certificate and provisioning profile for you.
+
+For distribution (uploading to the App Store), Xcode creates a separate distribution certificate and profile when you archive your app. The automatic signing option handles this, and for most people this is the simplest path. Manual signing gives you more control but is rarely needed for a first app.
+
+**Checkpoint:** In Xcode, the Signing & Capabilities tab should show your team name with no errors. If you see a red error about provisioning, make sure you selected the correct team and that your bundle ID matches the one you registered.
+
+## Building your app
+
+How you build depends on what framework you used in Course 2.
+
+If you used **Expo**, run `npx expo prebuild --platform ios` to generate the native iOS project, then open the generated `.xcworkspace` file in Xcode. Alternatively, use EAS Build (`npx eas build --platform ios`) to build in the cloud without needing Xcode on your machine at all. EAS Build is a paid service from Expo with a free tier that includes a limited number of builds per month.
+
+If you used **React Native** without Expo, open the `ios/` folder's `.xcworkspace` file in Xcode.
+
+If you used **Flutter**, run `flutter build ios` to compile, then open `ios/Runner.xcworkspace` in Xcode.
+
+In Xcode, select **Product > Archive** from the menu bar. This compiles your app in release mode and creates an archive. The process can take several minutes depending on your app's size and your computer's speed. When it finishes, the Organizer window opens automatically showing your archive.
+
+**Checkpoint:** You should see your app listed in the Xcode Organizer with today's date. If the archive failed, the error panel at the bottom of Xcode will tell you why. The most common issue is a mismatched bundle ID between your code and your developer portal registration.
+
+## Uploading to App Store Connect
+
+App Store Connect is Apple's web portal where you manage everything about your app's store presence: the listing, screenshots, pricing, and submitted builds.
+
+Go to [appstoreconnect.apple.com](https://appstoreconnect.apple.com) and create a new app. Select your bundle ID from the dropdown, give it a name (this is what users see on the store), set the primary language, and choose a SKU (a reference string for your own tracking, it is never shown to users).
+
+Back in Xcode's Organizer, click "Distribute App" on your archive. Choose "App Store Connect" as the distribution method. Xcode uploads your build. This can take 5 to 15 minutes depending on your internet connection and app size.
+
+After the upload completes, it takes another 15 to 30 minutes for App Store Connect to process the build. You will receive an email when processing is complete, and the build will appear in the App Store Connect dashboard under your app's builds section.
+
+**Checkpoint:** In App Store Connect, your app should show at least one build under the "TestFlight" tab or the "App Store" tab's build section. If it does not appear after 30 minutes, check your email for a processing error notification from Apple.
+
+<SecurityNote>
+
+App Store Connect will ask for an **app-specific password** if you use two-factor authentication on your Apple ID (you should). Generate one at [appleid.apple.com](https://appleid.apple.com) under the Security section. This password is only for Xcode uploads. Do not reuse your main Apple ID password and do not share the app-specific password with anyone.
+
+</SecurityNote>
