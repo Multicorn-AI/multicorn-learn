@@ -1,13 +1,14 @@
 /**
  * Data and scoring for the Course 3 platform picker. Web answers pick a hosting platform;
- * choosing "mobile app" on Q1 short-circuits to the mobile deployment track under Course 3.
+ * choosing "mobile app" on Q1 short-circuits to the mobile deployment track under Course 3;
+ * "thinking about AWS" short-circuits to the AWS extension track.
  */
 
-export type Q1Answer = 'frontend' | 'backend' | 'not_sure' | 'mobile_app'
+export type Q1Answer = 'frontend' | 'backend' | 'not_sure' | 'mobile_app' | 'thinking_about_aws'
 export type Q2Answer = 'free' | 'can_pay' | 'paid_plan'
 export type Q3Answer = 'fine' | 'follow' | 'not_comfortable'
 
-/** Answers for the three-question web hosting path (Q1 never `mobile_app` here). */
+/** Answers for the three-question web hosting path (Q1 is never `mobile_app` or `thinking_about_aws` here). */
 export interface WebPlatformPickerAnswers {
   readonly q1: 'frontend' | 'backend' | 'not_sure'
   readonly q2: Q2Answer
@@ -68,6 +69,10 @@ export const PLATFORM_PICKER_QUESTIONS: readonly PlatformPickerQuestion[] = [
       { id: 'frontend', label: 'A frontend web app (most common)' },
       { id: 'mobile_app', label: 'A mobile app (iOS / Android)' },
       { id: 'backend', label: 'A backend API or service' },
+      {
+        id: 'thinking_about_aws',
+        label: 'I am thinking about AWS or a larger cloud',
+      },
       { id: 'not_sure', label: "I'm not sure / I skipped Course 2" },
     ],
   },
@@ -106,10 +111,31 @@ export const MOBILE_TRACK_PICKER_RESULT: MobileTrackPickerResult = {
   accentClass: 'bg-course-3-accent/10',
 }
 
+export type AwsTrackPickerResult = {
+  readonly kind: 'aws'
+  readonly name: string
+  readonly reason: string
+  readonly accentClass: string
+}
+
+export const AWS_TRACK_PICKER_RESULT: AwsTrackPickerResult = {
+  kind: 'aws',
+  name: 'AWS and larger clouds',
+  reason:
+    'If your app is already live and you are weighing AWS, Azure, or GCP, start with when it is worth the complexity. The AWS track is a short reality check and a safe minimum path, not a certification course.',
+  accentClass: 'bg-course-3-accent/10',
+}
+
 export function isMobileTrackPickerResult(
-  r: PlatformRecommendation | MobileTrackPickerResult,
+  r: PlatformRecommendation | MobileTrackPickerResult | AwsTrackPickerResult,
 ): r is MobileTrackPickerResult {
   return 'kind' in r && r.kind === 'mobile'
+}
+
+export function isAwsTrackPickerResult(
+  r: PlatformRecommendation | MobileTrackPickerResult | AwsTrackPickerResult,
+): r is AwsTrackPickerResult {
+  return 'kind' in r && r.kind === 'aws'
 }
 
 /**

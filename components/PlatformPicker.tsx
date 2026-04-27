@@ -6,12 +6,16 @@ import {
   clearCourse3MdxPlatformOnClient,
   setCourse3MdxPlatformOnClient,
 } from '@/lib/course-3-platform'
+import { COURSE_3_AWS } from '@/lib/course-3-aws-config'
 import { COURSE_3_MOBILE } from '@/lib/course-3-mobile-config'
 import {
+  AWS_TRACK_PICKER_RESULT,
   getPlatformRecommendation,
+  isAwsTrackPickerResult,
   isMobileTrackPickerResult,
   MOBILE_TRACK_PICKER_RESULT,
   PLATFORM_PICKER_QUESTIONS,
+  type AwsTrackPickerResult,
   type MobileTrackPickerResult,
   type PlatformRecommendation,
   type Q1Answer,
@@ -28,13 +32,13 @@ function phaseIndex(phase: PickerPhase): number {
   return PHASE_ORDER.indexOf(phase)
 }
 
-type WebOrMobileResult = PlatformRecommendation | MobileTrackPickerResult
+type PickerResult = PlatformRecommendation | MobileTrackPickerResult | AwsTrackPickerResult
 
 export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: string }) {
   const rootId = useId()
   const [phase, setPhase] = useState<PickerPhase>('q1')
   const [transitioning, setTransitioning] = useState(false)
-  const [recommendation, setRecommendation] = useState<WebOrMobileResult | null>(null)
+  const [recommendation, setRecommendation] = useState<PickerResult | null>(null)
   const resultTitleRef = useRef<HTMLHeadingElement>(null)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const transitionMs = 200
@@ -51,7 +55,7 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
     if (phase === 'result' && recommendation) {
       if (typeof window !== 'undefined') {
         try {
-          if (isMobileTrackPickerResult(recommendation)) {
+          if (isMobileTrackPickerResult(recommendation) || isAwsTrackPickerResult(recommendation)) {
             clearCourse3MdxPlatformOnClient()
           } else {
             setCourse3MdxPlatformOnClient(recommendation.slug)
@@ -67,6 +71,10 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
     }
     return undefined
   }, [phase, recommendation])
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const advanceAfterTransition = useCallback(
     (next: () => void) => {
@@ -85,6 +93,8 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
 
   const [q1, setQ1] = useState<Q1Answer | null>(null)
   const [q2, setQ2] = useState<Q2Answer | null>(null)
+  /** Avoid SSR/client markup drift in this interactive wizard (useId, many buttons, etc.). */
+  const [isClient, setIsClient] = useState(false)
 
   const handleSelect = useCallback(
     (rawValue: string) => {
@@ -96,6 +106,14 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
           advanceAfterTransition(() => {
             setQ1(value)
             setRecommendation(MOBILE_TRACK_PICKER_RESULT)
+            setPhase('result')
+          })
+          return
+        }
+        if (value === 'thinking_about_aws') {
+          advanceAfterTransition(() => {
+            setQ1(value)
+            setRecommendation(AWS_TRACK_PICKER_RESULT)
             setPhase('result')
           })
           return
@@ -155,6 +173,15 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
     })
   }, [advanceAfterTransition])
 
+  if (!isClient) {
+    return (
+      <div
+        className="min-h-[200px] rounded-card border border-border bg-surface-secondary p-6 sm:min-h-[240px] sm:p-8"
+        aria-hidden="true"
+      />
+    )
+  }
+
   const questionIndex = phase === 'result' ? -1 : phaseIndex(phase)
   const currentQuestion = questionIndex >= 0 ? PLATFORM_PICKER_QUESTIONS[questionIndex] : undefined
 
@@ -163,6 +190,7 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
     : 'tool-picker-step translate-y-0 opacity-100'
 
   const mobileFirstLessonHref = `${COURSE_3_MOBILE.basePath}/${COURSE_3_MOBILE.firstLessonSlug}`
+  const awsFirstLessonHref = `${COURSE_3_AWS.basePath}/${COURSE_3_AWS.firstLessonSlug}`
 
   return (
     <div
@@ -233,13 +261,17 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
               href={
                 isMobileTrackPickerResult(recommendation)
                   ? mobileFirstLessonHref
-                  : `/learn/course-3/choosing-a-host?platform=${recommendation.slug}`
+                  : isAwsTrackPickerResult(recommendation)
+                    ? awsFirstLessonHref
+                    : `/learn/course-3/choosing-a-host?platform=${recommendation.slug}`
               }
               className="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg bg-course-3-accent px-6 py-3 text-center text-base font-semibold text-white shadow-sm transition-colors hover:bg-course-3-accent/90 focus:outline-none focus:ring-2 focus:ring-course-3-accent/20 focus:ring-offset-2 sm:w-auto"
             >
               {isMobileTrackPickerResult(recommendation)
                 ? 'Start mobile lesson 1'
-                : 'Start Lesson 1'}
+                : isAwsTrackPickerResult(recommendation)
+                  ? 'Start AWS lesson 1'
+                  : 'Start Lesson 1'}
             </Link>
 
             <div>
@@ -256,7 +288,9 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
             <p className="text-sm leading-relaxed text-text-tertiary">
               {isMobileTrackPickerResult(recommendation)
                 ? 'The lessons below this page are for web hosting (Vercel, Netlify, Fly.io). Use the mobile track link above for App Store and Play Store steps. You can return here any time to compare options.'
-                : 'We recommend this path. You can still follow any lesson below if you prefer another platform. The concepts are the same, and Lesson 1 covers the differences.'}
+                : isAwsTrackPickerResult(recommendation)
+                  ? 'The list below is still the main web hosting path. The AWS track link above is for the next step after a PaaS, when you are sure you need it.'
+                  : 'We recommend this path. You can still follow any lesson below if you prefer another platform. The concepts are the same, and Lesson 1 covers the differences.'}
             </p>
           </div>
         )}

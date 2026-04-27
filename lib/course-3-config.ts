@@ -6,5 +6,5 @@ export const COURSE_3 = {
   description:
     'Go from a working local app to a public URL on a real domain: Vercel as the main path, environment variables, HTTPS, and what to do when a deploy fails.',
   intro:
-    'This course starts where Course 2 ends: you already have a project that runs on your computer. Now you will put that app on the internet, connect a domain, and keep secrets out of your code. Progress saves in this browser only, no account needed.',
+    'This course starts where Course 2 ends: you already have a project that runs on your computer. Now you will put that app on the internet, connect a domain, and keep secrets out of your code.',
 } as const

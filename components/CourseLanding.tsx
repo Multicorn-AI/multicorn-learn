@@ -52,25 +52,23 @@ export function CourseLandingHero({
 
   return (
     <section className="mx-auto mb-12 w-full max-w-3xl px-4">
-      <div className="mb-6 flex items-center gap-4">
+      <div className="mb-6 flex items-start gap-3 sm:gap-4">
         <span
-          className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${iconBox}`}
+          className={`mt-0.5 flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${iconBox}`}
           aria-hidden="true"
         >
           {icon}
         </span>
-        <div>
-          <span
-            className={`mb-1 block w-fit text-xs font-semibold uppercase tracking-wide ${label}`}
-          >
+        <div className="min-w-0 flex-1 space-y-1">
+          <span className={`text-xs font-semibold uppercase leading-snug tracking-wide ${label}`}>
             {courseLabel}
           </span>
-          <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl lg:text-5xl">
+          <h1 className="break-words text-3xl font-bold tracking-tight text-text-primary sm:text-4xl lg:text-5xl">
             {title}
           </h1>
         </div>
       </div>
-      {children}
+      <div className="mt-4 space-y-4">{children}</div>
     </section>
   )
 }
