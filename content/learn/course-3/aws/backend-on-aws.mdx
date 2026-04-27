@@ -1,10 +1,156 @@
 ---
 title: 'Deploying a backend service on AWS'
-description: 'Running a long-lived API on AWS with a managed path such as App Runner or ECS on Fargate, not a fleet of hand-tuned servers.'
+description: 'How to deploy a backend application on AWS using ECS Fargate. The AWS equivalent of what Fly.io does for you automatically.'
 order: 4
-estimatedMinutes: 15
-outcome: 'You can name a sane default for a small production API and what you are signing up to operate.'
+estimatedMinutes: 18
+outcome: 'You will understand the minimum viable path to running a containerised backend on AWS using ECS Fargate, and know what each piece does.'
 date: '2026-04-27'
 ---
 
-Placeholder. Lesson content will be added in a follow-up.
+## What you are building
+
+On Fly.io, you run `fly deploy` and your backend is live. On AWS, deploying a backend service requires several pieces working together.
+
+This lesson walks you through ECS Fargate, which runs your application in containers without you managing servers. There are simpler options on AWS (like App Runner), but as of early 2026, App Runner is in maintenance mode and no longer accepting new customers. AWS is directing users toward ECS instead. Fargate is the path that will be supported long-term.
+
+This is the most complex lesson in this track. Take your time with it.
+
+## The pieces you need
+
+**ECR** (Elastic Container Registry) stores your Docker container image. Think of it as a private version of Docker Hub, hosted inside your AWS account.
+
+**ECS** (Elastic Container Service) runs your containers. It is AWS's container orchestration service.
+
+**Fargate** is a compute mode for ECS that removes server management. You tell Fargate how much CPU and memory your container needs, and it handles the rest. No EC2 instances to patch or scale.
+
+**A load balancer** (Application Load Balancer, or ALB) sits in front of your container and handles incoming traffic, health checks, and HTTPS termination.
+
+Each of these is a separate service, and they all need to be configured to work together. This is the fundamental difference from Fly.io: instead of one service handling everything, you are wiring four services together.
+
+## Step 1: Containerise your application
+
+If your backend does not already have a Dockerfile, you need to create one. A minimal example for a Node.js application:
+
+```dockerfile
+FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --production
+COPY . .
+EXPOSE 3000
+CMD ["node", "server.js"]
+```
+
+Test it locally first:
+
+```
+docker build -t my-backend .
+docker run -p 3000:3000 my-backend
+```
+
+**What you should see:** Your application responding on `http://localhost:3000`.
+
+If you have never used Docker before, this step alone might take a few hours. That is normal. Docker has its own learning curve, and getting the Dockerfile right for your specific application takes experimentation.
+
+## Step 2: Push your image to ECR
+
+**Step 1:** In the AWS Console, search for "ECR" and open Elastic Container Registry.
+
+**Step 2:** Click **Create repository**. Give it a name matching your application. Leave the defaults (private repository).
+
+**Step 3:** Click into your new repository and click **View push commands**. AWS shows you the exact commands to authenticate Docker, tag your image, and push it. Run them in order.
+
+```
+aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin YOUR_ACCOUNT_ID.dkr.ecr.ap-southeast-2.amazonaws.com
+docker tag my-backend:latest YOUR_ACCOUNT_ID.dkr.ecr.ap-southeast-2.amazonaws.com/my-backend:latest
+docker push YOUR_ACCOUNT_ID.dkr.ecr.ap-southeast-2.amazonaws.com/my-backend:latest
+```
+
+**What you should see:** The image listed in your ECR repository.
+
+## Step 3: Create an ECS cluster
+
+**Step 1:** Search for "ECS" in the Console and open Elastic Container Service.
+
+**Step 2:** Click **Create cluster**. Give it a name. Under **Infrastructure**, select **AWS Fargate (serverless)** only. Uncheck any EC2 options.
+
+**Step 3:** Click **Create**. This takes about a minute.
+
+## Step 4: Create a task definition
+
+A task definition tells ECS what container to run and how much resources to give it.
+
+**Step 1:** In ECS, go to **Task definitions** and click **Create new task definition**.
+
+**Step 2:** Give it a name. Under **Infrastructure requirements**, choose Fargate. Set CPU to 0.25 vCPU and memory to 0.5 GB. This is the smallest (and cheapest) configuration. You can increase it later if your application needs more.
+
+**Step 3:** Under **Container**, click **Add container**. Set the container name, paste the image URI from ECR, and set the container port to whatever port your application listens on (e.g. 3000).
+
+**Step 4:** Click **Create**.
+
+## Step 5: Create a load balancer
+
+**Step 1:** Search for "EC2" in the Console (yes, load balancers live under EC2). In the left sidebar, click **Load Balancers**, then **Create Load Balancer**.
+
+**Step 2:** Choose **Application Load Balancer**. Give it a name. Select **Internet-facing** and your VPC's public subnets (select at least two in different availability zones).
+
+**Step 3:** Under **Listeners and routing**, create a target group. Set the target type to **IP**, protocol HTTP, and the port your application listens on. Set the health check path to a route your application responds to (e.g. `/health` or just `/`).
+
+**Step 4:** Create the load balancer. Note the DNS name it provides.
+
+## Step 6: Create an ECS service
+
+This ties everything together.
+
+**Step 1:** Go back to ECS, click into your cluster, and click **Create** under Services.
+
+**Step 2:** Select your task definition and the latest revision.
+
+**Step 3:** Give the service a name. Set the desired number of tasks to 1 (you can scale up later).
+
+**Step 4:** Under **Networking**, select your VPC and private subnets. Create or select a security group that allows traffic from the load balancer's security group.
+
+**Step 5:** Under **Load balancing**, select your Application Load Balancer and target group from Step 5.
+
+**Step 6:** Click **Create**. ECS will pull your container image from ECR, start it on Fargate, register it with the load balancer, and begin routing traffic.
+
+**What you should see:** After a few minutes, the service shows 1/1 running tasks. The load balancer's DNS name should return a response from your application.
+
+## When things do not work
+
+The most common issues at this point:
+
+**Health check failing.** The load balancer marks your container as unhealthy and keeps restarting it. Check that the health check path returns a 200 status code, and that the port matches what your container actually listens on.
+
+**Container exits immediately.** Check the task logs in ECS (click the stopped task, then the Logs tab). Common causes: missing environment variables, the application crashing on startup, or the wrong CMD in the Dockerfile.
+
+**Security group blocking traffic.** The load balancer needs to reach the container. Make sure the container's security group allows inbound traffic on the application port from the load balancer's security group.
+
+## Adding HTTPS
+
+The load balancer can terminate HTTPS for you, the same way CloudFront does for the frontend.
+
+**Step 1:** Request a certificate in AWS Certificate Manager (ACM) for your domain. Unlike CloudFront, backend certificates can be in any region (use the same region as your load balancer).
+
+**Step 2:** Add an HTTPS listener to your load balancer (port 443) and attach the certificate. Redirect the HTTP listener (port 80) to HTTPS.
+
+**Step 3:** In Route 53, create an A record with an alias pointing to the load balancer.
+
+## Updating your backend
+
+When you make code changes:
+
+```
+docker build -t my-backend .
+docker tag my-backend:latest YOUR_ACCOUNT_ID.dkr.ecr.ap-southeast-2.amazonaws.com/my-backend:latest
+docker push YOUR_ACCOUNT_ID.dkr.ecr.ap-southeast-2.amazonaws.com/my-backend:latest
+aws ecs update-service --cluster your-cluster --service your-service --force-new-deployment
+```
+
+ECS will pull the new image and perform a rolling update, starting a new container before stopping the old one.
+
+## What you have now
+
+A containerised backend running on ECS Fargate, fronted by a load balancer with optional HTTPS. This is the AWS equivalent of `fly deploy`. It took significantly more work, and you had to configure each piece yourself. But you now have fine-grained control over scaling, networking, and resource allocation.
+
+Environment variables and secrets for your backend are covered in Lesson 5.

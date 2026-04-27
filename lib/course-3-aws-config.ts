@@ -8,5 +8,5 @@ export const COURSE_3_AWS = {
   description:
     'A next step if your app has outgrown a PaaS: when AWS makes sense, account safety, hosting a frontend and backend on AWS, secrets, logs, and cost control.',
   intro:
-    'The main Course 3 path is for Vercel, Netlify, and Fly.io. This track is for you if you already shipped there and are weighing AWS, Azure, or GCP, or you want an honest read before you commit. It is not a cloud certification course. Progress saves in this browser only, no account needed.',
+    'The main Course 3 path is for Vercel, Netlify, and Fly.io. This track is for you if you already shipped there and are weighing AWS, Azure, or GCP, or you want an honest read before you commit. It is not a cloud certification course.',
 } as const

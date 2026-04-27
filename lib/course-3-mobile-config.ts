@@ -8,5 +8,5 @@ export const COURSE_3_MOBILE = {
   description:
     'Move from a working iOS or Android app build to the App Store and Google Play: accounts, signing, test builds, review, and what happens after release.',
   intro:
-    'The main Course 3 path is for web apps (hosting, domains, HTTPS). This track is for the same end goal, getting your product to real users, when your product is a mobile app. It works for common cross-platform stacks (for example React Native, Flutter, or Expo). Progress saves in this browser only, no account needed.',
+    'The main Course 3 path is for web apps (hosting, domains, HTTPS). This track is for the same end goal, getting your product to real users, when your product is a mobile app. It works for common cross-platform stacks (for example React Native, Flutter, or Expo).',
 } as const

@@ -1,10 +1,99 @@
 ---
-title: 'Reading CloudWatch logs and responding to failures'
-description: 'Finding your service logs, telling a deploy error from a runtime error, and what to do first when things go red.'
+title: 'Reading CloudWatch logs'
+description: "How to find your application's logs in CloudWatch, understand what they are telling you, and respond when something breaks."
 order: 6
-estimatedMinutes: 10
-outcome: 'You can get from "something broke" to a log line you can act on, in line with the rest of Course 3.'
+estimatedMinutes: 12
+outcome: "You will know where your application's logs live in CloudWatch and how to use them to diagnose problems."
 date: '2026-04-27'
 ---
 
-Placeholder. Lesson content will be added in a follow-up.
+## Where your logs live
+
+In Course 3, you learned that every deployment platform has a place where your application's output appears. On Vercel, it is the Functions tab. On Fly.io, it is `fly logs`.
+
+On AWS, application logs go to **CloudWatch Logs**. If you deployed a backend with ECS Fargate (Lesson 4), your container's stdout and stderr output is already being sent there automatically. ECS configures this by default.
+
+**Step 1:** In the Console, search for "CloudWatch" and open it.
+
+**Step 2:** In the left sidebar, click **Log groups** under Logs.
+
+**Step 3:** Find the log group for your ECS service. It is typically named `/ecs/your-task-definition-name`.
+
+**Step 4:** Click into the log group. You will see **log streams**, one per container instance. Click the most recent one.
+
+**What you should see:** Lines of output from your application, timestamped.
+
+## Reading log output
+
+CloudWatch shows each line of output with a timestamp and the raw text. What you are looking for depends on what went wrong.
+
+**Application crashes.** Look for stack traces, error messages, or "exited with code 1" messages. These usually appear at the bottom of a log stream (the last thing the container output before it stopped).
+
+**Failed requests.** If your web framework logs requests (most do by default), look for entries with 4xx or 5xx status codes. A 500 error means your application threw an unhandled exception. A 404 means a request hit a route that does not exist.
+
+**Startup failures.** If your container keeps restarting (the ECS service shows tasks starting and stopping repeatedly), the logs from the first few seconds are the most important. Common causes: a missing environment variable, a database connection that times out, or a port conflict.
+
+## Filtering and searching
+
+CloudWatch's log viewer has a search bar at the top. You can filter for specific text:
+
+```
+"ERROR"
+"status 500"
+"Connection refused"
+"ECONNREFUSED"
+```
+
+For more precise filtering, CloudWatch supports filter patterns. A few useful ones:
+
+```
+?ERROR ?WARN
+```
+
+This shows lines containing either ERROR or WARN.
+
+```
+{ $.statusCode = 500 }
+```
+
+This works if your application outputs structured JSON logs with a `statusCode` field.
+
+## Setting up basic alarms
+
+You probably do not want to sit in the CloudWatch console watching logs all day. Alarms let CloudWatch notify you when something goes wrong.
+
+**Step 1:** In CloudWatch, go to **Alarms** in the left sidebar and click **Create alarm**.
+
+**Step 2:** Click **Select metric**. Under ECS, find your service's metrics. The most useful starting alarm is on the **CPUUtilization** or **MemoryUtilization** metric for your service. Set a threshold (e.g. "greater than 80% for 5 minutes").
+
+**Step 3:** Under **Actions**, configure an SNS notification. You will need to create an SNS topic and subscribe your email address to it. AWS will send a confirmation email that you need to click.
+
+**Step 4:** Give the alarm a name and create it.
+
+**What you should see:** The alarm appearing in a green "OK" state.
+
+A second useful alarm is a metric filter on your log group that counts ERROR lines. This requires creating a custom metric from your logs, which is a few more steps. For now, a CPU or memory alarm is a good starting point. It catches the most common "something is very wrong" scenarios.
+
+## Log retention
+
+By default, CloudWatch keeps your logs forever. This costs money (you pay per GB stored) and is rarely what you want.
+
+**Step 1:** In your log group, click **Edit** on the retention setting.
+
+**Step 2:** Set it to something reasonable. 14 days is enough for debugging most issues. 30 days if you want more history. 90 days if you have compliance requirements.
+
+Anything older than your retention period is automatically deleted. Set this now before your log storage starts costing money.
+
+## When you cannot figure it out
+
+Sometimes the logs do not tell you enough. A container crashes but the only output is a generic "killed" message with no stack trace. A request returns 502 but your application logs show nothing.
+
+A few places to look beyond your application logs:
+
+**Load balancer access logs.** If you enabled access logging on your ALB (it is off by default), you can see every request and response code. This helps when the load balancer is returning errors before traffic reaches your container.
+
+**ECS events.** In your ECS service, the **Events** tab shows what ECS itself is doing: starting tasks, stopping tasks, and why. "Task stopped: Essential container in task exited" means your application crashed. "Service has reached a steady state" means everything is running normally.
+
+**Health check logs.** If your load balancer's target group shows targets as "unhealthy," the health check is failing. Check that the health check path returns a 200, the port is correct, and the container has had time to start up (the default health check interval might be too aggressive for slow-starting applications).
+
+When you have tried everything and are still stuck, paste the specific error message into your AI coding tool. Just remember the rule from Course 3: before you paste logs, make sure they do not contain secrets like database connection strings, API keys, or passwords. Read through the log snippet before you share it.

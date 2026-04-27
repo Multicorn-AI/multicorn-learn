@@ -50,54 +50,20 @@ export default function Course3Page() {
 
         <section
           className="mx-auto w-full max-w-3xl px-4 pb-10"
-          aria-labelledby="c3-mobile-callout-heading"
+          aria-labelledby="what-this-course-covers-heading"
         >
-          <div className="rounded-lg border border-border bg-surface-secondary p-4 sm:p-5">
-            <h2
-              id="c3-mobile-callout-heading"
-              className="text-sm font-semibold uppercase tracking-wide text-text-tertiary"
-            >
-              Mobile app
-            </h2>
-            <p className="mt-2 text-text-secondary">
-              Building a mobile app? The lessons below are for <strong>web</strong> deployment. For
-              App Store and Play Store steps, use the{' '}
-              <Link
-                href={COURSE_3_MOBILE.basePath}
-                className="font-semibold text-course-3-accent underline decoration-course-3-accent/30 underline-offset-2 transition-colors hover:text-course-3-accent/90"
-              >
-                mobile deployment track
-              </Link>
-              . You can also pick &quot;mobile app&quot; in the questions and we will send you
-              there.
-            </p>
-          </div>
-        </section>
-
-        <section
-          className="mx-auto w-full max-w-3xl px-4 pb-10"
-          aria-labelledby="c3-aws-callout-heading"
-        >
-          <div className="rounded-lg border border-border bg-surface-secondary p-4 sm:p-5">
-            <h2
-              id="c3-aws-callout-heading"
-              className="text-sm font-semibold uppercase tracking-wide text-text-tertiary"
-            >
-              Outgrowing your host
-            </h2>
-            <p className="mt-2 text-text-secondary">
-              If you already have a live app on Vercel, Netlify, or Fly.io and you are thinking
-              about AWS or another large cloud, the{' '}
-              <Link
-                href={COURSE_3_AWS.basePath}
-                className="font-semibold text-course-3-accent underline decoration-course-3-accent/30 underline-offset-2 transition-colors hover:text-course-3-accent/90"
-              >
-                AWS and larger cloud track
-              </Link>{' '}
-              walks through an honest &quot;do you need this?&quot; first. You can also pick &quot;I
-              am thinking about AWS or a larger cloud&quot; in the questions below.
-            </p>
-          </div>
+          <h2
+            id="what-this-course-covers-heading"
+            className="text-2xl font-bold tracking-tight text-text-primary"
+          >
+            What this course covers
+          </h2>
+          <p className="mt-2 text-text-secondary">
+            You will pick a hosting platform, deploy your app to a public URL with HTTPS, connect a
+            custom domain, set up environment variables so your secrets stay out of your code, and
+            learn what to do when something breaks after you deploy. By the end, anyone with the
+            link can use what you built.
+          </p>
         </section>
 
         <section id="pick-your-platform" className="mx-auto w-full max-w-3xl px-4 pb-12">
@@ -132,6 +98,64 @@ export default function Course3Page() {
             storageKey={COURSE_3.progressStorageKey}
             courseAccent="course-3"
           />
+        </section>
+
+        <div className="mx-auto w-full max-w-3xl px-4">
+          <h2 className="pb-6 text-2xl font-bold tracking-tight text-text-primary">
+            Other deployment paths
+          </h2>
+        </div>
+
+        <section
+          className="mx-auto w-full max-w-3xl px-4 pb-10"
+          aria-labelledby="c3-mobile-callout-heading"
+        >
+          <div className="rounded-lg border border-border bg-surface-secondary p-4 sm:p-5">
+            <h2
+              id="c3-mobile-callout-heading"
+              className="text-sm font-semibold uppercase tracking-wide text-text-tertiary"
+            >
+              Mobile app
+            </h2>
+            <p className="mt-2 text-text-secondary">
+              Building a mobile app? The lessons below are for <strong>web</strong> deployment. For
+              App Store and Play Store steps, use the{' '}
+              <Link
+                href={COURSE_3_MOBILE.basePath}
+                className="font-semibold text-course-3-accent underline decoration-course-3-accent/30 underline-offset-2 transition-colors hover:text-course-3-accent/90"
+              >
+                mobile deployment track
+              </Link>
+              . You can also pick &quot;mobile app&quot; in the questions above and we will send you
+              there.
+            </p>
+          </div>
+        </section>
+
+        <section
+          className="mx-auto w-full max-w-3xl px-4 pb-10"
+          aria-labelledby="c3-aws-callout-heading"
+        >
+          <div className="rounded-lg border border-border bg-surface-secondary p-4 sm:p-5">
+            <h2
+              id="c3-aws-callout-heading"
+              className="text-sm font-semibold uppercase tracking-wide text-text-tertiary"
+            >
+              Outgrowing your host
+            </h2>
+            <p className="mt-2 text-text-secondary">
+              If you already have a live app on Vercel, Netlify, or Fly.io and you are thinking
+              about AWS or another large cloud, the{' '}
+              <Link
+                href={COURSE_3_AWS.basePath}
+                className="font-semibold text-course-3-accent underline decoration-course-3-accent/30 underline-offset-2 transition-colors hover:text-course-3-accent/90"
+              >
+                AWS and larger cloud track
+              </Link>{' '}
+              walks through an honest &quot;do you need this?&quot; first. You can also pick &quot;I
+              am thinking about AWS or a larger cloud&quot; in the questions above.
+            </p>
+          </div>
         </section>
       </div>
     </main>

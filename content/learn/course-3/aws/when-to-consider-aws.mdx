@@ -1,10 +1,70 @@
 ---
 title: 'When to consider AWS'
-description: 'Honest scoping: whether a move to a hyperscaler is worth it, and when staying on a PaaS is the right call.'
+description: 'An honest look at whether you actually need AWS, what it costs in time and money, and when staying on your current platform is the smarter move.'
 order: 1
 estimatedMinutes: 10
-outcome: 'You can tell whether the AWS path is for you, or you should keep shipping on the host you have.'
+outcome: 'You will know whether AWS is the right next step for your app, or whether you should stay where you are.'
 date: '2026-04-27'
 ---
 
-Placeholder. Lesson content will be added in a follow-up.
+## Before you start
+
+You finished Course 3. Your app is live on Vercel, Netlify, or Fly.io. It works. People use it. And now you are wondering whether you should move to AWS.
+
+The short answer for most people: no. Not yet, and possibly not ever.
+
+That is not reverse psychology. The platforms you already know how to use are genuinely excellent. They handle TLS certificates, global CDN distribution, automatic scaling, and zero-downtime deploys without you thinking about any of it. Millions of production applications run on them and never outgrow them.
+
+This lesson exists because some apps do eventually hit limits that only a larger cloud provider can solve. If yours is one of them, the rest of this track will walk you through the minimum viable path to running on AWS. If it is not, this lesson will save you weeks of unnecessary complexity.
+
+## When AWS starts to make sense
+
+There are a handful of situations where a managed platform genuinely cannot do what you need.
+
+**Compliance requirements.** Your industry or your customers require data to stay in a specific country or region. Vercel and Netlify have limited region control. AWS lets you choose exactly which data centre your application and database run in.
+
+**Cost at scale.** If your app serves millions of requests per day, the per-request pricing on managed platforms can exceed what you would pay running your own infrastructure on AWS. The crossover point varies, but it is typically well above what a new app handles.
+
+**Services that do not exist on managed platforms.** You need a managed message queue, a search cluster, a machine learning inference endpoint, or a managed database engine that is not Postgres or MySQL. AWS has hundreds of services. Vercel has about five.
+
+**Networking control.** You need a VPN connection to a corporate network, private networking between services, or custom firewall rules that go beyond what a managed platform offers.
+
+If none of these apply to you right now, close this track and go build features instead. You can come back later.
+
+## What AWS actually costs
+
+Not just in dollars. In time.
+
+**Money.** AWS pricing is notoriously difficult to predict. Unlike Vercel's flat monthly plans, AWS bills you for compute time, storage, data transfer, DNS queries, log storage, and dozens of other line items. A simple web application with a frontend and backend can cost anywhere from $5 to $50 per month depending on how you set it up. Get it wrong and you can wake up to a bill in the hundreds. Lesson 7 of this track is entirely about preventing that.
+
+**Time to set up.** Your first AWS deployment will take days, not minutes. Where Vercel takes a git push, AWS requires you to configure IAM users, set up networking, create storage buckets, configure a CDN, set up DNS, and connect a TLS certificate. Each of those is a separate service with its own console, its own documentation, and its own set of things that can go wrong.
+
+**Ongoing maintenance.** Managed platforms handle security patches, scaling, certificate renewal, and log rotation for you. On AWS, those are your responsibility. If you do not actively manage your infrastructure, it degrades. Certificates expire. Costs creep. Security patches go unapplied.
+
+## What about Azure and Google Cloud?
+
+This track focuses on AWS because it has the largest market share and the most documentation. But the concepts transfer directly to Microsoft Azure and Google Cloud Platform (GCP). If your team already uses Azure or GCP for other things, use what you know. The mental model is the same: you are renting compute, storage, and networking from a large provider and wiring the pieces together yourself.
+
+The specific service names differ. AWS calls its object storage S3, Azure calls it Blob Storage, and GCP calls it Cloud Storage. AWS calls its container service ECS, Azure calls it Container Apps, and GCP calls it Cloud Run. The underlying concepts are identical.
+
+## How this track is structured
+
+Seven lessons. Each one covers one piece of the AWS puzzle, in the order you will need them.
+
+Lesson 2 covers account setup and security. You will lock down your root account, create a proper IAM user, enable MFA, and set billing alerts before you deploy anything. Security mistakes at account setup are the most expensive ones to fix later.
+
+Lessons 3 and 4 cover deploying a frontend and a backend. Minimum viable paths only. No infrastructure-as-code tooling, no Kubernetes, no multi-region architectures. Console-based setup that you can complete in an afternoon.
+
+Lesson 5 covers secrets and environment variables. SSM Parameter Store and Secrets Manager. No hardcoded config in your code, ever.
+
+Lesson 6 covers reading logs and responding to failures. CloudWatch basics, finding errors, and knowing what to do when something breaks at 2 AM.
+
+Lesson 7 covers cost control. Budgets, cost explorer, and how to find and kill zombie resources before they drain your account.
+
+## The honest question
+
+Before you continue to Lesson 2, ask yourself: is the problem I am trying to solve actually about infrastructure, or is it about something else?
+
+If your app is slow, the fix might be a better database query, not a bigger server. If your app is unreliable, the fix might be better error handling, not a different cloud provider. If your app cannot handle the traffic, Vercel and Fly.io both auto-scale. Make sure you have actually hit their limits before you move to something harder.
+
+If the answer is still "I need AWS," continue to Lesson 2.

@@ -1,10 +1,103 @@
 ---
 title: 'AWS account setup done safely'
-description: 'Root account lockdown, IAM users, MFA, and billing alerts before you deploy anything.'
+description: 'How to create an AWS account without making the security mistakes that cost people thousands of dollars. Root lockdown, IAM users, MFA, and billing alerts.'
 order: 2
-estimatedMinutes: 12
-outcome: 'You know the minimum account-hardening steps to avoid the common expensive mistakes.'
+estimatedMinutes: 14
+outcome: 'You will have a secure AWS account with a non-root IAM user, MFA enabled, and billing alerts set up.'
 date: '2026-04-27'
 ---
 
-Placeholder. Lesson content will be added in a follow-up.
+## Why this lesson comes first
+
+The most expensive AWS mistakes happen in the first ten minutes. People create an account, skip the security steps because they want to start building, and then one of two things happens: either their root credentials get compromised and someone spins up cryptocurrency miners on their account, or they accidentally leave resources running and do not notice until the bill arrives.
+
+This lesson is about preventing both of those outcomes. Nothing in this track touches a deployable service until your account is locked down.
+
+## Create your AWS account
+
+Go to [aws.amazon.com](https://aws.amazon.com) and click **Create an AWS Account**. You will need an email address, a credit card, and a phone number for verification.
+
+Use a dedicated email address for your AWS account, not your personal one. If you are setting this up for a company, use a shared alias like aws@yourcompany.com. The email tied to your root account is the ultimate recovery mechanism. If you lose access to it, recovering your account is painful.
+
+Choose a strong, unique password. Store it in a password manager immediately. You will almost never use this password after this lesson.
+
+**What you should see:** The AWS Management Console with a welcome banner.
+
+## Lock down the root account
+
+The account you just created is the root account. It has unrestricted access to everything in your AWS environment, including the ability to close the account and delete all data. You should almost never use it.
+
+<SecurityNote>
+  The root account cannot be restricted by any permission policy. If someone gains access to your
+  root credentials, they control everything. The first thing to do with a new AWS account is to stop
+  using the root account for daily work.
+</SecurityNote>
+
+**Step 1: Enable MFA on the root account.**
+
+In the AWS Console, click your account name in the top right corner and select **Security credentials**. Under Multi-factor authentication (MFA), click **Assign MFA device**. Use an authenticator app (Google Authenticator, Authy, or 1Password all work). Hardware keys like YubiKeys are even better if you have one.
+
+**What you should see:** The MFA device listed as active under your security credentials.
+
+**Step 2: Do not create access keys for the root account.**
+
+The security credentials page has a section for access keys. Do not create any. Root access keys are the single most dangerous credential in AWS. If they leak, there is no permission boundary to limit the damage.
+
+## Create an IAM user for daily work
+
+IAM stands for Identity and Access Management. It is how AWS controls who can do what. Instead of using the root account, you will create a separate user with the permissions you actually need.
+
+**Step 1:** Search for "IAM" in the AWS Console search bar and open the IAM service.
+
+**Step 2:** In the left sidebar, click **Users**, then **Create user**.
+
+**Step 3:** Enter a username (your name works fine). Check **Provide user access to the AWS Management Console**. Choose **I want to create an IAM user** (not Identity Center, which is for organisations with many users).
+
+**Step 4:** On the permissions page, click **Attach policies directly** and search for `AdministratorAccess`. Check the box next to it.
+
+Yes, this gives your IAM user full admin access. For a solo developer or small team, this is practical. The critical difference from root is that IAM users can be deleted, their keys can be rotated, and their access can be revoked without affecting the account itself. As your team grows, you will want to create more restrictive policies. For now, admin access on a properly secured IAM user is a reasonable starting point.
+
+**Step 5:** Click through to create the user. Save the sign-in URL and temporary password.
+
+**Step 6:** Sign out of the root account. Sign in with your new IAM user. Enable MFA on this user too (same process: Security credentials, assign MFA device).
+
+From this point forward, use this IAM user for everything. The root account only comes out for account-level changes like updating billing information or closing the account.
+
+## Set up billing alerts
+
+AWS will happily charge you hundreds of dollars without any warning unless you explicitly ask for notifications.
+
+**Step 1:** In the Console, search for **Billing and Cost Management** and open it.
+
+**Step 2:** In the left sidebar, click **Budgets**, then **Create a budget**.
+
+**Step 3:** Choose **Use a template** and select **Monthly cost budget**. Set the budget amount to something you are comfortable with. For a learning account, $10 is reasonable. For a production app, pick whatever your actual budget is.
+
+**Step 4:** Enter your email address for notifications. AWS will email you when your spending reaches 85% and 100% of your budget.
+
+**What you should see:** Your budget listed with a green status bar showing current spend.
+
+**Step 5:** Create a second budget at a higher amount as a hard warning. If your first budget is $10, set a second one at $25 or $50. This catches runaway costs that blow past your first alert.
+
+## Enable AWS CloudTrail
+
+CloudTrail records every API call made in your account. If your credentials are ever compromised, CloudTrail is how you find out what happened.
+
+**Step 1:** Search for "CloudTrail" in the Console and open it.
+
+**Step 2:** CloudTrail creates a default trail automatically for management events. Verify it exists and is logging by checking the **Event history** page. You should see recent events from your own console activity.
+
+You do not need to create additional trails or enable data event logging right now. The default management event trail is free and covers the security-critical actions (who created what, who deleted what, who changed permissions).
+
+## Checkpoint
+
+Before you move to Lesson 3, confirm you have completed every step:
+
+1. Root account has MFA enabled.
+2. Root account has no access keys.
+3. A separate IAM user exists with MFA enabled.
+4. You are signed in as the IAM user, not root.
+5. At least one billing budget exists with email alerts.
+6. CloudTrail is logging management events.
+
+If any of these are missing, go back and complete them now. The rest of this track assumes your account is set up safely.

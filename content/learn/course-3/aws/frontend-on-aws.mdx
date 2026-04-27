@@ -1,10 +1,151 @@
 ---
 title: 'Deploying a frontend on AWS'
-description: 'A minimal static web path on AWS: S3, CloudFront, and Route 53, as the cloud counterpart to a managed frontend host.'
+description: 'How to deploy a static frontend to AWS using S3, CloudFront, and Route 53. The AWS equivalent of what Vercel does for you automatically.'
 order: 3
-estimatedMinutes: 15
-outcome: 'You understand the moving parts for a public HTTPS site on AWS, without a cert bootcamp.'
+estimatedMinutes: 16
+outcome: 'You will have a static frontend site hosted on S3, served through CloudFront with HTTPS, and optionally connected to a custom domain via Route 53.'
 date: '2026-04-27'
 ---
 
-Placeholder. Lesson content will be added in a follow-up.
+## What you are building
+
+On Vercel, you push code and your site appears on the internet with HTTPS. On AWS, you need three services to achieve the same thing:
+
+**S3** (Simple Storage Service) stores your files. Think of it as a folder in the cloud that can serve files over the internet.
+
+**CloudFront** is AWS's content delivery network (CDN). It copies your files to data centres around the world so visitors get fast load times regardless of where they are. It also handles HTTPS.
+
+**Route 53** is AWS's DNS service. It connects your custom domain name to your CloudFront distribution. This step is optional. You can skip it and use the CloudFront URL directly.
+
+This is the minimum viable stack for a static frontend. If your app is a React, Vue, or Next.js static export, this is how you get it onto AWS.
+
+## Build your frontend locally
+
+Before uploading anything, you need a production build of your frontend. In your project directory, run the build command for your framework:
+
+```
+npm run build
+```
+
+This creates a folder of static files (usually `build/`, `dist/`, or `out/` depending on your framework). These are the files you will upload to S3.
+
+If you are using Next.js with server-side rendering, this approach will not work. Server-rendered apps need a backend, which is covered in Lesson 4. Static exports (`next export` or `output: 'export'` in next.config) work fine.
+
+## Create an S3 bucket
+
+**Step 1:** In the AWS Console, search for "S3" and open it.
+
+**Step 2:** Click **Create bucket**.
+
+**Step 3:** Enter a bucket name. Bucket names must be globally unique across all AWS accounts. If you plan to use a custom domain, name the bucket after your domain (e.g. `www.yourapp.com`). Otherwise, any descriptive name works.
+
+**Step 4:** Choose a region close to your users. If most of your users are in Australia, pick `ap-southeast-2` (Sydney). If they are in the US, pick `us-east-1` (Virginia).
+
+**Step 5:** Uncheck **Block all public access**. S3 buckets are private by default, which is correct for most use cases. But since this bucket will serve a public website, you need to allow public read access. AWS will warn you. Acknowledge the warning.
+
+**Step 6:** Leave everything else as default and click **Create bucket**.
+
+<SecurityNote>
+  Only unblock public access on buckets that serve public website content. Every other bucket in
+  your account should keep public access blocked. A misconfigured S3 bucket is one of the most
+  common sources of data breaches on AWS.
+</SecurityNote>
+
+## Upload your build files
+
+**Step 1:** Click into your new bucket and click **Upload**.
+
+**Step 2:** Drag your entire build output folder contents (the files inside `build/` or `dist/`, not the folder itself) into the upload area.
+
+**Step 3:** Click **Upload** and wait for it to finish.
+
+## Enable static website hosting
+
+**Step 1:** In your bucket, go to the **Properties** tab.
+
+**Step 2:** Scroll down to **Static website hosting** and click **Edit**.
+
+**Step 3:** Enable static website hosting. Set the index document to `index.html`. If your framework generates a 404 page, set the error document too. For single-page apps (React Router, Vue Router), set the error document to `index.html` as well so client-side routing works.
+
+**Step 4:** Save changes. Note the **Bucket website endpoint** URL that appears. You will need it later.
+
+## Add a bucket policy for public read access
+
+Your bucket exists and has files in it, but nobody can read them yet. You need a bucket policy.
+
+**Step 1:** Go to the **Permissions** tab of your bucket.
+
+**Step 2:** Under **Bucket policy**, click **Edit** and paste this policy, replacing `your-bucket-name` with your actual bucket name:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "PublicReadGetObject",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::your-bucket-name/*"
+    }
+  ]
+}
+```
+
+**Step 3:** Save. Your site should now be accessible at the bucket website endpoint URL from the previous section.
+
+**What you should see:** Your website loading in the browser at the S3 endpoint URL.
+
+## Set up CloudFront
+
+Your site works, but it is slow for anyone not near your chosen AWS region, and it does not have HTTPS. CloudFront fixes both.
+
+**Step 1:** Search for "CloudFront" in the Console and open it.
+
+**Step 2:** Click **Create distribution**.
+
+**Step 3:** For **Origin domain**, select your S3 bucket from the dropdown. AWS may suggest using the S3 REST endpoint. Instead, use the **S3 website endpoint** (the one ending in `.s3-website-region.amazonaws.com`). This ensures CloudFront respects your index document settings.
+
+**Step 4:** Under **Default cache behaviour**, set **Viewer protocol policy** to **Redirect HTTP to HTTPS**.
+
+**Step 5:** Under **Settings**, leave the default CloudFront certificate for now (it gives you a `.cloudfront.net` domain with HTTPS).
+
+**Step 6:** Set the **Default root object** to `index.html`.
+
+**Step 7:** Click **Create distribution**. This takes 5-15 minutes to deploy globally.
+
+**What you should see:** A CloudFront domain name like `d1234abcdef.cloudfront.net`. After the status changes from "Deploying" to the last modified date, your site should be accessible at this URL with HTTPS.
+
+## Optional: connect a custom domain with Route 53
+
+If you want your own domain (e.g. `yourapp.com`) pointing to your CloudFront distribution:
+
+**Step 1:** Open Route 53 in the Console. If you do not already own a domain, you can register one through Route 53 (prices vary, typically $10-15 per year for a .com). If you own a domain elsewhere, you can either transfer it or point its nameservers to Route 53.
+
+**Step 2:** Create a hosted zone for your domain if one does not exist already.
+
+**Step 3:** Go back to your CloudFront distribution and click **Edit**. Under **Alternate domain names (CNAMEs)**, add your domain. Under **Custom SSL certificate**, click **Request certificate** to get a free TLS certificate from AWS Certificate Manager (ACM). The certificate must be created in `us-east-1` (Virginia) regardless of where your bucket is. CloudFront requires it.
+
+**Step 4:** After the certificate is validated (this can take a few minutes to a few hours depending on your DNS setup), go to Route 53 and create an A record for your domain. Choose **Alias** and point it to your CloudFront distribution.
+
+**What you should see:** Your site loading at your custom domain with a valid HTTPS certificate.
+
+## Updating your site
+
+When you make changes to your frontend, you need to rebuild, re-upload the files to S3, and then invalidate the CloudFront cache so visitors see the new version:
+
+```
+npm run build
+aws s3 sync ./build s3://your-bucket-name --delete
+aws cloudfront create-invalidation --distribution-id YOUR_DIST_ID --paths "/*"
+```
+
+This requires the AWS CLI, which you can install from [aws.amazon.com/cli](https://aws.amazon.com/cli). The `--delete` flag removes files from S3 that are no longer in your build output.
+
+For now, running these commands manually is fine. If you find yourself deploying frequently, you can automate this with a GitHub Action or a simple shell script. But that is a topic for after you have confirmed everything works.
+
+## What you have now
+
+A static frontend on AWS, served globally through CloudFront with HTTPS. This is the AWS equivalent of what Vercel gives you with a git push. It took considerably more effort, but you now have full control over caching, regional distribution, and access policies.
+
+If your app also has a backend, continue to Lesson 4.
