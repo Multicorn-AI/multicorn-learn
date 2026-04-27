@@ -6,25 +6,25 @@ import { CourseLandingHero, CourseLandingTopNav } from '@/components/CourseLandi
 import { LessonProgressHub } from '@/components/LessonProgress'
 import { isCourse3Enabled } from '@/lib/feature-flags'
 import { COURSE_3 } from '@/lib/course-3-config'
-import { COURSE_3_MOBILE } from '@/lib/course-3-mobile-config'
-import { getAllCourse3MobileLessons } from '@/lib/course-3-mobile'
+import { COURSE_3_AWS } from '@/lib/course-3-aws-config'
+import { getAllCourse3AwsLessons } from '@/lib/course-3-aws'
 
 export const metadata: Metadata = {
-  title: `${COURSE_3_MOBILE.title} | ${COURSE_3.title} | Multicorn Learn`,
-  description: COURSE_3_MOBILE.description,
+  title: `${COURSE_3_AWS.title} | ${COURSE_3.title} | Multicorn Learn`,
+  description: COURSE_3_AWS.description,
   openGraph: {
-    title: `${COURSE_3_MOBILE.title} | ${COURSE_3.title} | Multicorn Learn`,
-    description: COURSE_3_MOBILE.description,
+    title: `${COURSE_3_AWS.title} | ${COURSE_3.title} | Multicorn Learn`,
+    description: COURSE_3_AWS.description,
     type: 'website',
   },
 }
 
-export default function Course3MobilePage() {
+export default function Course3AwsPage() {
   if (!isCourse3Enabled()) {
     redirect('/learn')
   }
 
-  const lessons = getAllCourse3MobileLessons()
+  const lessons = getAllCourse3AwsLessons()
   const hubItems = lessons.map((l) => ({
     slug: l.slug,
     title: l.meta.title,
@@ -74,7 +74,7 @@ export default function Course3MobilePage() {
             </li>
             <li>
               <span className="font-medium text-text-primary" aria-current="page">
-                {COURSE_3_MOBILE.title}
+                {COURSE_3_AWS.title}
               </span>
             </li>
           </ol>
@@ -83,27 +83,27 @@ export default function Course3MobilePage() {
         <CourseLandingHero
           variant="course-3"
           icon={<Rocket className="h-6 w-6" strokeWidth={1.5} />}
-          courseLabel="Course 3 - mobile track"
-          title={COURSE_3_MOBILE.title}
+          courseLabel="Course 3 - AWS track"
+          title={COURSE_3_AWS.title}
         >
-          <p className="text-lg leading-relaxed text-text-secondary">{COURSE_3_MOBILE.intro}</p>
+          <p className="text-lg leading-relaxed text-text-secondary">{COURSE_3_AWS.intro}</p>
         </CourseLandingHero>
 
         <section
           id="lessons"
           className="mx-auto w-full max-w-3xl px-4 pb-16"
-          aria-labelledby="c3-mobile-lessons-heading"
+          aria-labelledby="c3-aws-lessons-heading"
         >
           <h2
-            id="c3-mobile-lessons-heading"
+            id="c3-aws-lessons-heading"
             className="mb-6 text-2xl font-bold tracking-tight text-text-primary"
           >
             Lessons
           </h2>
           <LessonProgressHub
             lessons={hubItems}
-            basePath={COURSE_3_MOBILE.basePath}
-            storageKey={COURSE_3_MOBILE.progressStorageKey}
+            basePath={COURSE_3_AWS.basePath}
+            storageKey={COURSE_3_AWS.progressStorageKey}
             courseAccent="course-3"
           />
         </section>

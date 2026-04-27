@@ -7,6 +7,7 @@ import { LessonProgressHub } from '@/components/LessonProgress'
 import { PlatformPicker } from '@/components/PlatformPicker'
 import { isCourse3Enabled } from '@/lib/feature-flags'
 import { COURSE_3 } from '@/lib/course-3-config'
+import { COURSE_3_AWS } from '@/lib/course-3-aws-config'
 import { COURSE_3_MOBILE } from '@/lib/course-3-mobile-config'
 import { getAllCourse3Lessons } from '@/lib/course-3'
 
@@ -69,6 +70,32 @@ export default function Course3Page() {
               </Link>
               . You can also pick &quot;mobile app&quot; in the questions and we will send you
               there.
+            </p>
+          </div>
+        </section>
+
+        <section
+          className="mx-auto w-full max-w-3xl px-4 pb-10"
+          aria-labelledby="c3-aws-callout-heading"
+        >
+          <div className="rounded-lg border border-border bg-surface-secondary p-4 sm:p-5">
+            <h2
+              id="c3-aws-callout-heading"
+              className="text-sm font-semibold uppercase tracking-wide text-text-tertiary"
+            >
+              Outgrowing your host
+            </h2>
+            <p className="mt-2 text-text-secondary">
+              If you already have a live app on Vercel, Netlify, or Fly.io and you are thinking
+              about AWS or another large cloud, the{' '}
+              <Link
+                href={COURSE_3_AWS.basePath}
+                className="font-semibold text-course-3-accent underline decoration-course-3-accent/30 underline-offset-2 transition-colors hover:text-course-3-accent/90"
+              >
+                AWS and larger cloud track
+              </Link>{' '}
+              walks through an honest &quot;do you need this?&quot; first. You can also pick &quot;I
+              am thinking about AWS or a larger cloud&quot; in the questions below.
             </p>
           </div>
         </section>

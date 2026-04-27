@@ -97,3 +97,9 @@ export const course3MobileComponents = createCourse2Components(
   'course3_mobile_code',
   'text-course-3-accent',
 )
+
+/** Course 3 AWS track: same prose and code treatment, no Vercel/Netlify/Fly shortcodes. */
+export const course3AwsComponents = createCourse2Components(
+  'course3_aws_code',
+  'text-course-3-accent',
+)
