@@ -36,13 +36,13 @@ function course4PlatformCardUi(name: Course4PlatformName): {
       return {
         icon: <Users {...iconProps} />,
         accentClass:
-          'bg-indigo-500/10 border-indigo-500/20 hover:border-indigo-500/40 focus:ring-indigo-500/20',
+          'bg-[#6366f1]/10 border-[#6366f1]/20 hover:border-[#6366f1]/40 focus:ring-[#6366f1]/20',
       }
     case 'MindStudio':
       return {
         icon: <Sparkles {...iconProps} />,
         accentClass:
-          'bg-teal-500/10 border-teal-500/20 hover:border-teal-500/40 focus:ring-teal-500/20',
+          'bg-[#14b8a6]/10 border-[#14b8a6]/20 hover:border-[#14b8a6]/40 focus:ring-[#14b8a6]/20',
       }
     case 'n8n':
       return {

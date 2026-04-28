@@ -1,14 +1,17 @@
-import Link from 'next/link'
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
+import { Course4PlatformStubArticle } from '@/components/Course4PlatformStubArticle'
+import { course4PlatformStubCopy } from '@/lib/course-4-platform-stub-copy'
 import { isCourse4Enabled } from '@/lib/feature-flags'
 
+const copy = course4PlatformStubCopy.mindstudio
+
 export const metadata: Metadata = {
-  title: 'Course 4: MindStudio | Multicorn Learn',
-  description: 'MindStudio track for Course 4. Step-by-step lessons are coming soon.',
+  title: `Course 4: ${copy.name} | Multicorn Learn`,
+  description: `${copy.tagline} Overview for Course 4.`,
   openGraph: {
-    title: 'Course 4: MindStudio | Multicorn Learn',
-    description: 'MindStudio track for Course 4. Content coming soon.',
+    title: `Course 4: ${copy.name} | Multicorn Learn`,
+    description: copy.intro.slice(0, 160),
     type: 'website',
   },
 }
@@ -21,29 +24,7 @@ export default function Course4MindstudioPage() {
   return (
     <main className="flex min-h-screen flex-col items-center px-6 pb-20 pt-16 sm:pb-28 sm:pt-24">
       <div className="w-full max-w-content">
-        <Link
-          href="/learn/course-4"
-          className="mb-8 flex items-center gap-1.5 text-sm font-medium text-text-secondary transition-colors hover:text-text-primary"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            className="h-4 w-4"
-            aria-hidden="true"
-          >
-            <path
-              fillRule="evenodd"
-              d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z"
-              clipRule="evenodd"
-            />
-          </svg>
-          Course 4 overview
-        </Link>
-        <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
-          MindStudio
-        </h1>
-        <p className="mt-4 text-lg text-text-secondary">Coming soon</p>
+        <Course4PlatformStubArticle platformKey="mindstudio" />
       </div>
     </main>
   )

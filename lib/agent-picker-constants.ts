@@ -26,12 +26,12 @@ export const AGENT_RECOMMENDATIONS: Record<AgentSlug, AgentRecommendation> = {
   dust: {
     name: 'Dust',
     href: '/learn/course-4/dust',
-    accentClass: 'bg-indigo-500/10 text-indigo-500 border-indigo-500/20',
+    accentClass: 'bg-[#6366f1]/10 text-[#4f46e5] border-[#6366f1]/20',
   },
   mindstudio: {
     name: 'MindStudio',
     href: '/learn/course-4/mindstudio',
-    accentClass: 'bg-teal-500/10 text-teal-500 border-teal-500/20',
+    accentClass: 'bg-[#14b8a6]/10 text-[#0d9488] border-[#14b8a6]/20',
   },
   n8n: {
     name: 'n8n',

@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useCallback, useEffect, useId, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { flushSync } from 'react-dom'
 import {
   AGENT_PICKER_QUESTIONS,
@@ -18,12 +18,14 @@ type PickerPhase = 'q1' | 'q2' | 'q3' | 'result'
 
 const PHASE_ORDER: readonly PickerPhase[] = ['q1', 'q2', 'q3', 'result']
 
+/** Stable ids (single AgentPicker on /learn/course-4) avoid useId SSR/client skew and hydration errors. */
+const AP_ROOT = 'course4-agent-picker'
+
 function phaseIndex(phase: PickerPhase): number {
   return PHASE_ORDER.indexOf(phase)
 }
 
 export function AgentPicker() {
-  const rootId = useId()
   const [phase, setPhase] = useState<PickerPhase>('q1')
   const [, setAnswers] = useState<Partial<AgentPickerAnswers>>({})
   const [transitioning, setTransitioning] = useState(false)
@@ -121,7 +123,7 @@ export function AgentPicker() {
 
   const questionIndex = phase === 'result' ? -1 : phaseIndex(phase)
   const currentQuestion = questionIndex >= 0 ? AGENT_PICKER_QUESTIONS[questionIndex] : undefined
-  const headingId = `${rootId}-heading`
+  const headingId = `${AP_ROOT}-heading`
 
   const stepMotionClasses = transitioning
     ? 'tool-picker-step translate-y-1 opacity-0'
@@ -157,9 +159,9 @@ export function AgentPicker() {
         className={`transition-[opacity,transform] duration-200 ease-in-out ${stepMotionClasses}`}
       >
         {phase !== 'result' && currentQuestion && (
-          <div role="group" aria-labelledby={`${rootId}-q-${currentQuestion.id}`}>
+          <div role="group" aria-labelledby={`${AP_ROOT}-q-${currentQuestion.id}`}>
             <p
-              id={`${rootId}-q-${currentQuestion.id}`}
+              id={`${AP_ROOT}-q-${currentQuestion.id}`}
               className="mb-4 text-base font-medium text-text-primary"
             >
               {currentQuestion.label}
