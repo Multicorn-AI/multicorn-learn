@@ -16,20 +16,20 @@ function getBaseUrl(): string {
 }
 
 export interface ThumbsFeedbackPayload {
-  readonly course_slug: string
-  readonly lesson_slug: string
-  readonly feedback_type: 'thumbs'
-  readonly rating_value: 0 | 1
+  readonly courseSlug: string
+  readonly lessonSlug: string
+  readonly feedbackType: 'thumbs'
+  readonly ratingValue: 0 | 1
 }
 
 export interface StarFeedbackPayload {
-  readonly course_slug: string
-  readonly lesson_slug?: string
-  readonly feedback_type: 'star_rating'
-  readonly rating_value: 1 | 2 | 3 | 4 | 5
-  readonly text_positive?: string
-  readonly text_negative?: string
-  readonly would_recommend?: boolean
+  readonly courseSlug: string
+  readonly lessonSlug?: string
+  readonly feedbackType: 'star_rating'
+  readonly ratingValue: 1 | 2 | 3 | 4 | 5
+  readonly textPositive?: string
+  readonly textNegative?: string
+  readonly wouldRecommend?: boolean
   readonly email?: string
   readonly website?: string
 }
