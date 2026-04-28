@@ -59,6 +59,16 @@ export default function AgentSafetyGuidesIndexPage() {
             From &quot;what is an agent?&quot; to what to check before you give one access to your
             tools. Plain language, built to pair with Multicorn Shield.
           </p>
+          <p className="mx-auto mt-4 max-w-2xl text-sm text-text-secondary">
+            Looking for agent platforms?{' '}
+            <Link
+              href="/learn/agent-platforms"
+              className="font-medium text-primary underline-offset-4 hover:underline focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+            >
+              See the comparison guide
+            </Link>
+            .
+          </p>
         </div>
 
         {guides.length === 0 ? (

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { Bot, Building2, Sparkles, Users, Workflow } from 'lucide-react'
 import { AgentPicker } from '@/components/AgentPicker'
@@ -158,6 +159,15 @@ export default function Course4Page() {
                 )
               })}
             </div>
+            <p className="mt-8 max-w-2xl text-sm text-text-secondary">
+              Looking at other options?{' '}
+              <Link
+                href="/learn/agent-platforms"
+                className="font-medium text-primary underline-offset-4 hover:underline focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+              >
+                See all 8 platforms in the comparison guide.
+              </Link>
+            </p>
           </section>
         </div>
       </div>
