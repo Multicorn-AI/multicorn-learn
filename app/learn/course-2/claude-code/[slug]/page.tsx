@@ -12,8 +12,10 @@ import {
 import { getTrackConfig } from '@/lib/course-2-track-config'
 import { extractTableOfContents } from '@/lib/learn'
 import { claudeCodeTrackComponents } from '@/lib/mdx-course2-components'
+import { CourseFeedbackForm } from '@/components/CourseFeedbackForm'
 import { LessonCompleteButton } from '@/components/LessonProgress'
 import { LessonNavigation } from '@/components/LessonNavigation'
+import { LessonThumbsFeedback } from '@/components/LessonThumbsFeedback'
 import { MobileTableOfContents } from '@/components/MobileTableOfContents'
 import { TableOfContents } from '@/components/TableOfContents'
 import { isCourse2Enabled } from '@/lib/feature-flags'
@@ -228,6 +230,21 @@ export default async function ClaudeCodeLessonPage({ params }: ClaudeCodeLessonP
                 storageKey={trackConfig.progressStorageKey}
                 courseAccent="course-2"
               />
+
+              <LessonThumbsFeedback
+                courseSlug="course-2-claude-code"
+                lessonSlug={slug}
+                courseAccent="course-2"
+              />
+
+              {!navigation.next ? (
+                <CourseFeedbackForm
+                  courseName={trackConfig.title}
+                  courseSlug="course-2-claude-code"
+                  lessonSlug={slug}
+                  courseAccent="course-2"
+                />
+              ) : null}
 
               <LessonNavigation
                 basePath={trackConfig.basePath}

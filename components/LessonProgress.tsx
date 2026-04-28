@@ -19,8 +19,8 @@ const completeButtonAccent: Record<LearnCourseAccent, { hoverBorder: string; rin
     ring: 'focus:ring-course-3-accent/20',
   },
   'course-4': {
-    hoverBorder: 'hover:border-violet-500/30',
-    ring: 'focus:ring-violet-500/20',
+    hoverBorder: 'hover:border-course-4-accent/30',
+    ring: 'focus:ring-course-4-accent/20',
   },
 }
 
@@ -38,8 +38,8 @@ const hubAccent: Record<LearnCourseAccent, { hoverBorder: string; arrow: string 
     arrow: 'text-course-3-accent',
   },
   'course-4': {
-    hoverBorder: 'hover:border-violet-500/30',
-    arrow: 'text-violet-600',
+    hoverBorder: 'hover:border-course-4-accent/30',
+    arrow: 'text-course-4-accent',
   },
 }
 

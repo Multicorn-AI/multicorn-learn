@@ -12,8 +12,10 @@ import {
 import { COURSE_3 } from '@/lib/course-3-config'
 import { extractTableOfContents } from '@/lib/learn'
 import { course3Components } from '@/lib/mdx-course2-components'
+import { CourseFeedbackForm } from '@/components/CourseFeedbackForm'
 import { LessonCompleteButton } from '@/components/LessonProgress'
 import { LessonNavigation } from '@/components/LessonNavigation'
+import { LessonThumbsFeedback } from '@/components/LessonThumbsFeedback'
 import { MobileTableOfContents } from '@/components/MobileTableOfContents'
 import { TableOfContents } from '@/components/TableOfContents'
 import { LessonPlatformProvider } from '@/components/LessonPlatformProvider'
@@ -216,6 +218,21 @@ export default async function Course3LessonPage({ params }: Course3LessonPagePro
                   storageKey={COURSE_3.progressStorageKey}
                   courseAccent="course-3"
                 />
+
+                <LessonThumbsFeedback
+                  courseSlug="course-3"
+                  lessonSlug={slug}
+                  courseAccent="course-3"
+                />
+
+                {!navigation.next ? (
+                  <CourseFeedbackForm
+                    courseName={COURSE_3.title}
+                    courseSlug="course-3"
+                    lessonSlug={slug}
+                    courseAccent="course-3"
+                  />
+                ) : null}
 
                 <LessonNavigation
                   basePath={COURSE_3.basePath}

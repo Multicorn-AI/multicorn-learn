@@ -22,9 +22,9 @@ const navAccentClasses: Record<
     ring: 'focus:ring-course-3-accent/20',
   },
   'course-4': {
-    card: 'hover:border-violet-500/30',
-    emphasis: 'group-hover:text-violet-600',
-    ring: 'focus:ring-violet-500/20',
+    card: 'hover:border-course-4-accent/30',
+    emphasis: 'group-hover:text-course-4-accent',
+    ring: 'focus:ring-course-4-accent/20',
   },
 }
 

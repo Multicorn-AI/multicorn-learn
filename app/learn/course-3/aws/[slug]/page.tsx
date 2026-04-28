@@ -13,8 +13,10 @@ import { COURSE_3 } from '@/lib/course-3-config'
 import { COURSE_3_AWS } from '@/lib/course-3-aws-config'
 import { extractTableOfContents } from '@/lib/learn'
 import { course3AwsComponents } from '@/lib/mdx-course2-components'
+import { CourseFeedbackForm } from '@/components/CourseFeedbackForm'
 import { LessonCompleteButton } from '@/components/LessonProgress'
 import { LessonNavigation } from '@/components/LessonNavigation'
+import { LessonThumbsFeedback } from '@/components/LessonThumbsFeedback'
 import { MobileTableOfContents } from '@/components/MobileTableOfContents'
 import { TableOfContents } from '@/components/TableOfContents'
 import { isCourse3Enabled } from '@/lib/feature-flags'
@@ -226,6 +228,21 @@ export default async function Course3AwsLessonPage({ params }: Course3AwsLessonP
                 storageKey={COURSE_3_AWS.progressStorageKey}
                 courseAccent="course-3"
               />
+
+              <LessonThumbsFeedback
+                courseSlug="course-3-aws"
+                lessonSlug={slug}
+                courseAccent="course-3"
+              />
+
+              {!navigation.next ? (
+                <CourseFeedbackForm
+                  courseName={COURSE_3_AWS.title}
+                  courseSlug="course-3-aws"
+                  lessonSlug={slug}
+                  courseAccent="course-3"
+                />
+              ) : null}
 
               <LessonNavigation
                 basePath={COURSE_3_AWS.basePath}
