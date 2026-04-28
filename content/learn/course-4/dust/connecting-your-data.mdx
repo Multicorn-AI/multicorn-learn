@@ -1,0 +1,55 @@
+---
+title: 'Connecting your company data'
+description: 'Sign up for Dust, connect your first data source, and understand how spaces control access.'
+order: 1
+estimatedMinutes: 12
+---
+
+## What you will do
+
+Create a Dust workspace, connect one data source (Slack, Notion, Google Drive, or another tool your team uses), and learn how spaces control which agents can see which data.
+
+## Sign up
+
+Go to [dust.tt](https://dust.tt) and start a free 14-day trial. No credit card required. You will land on the Dust homepage with a chat input bar, your conversation history, and an agent library.
+
+Dust comes with global agents already available: @dust (searches all your connected data), @gpt, @claude, @gemini, and @mistral (direct access to those models). You do not need to build anything to start using them.
+
+## Connect a data source
+
+As a workspace admin, go to the data sources settings. Dust supports three types of connections.
+
+1. **Managed connections.** Your main tools: Slack, Notion, Google Drive, SharePoint, GitHub, Confluence. These sync automatically so the agent always has recent data.
+2. **Public websites.** Ingest content from public sites using Dust's web crawler. You control the refresh cadence.
+3. **Folders.** Upload static files (PDFs, spreadsheets, documents) directly into Dust.
+
+For your first connection, pick the tool where your team's most useful reference material lives. If your team documents processes in Notion, connect Notion. If everything lives in Google Drive, connect Drive.
+
+Follow the OAuth flow to authorise the connection. Dust will begin syncing the data. This can take a few minutes depending on the volume.
+
+## Understand spaces
+
+Connected data is not automatically available to every agent and every person. Dust uses **spaces** to control access.
+
+- **Public spaces** make data available to everyone in the workspace.
+- **Private spaces** restrict access to specific teams or roles.
+
+When you connect a data source, you choose which space it belongs to. Start with a space scoped to your team. You can widen access later.
+
+## Test with @dust
+
+Open the chat input and type a question that requires information from the data source you just connected. Mention @dust before your question.
+
+> @dust What is our refund policy?
+
+If Dust finds the answer in your connected Notion pages (or wherever your data lives), it will cite the source. If it cannot find the answer, it will say so.
+
+## What you should see
+
+A connected data source syncing into your workspace, a space controlling who can access it, and @dust returning answers grounded in your actual company data.
+
+<SecurityNote>
+  Dust is SOC 2 Type II compliant and never trains models on your data. But the data you connect is
+  sent to the model provider as context when an agent answers a question. Connect only the data
+  sources the agent needs. Spaces are your primary access control. Use them deliberately.
+</SecurityNote>

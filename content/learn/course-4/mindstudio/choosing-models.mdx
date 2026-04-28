@@ -1,0 +1,42 @@
+---
+title: 'Choosing and combining models'
+description: 'Pick the right AI model for each step and use multiple models in the same workflow.'
+order: 2
+estimatedMinutes: 14
+---
+
+## What you will do
+
+Learn how to select different models for different steps in a workflow, and when it makes sense to combine them.
+
+## The model library
+
+MindStudio gives you access to over 200 models from OpenAI, Anthropic, Google, Mistral, Meta, and others. Each Generate Text block can use a different model.
+
+The key trade-off is cost versus capability.
+
+- **Fast and cheap.** GPT-4o mini, Claude Haiku, Gemini Flash. Good for classification, formatting, simple summaries. Costs fractions of a cent per run.
+- **Balanced.** GPT-4o, Claude Sonnet, Gemini Pro. Good for general reasoning, content creation, data analysis. A few cents per run.
+- **Deep reasoning.** Claude Opus, GPT-5, o-series models. Good for complex multi-step analysis, legal review, financial modelling. Expensive per run.
+
+## Use the right model for each step
+
+A common mistake is using the most powerful (and expensive) model for every step. Instead, match the model to the task.
+
+Example workflow with three Generate Text blocks:
+
+1. **Classify the input** (is this a bug report, a feature request, or a billing question?). Use GPT-4o mini. Fast, cheap, and classification does not need deep reasoning.
+2. **Draft a response** based on the classification. Use Claude Sonnet. Good at natural language, balanced cost.
+3. **Review the draft for tone and accuracy.** Use Claude Opus only if the stakes are high (customer-facing email). Otherwise, skip this step.
+
+## Compare models side by side
+
+MindStudio lets you test multiple models in parallel on the same input. Use this to find the cheapest model that produces acceptable quality for each step. Start cheap and move up only if the output quality drops.
+
+## Track costs
+
+In the analytics dashboard, you can see the cost per run for each agent. If a workflow costs more than you expected, check which Generate Text blocks are using expensive models and consider swapping them.
+
+## What you should see
+
+A workflow that uses different models for different steps, with cost-appropriate choices at each stage. Your per-run cost should be lower than if you used a single expensive model throughout.

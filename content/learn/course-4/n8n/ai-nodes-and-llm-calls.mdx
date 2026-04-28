@@ -1,0 +1,60 @@
+---
+title: 'AI nodes and LLM calls'
+description: "Use n8n's built-in AI nodes for memory, tools, and multi-step reasoning."
+order: 3
+estimatedMinutes: 14
+---
+
+## What you will do
+
+Add memory, tools, and structured output to your AI agent using n8n's native AI nodes.
+
+## The AI node ecosystem
+
+n8n 2.0 shipped with 70+ AI nodes built on LangChain. The most important ones for agent workflows:
+
+- **AI Agent.** The orchestrator. Receives a prompt, decides which tools to use, and generates a response.
+- **Chat Model.** The language model (OpenAI, Anthropic, Google, etc.).
+- **Conversation Memory.** Stores recent messages so the agent remembers context across turns.
+- **Tools.** Nodes that the agent can call: web search, database queries, API calls, calculators.
+
+## Add memory
+
+Without memory, the agent forgets everything between messages. To add memory:
+
+1. On the AI Agent node, find the **Memory** connection at the bottom.
+2. Click **+** and add a **Window Buffer Memory** node. This stores the last N messages in the conversation.
+3. Configure the buffer size. 10-20 messages is usually enough for maintaining context without consuming too many tokens.
+
+Now when you chat with the agent, it remembers what you said earlier in the conversation.
+
+## Add a tool
+
+Tools give the agent the ability to do things beyond generating text. For example, search the web.
+
+1. On the AI Agent node, find the **Tools** connection.
+2. Click **+** and search for a tool node. For example, **SerpAPI** (web search) or **Calculator** or **HTTP Request** (call any API).
+3. Configure the tool with its credentials.
+
+The AI Agent node will now decide whether to use the tool based on the user's question. If someone asks "What is the weather in Sydney?", the agent will call the web search tool, read the result, and incorporate it into its response.
+
+## Structure the output
+
+By default, the agent returns free-form text. For workflows that need structured data (to feed into a spreadsheet, CRM, or database), use an output parser.
+
+Add a **Structured Output Parser** node after the AI Agent node. Define the schema (fields and types). The agent's response is parsed into a JSON object that downstream nodes can use.
+
+## Test it
+
+Chat with the agent. Ask a question that requires the tool (a web search question). Then ask a follow-up that relies on memory (referencing something from your first message). Both should work.
+
+## What you should see
+
+An AI agent that remembers conversation history, uses tools to look up information, and optionally produces structured output.
+
+<SecurityNote>
+  Tools give the agent the ability to take real actions: search the web, call APIs, read files. Each
+  tool you add widens the agent's capabilities. Only add tools the agent needs for its specific job.
+  A web search tool is relatively safe. An HTTP Request tool that can call any URL is powerful but
+  risky. Scope the allowed URLs if possible.
+</SecurityNote>

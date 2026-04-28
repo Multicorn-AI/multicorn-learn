@@ -1,0 +1,51 @@
+---
+title: 'Error handling and branching'
+description: 'Add conditional paths and handle failures so your workflow does not break silently.'
+order: 4
+estimatedMinutes: 12
+---
+
+## What you will do
+
+Add error handling and conditional branching to make your workflow resilient.
+
+## Why error handling matters
+
+Workflows run unattended. If a node fails (the API is down, the model returns an unexpected response, the input is malformed), the workflow stops silently unless you handle the error. In production, a silent failure means missed reports, unsent messages, and data that never gets processed.
+
+## Add an error path
+
+Every node in n8n has an error output. By default, errors stop the workflow. To handle them:
+
+1. Click the **Settings** tab on a node.
+2. Enable **Continue on Fail.** The node will pass the error information to the next node instead of stopping.
+3. Add an **IF** node after the failing node. Check whether the output contains an error. If yes, route to an error-handling path (send a Slack notification, log the error, retry).
+
+## Add conditional branching
+
+Use the **IF** node or **Switch** node to route the workflow based on conditions.
+
+Example: After the AI Agent classifies an email, use a Switch node to route:
+
+- "bug" → Create a Jira ticket
+- "billing" → Forward to the finance team's Slack channel
+- "spam" → Archive and do nothing
+
+The Switch node checks the value of a variable and sends the data down the matching path.
+
+## Retry logic
+
+For transient failures (API timeout, rate limit), add a retry loop:
+
+1. After a node that might fail, add an IF node checking for an error.
+2. If there is an error, route back to the original node.
+3. Add a **Wait** node before the retry to avoid hammering the API.
+4. Add a counter variable that stops retrying after 3 attempts and routes to the error notification path instead.
+
+## Test it
+
+Deliberately cause a failure (use an invalid API key, send malformed input) and check that the error-handling path runs correctly. Verify that the error notification arrives where you expect.
+
+## What you should see
+
+A workflow that handles failures gracefully: errors are caught, logged, and reported instead of silently stopping the workflow.

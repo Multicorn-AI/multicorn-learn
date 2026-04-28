@@ -1,0 +1,54 @@
+---
+title: 'Creating your first agent'
+description: 'Sign up, name your agent, write its instructions, and have your first conversation.'
+order: 1
+estimatedMinutes: 10
+---
+
+## What you will do
+
+Create a free AutoHive account and build a single agent that can answer a question using instructions you write.
+
+## Sign up
+
+Go to [autohive.com](https://www.autohive.com) and click **Try for free**. You will land in a workspace with a chat interface and an empty agent list.
+
+No credit card is needed. The free tier gives you 100K monthly credits, 1 GB of storage, and unlimited seats.
+
+## Create an agent
+
+Click **NEW agent** in the sidebar. You will see four fields.
+
+1. **Name.** Give it a short, descriptive name. If you are building a weekly report agent, call it "Weekly Report." If you are triaging email, call it "Inbox Triage." The name becomes the handle your team uses to talk to it.
+2. **Description.** One sentence explaining what the agent does. This helps teammates find it later.
+3. **Model.** AutoHive offers several models. For a first build, leave the default. You can change it later if you want to experiment.
+4. **Instructions.** This is the most important field. It tells the agent what to do, what not to do, and what good output looks like.
+
+## Write your first instructions
+
+Think of instructions as a job description for someone who is very smart but knows nothing about your company. Be specific.
+
+A weak instruction:
+
+> Help me with reports.
+
+A stronger instruction:
+
+> You are a reporting assistant for a marketing team. When I ask for a weekly summary, pull the key metrics from the connected data source, list the top three changes compared to last week, and flag anything that dropped by more than 10%. Keep the summary under 200 words. Do not make up numbers. If you do not have the data, say so.
+
+Include three things in every instruction set: what the agent should do, what it should not do, and an example of what good output looks like.
+
+## Test it
+
+Type a message in the chat window. Ask the agent to do the thing you described in the instructions. Read the response. If it misses the mark, go back to the instructions and add more detail. This loop (instruct, test, refine) is how every agent gets better.
+
+## What you should see
+
+A named agent in your workspace that responds to your messages and follows the instructions you wrote. The output will not be perfect yet. That is expected. The next lesson connects real data so the agent has something to work with.
+
+<SecurityNote>
+  AutoHive does not train models on your data. Your workspace content stays private. But the
+  instructions you write are sent to the model provider (OpenAI, Anthropic, or whichever model you
+  chose) as part of the prompt. Do not paste passwords, API keys, or sensitive credentials into the
+  instructions field.
+</SecurityNote>

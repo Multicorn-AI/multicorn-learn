@@ -1,0 +1,64 @@
+---
+title: 'Building your first agent'
+description: 'Create a custom agent with instructions, knowledge sources, and a test conversation.'
+order: 2
+estimatedMinutes: 14
+---
+
+## What you will do
+
+Build a custom agent from scratch using Dust's agent builder and Sidekick, the built-in helper that drafts instructions for you.
+
+## Open the agent builder
+
+Click **Create** from the Dust homepage, then select **Start from scratch.** The agent builder opens with empty fields on the left and Sidekick's conversation panel on the right.
+
+Sidekick will ask: "What should this agent do?"
+
+## Describe the agent's job to Sidekick
+
+Be specific. A vague description produces a vague agent. Compare:
+
+Weak: "Help me with clients."
+
+Stronger: "I want an agent that prepares me for client meetings. For any client I name, it should pull recent interactions from Notion, open support tickets, and deal status from HubSpot. It should produce a one-page summary I can read in five minutes."
+
+Sidekick will draft instructions and suggest knowledge sources based on your description. Review them, edit anything that does not match your intent, and iterate until the preview behaves as expected.
+
+## Configure instructions
+
+Instructions are the core of your agent. They define, in natural language:
+
+- **Role.** What the agent is. ("You are a client preparation assistant.")
+- **Process.** What steps it should follow. ("First search for the client name in Notion. Then check HubSpot for deal status.")
+- **Tone.** How it should communicate. ("Be concise. Use bullet points. No filler.")
+- **Constraints.** What it must not do. ("Never fabricate information. If you cannot find data, say so.")
+
+## Add knowledge sources
+
+In the **Capabilities and Knowledge** section, connect the data sources your agent needs. Select specific folders or channels, not your entire knowledge base. The more focused the selection, the better the results.
+
+Add a description of each data source. This helps the agent understand when to search it.
+
+> "This Notion folder contains all client meeting notes from 2025 onward. Use it to find recent interactions with a named client."
+
+## Set the handle and visibility
+
+- **Handle.** Choose a clear name: @clientPrep, @askHR, @weeklyDigest. Users will type @name to call the agent.
+- **Published vs unpublished.** A published agent is visible to everyone in the workspace (if they have access to its data sources). An unpublished agent is visible only to you and any editors you add.
+
+Start unpublished while you are testing.
+
+## Test in the preview
+
+Use the preview area next to the builder. Ask the agent several questions, including edge cases. If it gives a wrong answer, update the instructions or adjust the knowledge sources and test again.
+
+## What you should see
+
+A custom agent that responds to questions by searching your connected data sources and following the instructions you wrote. The preview conversation should show citations from your actual documents.
+
+<SecurityNote>
+  Published agents are visible to your whole workspace. Before publishing, verify that the data
+  sources you connected do not contain information that should be restricted to a smaller group. Use
+  spaces to control this.
+</SecurityNote>

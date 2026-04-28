@@ -1,0 +1,53 @@
+---
+title: 'Multi-agent workflows'
+description: 'Chain agents in a conversation, use sub-agents, and automate recurring tasks with triggers.'
+order: 4
+estimatedMinutes: 14
+---
+
+## What you will do
+
+Use multiple agents in a single conversation, set up automated triggers, and learn when to chain agents versus when to use a single agent with multiple tools.
+
+## Call multiple agents in one conversation
+
+In Dust, you can mention more than one agent in the same message. Each agent processes the query independently and returns its own answer.
+
+> @gpt @claude Explain the pros and cons of usage-based pricing for a 20-person SaaS team.
+
+This is useful for benchmarking: you see how different models approach the same question.
+
+## Chain agents across a conversation
+
+You can also chain agents sequentially in a single conversation. Because all agents in a conversation share the same context, Agent B can build on what Agent A produced.
+
+> @accountSummary Give me a summary of Acme Corp.
+>
+> (Agent responds with the summary)
+>
+> @emailFollowup Draft a follow-up email based on the summary above.
+
+The email agent sees the account summary in the conversation history and uses it to write a relevant email.
+
+## Use triggers for automation
+
+Dust supports automated triggers that call an agent without you typing a message.
+
+- **Slack triggers.** Link an agent to a Slack channel. Every time someone posts in that channel, the agent processes the message. Useful for auto-triaging support requests or answering FAQs.
+- **Scheduled triggers.** Set an agent to run at a specific time (daily, weekly) with a predefined prompt.
+
+To set up a Slack trigger, go to your agent's settings, find **Slack preferences**, and click **Manage channels.** Select the channel where the agent should listen.
+
+## When to chain versus when to use one agent
+
+Use a single agent with multiple tools when the task is a single coherent job (research a client, then summarise, then format). Use multiple agents when the tasks require different specialisations, different data access, or different models.
+
+Rule of thumb: if you find yourself writing instructions that say "first do X, then do Y, then do Z" and X, Y, Z require different data sources, split them into separate agents.
+
+## Test it
+
+Set up a two-agent chain in a conversation. Verify that the second agent correctly uses the output of the first. If you set up a Slack trigger, post a test message in the channel and check the agent's response.
+
+## What you should see
+
+Agents working together across a conversation, with each one contributing its speciality. If you set up a trigger, messages in the Slack channel should get automatic responses from the agent.

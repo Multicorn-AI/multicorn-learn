@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { ExternalLink } from 'lucide-react'
 import {
   course4PlatformStubCopy,
   course4PlatformTaglineClass,
@@ -62,14 +63,6 @@ export function Course4PlatformStubArticle({
       <p className={`mt-3 text-lg font-medium leading-snug ${taglineClass}`}>{p.tagline}</p>
       <p className="mt-6 leading-relaxed text-text-secondary">{p.intro}</p>
 
-      <div className="mb-8 rounded-lg border border-primary/20 bg-primary/5 px-5 py-4">
-        <p className="text-sm text-text-secondary">
-          <strong className="text-text-primary">Guided lessons are on the way.</strong> The
-          step-by-step build for this platform is not ready yet. The profile below will help you get
-          started on your own, and the full track will replace this page when it ships.
-        </p>
-      </div>
-
       <h2 className="mb-3 mt-10 text-2xl font-bold tracking-tight text-text-primary sm:text-3xl">
         What {p.name} does
       </h2>
@@ -104,9 +97,11 @@ export function Course4PlatformStubArticle({
           href={p.url}
           target="_blank"
           rel="noopener noreferrer"
-          className={`font-semibold underline-offset-2 transition-colors hover:underline ${taglineClass}`}
+          className="inline-flex items-center gap-1.5 rounded-sm font-medium text-primary underline decoration-primary/40 underline-offset-4 transition-colors hover:text-primary-dark hover:decoration-primary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
         >
           Visit {p.name}
+          <ExternalLink className="h-4 w-4 shrink-0 text-primary" aria-hidden strokeWidth={2} />
+          <span className="sr-only">(opens in a new tab)</span>
         </a>
       </p>
     </article>
