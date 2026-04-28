@@ -1,14 +1,22 @@
 /**
  * Data and scoring for the Course 3 platform picker. Web answers pick a hosting platform;
  * choosing "mobile app" on Q1 short-circuits to the mobile deployment track under Course 3;
- * "thinking about AWS" short-circuits to the AWS extension track.
+ * "thinking about AWS" short-circuits to the AWS extension track;
+ * SDK / CLI / library on Q1 short-circuits to the npm publishing track.
  */
 
-export type Q1Answer = 'frontend' | 'backend' | 'not_sure' | 'mobile_app' | 'thinking_about_aws'
+export type Q1Answer =
+  | 'frontend'
+  | 'backend'
+  | 'not_sure'
+  | 'mobile_app'
+  | 'thinking_about_aws'
+  | 'npm_package'
+
 export type Q2Answer = 'free' | 'can_pay' | 'paid_plan'
 export type Q3Answer = 'fine' | 'follow' | 'not_comfortable'
 
-/** Answers for the three-question web hosting path (Q1 is never `mobile_app` or `thinking_about_aws` here). */
+/** Answers for the three-question web hosting path (Q1 is never `mobile_app`, `thinking_about_aws`, or `npm_package` here). */
 export interface WebPlatformPickerAnswers {
   readonly q1: 'frontend' | 'backend' | 'not_sure'
   readonly q2: Q2Answer
@@ -70,6 +78,10 @@ export const PLATFORM_PICKER_QUESTIONS: readonly PlatformPickerQuestion[] = [
       { id: 'mobile_app', label: 'A mobile app (iOS / Android)' },
       { id: 'backend', label: 'A backend API or service' },
       {
+        id: 'npm_package',
+        label: 'I built an SDK, CLI, or library for other developers',
+      },
+      {
         id: 'thinking_about_aws',
         label: 'I am thinking about AWS or a larger cloud',
       },
@@ -126,16 +138,42 @@ export const AWS_TRACK_PICKER_RESULT: AwsTrackPickerResult = {
   accentClass: 'bg-course-3-accent/10',
 }
 
+export type NpmTrackPickerResult = {
+  readonly kind: 'npm'
+  readonly name: string
+  readonly reason: string
+  readonly accentClass: string
+}
+
+export const NPM_TRACK_PICKER_RESULT: NpmTrackPickerResult = {
+  kind: 'npm',
+  name: 'Publishing to npm',
+  reason:
+    'If other developers install what you built, your releases go through npm. The npm publishing track covers account setup, semver, CHANGELOG discipline, and the same release posture Multicorn uses for Shield.',
+  accentClass: 'bg-course-3-accent/10',
+}
+
+export type AnyTrackPickerResult =
+  | MobileTrackPickerResult
+  | AwsTrackPickerResult
+  | NpmTrackPickerResult
+
 export function isMobileTrackPickerResult(
-  r: PlatformRecommendation | MobileTrackPickerResult | AwsTrackPickerResult,
+  r: PlatformRecommendation | AnyTrackPickerResult,
 ): r is MobileTrackPickerResult {
   return 'kind' in r && r.kind === 'mobile'
 }
 
 export function isAwsTrackPickerResult(
-  r: PlatformRecommendation | MobileTrackPickerResult | AwsTrackPickerResult,
+  r: PlatformRecommendation | AnyTrackPickerResult,
 ): r is AwsTrackPickerResult {
   return 'kind' in r && r.kind === 'aws'
+}
+
+export function isNpmTrackPickerResult(
+  r: PlatformRecommendation | AnyTrackPickerResult,
+): r is NpmTrackPickerResult {
+  return 'kind' in r && r.kind === 'npm'
 }
 
 /**

@@ -103,3 +103,9 @@ export const course3AwsComponents = createCourse2Components(
   'course3_aws_code',
   'text-course-3-accent',
 )
+
+/** Course 3 npm publishing track: same prose and code treatment as AWS track. */
+export const course3NpmComponents = createCourse2Components(
+  'course3_npm_code',
+  'text-course-3-accent',
+)
