@@ -62,6 +62,14 @@ export function Course4PlatformStubArticle({
       <p className={`mt-3 text-lg font-medium leading-snug ${taglineClass}`}>{p.tagline}</p>
       <p className="mt-6 leading-relaxed text-text-secondary">{p.intro}</p>
 
+      <div className="mb-8 rounded-lg border border-primary/20 bg-primary/5 px-5 py-4">
+        <p className="text-sm text-text-secondary">
+          <strong className="text-text-primary">Guided lessons are on the way.</strong> The
+          step-by-step build for this platform is not ready yet. The profile below will help you get
+          started on your own, and the full track will replace this page when it ships.
+        </p>
+      </div>
+
       <h2 className="mb-3 mt-10 text-2xl font-bold tracking-tight text-text-primary sm:text-3xl">
         What {p.name} does
       </h2>
