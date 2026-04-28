@@ -1,0 +1,49 @@
+---
+title: 'Triggers and scheduling'
+description: 'Start workflows from webhooks, email, schedules, or other events.'
+order: 2
+estimatedMinutes: 10
+---
+
+## What you will do
+
+Replace the Chat Trigger with other trigger types so your workflow runs automatically.
+
+## Trigger types
+
+n8n offers many trigger nodes. The most common for agent workflows:
+
+- **Schedule Trigger.** Runs the workflow at a set time (every hour, every day at 9am, every Monday).
+- **Webhook Trigger.** Runs when an external service sends an HTTP request to a URL that n8n provides.
+- **Email Trigger (IMAP).** Runs when a new email arrives in a specific inbox.
+- **App-specific triggers.** Gmail, Slack, Airtable, Notion, and others have dedicated trigger nodes that fire on specific events.
+
+## Replace the Chat Trigger with a Schedule Trigger
+
+1. Delete the Chat Trigger node (or disconnect it).
+2. Add a **Schedule Trigger** node.
+3. Configure it: every Monday at 8:00 AM.
+4. Connect it to your AI Agent node or to a chain of processing nodes.
+
+Now the workflow runs automatically every Monday morning. The AI Agent node receives a predefined prompt (which you set in the workflow logic) instead of a typed message.
+
+## Add a webhook trigger
+
+A webhook trigger gives your workflow a unique URL. When something sends a POST request to that URL (Zapier, a form submission, your own app), the workflow starts.
+
+1. Add a **Webhook** node.
+2. n8n generates a test URL and a production URL.
+3. Use the test URL while building. Switch to the production URL when you activate the workflow.
+4. The webhook node receives the request body as data that downstream nodes can use.
+
+## Combine triggers
+
+A workflow can have multiple triggers. The same processing logic fires whether the trigger was a schedule, a webhook, or a Slack message. This is useful when you want the same agent to respond to both scheduled tasks and on-demand requests.
+
+## Activate the workflow
+
+Triggers only fire on active workflows. Click the **Active** toggle in the top right of the editor to activate. The workflow is now live and will run when the trigger condition is met.
+
+## What you should see
+
+A workflow that starts automatically based on a schedule, webhook, or app event, without you manually clicking anything.

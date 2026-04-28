@@ -25,7 +25,7 @@ const baseComponents = useMDXComponents({})
 
 export function createCourse2Components(
   analyticsCategory: string,
-  codeAccentClass: 'text-course-2-accent' | 'text-course-3-accent',
+  codeAccentClass: 'text-course-2-accent' | 'text-course-3-accent' | 'text-course-4-accent',
 ) {
   return {
     ...baseComponents,
@@ -109,3 +109,14 @@ export const course3NpmComponents = createCourse2Components(
   'course3_npm_code',
   'text-course-3-accent',
 )
+
+export const course4AutohiveComponents = createCourse2Components(
+  'course4_autohive',
+  'text-course-4-accent',
+)
+export const course4DustComponents = createCourse2Components('course4_dust', 'text-course-4-accent')
+export const course4MindstudioComponents = createCourse2Components(
+  'course4_mindstudio',
+  'text-course-4-accent',
+)
+export const course4N8nComponents = createCourse2Components('course4_n8n', 'text-course-4-accent')

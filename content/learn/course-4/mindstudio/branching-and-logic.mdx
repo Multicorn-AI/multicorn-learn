@@ -1,0 +1,51 @@
+---
+title: 'Branching logic and conditions'
+description: 'Add conditional paths so your workflow responds differently based on the input.'
+order: 3
+estimatedMinutes: 12
+---
+
+## What you will do
+
+Add branching logic to a workflow so it takes different paths depending on what the user provides or what the AI returns.
+
+## Why branching matters
+
+A linear workflow (input → process → output) handles one scenario. Real tasks have conditions: if the email is urgent, escalate it; if the lead score is high, send a personalised response; if the input is unclear, ask a follow-up question.
+
+## Add a routing block
+
+MindStudio provides routing blocks that evaluate a condition and send the workflow down one of multiple paths.
+
+1. After a Generate Text block that classifies the input, add a **Router** block.
+2. Define the conditions. For example: if the classification variable equals "bug", go to Path A. If it equals "feature_request", go to Path B. Otherwise, go to a default path.
+3. Each path continues with its own blocks (different prompts, different tools, different outputs).
+
+## Use variables for conditions
+
+Variables created in earlier blocks are available in later blocks. A common pattern:
+
+1. User Input block creates `email_text`.
+2. Generate Text block classifies the email and stores the result in `category`.
+3. Router block checks `category` and branches.
+4. Each branch has a Generate Text block with a prompt specific to that category.
+
+## Add a loop for unclear inputs
+
+If the classification is "unclear," you can route back to a User Input block that asks the user to provide more context. This creates a loop that only exits when the input is clear enough to classify.
+
+Keep loops simple. A workflow that can loop indefinitely is a workflow that will eventually confuse the user. Add a maximum iteration count or a fallback path that exits after two attempts.
+
+## Test each path
+
+When testing, provide inputs that should trigger each branch. Verify that the workflow follows the correct path and produces the right output for each scenario.
+
+## What you should see
+
+A workflow with multiple paths that respond differently to different inputs. The canvas should visually show the branches diverging and (optionally) reconverging at the end.
+
+<SecurityNote>
+  Branching logic can accidentally expose one path's data to another path's output. Check that each
+  branch only references variables it should have access to. If one branch handles sensitive data
+  (financial, medical, personal), make sure the output does not leak into a less restricted branch.
+</SecurityNote>

@@ -1,0 +1,44 @@
+---
+title: 'Scheduling and triggers'
+description: 'Set your agent to run on a timer or respond to a message in Slack.'
+order: 3
+estimatedMinutes: 10
+---
+
+## What you will do
+
+Configure your agent to run automatically on a schedule or in response to a trigger, so it works without you manually typing a message.
+
+## Why scheduling matters
+
+An agent you have to remember to ask every Monday morning is not saving you time. Scheduling turns the agent from a tool you use into a process that runs itself. The output lands in Slack, email, or wherever your team expects to find it.
+
+## Set up a schedule
+
+Open your agent's settings and look for the **Scheduling** section.
+
+1. **Frequency.** Choose how often the agent should run: every day, every week, every month, or a custom interval.
+2. **Time.** Pick when it should run. If you want a report in Slack by 8am Monday, schedule it for 7:30am to give the agent time to finish.
+3. **Prompt.** Write the message the agent will receive at each scheduled run. This is exactly like typing a message yourself, except AutoHive sends it automatically.
+
+Example scheduled prompt:
+
+> Generate this week's sales summary from HubSpot. Include the top five deals by value, any stage changes, and deals stuck for more than 14 days. Post the result to the #sales-updates Slack channel.
+
+## Set up a trigger
+
+Instead of (or in addition to) a schedule, you can trigger the agent from Slack. When someone mentions the agent in a Slack channel, it reads the message and responds.
+
+This is useful for on-demand tasks: "Hey @WeeklyReport, give me the numbers for last quarter" or "@InboxTriage, summarise the unread messages in support@."
+
+## Combine schedule and trigger
+
+You can use both. The agent runs its weekly report on Monday morning and is also available in Slack for ad-hoc questions during the week.
+
+## Test it
+
+For a scheduled task, you can trigger a manual run to see the output before waiting for the next scheduled time. Check that the output arrives where you expect (Slack channel, email) and reads correctly.
+
+## What you should see
+
+An agent that runs without you prompting it and delivers results to the right place at the right time. If the output does not appear, check the Slack channel permissions and the scheduled prompt wording.

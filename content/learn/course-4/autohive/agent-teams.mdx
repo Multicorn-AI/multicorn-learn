@@ -1,0 +1,48 @@
+---
+title: 'Agent teams and multi-step workflows'
+description: 'Chain multiple agents together and bring humans into the conversation.'
+order: 4
+estimatedMinutes: 14
+---
+
+## What you will do
+
+Build a workflow where two or more agents collaborate on a task, and learn how to bring a human teammate into the conversation for review.
+
+## Why multi-agent matters
+
+A single agent is good at one job. But many real tasks have multiple steps: pull data, analyse it, format a report, then send it. Splitting these across specialised agents means each one has focused instructions and a clear scope. The result is more reliable than asking one agent to do everything.
+
+## Create a workflow
+
+AutoHive has a drag-and-drop workflow builder. Open it from the sidebar.
+
+1. **Add your first agent.** Drag it onto the canvas. This agent handles the first step (for example, pulling data from HubSpot).
+2. **Add a second agent.** This one takes the output of the first and does something with it (for example, formatting a summary).
+3. **Connect them.** Draw a line from the first agent's output to the second agent's input. The workflow builder handles the data passing.
+4. **Add a destination.** Connect the final agent's output to a Slack channel, email, or another tool.
+
+## Bring a human into the loop
+
+Use the **@mention** feature to pull a colleague into the conversation. When the first agent finishes its draft, it can tag a team member for review before the result is posted publicly.
+
+This is the human-in-the-loop pattern. The agent does the heavy lifting, but a person approves the final output. Use this for anything that has consequences: sending an email to a client, posting a public update, or making a financial decision.
+
+## Set boundaries between agents
+
+Each agent in the workflow has its own instructions and its own capabilities. Agent A might have access to HubSpot but not Slack. Agent B might have access to Slack but not HubSpot. This limits what each agent can do and prevents one agent from accidentally acting outside its scope.
+
+## Test it
+
+Run the workflow manually. Watch the output flow from one agent to the next. Check that the handoff between agents preserves the information correctly and that the final output matches what you expected.
+
+## What you should see
+
+A multi-step workflow where each agent handles one part of the task and passes the result forward. If you added a human review step, the workflow should pause until the person approves.
+
+<SecurityNote>
+  When agents pass data to each other, the scope widens. Agent B might receive sensitive data from
+  Agent A that it was never explicitly given access to. Review what data flows between agents and
+  make sure the chain does not accidentally expose information to an agent (or a person) who should
+  not see it.
+</SecurityNote>

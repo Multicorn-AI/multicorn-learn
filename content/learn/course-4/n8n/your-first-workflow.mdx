@@ -1,0 +1,49 @@
+---
+title: 'Your first workflow'
+description: 'Sign up for n8n, add a Chat Trigger and AI Agent node, and have your first conversation with a working agent.'
+order: 1
+estimatedMinutes: 12
+---
+
+## What you will do
+
+Set up an n8n workspace and build a simple AI agent that responds to chat messages.
+
+## Sign up
+
+Go to [n8n.io](https://n8n.io) and start a free cloud trial. The cloud service is the easiest way to get started. (Self-hosting is covered in lesson 5.)
+
+Once you are in the workspace, you will see a blank canvas. This is where you build workflows by connecting nodes.
+
+## Understand nodes
+
+n8n workflows are made of nodes. Each node does one thing: trigger the workflow, process data, call an API, send a message, or make a decision. You connect nodes by dragging a line from one to the next.
+
+Every workflow needs a **trigger** node. The trigger tells the workflow when to start.
+
+## Build your first AI agent
+
+1. Click **Add first step** or press **N** to open the node menu.
+2. Search for **Chat Trigger** and add it to the canvas. This node gives you a chat interface to talk to the agent.
+3. Click the **+** connector on the Chat Trigger node. Search for **AI Agent** and add it. The AI Agent node is the core node for building agents in n8n.
+4. The AI Agent node needs a language model. Click the **+** under **Chat Model** on the AI Agent node. Search for **OpenAI Chat Model** (or Google Gemini, Anthropic, or whichever model you have credentials for).
+5. Select the model node. Click the **Credential** dropdown and select **Create New Credential.** Paste your API key and save.
+6. Back on the AI Agent node, you can customise the **System Message.** This is the prompt that tells the agent how to behave.
+
+Example system message:
+
+> You are a helpful assistant that answers questions concisely. If you do not know the answer, say so. Do not make up information.
+
+## Test it
+
+Click **Save**, then click the **Chat** button on the Chat Trigger node to open the chat window. Type a message. The workflow runs through the Chat Trigger, into the AI Agent node, which sends your message to the model and returns the response.
+
+## What you should see
+
+A working chat agent on the canvas. You type a message, the AI Agent node processes it, and a response appears in the chat window.
+
+<SecurityNote>
+  Your API key is stored securely in n8n's credential store, but it is sent to the model provider
+  with every request. Use a key with the minimum permissions needed. If n8n is self-hosted, ensure
+  your server is on HTTPS and the credential store is encrypted at rest.
+</SecurityNote>

@@ -1,0 +1,61 @@
+---
+title: 'Permissions and reviewing agent work'
+description: 'Audit what your agent did, tighten its boundaries, and decide what needs human sign-off.'
+order: 5
+estimatedMinutes: 12
+---
+
+## What you will do
+
+Review your agent's activity, set clear permission boundaries, and establish a review process for anything the agent does that has real-world consequences.
+
+## Check what the agent did
+
+AutoHive logs every interaction. Open your agent's history to see each conversation, the tools it called, and the output it produced. Read through the last few runs. Look for:
+
+- Responses that include information the agent should not have access to
+- Outputs that sound confident but contain made-up numbers
+- Actions the agent took that you did not expect (posting to a channel, sending a message)
+
+This review is the most important habit you will build. An agent that runs well for a week can drift if the data changes or if someone updates the connected tools.
+
+## Tighten the boundaries
+
+Based on what you found in the review, adjust:
+
+1. **Capabilities.** Remove any integrations the agent does not actively use. If it only needs to read from Google Drive but never writes, check whether write access is turned off.
+2. **Knowledge.** Remove files or folders that are not relevant to the agent's job. Less data means fewer chances for the agent to pull in something irrelevant.
+3. **Instructions.** Add explicit constraints. "Do not post to any Slack channel other than #sales-updates." "Do not send emails." "If you are unsure about a number, say so instead of guessing."
+
+## Decide what needs human sign-off
+
+Not every agent action needs approval. Reading data and generating a summary is low-risk. Sending an email to a client is high-risk. Posting to a public channel is somewhere in between.
+
+Write down three lists:
+
+- **Agent can do on its own.** Read data, generate drafts, summarise documents.
+- **Agent can do but a human reviews before it ships.** Post to internal channels, update CRM fields, schedule meetings.
+- **Agent must never do.** Send external emails, delete records, make purchases.
+
+Encode the "must never do" list into the agent's instructions as hard constraints. For the "human reviews" list, use the workflow builder to add a review step before the action.
+
+## Run a full test
+
+Run the agent on real data from start to finish. Watch the entire process. Check the output against your three lists. If the agent does something in the "must never do" category, stop and fix the instructions or remove the capability before sharing the agent with anyone else.
+
+## What you should see
+
+An agent with clear boundaries, a review habit, and explicit rules about what it can and cannot do. This is the foundation for trusting the agent with real work.
+
+<SecurityNote>
+  The agent's instructions are your primary control surface. Models follow instructions most of the
+  time, but not always. For high-stakes actions, do not rely on instructions alone. Use
+  workflow-level controls (human approval steps, restricted capabilities) as a second layer.
+  Instructions say what the agent should do. Capabilities and workflow gates control what it can do.
+</SecurityNote>
+
+## What comes next
+
+You now have a working agent on AutoHive that connects to real data, runs on a schedule, collaborates with other agents, and operates within boundaries you set. The next step is to run it for a full week, review the logs daily, and refine the instructions based on what you find.
+
+If you want to explore how other platforms approach the same problem, check the [agent platform comparison guide](/learn/agent-platforms) for honest profiles of eight tools.
