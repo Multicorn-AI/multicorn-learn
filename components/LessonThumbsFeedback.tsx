@@ -8,6 +8,7 @@ const accentClasses: Record<LearnCourseAccent, string> = {
   'course-1': 'hover:border-course-1-accent/30 focus:ring-course-1-accent/20',
   'course-2': 'hover:border-course-2-accent/30 focus:ring-course-2-accent/20',
   'course-3': 'hover:border-course-3-accent/30 focus:ring-course-3-accent/20',
+  'course-4': 'hover:border-course-4-accent/30 focus:ring-course-4-accent/20',
 }
 
 interface LessonThumbsFeedbackProps {

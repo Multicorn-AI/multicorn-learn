@@ -8,18 +8,21 @@ const submitAccent: Record<LearnCourseAccent, string> = {
   'course-1': 'bg-course-1-accent hover:bg-course-1-accent/90 focus:ring-course-1-accent/20',
   'course-2': 'bg-course-2-accent hover:bg-course-2-accent/90 focus:ring-course-2-accent/20',
   'course-3': 'bg-course-3-accent hover:bg-course-3-accent/90 focus:ring-course-3-accent/20',
+  'course-4': 'bg-course-4-accent hover:bg-course-4-accent/90 focus:ring-course-4-accent/20',
 }
 
 const starAccent: Record<LearnCourseAccent, { filled: string; ring: string }> = {
   'course-1': { filled: 'text-course-1-accent', ring: 'focus:ring-course-1-accent/20' },
   'course-2': { filled: 'text-course-2-accent', ring: 'focus:ring-course-2-accent/20' },
   'course-3': { filled: 'text-course-3-accent', ring: 'focus:ring-course-3-accent/20' },
+  'course-4': { filled: 'text-course-4-accent', ring: 'focus:ring-course-4-accent/20' },
 }
 
 const inputAccent: Record<LearnCourseAccent, string> = {
   'course-1': 'focus:ring-course-1-accent/20',
   'course-2': 'focus:ring-course-2-accent/20',
   'course-3': 'focus:ring-course-3-accent/20',
+  'course-4': 'focus:ring-course-4-accent/20',
 }
 
 interface CourseFeedbackFormProps {

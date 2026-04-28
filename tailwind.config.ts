@@ -18,6 +18,7 @@ const config: Config = {
         'course-1-accent': '#22C55E',
         'course-2-accent': '#6366F1',
         'course-3-accent': '#14B8A6',
+        'course-4-accent': '#7C3AED',
         pink: '#EC4899',
         indigo: '#6366F1',
         orange: '#C2410C',

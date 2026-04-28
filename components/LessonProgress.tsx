@@ -18,6 +18,10 @@ const completeButtonAccent: Record<LearnCourseAccent, { hoverBorder: string; rin
     hoverBorder: 'hover:border-course-3-accent/30',
     ring: 'focus:ring-course-3-accent/20',
   },
+  'course-4': {
+    hoverBorder: 'hover:border-course-4-accent/30',
+    ring: 'focus:ring-course-4-accent/20',
+  },
 }
 
 const hubAccent: Record<LearnCourseAccent, { hoverBorder: string; arrow: string }> = {
@@ -32,6 +36,10 @@ const hubAccent: Record<LearnCourseAccent, { hoverBorder: string; arrow: string 
   'course-3': {
     hoverBorder: 'hover:border-course-3-accent/30',
     arrow: 'text-course-3-accent',
+  },
+  'course-4': {
+    hoverBorder: 'hover:border-course-4-accent/30',
+    arrow: 'text-course-4-accent',
   },
 }
 
