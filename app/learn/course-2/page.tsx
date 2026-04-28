@@ -136,7 +136,7 @@ export default function Course2Page() {
                 bestFor="Visual learners who want to see changes in real time"
                 cost="Free tier available, Pro $20/month"
                 limitation="Requires a local code editor install"
-                accentClass="bg-course-2-accent/10 text-course-2-accent border-course-2-accent/20"
+                accentClass="bg-course-2-accent/10 text-course-2-accent border-course-2-accent/20 hover:border-course-2-accent/40 focus:ring-course-2-accent/20"
               />
               <ToolPickerCard
                 name="Claude Code"
@@ -145,7 +145,7 @@ export default function Course2Page() {
                 bestFor="People comfortable with a terminal"
                 cost="Free with Claude account, usage limits apply"
                 limitation="Terminal only - no visual editor"
-                accentClass="bg-course-2-accent/10 text-course-2-accent border-course-2-accent/20"
+                accentClass="bg-course-2-accent/10 text-course-2-accent border-course-2-accent/20 hover:border-course-2-accent/40 focus:ring-course-2-accent/20"
               />
               <ToolPickerCard
                 name="Windsurf"
@@ -154,7 +154,7 @@ export default function Course2Page() {
                 bestFor="Beginners who want the simplest setup"
                 cost="Free tier available"
                 limitation="Smaller model selection than Cursor"
-                accentClass="bg-course-2-accent/10 text-course-2-accent border-course-2-accent/20"
+                accentClass="bg-course-2-accent/10 text-course-2-accent border-course-2-accent/20 hover:border-course-2-accent/40 focus:ring-course-2-accent/20"
               />
             </div>
           </section>

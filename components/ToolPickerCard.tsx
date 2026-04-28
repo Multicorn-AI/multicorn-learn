@@ -23,7 +23,7 @@ export function ToolPickerCard({
   return (
     <Link
       href={href}
-      className={`group block rounded-card border p-6 transition-all hover:border-primary/40 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 ${accentClass}`}
+      className={`group block rounded-card border p-6 transition-all hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 ${accentClass}`}
     >
       <div className="mb-4 flex items-start justify-between gap-3">
         <div>

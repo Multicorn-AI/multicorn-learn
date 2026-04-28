@@ -16,11 +16,15 @@ const heroVariantStyles = {
     iconBox: 'bg-course-3-accent/10 text-course-3-accent',
     label: 'text-course-3-accent',
   },
+  'course-4': {
+    iconBox: 'bg-violet-500/10 text-violet-600',
+    label: 'text-violet-600',
+  },
 } as const
 
 export type CourseLandingHeroVariant = keyof typeof heroVariantStyles
 
-export function CourseLandingTopNav({ activeCourse }: { readonly activeCourse: 1 | 2 | 3 }) {
+export function CourseLandingTopNav({ activeCourse }: { readonly activeCourse: 1 | 2 | 3 | 4 }) {
   return (
     <div className="mb-10 flex flex-col items-center gap-6">
       <Link
