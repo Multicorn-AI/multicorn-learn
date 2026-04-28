@@ -6,6 +6,7 @@ import remarkGfm from 'remark-gfm'
 import { getAgentGuide, getAllAgentSlugs, getAgentGuideNavigation } from '@/lib/agents'
 import { extractTableOfContents } from '@/lib/learn'
 import { blogComponents } from '@/lib/mdx-blog-components'
+import { LessonThumbsFeedback } from '@/components/LessonThumbsFeedback'
 import { MobileTableOfContents } from '@/components/MobileTableOfContents'
 import { TableOfContents } from '@/components/TableOfContents'
 import { ArticleNavigation } from '@/components/ArticleNavigation'
@@ -219,6 +220,8 @@ export default async function AgentSafetyGuidePage({ params }: AgentGuidePagePro
                   options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
                 />
               </div>
+
+              <LessonThumbsFeedback courseSlug="agents" lessonSlug={slug} courseAccent="course-1" />
 
               <section className="mt-16 border-t border-border pt-10">
                 <h2 className="mb-2 text-lg font-semibold text-text-primary">

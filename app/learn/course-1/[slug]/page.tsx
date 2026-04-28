@@ -10,6 +10,8 @@ import {
   extractTableOfContents,
 } from '@/lib/learn'
 import { blogComponents } from '@/lib/mdx-blog-components'
+import { CourseFeedbackForm } from '@/components/CourseFeedbackForm'
+import { LessonThumbsFeedback } from '@/components/LessonThumbsFeedback'
 import { MobileTableOfContents } from '@/components/MobileTableOfContents'
 import { TableOfContents } from '@/components/TableOfContents'
 import { LessonNavigation } from '@/components/LessonNavigation'
@@ -223,6 +225,21 @@ export default async function LearnArticlePage({ params }: LearnArticlePageProps
                   options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
                 />
               </div>
+
+              <LessonThumbsFeedback
+                courseSlug="course-1"
+                lessonSlug={slug}
+                courseAccent="course-1"
+              />
+
+              {!navigation.next ? (
+                <CourseFeedbackForm
+                  courseName="AI 101"
+                  courseSlug="course-1"
+                  lessonSlug={slug}
+                  courseAccent="course-1"
+                />
+              ) : null}
 
               <section className="mt-16 border-t border-border pt-10">
                 <h2 className="mb-2 text-lg font-semibold text-text-primary">
