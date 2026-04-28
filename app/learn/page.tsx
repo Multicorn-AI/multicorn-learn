@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { Code2, Library, Newspaper, Rocket, ShieldCheck } from 'lucide-react'
+import { Bot, Code2, Library, Newspaper, Rocket, ShieldCheck } from 'lucide-react'
+import { course4LandingCopy } from '@/lib/course-4-landing-copy'
 import { getAllLearnArticles } from '@/lib/learn'
-import { isCourse2Enabled, isCourse3Enabled } from '@/lib/feature-flags'
+import { isCourse2Enabled, isCourse3Enabled, isCourse4Enabled } from '@/lib/feature-flags'
 import { EmailSignupForm } from '@/components/EmailSignupForm'
 
 export const metadata: Metadata = {
@@ -20,7 +21,9 @@ export const metadata: Metadata = {
 export default function LearnPage() {
   const course2Enabled = isCourse2Enabled()
   const course3Enabled = isCourse3Enabled()
+  const course4Enabled = isCourse4Enabled()
   const articles = getAllLearnArticles()
+  const course4Hub = course4LandingCopy.hubCard
 
   return (
     <main className="flex min-h-screen flex-col items-center px-6 pb-20 pt-16 sm:pb-28 sm:pt-24">
@@ -162,6 +165,34 @@ export default function LearnPage() {
             </div>
           ) : null}
 
+          {course4Enabled ? (
+            <div className="mt-6 rounded-card border border-border bg-surface-secondary p-8 sm:p-10">
+              <div className="mb-6 flex items-center gap-3">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-violet-500/10">
+                  <Bot className="h-5 w-5 text-violet-600" strokeWidth={1.5} aria-hidden="true" />
+                </span>
+                <div>
+                  <span className="mb-1 inline-block rounded-full bg-violet-500/10 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-violet-600">
+                    {course4Hub.badge}
+                  </span>
+                  <h2 className="text-2xl font-bold tracking-tight text-text-primary">
+                    {course4Hub.title}
+                  </h2>
+                  <p className="text-sm text-text-secondary">{course4Hub.subtitle}</p>
+                </div>
+              </div>
+
+              <p className="mb-8 leading-relaxed text-text-secondary">{course4Hub.body}</p>
+
+              <Link
+                href="/learn/course-4"
+                className="inline-flex min-h-[44px] items-center rounded-lg bg-violet-500 px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:ring-offset-2"
+              >
+                {course4Hub.cta}
+              </Link>
+            </div>
+          ) : null}
+
           <div className="mt-6 rounded-card border border-border bg-surface-secondary p-8 sm:p-10">
             <div className="mb-6 flex items-center gap-3">
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-green/10">
@@ -186,7 +217,7 @@ export default function LearnPage() {
               href="/learn/agents"
               className="inline-flex min-h-[44px] items-center rounded-lg bg-green px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-green/90 focus:outline-none focus:ring-2 focus:ring-green/20 focus:ring-offset-2"
             >
-              Read the guides
+              Read guides
             </Link>
           </div>
 
