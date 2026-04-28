@@ -231,10 +231,10 @@ export default function LearnPage() {
             >
               Resources
             </h2>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2">
               <Link
                 href="/learn/prompts"
-                className="group flex min-h-[44px] flex-row items-start gap-4 rounded-lg border border-border bg-surface p-4 transition-colors hover:border-primary/25 hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-primary/20 sm:gap-5 sm:p-5"
+                className="group flex h-full min-h-[44px] flex-row items-start gap-4 rounded-lg border border-border bg-surface p-4 transition-colors hover:border-primary/25 hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-primary/20 sm:gap-5 sm:p-5"
               >
                 <span
                   className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border bg-surface-secondary text-primary"
@@ -255,7 +255,7 @@ export default function LearnPage() {
 
               <Link
                 href="/learn/news"
-                className="group flex min-h-[44px] flex-row items-start gap-4 rounded-lg border border-border bg-surface p-4 transition-colors hover:border-primary/25 hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-primary/20 sm:gap-5 sm:p-5"
+                className="group flex h-full min-h-[44px] flex-row items-start gap-4 rounded-lg border border-border bg-surface p-4 transition-colors hover:border-primary/25 hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-primary/20 sm:gap-5 sm:p-5"
               >
                 <span
                   className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border bg-surface-secondary text-primary"
@@ -269,6 +269,26 @@ export default function LearnPage() {
                   </p>
                   <p className="mt-0.5 text-sm leading-relaxed text-text-secondary">
                     Curated AI and agent stories from across the web. Refreshed every few hours.
+                  </p>
+                </div>
+              </Link>
+
+              <Link
+                href="/learn/agent-platforms"
+                className="group flex h-full min-h-[44px] flex-row items-start gap-4 rounded-lg border border-border bg-surface p-4 transition-colors hover:border-primary/25 hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-primary/20 sm:gap-5 sm:p-5"
+              >
+                <span
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border bg-surface-secondary text-primary"
+                  aria-hidden="true"
+                >
+                  <Bot className="h-5 w-5" strokeWidth={1.5} />
+                </span>
+                <div className="min-w-0 flex-1 text-left">
+                  <p className="font-semibold text-text-primary group-hover:text-primary">
+                    Agent platforms
+                  </p>
+                  <p className="mt-0.5 text-sm leading-relaxed text-text-secondary">
+                    Three quick questions, honest profiles, plus a suggested place to start reading.
                   </p>
                 </div>
               </Link>
