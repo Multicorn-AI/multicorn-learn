@@ -8,15 +8,19 @@ import {
 } from '@/lib/course-3-platform'
 import { COURSE_3_AWS } from '@/lib/course-3-aws-config'
 import { COURSE_3_MOBILE } from '@/lib/course-3-mobile-config'
+import { COURSE_3_NPM } from '@/lib/course-3-npm-config'
 import {
   AWS_TRACK_PICKER_RESULT,
   getPlatformRecommendation,
   isAwsTrackPickerResult,
   isMobileTrackPickerResult,
+  isNpmTrackPickerResult,
   MOBILE_TRACK_PICKER_RESULT,
+  NPM_TRACK_PICKER_RESULT,
   PLATFORM_PICKER_QUESTIONS,
   type AwsTrackPickerResult,
   type MobileTrackPickerResult,
+  type NpmTrackPickerResult,
   type PlatformRecommendation,
   type Q1Answer,
   type Q2Answer,
@@ -32,7 +36,11 @@ function phaseIndex(phase: PickerPhase): number {
   return PHASE_ORDER.indexOf(phase)
 }
 
-type PickerResult = PlatformRecommendation | MobileTrackPickerResult | AwsTrackPickerResult
+type PickerResult =
+  | PlatformRecommendation
+  | MobileTrackPickerResult
+  | AwsTrackPickerResult
+  | NpmTrackPickerResult
 
 export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: string }) {
   const rootId = useId()
@@ -55,7 +63,11 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
     if (phase === 'result' && recommendation) {
       if (typeof window !== 'undefined') {
         try {
-          if (isMobileTrackPickerResult(recommendation) || isAwsTrackPickerResult(recommendation)) {
+          if (
+            isMobileTrackPickerResult(recommendation) ||
+            isAwsTrackPickerResult(recommendation) ||
+            isNpmTrackPickerResult(recommendation)
+          ) {
             clearCourse3MdxPlatformOnClient()
           } else {
             setCourse3MdxPlatformOnClient(recommendation.slug)
@@ -114,6 +126,14 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
           advanceAfterTransition(() => {
             setQ1(value)
             setRecommendation(AWS_TRACK_PICKER_RESULT)
+            setPhase('result')
+          })
+          return
+        }
+        if (value === 'npm_package') {
+          advanceAfterTransition(() => {
+            setQ1(value)
+            setRecommendation(NPM_TRACK_PICKER_RESULT)
             setPhase('result')
           })
           return
@@ -191,6 +211,7 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
 
   const mobileFirstLessonHref = `${COURSE_3_MOBILE.basePath}/${COURSE_3_MOBILE.firstLessonSlug}`
   const awsFirstLessonHref = `${COURSE_3_AWS.basePath}/${COURSE_3_AWS.firstLessonSlug}`
+  const npmFirstLessonHref = `${COURSE_3_NPM.basePath}/${COURSE_3_NPM.firstLessonSlug}`
 
   return (
     <div
@@ -263,7 +284,9 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
                   ? mobileFirstLessonHref
                   : isAwsTrackPickerResult(recommendation)
                     ? awsFirstLessonHref
-                    : `/learn/course-3/choosing-a-host?platform=${recommendation.slug}`
+                    : isNpmTrackPickerResult(recommendation)
+                      ? npmFirstLessonHref
+                      : `/learn/course-3/choosing-a-host?platform=${recommendation.slug}`
               }
               className="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg bg-course-3-accent px-6 py-3 text-center text-base font-semibold text-white shadow-sm transition-colors hover:bg-course-3-accent/90 focus:outline-none focus:ring-2 focus:ring-course-3-accent/20 focus:ring-offset-2 sm:w-auto"
             >
@@ -271,7 +294,9 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
                 ? 'Start mobile lesson 1'
                 : isAwsTrackPickerResult(recommendation)
                   ? 'Start AWS lesson 1'
-                  : 'Start Lesson 1'}
+                  : isNpmTrackPickerResult(recommendation)
+                    ? 'Start npm lesson 1'
+                    : 'Start Lesson 1'}
             </Link>
 
             <div>
@@ -290,7 +315,9 @@ export function PlatformPicker({ ariaLabelledBy }: { readonly ariaLabelledBy: st
                 ? 'The lessons below this page are for web hosting (Vercel, Netlify, Fly.io). Use the mobile track link above for App Store and Play Store steps. You can return here any time to compare options.'
                 : isAwsTrackPickerResult(recommendation)
                   ? 'The list below is still the main web hosting path. The AWS track link above is for the next step after a PaaS, when you are sure you need it.'
-                  : 'We recommend this path. You can still follow any lesson below if you prefer another platform. The concepts are the same, and Lesson 1 covers the differences.'}
+                  : isNpmTrackPickerResult(recommendation)
+                    ? 'The list below is still the main Course 3 web hosting path. The npm publishing track link above covers publishing SDKs and libraries rather than deploying a URL.'
+                    : 'We recommend this path. You can still follow any lesson below if you prefer another platform. The concepts are the same, and Lesson 1 covers the differences.'}
             </p>
           </div>
         )}
