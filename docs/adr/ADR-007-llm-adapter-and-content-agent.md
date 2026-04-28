@@ -12,8 +12,8 @@ Multicorn Learn needs a steady pipeline of article ideas based on current AI new
 
 Introduce two new packages inside multicorn-learn:
 
-- `packages/llm-adapter/` — a shared LLM client abstraction supporting Anthropic and OpenAI, selected at runtime via the `LLM_PROVIDER` environment variable. Thin adapter layer with a `LlmClient` interface and provider-specific implementations.
-- `packages/multicorn-content/` — an autonomous content agent that runs weekly via GitHub Actions cron. It fetches RSS feeds, filters for relevance using an LLM, generates structured outlines, submits them to Shield for approval, and creates draft PRs for approved outlines. The agent never writes full articles or pushes directly to main.
+- `packages/llm-adapter/`: a shared LLM client abstraction supporting Anthropic and OpenAI, selected at runtime via the `LLM_PROVIDER` environment variable. Thin adapter layer with a `LlmClient` interface and provider-specific implementations.
+- `packages/multicorn-content/`: an autonomous content agent that runs weekly via GitHub Actions cron. It fetches RSS feeds, filters for relevance using an LLM, generates structured outlines, submits them to Shield for approval, and creates draft PRs for approved outlines. The agent never writes full articles or pushes directly to main.
 
 Approval is enforced via Shield's existing `requires_approval` action status. A batched email with signed one-click approve/reject links is sent after outline submission. The approval endpoint uses HMAC-SHA256 signed tokens with 7-day expiry.
 

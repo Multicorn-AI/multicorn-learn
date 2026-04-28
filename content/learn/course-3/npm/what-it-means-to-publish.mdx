@@ -1,0 +1,93 @@
+---
+title: 'What it means to publish a package'
+description: 'The npm registry, package names, ownership, and the responsibility you take on when others install your code.'
+order: 1
+estimatedMinutes: 10
+outcome: 'You understand what publishing to npm means and how learners can inspect a real-world package.'
+date: '2026-04-28'
+---
+
+When you deploy a web app, your code runs on a server you control. When you publish a package, your code runs on other people's machines. That distinction changes everything about how you think about releases.
+
+This lesson covers what the npm registry is, how package naming works, and what you are signing up for when you publish.
+
+## The npm registry
+
+The npm registry is a public database of JavaScript packages. When someone runs `npm install your-package`, npm downloads the code from this registry and adds it to their project. The registry holds over two million packages and serves billions of downloads per week.
+
+Your package page on the registry is the first thing most developers will see. It shows your README, your version history, your dependencies, and your weekly download count. Think of it as the storefront for your code.
+
+You can browse the registry at [npmjs.com](https://www.npmjs.com). Try searching for a package you use regularly and look at what information the page shows.
+
+## Package names
+
+Every npm package needs a unique name. There are two kinds.
+
+**Unscoped packages** use a plain name like `express` or `multicorn-shield`. The name must be globally unique across the entire registry. If someone else already has the name you want, you cannot use it.
+
+**Scoped packages** use an organisation prefix like `@angular/core` or `@anthropic-ai/sdk`. Scopes are tied to npm organisations, so you do not compete for names with the entire registry. You only need a unique name within your scope.
+
+Which should you pick? If you have an npm organisation (free to create), scoped packages are usually the better choice. They make ownership clear, they reduce the risk of name collisions, and they group your packages visually on the registry.
+
+Multicorn Shield is published as an unscoped package: [multicorn-shield on npm](https://www.npmjs.com/package/multicorn-shield). If we were starting fresh today, a scoped name like `@multicorn-ai/shield` would be a reasonable alternative. Both approaches work.
+
+## Ownership and access
+
+When you publish a package, your npm account becomes the owner. Owners can publish new versions, add or remove other maintainers, and transfer the package to a different account.
+
+This matters because anyone with publish access can push code that runs on every machine that installs your package. If your npm account is compromised, an attacker can publish a malicious version and it will be installed automatically by anyone who runs `npm install` or `npm update`.
+
+We will cover how to protect your account in the supply chain lesson later in this track. For now, the takeaway is: publishing access is a serious responsibility, not just a convenience.
+
+## What you are taking on
+
+Publishing a package means you are making a promise to the people who install it. That promise includes:
+
+**Your code will not break their project when they update.** Version numbers communicate what changed. If you ship a breaking change in a patch release, you will break people's builds without warning. We cover versioning in lesson 4.
+
+**Your dependencies are trustworthy.** Every package you depend on becomes a dependency for everyone who installs your package. If you pull in a compromised dependency, every downstream project inherits that risk.
+
+**You will communicate changes.** A CHANGELOG tells users what changed between versions. Deprecation notices warn them before you remove something. Silence erodes trust faster than bad news does.
+
+**You will respond to security issues.** If someone reports a vulnerability in your package, they expect a timely response. This does not mean you need a 24/7 security team. It means you need a way for people to reach you and a commitment to act when they do.
+
+None of this requires a large team. Multicorn Shield is maintained by a solo developer and manages all of the above. The key is being intentional about it from the start rather than retrofitting it later.
+
+## Inspect a real package
+
+Open the Multicorn Shield package page:
+
+```
+https://www.npmjs.com/package/multicorn-shield
+```
+
+Look at these sections on the page:
+
+- **README** at the top. This is pulled directly from the README.md in the repository.
+- **Weekly Downloads** in the sidebar. This tells you how actively the package is used.
+- **Version** in the sidebar. This is the latest published version.
+- **Last publish** in the sidebar. This tells you when the most recent version went up.
+- **Dependencies** tab. These are the packages that multicorn-shield itself depends on.
+- **Versions** tab. This shows every version ever published, with dates.
+
+Now run this in your terminal:
+
+```bash
+npm view multicorn-shield
+```
+
+### What you should see
+
+A block of metadata about the package. The output includes the package name, the latest version number, a description, the licence, the repository URL, and the list of published versions. The `dist-tags` line shows which version the `latest` tag points to. The `maintainers` line shows who has publish access.
+
+This is the same information displayed on the npm website, but in a format you can use from the command line or in scripts.
+
+## Checkpoint
+
+Before moving on, confirm you can answer these questions:
+
+1. What is the difference between a scoped and unscoped package name?
+2. What happens if your npm account is compromised and someone publishes a malicious version of your package?
+3. Where does the README content on an npm package page come from?
+
+If you opened the multicorn-shield package page and ran `npm view multicorn-shield`, you have seen a real-world example of everything this lesson covers. The next lesson walks through preparing your own package for its first publish.

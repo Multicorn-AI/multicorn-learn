@@ -1,0 +1,98 @@
+---
+title: 'Submitting for review'
+description: 'What app store reviewers look for, how to write a store listing that passes review, and what to do when you get rejected.'
+order: 5
+estimatedMinutes: 16
+outcome: 'You can complete a store listing, submit for review, navigate multi-round rejections, and use appeals when appropriate.'
+date: '2026-04-26'
+---
+
+Your app has been tested. You have fixed the bugs your testers found. Now you submit it to the App Store, the Play Store, or both for public review. This lesson covers what to expect and how to avoid the most common reasons for rejection. It also covers something the official documentation does not prepare you for: the review process often takes multiple rounds.
+
+## Preparing your store listing
+
+Both stores require the same basic information before they will review your app. You need to provide all of this in App Store Connect (iOS) or the Google Play Console (Android).
+
+A **name** and **subtitle** (iOS) or **short description** (Android). Keep these clear and descriptive. Reviewers (and users) should understand what the app does from the name alone.
+
+A **description** that explains what the app does, who it is for, and what features it includes. Write this in plain language. Do not stuff it with keywords or make claims you cannot back up. Apple and Google both flag misleading descriptions.
+
+**Screenshots** of your app running on a real device or a simulator. Apple requires screenshots for specific device sizes (iPhone 6.7-inch and 5.5-inch at minimum). Google requires at least two screenshots. These are the first thing a potential user sees, so take the time to capture your app looking its best with realistic content, not empty states.
+
+A **privacy policy URL**. Both stores now require this, even if your app collects no data. The privacy policy must be hosted at a publicly accessible URL (your web app from Course 3 is a good place to put it). It should clearly state what data the app collects, how that data is used, and whether it is shared with third parties.
+
+An **app icon**. This should be 1024x1024 pixels for Apple and 512x512 pixels for Google. The icon is generated from your app's source assets during the build process, so make sure the high-resolution version looks clean.
+
+## What reviewers look for
+
+### Apple App Store review
+
+Apple's review team is human. A real person downloads your app, opens it, and uses it. They follow Apple's App Store Review Guidelines, which cover functionality, design, legal, and content standards.
+
+The things most likely to cause a rejection for a first-time app:
+
+**Crashes and bugs.** If the reviewer encounters a crash, the app is rejected immediately. Test every screen and every button before submitting.
+
+**Incomplete functionality.** If the app requires an account and the reviewer cannot create one (because your server is down, or account creation is broken), they will reject it. If your app needs a login, provide a demo account in the review notes field.
+
+**Misleading metadata.** If your description says the app does something it does not, or your screenshots show features that do not exist in the build you submitted, the app will be rejected.
+
+**Missing privacy disclosures.** Apple requires you to declare the types of data your app collects through their App Privacy section. This must match your privacy policy and your app's actual behaviour. If the reviewer finds your app sending analytics data that you did not disclose, that is a rejection.
+
+**Non-standard UI patterns.** Apple expects apps to follow their Human Interface Guidelines in most cases. Using the system back button, standard navigation patterns, and legible text sizes all count in your favour.
+
+### Google Play review
+
+Google's review process is more automated than Apple's, with machine learning models checking for policy violations and human reviewers stepping in for flagged apps. Google's review is typically faster than Apple's.
+
+The common rejection reasons are similar: crashes, misleading listings, missing privacy declarations, and policy violations. Google is particularly strict about ads policies (if your app shows ads, they must comply with Google's ad policies), data safety declarations, and target audience settings.
+
+**Checkpoint:** Before submitting, go through every screen of your app one more time. Open it cold, create an account (if applicable), use every feature, and check every link. Then fill out every field in your store listing. Both stores show you a checklist of incomplete sections. Every item should be green before you hit Submit.
+
+## The multi-round rejection cycle
+
+This is the part that official documentation and most tutorials gloss over. For a first-time app submission, getting rejected is not the exception. It is the norm.
+
+Here is what typically happens. You submit your app. A day or two later, you receive a rejection notice citing one or two specific issues. You fix those issues, increment your version number, rebuild, and resubmit. Another day or two passes. You receive a second rejection, this time citing a completely different issue that was not mentioned in the first review.
+
+This is not malicious, and it does not mean you did something wrong. Apple's review process checks different things at different stages, and different reviewers may focus on different aspects of the guidelines. The first reviewer might catch a metadata issue. The second reviewer, seeing that the metadata is now fixed, spends more time on the functionality and catches something else. Automated scanners also run in the background and may flag issues that the human reviewer did not.
+
+The practical effect is that each round of review can surface new issues. This makes it hard to predict how many rounds you will go through. Two to three rounds is common for a first app. Some developers report four or five rounds for apps with more complex features.
+
+### How to minimise rounds
+
+You cannot eliminate the multi-round process entirely, but you can reduce it. Before your first submission, go through Apple's App Store Review Guidelines (available at [developer.apple.com/app-store/review/guidelines](https://developer.apple.com/app-store/review/guidelines)) and Google's Developer Program Policies. Read them, not just skim them. Pay particular attention to:
+
+Section 2 (Performance) in Apple's guidelines, which covers completeness, stability, and loading times. Section 5 (Legal) which covers privacy, data collection, and intellectual property. Section 4 (Design) which covers minimum functionality and copycat apps.
+
+For Google, pay attention to the Restricted Content policies, the User Data policies, and the Deceptive Behaviour policies.
+
+The review notes field in App Store Connect is your chance to talk directly to the reviewer. Use it. Explain what the app does, provide login credentials if needed, and flag any features that might not be obvious. A reviewer who understands your app is less likely to reject it for something that is actually working as intended.
+
+## Submitting to the App Store
+
+In App Store Connect, go to your app, then the App Store tab. Select your uploaded build, fill in the version information (what is new in this version, even if it is your first version), and click Submit for Review.
+
+Apple will ask if the app uses any encryption (most apps do, through HTTPS alone), whether it uses third-party content, and whether it uses the IDFA (identifier for advertisers). Answer honestly.
+
+Review typically takes 24 to 48 hours. You will receive an email when the review is complete, either approving your app or explaining why it was rejected.
+
+## Submitting to the Play Store
+
+In the Play Console, go to Release > Production, create a new release with your `.aab` file (or promote your tested closed testing release), add release notes, and click "Start rollout to Production."
+
+Google's review is usually faster, often completing within a few hours for straightforward apps. If your app was already approved in closed testing, the production review is typically quick.
+
+## If your app is rejected
+
+Do not panic. Read the rejection reason carefully. It will reference a specific guideline or policy. Fix the issue, increment your version number, rebuild, and resubmit. You do not need to start the entire process over. Your store listing and metadata are still there. You are just uploading a new build and resubmitting for review.
+
+If you disagree with the rejection, both stores have an appeal process. Apple has a "Contact Us" option in App Store Connect's Resolution Centre. Google has a "Submit appeal" option in the notification email. Be specific and polite. Explain why you believe the rejection was incorrect and point to the relevant section of your app.
+
+If you have been through three rounds of rejection and each round raises something new, take a step back. Go through the full guidelines document and check every section against your app, not just the section cited in the most recent rejection. It is faster to do a thorough self-review once than to play whack-a-mole with the review team over multiple submissions.
+
+<SecurityNote>
+
+When filling out your store listing, both Apple and Google ask you to declare what data your app collects. This is a legal declaration, not just a form. If your app uses analytics (crash reporting, usage tracking), collects email addresses, stores location data, or communicates with any third-party service, you must disclose it. Declaring "no data collected" when your app sends crash reports to a third-party service is a policy violation that can result in your app being removed after launch, not just rejected during review. Be thorough and honest.
+
+</SecurityNote>

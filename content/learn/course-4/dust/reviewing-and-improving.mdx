@@ -1,0 +1,61 @@
+---
+title: 'Reviewing and improving agent output'
+description: "Evaluate your agent's answers, refine instructions, and establish a review routine."
+order: 5
+estimatedMinutes: 12
+---
+
+## What you will do
+
+Review your agent's recent conversations, identify where it went wrong, and systematically improve its instructions and knowledge sources.
+
+## Check conversation history
+
+Open the agent's conversation history. Read through the last 10-15 interactions. For each one, ask:
+
+- Did the agent cite real sources, or did it generate an answer from the model's training data?
+- Were the citations accurate? Did the linked documents actually contain the information the agent claimed?
+- Did the agent follow the constraints in its instructions? ("Do not make up numbers," "Say if you are unsure.")
+- Did the agent use the right tool for the question? (Searched internal docs when it should have, used web search when the question was about external information.)
+
+## Common failure patterns
+
+**Hallucinated citations.** The agent says "according to the Q3 report" but the Q3 report does not contain that information. Fix: add an instruction like "Only cite documents you retrieved. If you did not retrieve a document, do not reference it."
+
+**Wrong data source.** The agent searched Slack messages when the answer was in Notion. Fix: update the knowledge source description to be more specific about what each source contains.
+
+**Over-broad answers.** The agent produces a wall of text when a two-sentence answer would do. Fix: add a constraint on length. "Keep answers under 150 words unless the user asks for detail."
+
+**Missed context.** The agent does not know about a recent change because the data source has not synced yet. Fix: check the sync schedule for the relevant connection.
+
+## Refine instructions with Sidekick
+
+Open the agent builder and use Sidekick to help refine the instructions. Describe the failure pattern and ask Sidekick to suggest a fix.
+
+> "The agent sometimes cites documents it did not actually retrieve. Add an instruction that prevents this."
+
+Sidekick will propose new instruction text. Review it, apply it, and test with the preview.
+
+## Establish a review cadence
+
+Agents need ongoing review, not a one-time setup. A reasonable cadence:
+
+- **Daily** for the first week after launch (the agent is new and the instructions are rough).
+- **Weekly** once the agent is stable (catch slow drift).
+- **After any data source change** (new connections, removed folders, updated documents).
+
+## What you should see
+
+A clearer, more reliable agent with tighter instructions. The failure patterns you identified should not recur in new conversations.
+
+<SecurityNote>
+  Conversation history may contain sensitive information that users shared with the agent. Treat
+  conversation logs with the same care as the underlying data sources. If your workspace has
+  restricted spaces, the conversation history inherits that access control.
+</SecurityNote>
+
+## What comes next
+
+You now have a custom agent on Dust that connects to your company data, follows scoped permissions, works with other agents, and gets better over time through regular review. Run it for a full week and check the logs daily.
+
+For a broader view of how other platforms handle the same problems, see the [agent platform comparison guide](/learn/agent-platforms).

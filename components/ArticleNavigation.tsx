@@ -3,9 +3,11 @@ import type { ArticleNavigation as ArticleNavigationType } from '@/lib/learn'
 
 interface ArticleNavigationProps {
   readonly navigation: ArticleNavigationType
+  /** Base path for prev/next links, e.g. `/learn/course-1` or `/learn/agents`. Required to avoid silent cross-section linking. */
+  readonly articleHrefBase: string
 }
 
-export function ArticleNavigation({ navigation }: ArticleNavigationProps) {
+export function ArticleNavigation({ navigation, articleHrefBase }: ArticleNavigationProps) {
   const { prev, next } = navigation
 
   if (!prev && !next) {
@@ -17,7 +19,7 @@ export function ArticleNavigation({ navigation }: ArticleNavigationProps) {
       <div className="flex flex-col gap-4 sm:flex-row sm:justify-between">
         {prev ? (
           <Link
-            href={`/learn/ai-101/${prev.slug}`}
+            href={`${articleHrefBase}/${prev.slug}`}
             className="group flex items-center gap-2 rounded-card border border-border bg-surface-secondary px-5 py-4 transition-colors hover:border-primary/30 hover:bg-surface-tertiary"
           >
             <svg
@@ -46,7 +48,7 @@ export function ArticleNavigation({ navigation }: ArticleNavigationProps) {
 
         {next ? (
           <Link
-            href={`/learn/ai-101/${next.slug}`}
+            href={`${articleHrefBase}/${next.slug}`}
             className="group flex items-center justify-end gap-2 rounded-card border border-border bg-surface-secondary px-5 py-4 text-right transition-colors hover:border-primary/30 hover:bg-surface-tertiary sm:ml-auto"
           >
             <div>

@@ -3,11 +3,11 @@ import type { Metadata } from 'next'
 import { Footer } from '@/components/Footer'
 
 export const metadata: Metadata = {
-  title: 'Terms of Service — Multicorn',
+  title: 'Terms of Service | Multicorn',
   description:
     'Terms of service for multicorn.ai and the Multicorn Shield SDK. Covers usage of the open-source SDK and hosted platform.',
   openGraph: {
-    title: 'Terms of Service — Multicorn',
+    title: 'Terms of Service | Multicorn',
     description:
       'Terms of service for multicorn.ai and the Multicorn Shield SDK. Covers usage of the open-source SDK and hosted platform.',
     url: 'https://multicorn.ai/policies/terms',

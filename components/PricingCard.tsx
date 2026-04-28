@@ -9,10 +9,11 @@ interface PricingCardProps {
   readonly audience: string
   readonly features: readonly string[]
   readonly cta: string
-  readonly href: string
+  readonly href?: string
   readonly highlighted?: boolean
   readonly badge?: string
   readonly disabled?: boolean
+  readonly onCtaClick?: () => void
 }
 
 export function PricingCard({
@@ -26,14 +27,27 @@ export function PricingCard({
   highlighted = false,
   badge,
   disabled = false,
+  onCtaClick,
 }: PricingCardProps) {
+  const ctaClassName = [
+    'mt-8 flex min-h-[44px] items-center justify-center rounded-lg px-6 py-3 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2',
+    highlighted
+      ? 'bg-primary text-white shadow-sm hover:bg-primary-dark focus:ring-primary/20'
+      : 'border border-border text-text-primary hover:bg-surface-secondary focus:ring-primary/20',
+  ].join(' ')
+
+  function handleClick() {
+    trackEvent('signup_cta_click', { location: `pricing_${name.toLowerCase()}` })
+    onCtaClick?.()
+  }
+
   return (
     <div
       className={`relative flex flex-col rounded-card border p-6 ${
         highlighted
           ? 'border-primary bg-primary/5 shadow-lg shadow-primary/10'
           : 'border-border bg-surface'
-      }${disabled ? 'opacity-60' : ''}`}
+      } ${disabled ? 'opacity-60' : ''}`}
     >
       {highlighted && (
         <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white">
@@ -86,19 +100,12 @@ export function PricingCard({
         >
           {cta}
         </span>
+      ) : onCtaClick ? (
+        <button type="button" onClick={handleClick} className={ctaClassName}>
+          {cta}
+        </button>
       ) : (
-        <a
-          href={href}
-          onClick={() =>
-            trackEvent('signup_cta_click', { location: `pricing_${name.toLowerCase()}` })
-          }
-          className={[
-            'mt-8 flex min-h-[44px] items-center justify-center rounded-lg px-6 py-3 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2',
-            highlighted
-              ? 'bg-primary text-white shadow-sm hover:bg-primary-dark focus:ring-primary/20'
-              : 'border border-border text-text-primary hover:bg-surface-secondary focus:ring-primary/20',
-          ].join(' ')}
-        >
+        <a href={href} onClick={handleClick} className={ctaClassName}>
           {cta}
         </a>
       )}

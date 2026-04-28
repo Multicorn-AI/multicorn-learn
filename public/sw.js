@@ -4,7 +4,7 @@
  * invalidate old caches. The activate handler deletes caches that don't match
  * the current version.
  */
-const CACHE_VERSION = 'learn-v1'
+const CACHE_VERSION = 'learn-v2'
 const STATIC_CACHE = `learn-static-${CACHE_VERSION}`
 
 function isStaticAsset(url) {

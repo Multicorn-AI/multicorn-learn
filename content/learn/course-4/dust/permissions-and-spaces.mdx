@@ -1,0 +1,51 @@
+---
+title: 'Permissions and spaces'
+description: 'Control which agents see which data and who in your team can build or use agents.'
+order: 3
+estimatedMinutes: 10
+---
+
+## What you will do
+
+Set up spaces to control data access, configure agent visibility, and understand the permission model that keeps sensitive data contained.
+
+## How permissions work in Dust
+
+Dust's permission model has three layers.
+
+1. **Workspace roles.** Admins manage connections and settings. Members use agents and create their own. Viewers can chat but not build.
+2. **Spaces.** Each space contains data sources and controls who can access them. An agent can only search data in spaces it has been given access to.
+3. **Agent visibility.** Published agents are available workspace-wide (subject to space access). Unpublished agents are private to their editors.
+
+## Create a restricted space
+
+If your team handles data that not everyone in the company should see (HR records, financial data, legal documents), create a restricted space.
+
+1. Go to workspace settings and create a new space.
+2. Name it clearly: "HR Documents" or "Finance Q2."
+3. Add the relevant data sources to this space.
+4. Invite only the people who should have access.
+
+An agent connected to this space will only be usable by people who are members of the space. If someone outside the space tries to call the agent, they will not see it.
+
+## Scope your agent's data access
+
+When building an agent, you choose which data sources it can search. This is where you apply the principle of least privilege: give the agent access to the minimum data it needs to do its job.
+
+An @askHR agent needs the HR policy documents but not the engineering codebase. An @codeReview agent needs the GitHub connection but not the sales pipeline.
+
+Review the knowledge sources on each agent you build and remove anything that is not directly relevant.
+
+## Review who can edit
+
+In the agent builder, the **Editors** section controls who can modify the agent's instructions, knowledge sources, and capabilities. Limit editors to people who understand what the agent is supposed to do. A well-meaning edit to the instructions can change the agent's behaviour in ways that are hard to spot.
+
+## What you should see
+
+A workspace where data access is controlled by spaces, agents are scoped to the data they need, and editing permissions are limited to the right people.
+
+<SecurityNote>
+  Spaces are your strongest access control in Dust. An agent cannot access data outside the spaces
+  it is connected to, regardless of what its instructions say. If you are unsure whether an agent
+  can see something it should not, check its knowledge sources in the builder.
+</SecurityNote>

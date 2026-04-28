@@ -66,7 +66,7 @@ function FooterLinkGroup({
 export function Footer({ site = 'shield' }: { readonly site?: FooterSite }) {
   const githubRepoUrl = site === 'learn' ? LEARN_GITHUB_REPO_URL : SHIELD_GITHUB_REPO_URL
   const resourceLinks: readonly FooterLink[] = [
-    { label: 'Learn AI 101', href: '/learn/ai-101' },
+    { label: 'Learn AI 101', href: '/learn/course-1' },
     { label: 'Blog', href: '/blog' },
     { label: 'GitHub', href: githubRepoUrl, isExternal: true },
     { label: 'npm', href: 'https://www.npmjs.com/package/multicorn-shield', isExternal: true },

@@ -1,0 +1,52 @@
+---
+title: 'Connecting tools and data sources'
+description: 'Give your agent access to Slack, Google Drive, HubSpot, or another tool your team already uses.'
+order: 2
+estimatedMinutes: 12
+---
+
+## What you will do
+
+Connect at least one external tool to your agent so it can read real data or send output to a real destination.
+
+## Why connections matter
+
+An agent without data is just a chatbot. Connections give the agent access to the systems where your work actually lives: your CRM, your docs, your Slack channels, your spreadsheets. The agent can then pull context from those sources and push results back into them.
+
+## Add a capability
+
+Open your agent's settings. Scroll to the **Add capabilities** section. You will see a list of available integrations: Slack, Google Drive, Gmail, HubSpot, Xero, Asana, Perplexity, and others.
+
+Pick one that matches what your agent needs to do.
+
+**Example: connecting Slack.** Select Slack and click **Authorize for everyone in my workspace.** The first time you do this, AutoHive will walk you through an OAuth authentication flow. After that, anyone in your workspace can toggle Slack on for their agents without re-authenticating.
+
+**Example: connecting Google Drive.** Select Google Drive, authorise, and choose which folders the agent can access. You do not need to give it your entire Drive. Pick the folder that contains the documents relevant to the agent's job.
+
+## Add knowledge
+
+Below capabilities, there is a **Knowledge** section. This is where you upload files or point the agent at websites that contain reference material. If your agent needs to follow a style guide, upload the guide. If it needs to reference a pricing sheet, upload that.
+
+The agent will search this knowledge when answering questions. It does not memorise the files. It searches them each time, which means you can update the files and the agent will use the latest version.
+
+## Update your instructions
+
+Now that the agent has a data source, update the instructions to tell it when and how to use that source.
+
+> When I ask for a weekly summary, pull data from the connected HubSpot integration. Summarise the top five deals by value, list any deals that moved stage this week, and flag deals that have been stuck in the same stage for more than 14 days.
+
+Without this, the agent might ignore the connection entirely or use it in ways you did not expect.
+
+## Test it
+
+Ask the agent a question that requires the connected data. Check whether the response actually references real information from the source, not hallucinated content.
+
+## What you should see
+
+The agent pulling real data from your connected tool and incorporating it into its response. If the data looks wrong or incomplete, check which folders or channels you gave the agent access to. Narrow access is better than broad access.
+
+<SecurityNote>
+  Every integration you connect gives the agent access to real company data. Start with the minimum
+  scope the agent needs. You can always widen access later. Review which capabilities are turned on
+  before sharing the agent with your team.
+</SecurityNote>

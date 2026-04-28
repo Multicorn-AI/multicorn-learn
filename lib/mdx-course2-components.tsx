@@ -5,6 +5,14 @@ import { CopyablePrompt } from '@/components/CopyablePrompt'
 import { EmailSignupForm } from '@/components/EmailSignupForm'
 import { SecurityNote } from '@/components/SecurityNote'
 import { ShieldCallout } from '@/components/ShieldCallout'
+import {
+  Course2WhatsNextCourse3Preview,
+  Course2WhatsNextStayInLoop,
+} from '@/components/Course2WhatsNextCtaBlocks'
+import { OtherPlatformsDisclosure } from '@/components/OtherPlatformsDisclosure'
+import { PlatformContent } from '@/components/PlatformContent'
+import { PlatformSwitcherNote } from '@/components/PlatformSwitcherNote'
+import { TerminalAlternative } from '@/components/TerminalAlternative'
 
 function extractLanguageFromClassName(className: string | undefined): string {
   if (!className) return ''
@@ -15,14 +23,20 @@ function extractLanguageFromClassName(className: string | undefined): string {
 // eslint-disable-next-line react-hooks/rules-of-hooks -- useMDXComponents is not a React hook despite the naming convention; it returns a plain object of component overrides
 const baseComponents = useMDXComponents({})
 
-export function createCourse2Components(analyticsCategory: string) {
+export function createCourse2Components(
+  analyticsCategory: string,
+  codeAccentClass: 'text-course-2-accent' | 'text-course-3-accent' | 'text-course-4-accent',
+) {
   return {
     ...baseComponents,
     SecurityNote,
+    TerminalAlternative,
     CopyablePrompt,
     CopyButton,
     EmailSignupForm,
     ShieldCallout,
+    Course2WhatsNextCourse3Preview,
+    Course2WhatsNextStayInLoop,
     pre: ({ children }: { children: React.ReactNode }) => {
       const codeElement = children as React.ReactElement<{
         children: React.ReactNode
@@ -41,7 +55,7 @@ export function createCourse2Components(analyticsCategory: string) {
             />
           </div>
           <pre className="overflow-x-auto px-4 py-3">
-            <code className="text-sm text-green">{codeText}</code>
+            <code className={`text-sm ${codeAccentClass}`}>{codeText}</code>
           </pre>
         </div>
       )
@@ -63,5 +77,46 @@ export function createCourse2Components(analyticsCategory: string) {
   }
 }
 
-export const cursorTrackComponents = createCourse2Components('course2_cursor_code')
-export const claudeCodeTrackComponents = createCourse2Components('course2_claude_code_code')
+export const cursorTrackComponents = createCourse2Components(
+  'course2_cursor_code',
+  'text-course-2-accent',
+)
+export const claudeCodeTrackComponents = createCourse2Components(
+  'course2_claude_code_code',
+  'text-course-2-accent',
+)
+export const course3Components = {
+  ...createCourse2Components('course3_code', 'text-course-3-accent'),
+  PlatformContent,
+  PlatformSwitcherNote,
+  OtherPlatformsDisclosure,
+}
+
+/** Course 3 mobile track: same prose and code treatment as main Course 3, no web hosting shortcodes. */
+export const course3MobileComponents = createCourse2Components(
+  'course3_mobile_code',
+  'text-course-3-accent',
+)
+
+/** Course 3 AWS track: same prose and code treatment, no Vercel/Netlify/Fly shortcodes. */
+export const course3AwsComponents = createCourse2Components(
+  'course3_aws_code',
+  'text-course-3-accent',
+)
+
+/** Course 3 npm publishing track: same prose and code treatment as AWS track. */
+export const course3NpmComponents = createCourse2Components(
+  'course3_npm_code',
+  'text-course-3-accent',
+)
+
+export const course4AutohiveComponents = createCourse2Components(
+  'course4_autohive',
+  'text-course-4-accent',
+)
+export const course4DustComponents = createCourse2Components('course4_dust', 'text-course-4-accent')
+export const course4MindstudioComponents = createCourse2Components(
+  'course4_mindstudio',
+  'text-course-4-accent',
+)
+export const course4N8nComponents = createCourse2Components('course4_n8n', 'text-course-4-accent')

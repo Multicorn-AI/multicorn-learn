@@ -1,0 +1,182 @@
+---
+title: 'Supply chain and trust'
+description: 'Provenance, 2FA, scoped packages, typosquatting, and what to do when your token leaks.'
+order: 7
+estimatedMinutes: 12
+outcome: 'You can protect your npm account and your users from common supply chain attacks.'
+date: '2026-04-28'
+---
+
+When someone runs `npm install your-package`, they are trusting that the code they receive is the code you intended to publish. Supply chain attacks exploit that trust. This lesson covers what those attacks look like and how to defend against them.
+
+## The threat model
+
+Attacks on the npm supply chain generally fall into three categories:
+
+**Account compromise.** An attacker gains access to your npm account (stolen password, leaked auth token, phished credentials) and publishes a malicious version of your package. Every user who installs or updates gets the malicious code.
+
+**Typosquatting.** An attacker publishes a package with a name very similar to a popular one. `lodash` becomes `lodas` or `l0dash`. Developers who make a typo in their install command get the malicious package instead of the real one.
+
+**Dependency confusion.** An attacker publishes a public package with the same name as a company's internal package. If the company's package manager is misconfigured, it installs the public (malicious) version instead of the private (legitimate) one.
+
+None of these require finding a vulnerability in your code. They exploit the trust infrastructure around your code. That makes them harder to detect and often more damaging than a traditional bug.
+
+## Protect your npm account
+
+### Enable two-factor authentication
+
+This is the single most effective thing you can do. With 2FA enabled, an attacker who steals your password still cannot publish without your second factor.
+
+Go to [npmjs.com/settings/your-username/security](https://www.npmjs.com/settings) and enable 2FA. npm supports authenticator apps (TOTP) and security keys (WebAuthn). Choose whichever you will actually use consistently.
+
+You can require 2FA for all operations (login and publish) or just for publish. If you choose only publish, be aware that an attacker who compromises your account can still change your email, add a new owner, or modify package metadata. Requiring 2FA for all operations is the safer choice.
+
+### Use a strong, unique password
+
+This sounds obvious, but npm accounts are frequently compromised through password reuse. If you use the same password for npm as for some other service, and that other service has a breach, your npm account is exposed.
+
+Use a password manager. Generate a random password. Do not reuse it anywhere.
+
+### Audit your access tokens
+
+npm auth tokens are created when you run `npm login` or when you create automation tokens for CI. Each token has full publish access to every package you own.
+
+List your active tokens:
+
+```bash
+npm token list
+```
+
+### What you should see
+
+A table of tokens with creation dates, token IDs, and whether they are read-only or publish-capable:
+
+```
+┌──────────┬──────────┬──────────────┬──────────┐
+│ id       │ token    │ created      │ readonly │
+├──────────┼──────────┼──────────────┼──────────┤
+│ a1b2c3   │ abc123…  │ 2026-01-15   │ false    │
+│ d4e5f6   │ def456…  │ 2026-03-22   │ false    │
+└──────────┴──────────┴──────────────┴──────────┘
+```
+
+If you see tokens you do not recognise, or tokens created months ago on a machine you no longer use, revoke them:
+
+```bash
+npm token revoke a1b2c3
+```
+
+Replace `a1b2c3` with the token ID from the list.
+
+## Scoped packages
+
+Scoped packages (like `@your-org/your-package`) are harder to typosquat than unscoped ones. The scope is tied to your npm organisation, so an attacker cannot create `@your-org/your-pckage` unless they own the `@your-org` scope.
+
+If you are starting a new package and you have an npm organisation, use a scoped name. It will not eliminate all supply chain risk, but it removes one common attack vector.
+
+Creating an npm organisation is free at [npmjs.com/org/create](https://www.npmjs.com/org/create).
+
+## Provenance
+
+npm provenance links a published package version to the specific CI build that produced it. When provenance is enabled, npm verifies that the tarball came from a known CI environment (like GitHub Actions) and that the build is traceable to a specific commit in a specific repository.
+
+To publish with provenance from GitHub Actions:
+
+```yaml
+- name: Publish to npm
+  run: npm publish --provenance
+  env:
+    NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+```
+
+The `--provenance` flag requires that the publish happens inside a GitHub Actions workflow with the `id-token: write` permission. It will not work from your local machine.
+
+After publishing with provenance, your package page on npm will show a "Provenance" badge with a link to the exact CI run and git commit that produced the tarball.
+
+This matters because it lets anyone verify that the published package was built from the source code in your repository, not from a developer's laptop where the code could have been tampered with. It does not prevent account compromise, but it makes it detectable. If an attacker publishes a version from their machine instead of CI, the provenance chain breaks and the discrepancy is visible.
+
+Multicorn Shield publishes with provenance enabled. You can see the provenance badge on the [multicorn-shield npm page](https://www.npmjs.com/package/multicorn-shield).
+
+## What npm audit does (and does not do)
+
+```bash
+npm audit
+```
+
+### What you should see
+
+A report of known vulnerabilities in your dependency tree:
+
+```
+found 0 vulnerabilities
+```
+
+Or, if there are issues:
+
+```
+2 vulnerabilities (1 moderate, 1 high)
+
+To address all issues, run:
+  npm audit fix
+```
+
+`npm audit` checks your dependencies against the npm advisory database. It catches known vulnerabilities that have been reported and assigned CVE numbers.
+
+What it does not catch: malicious code that has not been reported yet, typosquatting packages that are functional but contain a backdoor, or supply chain attacks in progress. It is a useful tool, not a complete defence. Run it regularly, fix what it finds, and understand its limits.
+
+## What if your token leaks
+
+If your npm auth token appears in a log file, a git commit, a screenshot, or anywhere else it should not be, act immediately:
+
+**1. Revoke the token.**
+
+```bash
+npm token list
+npm token revoke <token-id>
+```
+
+Do this first, before anything else. Every minute the token is active is a minute an attacker can use it.
+
+**2. Check your recent publishes.**
+
+```bash
+npm view your-package versions --json
+```
+
+Look for any versions you did not publish. If you see one, it may contain malicious code. Unpublish it immediately:
+
+```bash
+npm unpublish your-package@<malicious-version>
+```
+
+**3. Notify your users.** If a malicious version was published and installed by anyone, they need to know. Open an issue in your repository, publish a security advisory, or email your users if you have a mailing list. Be specific about which version was affected and what users should do.
+
+**4. Rotate all related credentials.** If the leaked token was in the same file or environment as other secrets (API keys, database passwords), assume those are compromised too. Rotate everything.
+
+**5. Investigate how it leaked.** Common causes: committed to a public repository, logged by a CI pipeline, included in a debug output. Fix the root cause so it does not happen again.
+
+The speed of your response matters. Most supply chain attacks succeed not because the attacker is sophisticated, but because the token was active for hours or days after it leaked.
+
+## Keeping your dependencies clean
+
+Your package's users inherit your entire dependency tree. Every package you depend on is a package your users are forced to trust.
+
+Keep your dependency list short. Before adding a dependency, ask: can I write this myself in under an hour? If so, write it. A 20-line utility function in your own codebase is better than a dependency with its own dependency tree, its own maintainers, and its own attack surface.
+
+When you do need a dependency, check:
+
+- Does it have a maintainer who is actively responding to issues?
+- Does it have a reasonable download count? (Low downloads are not automatically bad, but extremely low downloads on a critical-path dependency are a signal.)
+- Is its licence compatible with yours?
+- Does `npm audit` flag anything in its tree?
+
+## Checkpoint
+
+Before moving on:
+
+1. Go to your npm account settings and confirm 2FA is enabled. If it is not, enable it now.
+2. Run `npm token list` and revoke any tokens you do not recognise or no longer need.
+3. Run `npm audit` in your project and address any findings.
+4. Write down where your npm auth token is stored (CI secrets, local `.npmrc`, environment variable) and confirm it is not committed to version control or visible in logs.
+
+This is the last lesson in the npm publishing track. You now have the full workflow: preparing your package, publishing, versioning, releasing with branch protection, handling breaking changes, and protecting your supply chain. The patterns here are the same ones Multicorn Shield uses in production. They work for a solo maintainer and they scale to a team.

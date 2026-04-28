@@ -1,0 +1,51 @@
+---
+title: 'What Multicorn Shield does'
+description: 'What Shield is for, what it controls, and what it does not replace.'
+date: '2026-04-21'
+author: 'Rachelle Rathbone'
+ogImage: 'https://multicorn.ai/images/og-image.png'
+tags: ['agents', 'safety', 'shield']
+order: 4
+series: 'agents'
+---
+
+Shield is the layer between an AI agent and the tools it is trying to use. It enforces the rules you set, records what happens, and gives you a way to stop things when they go wrong.
+
+Here is what it actually does, and what it does not.
+
+### What Shield does
+
+It intercepts tool calls before they reach your systems. When an agent tries to send an email, delete a file, run a command, or spend money, the request passes through Shield first. Shield checks it against your rules and either allows it, blocks it, or asks you to approve it.
+
+It keeps an append only audit log. Every action an agent takes, whether approved, blocked, or pending, is written to a log that cannot be edited after the fact. The log uses a hash chain, which means if anyone tries to change an old entry, every later entry breaks. You can see what actually happened, in order, with proof.
+
+It enforces spending limits. If you set a cap per agent, per day, or per tool, Shield blocks the action when the cap is hit. The agent does not get to override it.
+
+It supports approval workflows. For actions that matter, you can require a human to approve before the agent proceeds. The agent waits. The action only runs if you say yes.
+
+It gives you a kill switch that actually works. Revoke an agent's access in the dashboard and the next tool call is blocked immediately. No grace period, no in flight completion.
+
+It works with the agents you already use. Claude Code, Cursor, Windsurf, OpenClaw, and anything built on the Model Context Protocol. You do not rewrite your agent. You put Shield in front of it.
+
+### What Shield does not do
+
+It does not prevent a model from deciding to do something bad. Shield cannot read the model's mind. It can only see the action the model tries to take. If the model never tries, there is nothing to block. If it tries, Shield can stop the action from reaching the real world.
+
+It does not prevent network level attacks. If someone compromises your router and injects traffic, Shield is not a firewall. It is a policy engine for agents.
+
+It does not replace good code review or human judgement. If you give an agent permission to commit to main and it writes bad code, Shield will not catch that. It will record what the agent did, so you can undo it, but the judgement call is still yours.
+
+It does not make agents trustworthy. It makes them accountable. Those are different things, and the distinction matters. A trustworthy agent is one you believe will do the right thing. An accountable agent is one whose every action you can see and control. Shield gives you the second, not the first.
+
+### Who this is for
+
+People building production systems on top of agents. Teams that need to explain to customers or regulators what an AI system did. Developers who want to experiment with powerful agents without the nagging fear of waking up to a deleted inbox. Anyone who has felt uneasy clicking "allow all" on an AI tool's permission prompt and wished there was a better option.
+
+If that sounds like you, get started below.
+
+<MulticornNavSignupCta
+  eventName="learn_signup_click"
+  eventProps={{ location: 'agent_safety_what_shield_does' }}
+>
+  Get Started
+</MulticornNavSignupCta>

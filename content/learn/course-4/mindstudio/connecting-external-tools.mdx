@@ -1,0 +1,52 @@
+---
+title: 'Connecting external tools'
+description: "Send your workflow's output to Slack, Google Sheets, email, or another service."
+order: 4
+estimatedMinutes: 10
+---
+
+## What you will do
+
+Connect your workflow to an external tool so the output goes somewhere useful instead of just appearing on the canvas.
+
+## Available integrations
+
+MindStudio offers 1,000+ integrations through its connector library: Slack, Google Sheets, Gmail, Airtable, HubSpot, Salesforce, Notion, and many more. You can also use webhooks to connect to any tool with an API.
+
+## Add a connector block
+
+1. After the Generate Text block that produces your final output, add a connector block from the integrations library.
+2. Select the service (for example, Slack).
+3. Authenticate with OAuth (one-time setup).
+4. Configure the action: which channel to post to, what message to send. Reference the output variable from the previous block.
+
+Example: Post the weekly summary to #team-updates in Slack.
+
+## Chain connectors
+
+You can add multiple connector blocks in sequence. A workflow might:
+
+1. Generate a report summary.
+2. Post it to Slack.
+3. Write it to a Google Sheet for archiving.
+4. Send an email notification to the team lead.
+
+Each connector block is independent. If one fails (Slack is down), the others still run.
+
+## Trigger a workflow from outside MindStudio
+
+MindStudio agents can be triggered by:
+
+- **Email.** Forward a message to a unique email address to start the workflow.
+- **Webhook.** Send an HTTP request from Zapier, n8n, or your own app.
+- **Schedule.** Set a recurring timer.
+- **Chrome Extension.** Trigger the agent from a browser context.
+- **API.** Call the agent programmatically from your own code.
+
+## Test it
+
+Run the workflow and check that the output appears in the external tool. If it does not, check the connector configuration (channel name, authentication, variable references).
+
+## What you should see
+
+Your workflow producing output and delivering it to the external tool you connected. The output should appear in the right place (channel, spreadsheet row, inbox) with the right content.

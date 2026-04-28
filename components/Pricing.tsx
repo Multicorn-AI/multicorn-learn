@@ -1,4 +1,8 @@
+'use client'
+
+import { useState } from 'react'
 import { PricingCard } from '@/components/PricingCard'
+import { EnterpriseInterestModal } from '@/components/EnterpriseInterestModal'
 
 interface Tier {
   readonly name: string
@@ -7,10 +11,10 @@ interface Tier {
   readonly audience: string
   readonly features: readonly string[]
   readonly cta: string
-  readonly href: string
+  readonly href?: string
   readonly highlighted: boolean
   readonly badge?: string
-  readonly disabled?: boolean
+  readonly enterprise?: boolean
 }
 
 const TIERS: readonly Tier[] = [
@@ -81,14 +85,15 @@ const TIERS: readonly Tier[] = [
       'Dedicated support',
     ],
     cta: 'Register interest',
-    href: 'mailto:sales@multicorn.ai',
     highlighted: false,
     badge: 'Coming soon',
-    disabled: true,
+    enterprise: true,
   },
 ]
 
 export function Pricing() {
+  const [enterpriseModalOpen, setEnterpriseModalOpen] = useState(false)
+
   return (
     <section id="pricing" className="px-6 py-20 sm:py-28">
       <div className="mx-auto max-w-content">
@@ -114,11 +119,17 @@ export function Pricing() {
               href={tier.href}
               highlighted={tier.highlighted}
               badge={tier.badge}
-              disabled={tier.disabled}
+              onCtaClick={tier.enterprise ? () => setEnterpriseModalOpen(true) : undefined}
             />
           ))}
         </div>
       </div>
+
+      <EnterpriseInterestModal
+        open={enterpriseModalOpen}
+        onClose={() => setEnterpriseModalOpen(false)}
+        source="shield-pricing"
+      />
     </section>
   )
 }

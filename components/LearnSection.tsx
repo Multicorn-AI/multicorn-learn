@@ -11,7 +11,7 @@ export function LearnSection() {
         </h2>
 
         <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-text-secondary">
-          Multicorn Learn is a free, practical guide to understanding AI agents — what they are, how
+          Multicorn Learn is a free, practical guide to understanding AI agents: what they are, how
           they work, and how to use them safely. No jargon, no fluff.
         </p>
 

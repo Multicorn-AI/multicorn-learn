@@ -1,28 +1,28 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { getAllLearnArticles } from '@/lib/learn'
+import { getAllAgentGuides } from '@/lib/agents'
 import { ArticleSearch } from '@/components/ArticleSearch'
 
 export const metadata: Metadata = {
-  title: 'AI 101 — Multicorn Learn',
+  title: 'Agent Safety Guides - Multicorn Learn',
   description:
-    'Foundational guides to generative AI, prompts, and AI agents. Free, plain-English articles for anyone getting started with AI.',
+    'Short guides on AI agents, permissions, and how to judge whether a tool is safe before you ship it.',
   openGraph: {
-    title: 'AI 101 — Multicorn Learn',
+    title: 'Agent Safety Guides - Multicorn Learn',
     description:
-      'Foundational guides to generative AI, prompts, and AI agents. Free, plain-English articles for anyone getting started with AI.',
+      'Short guides on AI agents, permissions, and how to judge whether a tool is safe before you ship it.',
     type: 'website',
   },
 }
 
-export default function AI101IndexPage() {
-  const articles = getAllLearnArticles()
+export default function AgentSafetyGuidesIndexPage() {
+  const guides = getAllAgentGuides()
 
-  const searchableArticles = articles.map((article) => ({
-    slug: article.slug,
-    title: article.meta.title,
-    description: article.meta.description,
-    tags: article.meta.tags,
+  const searchableArticles = guides.map((guide) => ({
+    slug: guide.slug,
+    title: guide.meta.title,
+    description: guide.meta.description,
+    tags: guide.meta.tags,
   }))
 
   return (
@@ -50,21 +50,31 @@ export default function AI101IndexPage() {
           </Link>
 
           <span className="mb-4 inline-block rounded-full bg-green/10 px-4 py-1.5 text-sm font-medium text-green">
-            {articles.length} articles
+            {guides.length} guides
           </span>
           <h1 className="mb-6 text-4xl font-bold tracking-tight text-text-primary sm:text-5xl">
-            AI 101
+            Agent Safety Guides
           </h1>
           <p className="mx-auto max-w-2xl text-lg leading-relaxed text-text-secondary">
-            Everything you need to understand generative AI, from the basics to AI agents and
-            permissions. Written in plain English — no technical background required.
+            From &quot;what is an agent?&quot; to what to check before you give one access to your
+            tools. Plain language, built to pair with Multicorn Shield.
+          </p>
+          <p className="mx-auto mt-4 max-w-2xl text-sm text-text-secondary">
+            Looking for agent platforms?{' '}
+            <Link
+              href="/learn/agent-platforms"
+              className="font-medium text-primary underline-offset-4 hover:underline focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+            >
+              See the comparison guide
+            </Link>
+            .
           </p>
         </div>
 
-        {articles.length === 0 ? (
-          <p className="text-center text-text-secondary">No articles yet. Check back soon.</p>
+        {guides.length === 0 ? (
+          <p className="text-center text-text-secondary">No guides yet. Check back soon.</p>
         ) : (
-          <ArticleSearch articles={searchableArticles} />
+          <ArticleSearch articles={searchableArticles} articleHrefBase="/learn/agents" />
         )}
       </div>
     </main>

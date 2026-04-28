@@ -3,7 +3,7 @@
  *
  * Checks JSX text content, JSX attribute strings (aria-label, title, alt),
  * and template literals inside JSX. Does NOT flag variable names, imports, comments,
- * or non-UI strings — only text that would be visible to a user.
+ * or non-UI strings, only text that would be visible to a user.
  */
 
 const BANNED_WORDS = new Map([

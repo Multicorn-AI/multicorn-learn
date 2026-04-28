@@ -1,0 +1,105 @@
+---
+title: 'Cost control on AWS'
+description: 'How to understand your AWS bill, set guardrails that prevent runaway spending, and find and kill zombie resources that cost money while doing nothing.'
+order: 7
+estimatedMinutes: 14
+outcome: 'You will know how to read your AWS bill, set up cost alerts, and identify resources that are wasting money.'
+date: '2026-04-27'
+---
+
+## Why this is a full lesson
+
+On Vercel, your bill is predictable. You pay a flat monthly fee, maybe with some usage overage. On Fly.io, the pricing is transparent per-VM.
+
+On AWS, people regularly get surprise bills in the hundreds or thousands of dollars. It happens because AWS has hundreds of services, each with their own pricing model, and many of them charge for resources that are idle. A forgotten EC2 instance. An unattached Elastic IP address. A load balancer with no targets. CloudWatch logs growing without a retention policy.
+
+Cost control on AWS is not a "nice to have." It is a survival skill.
+
+## Understanding your bill
+
+**Step 1:** In the Console, go to **Billing and Cost Management**.
+
+**Step 2:** Click **Bills** in the left sidebar. This shows your current month's charges broken down by service.
+
+Familiarise yourself with what each line item means:
+
+**EC2** charges include compute instances, Elastic IP addresses, EBS volumes (disk storage), and data transfer. Even if you are using Fargate and have no EC2 instances, load balancers and public IP addresses show up here.
+
+**ECS** charges are for Fargate compute (CPU and memory per second while your tasks are running).
+
+**S3** charges include storage (per GB), requests (per thousand GET/PUT requests), and data transfer.
+
+**CloudFront** charges include data transfer and HTTP requests. CloudFront has an always-free tier of 1 TB of data transfer and 10 million requests per month. Most small to mid-size applications stay well within this.
+
+**CloudWatch** charges include log ingestion (per GB), log storage (per GB per month), and custom metrics. This is the sneaky one. Logs accumulate silently.
+
+**Route 53** charges include $0.50 per hosted zone per month and a small per-query fee.
+
+## Cost Explorer
+
+Cost Explorer is your best tool for understanding where money is going.
+
+**Step 1:** In Billing, click **Cost Explorer** in the left sidebar.
+
+**Step 2:** Set the time range to the last 3 months. Group by **Service**.
+
+**What you should see:** A bar chart showing your spending per service per month. Spikes are immediately visible. If CloudWatch suddenly jumped from $0 to $15, you know where to look.
+
+**Step 3:** For a deeper look, group by **Usage type**. This shows exactly which line item within a service is driving the cost. "APS2-TimedStorage-ByteHrs" means S3 storage in Sydney. "APS2-DataTransfer-Out-Bytes" means data leaving the Sydney region.
+
+## Budgets (revisited)
+
+You set up a basic budget in Lesson 2. Now that you have deployed services, revisit it.
+
+**Step 1:** Go to **Budgets** in Billing.
+
+**Step 2:** Check that your budget amount still makes sense given what you have deployed. If you set $10 during account setup and have now deployed a load balancer, you might need to raise it to $25 or $30.
+
+**Step 3:** Consider adding a budget per service if a specific service worries you. You can create a budget filtered to only CloudWatch or only EC2.
+
+AWS budgets do not stop spending. They only notify you. There is no built-in "hard cap" that shuts off services when you hit a limit. This is by design (AWS does not want to take your production app offline because of a billing threshold), but it means you need to act on the alerts.
+
+## Finding zombie resources
+
+Zombie resources are things that exist in your account, cost money, and do nothing useful. They accumulate over time as you experiment, tear things down incompletely, and forget about old test deployments.
+
+**Unattached Elastic IP addresses.** An Elastic IP that is not associated with a running instance costs $3.60 per month. Go to EC2, then **Elastic IPs** in the left sidebar. Release any that are not attached to anything.
+
+**Unused EBS volumes.** When you terminate an EC2 instance, its EBS volumes might survive (depending on the `DeleteOnTermination` setting). Go to EC2, then **Volumes**. Filter by state "available" (meaning not attached to anything). Delete any you do not need. A 30 GB volume costs about $3 per month.
+
+**Old EBS snapshots.** Snapshots of volumes you no longer need still cost $0.05 per GB per month. Go to EC2, then **Snapshots**. Delete ones you no longer need.
+
+**Load balancers with no targets.** An idle Application Load Balancer costs about $16 per month even if no traffic flows through it. Go to EC2, then **Load Balancers**. If a load balancer has zero healthy targets and you are not actively setting something up, delete it.
+
+**CloudWatch log groups with no retention.** As discussed in Lesson 6, log groups with no retention policy keep logs forever. Go through each log group and set an appropriate retention period.
+
+**Stopped but not terminated EC2 instances.** Stopped instances do not charge for compute, but their EBS volumes still cost money. Either terminate them (which deletes the instance and optionally the volume) or snapshot them and then terminate.
+
+## A monthly routine
+
+Set a calendar reminder for the first of each month. Spend ten minutes:
+
+1. Check Cost Explorer for anything unexpected.
+2. Review your budgets. Are you trending higher than last month? Why?
+3. Scan for zombie resources using the list above.
+4. Check CloudWatch log groups for unexpected storage growth.
+
+This is the AWS equivalent of checking your bank statement. It is not exciting, but it prevents the $400 surprise bill that shows up three months after you forgot about a test deployment.
+
+## The free tier is not free
+
+If you created your AWS account recently, you have access to the AWS Free Plan, which provides credits and limited usage of certain services. The key details to understand:
+
+The free plan lasts six months from account creation, not forever. After that, you are on standard pricing for most services. Some services (S3 standard storage up to 5 GB, CloudFront up to 1 TB, Lambda up to 1 million invocations) remain free permanently within their limits.
+
+Free tier limits are shared across regions. If you run one t3.micro instance in Sydney and another in Virginia, you are using 1,500 hours against a 750-hour monthly limit. You will be billed for the second one.
+
+AWS does not prevent you from exceeding free tier limits. There are no guardrails. You will be charged standard rates for any usage above the limits, and you will only find out when the bill arrives or your budget alert fires.
+
+## What comes next
+
+You have completed the AWS track. Your application is deployed, your secrets are secure, your logs are readable, and your costs are under control.
+
+If you have not already, go back to the main Course 3 and make sure you have completed the web deployment lessons. The skills from those lessons (understanding DNS, HTTPS, environment variables, and deployment pipelines) are the same skills that made this track manageable.
+
+When you are ready to start building with AI agents, Course 4 covers how agents work, what permissions they need, and how to keep them under control.

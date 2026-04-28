@@ -11,25 +11,25 @@ series: 'ai-101'
 
 ## The short version
 
-When a chatbot gets something wrong, you get a bad answer. When an AI agent gets something wrong, something happens in the real world — an email gets sent, money gets spent, or data gets deleted. This article walks through concrete error scenarios, explains why agent mistakes are fundamentally different from chatbot mistakes, and makes the case for putting guardrails in place before anything goes wrong.
+When a chatbot gets something wrong, you get a bad answer. When an AI agent gets something wrong, something happens in the real world: an email gets sent, money gets spent, or data gets deleted. This article walks through concrete error scenarios, explains why agent mistakes are fundamentally different from chatbot mistakes, and makes the case for putting guardrails in place before anything goes wrong.
 
 ## Chatbot mistakes vs agent mistakes
 
-We covered [AI hallucinations](/learn/ai-101/what-are-ai-hallucinations) earlier in this series. When a chatbot hallucinates, it generates an incorrect answer — maybe it invents a fake statistic or cites a source that does not exist. That is annoying, but the damage is limited. You read the answer, notice the error, and move on. Nothing in the real world changed.
+We covered [AI hallucinations](/learn/course-1/what-are-ai-hallucinations) earlier in this series. When a chatbot hallucinates, it generates an incorrect answer. Maybe it invents a fake statistic or cites a source that does not exist. That is annoying, but the damage is limited. You read the answer, notice the error, and move on. Nothing in the real world changed.
 
-An AI agent operates differently. As we discussed in [What Is an AI Agent?](/learn/ai-101/what-is-an-ai-agent), agents take real-world actions — they connect to services and make things happen. When an agent hallucinates or misinterprets an instruction, the consequences are not just text on a screen. They are real events that may be difficult or impossible to reverse.
+An AI agent operates differently. As we discussed in [What Is an AI Agent?](/learn/course-1/what-is-an-ai-agent), agents take real-world actions: they connect to services and make things happen. When an agent hallucinates or misinterprets an instruction, the consequences are not just text on a screen. They are real events that may be difficult or impossible to reverse.
 
 Here is the key distinction: **a chatbot mistake wastes your time. An agent mistake can cost you money, relationships, or data.**
 
 ## Scenario 1: The wrong email
 
-Your team uses an agent to draft and send replies to routine customer inquiries. On a Tuesday morning, a customer writes in asking about a delayed shipment. The agent drafts a response that includes a 20% discount code as an apology — something your team has done before for similar situations.
+Your team uses an agent to draft and send replies to routine customer inquiries. On a Tuesday morning, a customer writes in asking about a delayed shipment. The agent drafts a response that includes a 20% discount code as an apology, something your team has done before for similar situations.
 
 The problem: this particular delay was caused by the customer providing the wrong address. Your policy for address errors is to reship at no discount. The agent does not know the difference. It pattern-matches on "delayed shipment" and applies the discount template.
 
 The email is already sent. The customer has the discount code. Your support team now has to either honour a discount that should not have been offered or have an awkward conversation explaining that an AI made the decision.
 
-**What went wrong:** The agent had permission to send emails without a review step. A human in the loop — even a quick "approve before sending" step — would have caught the mistake before it reached the customer.
+**What went wrong:** The agent had permission to send emails without a review step. A human in the loop (even a quick "approve before sending" step) would have caught the mistake before it reached the customer.
 
 ## Scenario 2: The accidental purchase
 
@@ -37,7 +37,7 @@ Your team uses an agent to manage office supplies. It monitors inventory levels 
 
 The problem: someone manually updated the inventory spreadsheet incorrectly, showing 2 reams instead of 200. The agent orders 198 reams of printer paper to bring the count back to the target. At $45 per ream, that is an $8,910 charge on the company card.
 
-The order has been placed and the card has been charged. Depending on the vendor, you might get a refund — or you might be stuck with a storage room full of paper.
+The order has been placed and the card has been charged. Depending on the vendor, you might get a refund, or you might be stuck with a storage room full of paper.
 
 **What went wrong:** The agent had no spending limit. A per-transaction cap of, say, $500 would have blocked the order before it went through. The agent would have flagged the purchase as exceeding the limit, and a human could have investigated the inventory discrepancy.
 
@@ -45,15 +45,15 @@ The order has been placed and the card has been charged. Depending on the vendor
 
 Your team uses an agent to organise shared documents. It files incoming documents into the right folders, archives old ones, and cleans up duplicates. It has been working well for weeks.
 
-Then one morning a colleague notices that an entire project folder is gone. The agent identified a set of files as "duplicates" because they had similar names — but they were actually different versions of a client deliverable. The agent moved them to trash and emptied it.
+Then one morning a colleague notices that an entire project folder is gone. The agent identified a set of files as "duplicates" because they had similar names, but they were actually different versions of a client deliverable. The agent moved them to trash and emptied it.
 
-Depending on your file storage provider and backup configuration, those files may be recoverable — or they may be gone permanently.
+Depending on your file storage provider and backup configuration, those files may be recoverable, or they may be gone permanently.
 
-**What went wrong:** The agent had delete permissions when it only needed read and move permissions. If the agent could move files to an archive folder but not permanently delete anything, the worst-case scenario would be a file in the wrong folder — easily fixable.
+**What went wrong:** The agent had delete permissions when it only needed read and move permissions. If the agent could move files to an archive folder but not permanently delete anything, the worst-case scenario would be a file in the wrong folder, which is easily fixable.
 
 ## Scenario 4: The message in the wrong channel
 
-An agent posts a daily summary of sales figures to your team's internal channel. One day, it posts the summary to a channel shared with an external partner — complete with margin data, customer names, and revenue numbers that are confidential.
+An agent posts a daily summary of sales figures to your team's internal channel. One day, it posts the summary to a channel shared with an external partner, complete with margin data, customer names, and revenue numbers that are confidential.
 
 The message is visible to people outside your organisation for however long it takes someone to notice and delete it.
 
@@ -63,12 +63,12 @@ The message is visible to people outside your organisation for however long it t
 
 Every one of these scenarios shares the same structure:
 
-1. The agent did exactly what it was designed to do — the logic worked as expected.
-2. The inputs were wrong, unusual, or ambiguous — things that a human would have caught.
-3. The agent had more permissions than it needed — broader access, no spending cap, no human review step.
+1. The agent did exactly what it was designed to do. The logic worked as expected.
+2. The inputs were wrong, unusual, or ambiguous. Things that a human would have caught.
+3. The agent had more permissions than it needed. Broader access, no spending cap, no human review step.
 4. The mistake was difficult or impossible to undo once it happened.
 
-This is the critical insight: **agent mistakes are usually not bugs. They are correct behaviour applied to situations the agent was not equipped to handle.** The agent is not broken — it just does not have the judgement to know when it should stop and ask.
+This is the critical insight: **agent mistakes are usually not bugs. They are correct behaviour applied to situations the agent was not equipped to handle.** The agent is not broken. It just does not have the judgement to know when it should stop and ask.
 
 ## Why guardrails need to exist before the mistake
 
@@ -82,18 +82,14 @@ Effective guardrails are preventative, not reactive:
 
 **Human review steps** require approval before high-stakes actions. "Draft the email but let me review it before sending" is a simple rule that prevents the discount code scenario entirely.
 
-**Activity records** create a clear trail of every action the agent takes. When something does go wrong, you can see exactly what happened, when, and why — instead of piecing together clues after the fact.
+**Activity records** create a clear trail of every action the agent takes. When something does go wrong, you can see exactly what happened, when, and why, instead of piecing together clues after the fact.
 
 These are not complicated controls. They are the same kinds of rules you already apply to human employees: spending limits on company cards, approval workflows for large purchases, restricted access to sensitive information. AI agents need the same treatment.
 
 ## Key takeaways
 
-- Agent mistakes are fundamentally different from chatbot mistakes — they cause real-world consequences that may be irreversible.
+- Agent mistakes are fundamentally different from chatbot mistakes. They cause real-world consequences that may be irreversible.
 - Most agent errors are not bugs. They are correct behaviour applied to situations the agent lacks the judgement to handle.
 - The four most common failure patterns are: wrong communication sent, unintended spending, data loss, and information leaked to the wrong audience.
-- Guardrails need to be in place before mistakes happen — not added after the first incident.
+- Guardrails need to be in place before mistakes happen. Not added after the first incident.
 - Permission boundaries, spending limits, human review steps, and activity records are the four essential controls for any agent deployment.
-
-**Next up:** [How to Set a Spending Limit for an AI Agent](/learn/ai-101/how-to-set-a-spending-limit-for-an-ai-agent)
-
-**Previous:** [What Permissions Does Your AI Agent Actually Need?](/learn/ai-101/what-permissions-does-your-ai-agent-need)

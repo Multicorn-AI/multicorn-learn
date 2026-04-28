@@ -1,7 +1,7 @@
 import { ShieldCheck } from 'lucide-react'
 
 interface SecurityNoteProps {
-  readonly title: string
+  readonly title?: string
   readonly children: React.ReactNode
 }
 
@@ -18,8 +18,8 @@ export function SecurityNote({ title, children }: SecurityNoteProps) {
           aria-hidden="true"
         />
         <div className="min-w-0 space-y-2">
-          <p className="text-sm font-semibold text-text-primary">{title}</p>
-          <div className="text-sm leading-relaxed text-text-secondary [&_p:last-child]:mb-0 [&_p]:mb-3">
+          {title ? <p className="text-sm font-semibold text-text-primary">{title}</p> : null}
+          <div className="text-sm leading-relaxed text-text-secondary [&_p:first-child]:mt-0 [&_p:last-child]:mb-0 [&_p]:mb-3">
             {children}
           </div>
         </div>

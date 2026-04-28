@@ -1,0 +1,45 @@
+---
+title: 'Your first workflow'
+description: 'Sign up for MindStudio, create an agent, and run your first AI workflow on the canvas.'
+order: 1
+estimatedMinutes: 12
+---
+
+## What you will do
+
+Create a free MindStudio account and build a simple agent that takes a text input and generates a useful output.
+
+## Sign up
+
+Go to [mindstudio.ai](https://www.mindstudio.ai) and click **Get Started.** The free tier gives you 1,000 runs per month, unlimited draft agents, and access to the model library. No credit card required.
+
+## Understand the canvas
+
+MindStudio agents are workflows. A workflow is a sequence of blocks on a visual canvas, connected in order. Each block does one thing: collect input from a user, send a prompt to an AI model, display content, branch based on a condition, or connect to an external tool.
+
+Every workflow starts with a **Start** block and ends with an **End** block.
+
+## Build your first agent
+
+1. Navigate to the **Build** tab.
+2. Click **Create New Agent.** You land on the AI Editor canvas with a Start and End block.
+3. Click the Start block. Add a **User Input** block that creates a form field. Name the variable something descriptive: `topic` or `email_text` or `report_request`.
+4. Add a **Generate Text** block after the input. This block sends a prompt to an AI model and stores the output in a variable.
+5. In the Generate Text block, write a prompt that references your input variable using double curly braces: `Summarise the following text in three bullet points: {{email_text}}`
+6. Add a **Display Content** block after the Generate Text block to show the result.
+7. Connect the blocks in sequence: Start → User Input → Generate Text → Display Content → End.
+
+## Run it
+
+Click the **Test** button. Enter some text in the input field. The workflow runs through each block and shows you the output at the Display Content step.
+
+## What you should see
+
+A working workflow that takes your input, sends it to an AI model, and returns a result. The canvas should show each block connected in a clear sequence.
+
+<SecurityNote>
+  MindStudio does not mark up model costs. You pay exactly what the model provider charges. But
+  every run consumes tokens, and token costs vary by model. GPT-4o mini is cheap. Claude Opus is
+  expensive. For testing and iteration, use a smaller model. Switch to a larger one when you need
+  the quality.
+</SecurityNote>

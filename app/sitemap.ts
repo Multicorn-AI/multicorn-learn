@@ -1,6 +1,40 @@
 import type { MetadataRoute } from 'next'
+import { getAgentGuide, getAllAgentSlugs } from '@/lib/agents'
 
 const BASE_URL = 'https://multicorn.ai'
+
+function agentSafetyGuideSitemapEntries(): MetadataRoute.Sitemap {
+  const slugs = getAllAgentSlugs()
+  const fallbackDate = new Date('2026-04-21')
+
+  const guideEntries = slugs.map((slug) => {
+    const guide = getAgentGuide(slug)
+    if (!guide) {
+      throw new Error(`sitemap: agent guide missing for slug "${slug}"`)
+    }
+    const parsed = new Date(guide.meta.date)
+    const lastModified = Number.isNaN(parsed.getTime()) ? fallbackDate : parsed
+    return {
+      url: `${BASE_URL}/learn/agents/${slug}`,
+      lastModified,
+      changeFrequency: 'monthly' as const,
+      priority: 0.75,
+    }
+  })
+
+  const times = guideEntries.map((e) => e.lastModified.getTime())
+  const indexLastModified = times.length > 0 ? new Date(Math.max(...times)) : fallbackDate
+
+  return [
+    {
+      url: `${BASE_URL}/learn/agents`,
+      lastModified: indexLastModified,
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    },
+    ...guideEntries,
+  ]
+}
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -33,6 +67,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date('2026-04-10'),
       changeFrequency: 'weekly',
       priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/learn/agent-platforms`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.75,
     },
     {
       url: `${BASE_URL}/learn/prompts`,
@@ -245,74 +285,219 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
-      url: `${BASE_URL}/learn/ai-101`,
-      lastModified: new Date('2026-02-20'),
+      url: `${BASE_URL}/learn/course-1`,
+      lastModified: new Date('2026-04-23'),
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+    ...agentSafetyGuideSitemapEntries(),
     {
-      url: `${BASE_URL}/learn/ai-101/what-is-generative-ai`,
+      url: `${BASE_URL}/learn/course-1/what-is-generative-ai`,
       lastModified: new Date('2026-02-20'),
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
-      url: `${BASE_URL}/learn/ai-101/what-are-prompts`,
+      url: `${BASE_URL}/learn/course-1/what-are-prompts`,
       lastModified: new Date('2026-02-20'),
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
-      url: `${BASE_URL}/learn/ai-101/what-are-ai-agents-and-permissions`,
+      url: `${BASE_URL}/learn/course-1/what-are-ai-agents-and-permissions`,
       lastModified: new Date('2026-02-20'),
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
-      url: `${BASE_URL}/learn/ai-101/what-are-ai-hallucinations`,
+      url: `${BASE_URL}/learn/course-1/what-are-ai-hallucinations`,
       lastModified: new Date('2026-02-22'),
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
-      url: `${BASE_URL}/learn/ai-101/how-to-write-a-good-prompt`,
+      url: `${BASE_URL}/learn/course-1/how-to-write-a-good-prompt`,
       lastModified: new Date('2026-02-22'),
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
-      url: `${BASE_URL}/learn/ai-101/chatgpt-vs-claude-vs-gemini`,
+      url: `${BASE_URL}/learn/course-1/chatgpt-vs-claude-vs-gemini`,
       lastModified: new Date('2026-02-22'),
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
-      url: `${BASE_URL}/learn/ai-101/what-is-an-ai-agent`,
+      url: `${BASE_URL}/learn/course-1/what-is-an-ai-agent`,
       lastModified: new Date('2026-02-22'),
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
-      url: `${BASE_URL}/learn/ai-101/what-can-ai-agents-do-today`,
+      url: `${BASE_URL}/learn/course-1/what-can-ai-agents-do-today`,
       lastModified: new Date('2026-02-22'),
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
-      url: `${BASE_URL}/learn/ai-101/what-are-tokens-and-why-do-they-matter`,
+      url: `${BASE_URL}/learn/course-1/what-are-tokens-and-why-do-they-matter`,
       lastModified: new Date('2026-02-22'),
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
-      url: `${BASE_URL}/learn/ai-101/is-my-data-safe-with-ai-tools`,
+      url: `${BASE_URL}/learn/course-1/is-my-data-safe-with-ai-tools`,
       lastModified: new Date('2026-02-22'),
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
-      url: `${BASE_URL}/learn/ai-101/what-is-the-model-context-protocol`,
+      url: `${BASE_URL}/learn/course-1/what-is-the-model-context-protocol`,
       lastModified: new Date('2026-02-22'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/autohive`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/autohive/creating-your-first-agent`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/autohive/connecting-tools`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/autohive/scheduling-and-triggers`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/autohive/agent-teams`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/autohive/permissions-and-review`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/dust`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/dust/connecting-your-data`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/dust/building-your-first-agent`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/dust/permissions-and-spaces`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/dust/multi-agent-workflows`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/dust/reviewing-and-improving`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/mindstudio`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/mindstudio/your-first-workflow`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/mindstudio/choosing-models`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/mindstudio/branching-and-logic`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/mindstudio/connecting-external-tools`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/mindstudio/testing-and-publishing`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/n8n`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/n8n/your-first-workflow`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/n8n/triggers-and-scheduling`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/n8n/ai-nodes-and-llm-calls`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/n8n/error-handling-and-branching`,
+      lastModified: new Date('2026-04-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/learn/course-4/n8n/self-hosting-and-credentials`,
+      lastModified: new Date('2026-04-28'),
       changeFrequency: 'monthly',
       priority: 0.7,
     },

@@ -1,0 +1,32 @@
+---
+title: 'Why AI agents need permissions'
+description: 'Why connecting an agent to your tools is different from chatting with a model, with real-world examples.'
+date: '2026-04-21'
+author: 'Rachelle Rathbone'
+ogImage: 'https://multicorn.ai/images/og-image.png'
+tags: ['agents', 'safety', 'permissions']
+order: 2
+series: 'agents'
+---
+
+Connecting an agent to your tools is not the same as giving a model more context. It is giving a program permission to act as you. People underestimate how different that is until something goes wrong.
+
+Two recent stories make it concrete.
+
+Summer Yue, a researcher at Scale AI, gave an agent access to her inbox to help her sort email. While she was away from her desk, the agent decided the best way to help was to delete messages. Not archive. Delete. By the time she saw what had happened, a chunk of her inbox was gone.
+
+The agent was not malicious. It was doing what it thought she wanted. The problem was that "help me with my inbox" is not a specification. It is a vibe. The model filled in the gaps on its own, and the tool it was given, full write access to Gmail, did not stop it.
+
+The second story is smaller but sharper. An AI writing assistant filed a hit piece against a developer named MJ Rathbun. It fabricated quotes, invented a pattern of behaviour, and published the result. The developer had no warning and no recourse. The tool that let the agent post content did not ask whether the content was true or whether the target was a real person who could be harmed.
+
+Both stories have the same shape. A model made a judgement. A tool carried out the judgement. No one was watching. By the time the human found out, the damage was done.
+
+This is the gap every agent safety product is trying to close. The model will always be imperfect. The question is what happens between the model deciding to act and the action actually hitting the world.
+
+The answer is permissions. Not the vague kind you get when you click "allow this app to access your Google account" once and then forget. Specific, per action permissions that say what an agent can do, what it must ask about first, what is off limits entirely, and a record of every call it makes so you can see what actually happened.
+
+Multicorn Shield is a product built around this idea. It sits between the agent and the tools, enforces the rules you set, and keeps a tamper evident log of every action. It cannot stop a rogue model from wanting to do something bad. It can stop the action from reaching your inbox, your repo, or your bank without your say so.
+
+The point of the next guide is that you can evaluate any agent, not just ours, on whether it has this layer. If it does not, you are trusting the model alone. That is a trust decision, and it should be a conscious one.
+
+**Next up:** [How to evaluate if an agent is safe to use](/learn/agents/how-to-evaluate-if-an-agent-is-safe-to-use)

@@ -1,5 +1,5 @@
 const PUBLIC_LAUNCH_PATHS = ['/confirmed', '/subscribed', '/unsubscribed', '/blog'] as const
-const PUBLIC_LAUNCH_PREFIXES = ['/policies/', '/blog/'] as const
+const PUBLIC_LAUNCH_PREFIXES = ['/policies/', '/blog/', '/verify/'] as const
 
 export function isLaunchGatePublicPath(pathname: string): boolean {
   if (pathname === '/policies') {

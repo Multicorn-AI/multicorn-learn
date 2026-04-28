@@ -1,0 +1,69 @@
+---
+title: 'Testing and publishing your agent'
+description: 'Run structured tests, check costs, and share your agent with your team or the public.'
+order: 5
+estimatedMinutes: 14
+---
+
+## What you will do
+
+Run your agent through a structured test, review costs, and publish it so others can use it.
+
+## Structured testing
+
+Before publishing, test the agent with at least five different inputs that cover the main scenarios.
+
+For each test, record:
+
+- **Input.** What you typed or provided.
+- **Expected output.** What you wanted the agent to produce.
+- **Actual output.** What the agent actually produced.
+- **Pass/fail.** Whether the actual output met your expectation.
+- **Cost.** How many tokens the run consumed.
+
+If more than one test fails, go back and fix the instructions, model selection, or branching logic before publishing.
+
+## Check the cost per run
+
+Open the analytics dashboard. Look at the average cost per run across your tests. If the cost is higher than you expected:
+
+- Check whether a Generate Text block is using an expensive model unnecessarily.
+- Check whether a loop is running more iterations than intended.
+- Consider adding a length constraint to prompts ("Keep the response under 200 words").
+
+## Publish
+
+When you are satisfied with the test results:
+
+1. Click **Publish** in the agent builder.
+2. Choose the distribution method:
+   - **Web app.** A standalone URL anyone can visit.
+   - **Chrome Extension.** Users trigger the agent while browsing.
+   - **API.** Developers call the agent from their own code.
+   - **Embed.** Drop the agent into an existing website.
+3. Set access controls. You can restrict access to specific users or make the agent public.
+
+## Monitor after publishing
+
+Publishing is not the end. Watch the analytics for:
+
+- **Error rate.** Are runs failing? Check the logs for the specific error.
+- **Cost trends.** Is the per-run cost increasing? A data source change or model update might be the cause.
+- **Usage patterns.** Which inputs are users providing? Are they using the agent for the task you designed it for?
+
+## What you should see
+
+A published agent that others can access through the distribution method you chose. The analytics dashboard should show successful runs, costs, and usage.
+
+<SecurityNote>
+  A published web app is accessible to anyone with the URL. If the agent handles sensitive data or
+  performs actions (sending emails, creating records), restrict access to authenticated users. Do
+  not publish a write-capable agent as a public web app unless you have explicit rate limiting and
+  input validation.
+</SecurityNote>
+
+## What comes next
+
+You now have a published MindStudio agent with a tested workflow, cost-appropriate model choices, and a clear distribution method. Run it for a week, check the analytics daily, and refine based on what you see.
+
+For a broader view of how other platforms compare, see the [agent platform comparison guide](/learn/agent-platforms).

@@ -11,6 +11,12 @@ const DIR = new URL('.', import.meta.url).pathname.replace(/\/$/, '')
 const ESLINT = `${DIR}/node_modules/.bin/eslint`
 const PRETTIER = `${DIR}/node_modules/.bin/prettier`
 
+/** Build-generated from multicorn-shield CHANGELOG; do not format on commit. */
+function notGeneratedChangelog(f) {
+  const n = f.replace(/\\/g, '/')
+  return !n.endsWith('content/changelog.json')
+}
+
 export default {
   '*.{ts,tsx}': (filenames) => {
     const files = filenames.filter(notCacheOrDeps)
@@ -26,7 +32,9 @@ export default {
     return `${PRETTIER} --write ${files.join(' ')}`
   },
   '*.{json}': (filenames) => {
-    const files = filenames.filter(notCacheOrDeps)
+    const files = filenames
+      .filter(notCacheOrDeps)
+      .filter(notGeneratedChangelog)
     if (files.length === 0) return []
     return `${PRETTIER} --write ${files.join(' ')}`
   },

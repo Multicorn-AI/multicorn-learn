@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" fill="none">
-  <title>How Multicorn Shield Works — SDK and Proxy paths converge at the same dashboard</title>
+  <title>How Multicorn Shield Works: SDK and Proxy paths converge at the same dashboard</title>
 
   <!-- Background -->
   <rect width="800" height="520" rx="12" fill="#FAFAFA" stroke="#E5E7EB" stroke-width="1"/>
@@ -71,7 +71,7 @@
   <text x="660" y="340" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="700" fill="#14B8A6">5</text>
   <text x="632" y="340" text-anchor="end" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="600" fill="#111827">View in your dashboard</text>
 
-  <!-- Convergence lines — curves meet at a point, then a vertical line drops into the service box -->
+  <!-- Convergence lines: curves meet at a point, then a vertical line drops into the service box -->
   <path d="M 140 350 Q 140 372 400 375" stroke="#E5E7EB" stroke-width="1.5" stroke-dasharray="4 3" fill="none"/>
   <path d="M 660 350 Q 660 372 400 375" stroke="#E5E7EB" stroke-width="1.5" stroke-dasharray="4 3" fill="none"/>
 
@@ -83,7 +83,7 @@
   <text x="400" y="415" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700" fill="#7C3AED">Shield API</text>
   <text x="400" y="431" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#9CA3AF">Permissions, logging, controls</text>
 
-  <!-- Connector to dashboard — same length as above (18px) -->
+  <!-- Connector to dashboard: same length as above (18px) -->
   <line x1="400" y1="441" x2="400" y2="459" stroke="#E5E7EB" stroke-width="1.5" stroke-dasharray="3 2"/>
 
   <!-- Dashboard node -->

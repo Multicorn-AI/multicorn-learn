@@ -1,6 +1,6 @@
 ---
 title: 'What Is an AI Agent and How Is It Different from a Chatbot?'
-description: 'AI agents do not just talk — they act. This article explains the key difference between chatbots and agents, and why autonomy, tool use, and memory change everything.'
+description: 'AI agents do not just talk. They act. This article explains the key difference between chatbots and agents, and why autonomy, tool use, and memory change everything.'
 date: '2026-02-22'
 author: 'Multicorn Team'
 ogImage: 'https://multicorn.ai/images/og-image.png'
@@ -11,39 +11,39 @@ series: 'ai-101'
 
 ## The short version
 
-A chatbot responds to your questions with text. An AI agent goes further — it can take actions in the real world, like sending emails, booking meetings, or making purchases. The difference is not just a feature upgrade. It is a fundamentally different kind of software. This article explains what makes agents different, why that matters, and what to watch out for.
+A chatbot responds to your questions with text. An AI agent goes further. It can take actions in the real world, like sending emails, booking meetings, or making purchases. The difference is not just a feature upgrade. It is a fundamentally different kind of software. This article explains what makes agents different, why that matters, and what to watch out for.
 
 ## Chatbots respond, agents act
 
-If you have used ChatGPT, Claude, or Gemini (covered in our [comparison article](/learn/ai-101/chatgpt-vs-claude-vs-gemini)), you have used a chatbot. You type a question, the chatbot generates a text response, and the conversation ends there. The chatbot does not do anything beyond producing words on your screen.
+If you have used ChatGPT, Claude, or Gemini (covered in our [comparison article](/learn/course-1/chatgpt-vs-claude-vs-gemini)), you have used a chatbot. You type a question, the chatbot generates a text response, and the conversation ends there. The chatbot does not do anything beyond producing words on your screen.
 
 An AI agent starts with the same language model at its core, but it adds three critical capabilities that a plain chatbot does not have: **autonomy**, **tool use**, and **memory**.
 
 ### Autonomy
 
-A chatbot waits for you to ask a question and then gives one answer. An agent can take a goal, break it down into steps, and work through those steps on its own. You give it a high-level instruction — "Reschedule my afternoon meetings to next week" — and the agent figures out which meetings to move, finds available times, and updates your calendar.
+A chatbot waits for you to ask a question and then gives one answer. An agent can take a goal, break it down into steps, and work through those steps on its own. You give it a high-level instruction ("Reschedule my afternoon meetings to next week"), and the agent figures out which meetings to move, finds available times, and updates your calendar.
 
 This is the biggest difference. A chatbot is reactive: it answers when asked. An agent is proactive: it plans and executes a sequence of actions to achieve a goal.
 
 ### Tool use
 
-A chatbot can only generate text. An agent can connect to external services and use them. These connections are sometimes called "tools" — and they are what give agents the ability to interact with the real world.
+A chatbot can only generate text. An agent can connect to external services and use them. These connections are sometimes called "tools", and they are what give agents the ability to interact with the real world.
 
 Common tools an agent might use include:
 
-- **Email** — reading, composing, and sending messages
-- **Calendar** — checking availability, creating events, sending invitations
-- **File storage** — reading documents, creating files, organising folders
-- **Web search** — looking up current information
-- **Payment systems** — making purchases, processing invoices
-- **Messaging apps** — posting updates in Slack, Teams, or other platforms
-- **Databases** — querying and updating records
+- **Email:** reading, composing, and sending messages
+- **Calendar:** checking availability, creating events, sending invitations
+- **File storage:** reading documents, creating files, organising folders
+- **Web search:** looking up current information
+- **Payment systems:** making purchases, processing invoices
+- **Messaging apps:** posting updates in Slack, Teams, or other platforms
+- **Databases:** querying and updating records
 
 When an agent "uses" a tool, it is making a real request to a real service. If the agent sends an email, that email actually arrives in someone's inbox. This is not a simulation.
 
 ### Memory
 
-A basic chatbot starts fresh with each conversation. It does not remember what you discussed yesterday. An agent can maintain memory across sessions — remembering your preferences, past decisions, and ongoing tasks.
+A basic chatbot starts fresh with each conversation. It does not remember what you discussed yesterday. An agent can keep memory across sessions, remembering your preferences, past decisions, and ongoing tasks.
 
 For example, if you tell an agent "I prefer morning meetings," it can remember that preference and apply it every time it schedules something for you. If it is managing a project, it can remember the status of each task and pick up where it left off.
 
@@ -63,11 +63,11 @@ Some agents store memory locally, some use external databases, and some combine 
 
 ## Why the distinction matters
 
-When you use a chatbot, the worst thing that can happen is that you get a wrong answer (a [hallucination](/learn/ai-101/what-are-ai-hallucinations)). You read the response, notice the error, and move on. Nothing in the real world changed.
+When you use a chatbot, the worst thing that can happen is that you get a wrong answer (a [hallucination](/learn/course-1/what-are-ai-hallucinations)). You read the response, notice the error, and move on. Nothing in the real world changed.
 
 When you use an agent, the stakes are higher. If an agent sends an email with incorrect information, that email is already in someone's inbox. If an agent books the wrong flight, your credit card has been charged. If an agent deletes files it was not supposed to touch, those files may be gone.
 
-This is not a reason to avoid agents — they are genuinely useful and can save hours of tedious work. But it is a reason to understand what they are doing and to make sure you have the right controls in place.
+This is not a reason to avoid agents. They are genuinely useful and can save hours of tedious work. But it is a reason to understand what they are doing and to make sure you have the right controls in place.
 
 ## The permission gap
 
@@ -75,17 +75,17 @@ Most chatbots do not need permission controls because they cannot do anything. A
 
 Think about how your phone handles app permissions. When you install a new app, it asks: "Can this app access your camera? Your location? Your contacts?" You see exactly what the app wants, and you decide.
 
-Most AI agents today do not have anything like this. When you connect an agent to your email, it typically gets full access — read, write, delete — even if you only need it to read. When you connect it to a payment system, there is often no built-in spending limit.
+Most AI agents today do not have anything like this. When you connect an agent to your email, it typically gets full access (read, write, delete), even if you only need it to read. When you connect it to a payment system, there is often no built-in spending limit.
 
-This is the permission gap: agents can do more than chatbots, but the controls have not caught up. Tools like [Multicorn Shield](/shield) exist to close this gap — providing consent screens, granular permissions, spending limits, and activity logs for every action an agent takes.
+This is the permission gap: agents can do more than chatbots, but the controls have not caught up. Tools like [Multicorn Shield](/shield) exist to close this gap, providing consent screens, granular permissions, spending limits, and activity logs for every action an agent takes.
 
 ## Where agents are headed
 
 Agents are becoming more capable quickly. In 2024, most agents could handle simple, well-defined tasks. By early 2026, agents routinely handle multi-step workflows that span several services.
 
-The trend is clear: agents will do more, connect to more services, and operate with less supervision over time. This makes the control layer — permissions, logging, spending limits, and the ability to revoke access instantly — more important with every step forward.
+The trend is clear: agents will do more, connect to more services, and operate with less supervision over time. That makes the control layer (permissions, logging, spending limits, and the ability to revoke access instantly) more important with every step forward.
 
-The next article looks at [what AI agents can actually do today](/learn/ai-101/what-can-ai-agents-do-today) with concrete, real-world examples.
+The next article looks at [what AI agents can actually do today](/learn/course-1/what-can-ai-agents-do-today) with concrete, real-world examples.
 
 ## Key takeaways
 
@@ -94,5 +94,3 @@ The next article looks at [what AI agents can actually do today](/learn/ai-101/w
 - Agents are powerful and useful, but they can cause real-world consequences if they act on bad information or without proper limits.
 - Most agents today lack the permission controls that would make them safe to use at scale.
 - [Multicorn Shield](/shield) provides the missing control layer: consent screens, granular permissions, spending limits, and activity logging.
-
-**Next up:** [What Can AI Agents Actually Do Today?](/learn/ai-101/what-can-ai-agents-do-today)

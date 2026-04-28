@@ -3,11 +3,11 @@ import type { Metadata } from 'next'
 import { Footer } from '@/components/Footer'
 
 export const metadata: Metadata = {
-  title: 'Policies — Multicorn',
+  title: 'Policies | Multicorn',
   description:
     'Legal policies for multicorn.ai and the Multicorn Shield SDK, including privacy, terms of service, and cookies.',
   openGraph: {
-    title: 'Policies — Multicorn',
+    title: 'Policies | Multicorn',
     description:
       'Legal policies for multicorn.ai and the Multicorn Shield SDK, including privacy, terms of service, and cookies.',
     url: 'https://multicorn.ai/policies',

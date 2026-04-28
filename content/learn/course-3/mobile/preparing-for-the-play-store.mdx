@@ -1,0 +1,78 @@
+---
+title: 'Preparing for the Play Store'
+description: 'Set up your Google Play Developer account, configure your app for Android, and get ready to upload.'
+order: 3
+estimatedMinutes: 14
+outcome: 'You can set up a Play Developer account, complete required Play Console sections, create or configure signing, build an AAB, and upload a first build to closed testing.'
+date: '2026-04-26'
+---
+
+This lesson covers everything you need to do before your Android app is ready to upload to Google Play. If you are only targeting iOS, you can go back to lesson 2. You can always come back here later.
+
+## Creating your Google Play Developer account
+
+Go to [play.google.com/console](https://play.google.com/console) and sign in with your Google account. You will be asked to pay a one-time $25 USD registration fee. Unlike Apple's annual fee, this is a single payment and your account stays active indefinitely.
+
+Google will ask whether you are registering as an individual or an organisation. For most people reading this, individual is the right choice. Organisation accounts require business verification, which adds steps and time.
+
+After payment, Google may take up to 48 hours to verify your identity, though it is often much faster. You will receive an email when your account is approved.
+
+**Checkpoint:** You can sign in to the Google Play Console and see the main dashboard with options to create an app.
+
+## Creating your app listing
+
+In the Play Console, click "Create app." You will need to provide a name, a default language, and whether the app is free or paid. You will also need to answer a few declarations: whether the app is an app or a game, whether it contains ads, and so on.
+
+One important detail: if you set your app as free, you cannot change it to paid later. If you think you might charge for the app eventually, set it as paid from the start (you can still make it free temporarily by setting the price to zero).
+
+Google requires you to complete several sections before you can publish. These include a **content rating questionnaire** (a series of questions about your app's content that determines its age rating), a **data safety section** (declaring what data your app collects and how it is used), and a **target audience declaration**.
+
+These forms can feel tedious but they are not optional. Google will not let you publish until every section shows a green checkmark.
+
+**Checkpoint:** Your app should appear in the Play Console's app list. The dashboard will show you which sections still need completing, with red and green indicators.
+
+## App signing
+
+Google Play uses a system called Play App Signing. When you opt in (which Google strongly recommends and is the default for new apps), Google holds the actual signing key for your app and you upload with a separate upload key. If you ever lose your upload key, Google can help you reset it without affecting your users. If you managed the signing key yourself and lost it, your app would be permanently locked out of updates.
+
+For frameworks like Expo with EAS Build, the build service handles all signing configuration. You provide it with your upload key (or let it generate one) and it handles the rest.
+
+If you are building locally, you will need to generate an upload keystore. Open a terminal and run:
+
+```text
+keytool -genkey -v -keystore upload-key.keystore -alias upload -keyalg RSA -keysize 2048 -validity 10000
+```
+
+This creates a file called `upload-key.keystore`. The command will ask you for a password and some identity information (name, organisation, city). Remember the password. You will need it when building.
+
+Store this keystore file somewhere safe outside your project directory. Add `*.keystore` to your `.gitignore` so it never ends up in your repository.
+
+**Checkpoint:** If building locally, you should have a `upload-key.keystore` file saved outside your project. If using EAS Build or a similar service, signing is configured in your build service's settings.
+
+## Building your app bundle
+
+Google Play requires apps to be uploaded as Android App Bundles (`.aab` files), not the older APK format. The bundle format lets Google optimise the download size for each user's device.
+
+If you used **Expo**, run `npx eas build --platform android` to build in the cloud. EAS returns a download link for the `.aab` file when the build completes.
+
+If you used **React Native** without Expo, run `cd android && ./gradlew bundleRelease`. The `.aab` file will be in `android/app/build/outputs/bundle/release/`.
+
+If you used **Flutter**, run `flutter build appbundle`. The file will be in `build/app/outputs/bundle/release/`.
+
+**Checkpoint:** You should have an `.aab` file ready to upload. Do not rename it. The Play Console expects the standard bundle format.
+
+## Uploading your first build
+
+In the Play Console, go to your app, then navigate to Release > Testing > Closed testing (not Production). As covered in lesson 1, new developer accounts must complete a closed testing period before Google will allow a production release. Lesson 4 walks through the testing process in detail, including how to meet the tester requirement.
+
+Click "Create new release," then upload your `.aab` file.
+
+Google will run automated checks on your bundle. These usually complete within a few minutes. If there are issues (missing signing configuration, unsupported SDK version, permission declarations), the Console will show error messages with specific details about what needs fixing.
+
+**Checkpoint:** Your build should appear in the closed testing release section with a version number and a green status. If you see warnings (as opposed to errors), those are informational and will not block your release.
+
+<SecurityNote>
+
+Your upload keystore password and the keystore file itself are secrets. Treat them the same way you treated your API keys in Course 3's environment variables lesson. Never commit keystore files to Git, never paste keystore passwords into a chat message or email, and store both in a password manager. If you are using a CI/CD service to build automatically, store the keystore as an encrypted secret in that service's configuration, not in your repository.
+
+</SecurityNote>

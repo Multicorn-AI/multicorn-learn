@@ -12,8 +12,10 @@ import {
 import { getTrackConfig } from '@/lib/course-2-track-config'
 import { extractTableOfContents } from '@/lib/learn'
 import { claudeCodeTrackComponents } from '@/lib/mdx-course2-components'
+import { CourseFeedbackForm } from '@/components/CourseFeedbackForm'
 import { LessonCompleteButton } from '@/components/LessonProgress'
 import { LessonNavigation } from '@/components/LessonNavigation'
+import { LessonThumbsFeedback } from '@/components/LessonThumbsFeedback'
 import { MobileTableOfContents } from '@/components/MobileTableOfContents'
 import { TableOfContents } from '@/components/TableOfContents'
 import { isCourse2Enabled } from '@/lib/feature-flags'
@@ -124,7 +126,7 @@ export default async function ClaudeCodeLessonPage({ params }: ClaudeCodeLessonP
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
       />
       <main className="px-6 pb-20 pt-16 sm:pb-28 sm:pt-24">
         <div className="mx-auto max-w-content">
@@ -186,7 +188,7 @@ export default async function ClaudeCodeLessonPage({ params }: ClaudeCodeLessonP
 
               <header className="mb-10">
                 {lessonNumber !== null ? (
-                  <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-indigo">
+                  <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-course-2-accent">
                     Lesson {lessonNumber} of {lessonsOrdered.length}
                   </p>
                 ) : null}
@@ -223,9 +225,32 @@ export default async function ClaudeCodeLessonPage({ params }: ClaudeCodeLessonP
                 />
               </div>
 
-              <LessonCompleteButton slug={slug} storageKey={trackConfig.progressStorageKey} />
+              <LessonCompleteButton
+                slug={slug}
+                storageKey={trackConfig.progressStorageKey}
+                courseAccent="course-2"
+              />
 
-              <LessonNavigation basePath={trackConfig.basePath} navigation={navigation} />
+              <LessonThumbsFeedback
+                courseSlug="course-2-claude-code"
+                lessonSlug={slug}
+                courseAccent="course-2"
+              />
+
+              {!navigation.next ? (
+                <CourseFeedbackForm
+                  courseName={trackConfig.title}
+                  courseSlug="course-2-claude-code"
+                  lessonSlug={slug}
+                  courseAccent="course-2"
+                />
+              ) : null}
+
+              <LessonNavigation
+                basePath={trackConfig.basePath}
+                navigation={navigation}
+                courseAccent="course-2"
+              />
             </article>
 
             <TableOfContents items={tocItems} />

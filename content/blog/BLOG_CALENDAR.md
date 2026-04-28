@@ -4,9 +4,9 @@ Prioritized list of blog post topics for the Multicorn blog. Posts serve double 
 
 ## Priority Legend
 
-- 🔴 **Launch priority** — Write before or at launch
-- 🟡 **First month post-launch** — Write in the first month post-launch
-- 🟢 **Ongoing content** — Ongoing content pipeline
+- 🔴 **Launch priority:** Write before or at launch
+- 🟡 **First month post-launch:** Write in the first month post-launch
+- 🟢 **Ongoing content:** Ongoing content pipeline
 
 ## Blog Posts
 

@@ -1,0 +1,199 @@
+---
+title: 'Preparing your package'
+description: 'package.json fields that matter, README and LICENSE, minimum Node.js version, and build tool choices.'
+order: 2
+estimatedMinutes: 14
+outcome: 'You know which package manifest fields matter and how to sanity-check before publish.'
+date: '2026-04-28'
+---
+
+Before you publish anything, your package needs to be ready for other developers to install and use. This lesson covers the files and configuration that matter, and how to verify everything is correct before you push to the registry.
+
+## package.json fields that matter
+
+Your `package.json` is the manifest that npm reads. Some fields are informational. Others directly affect whether your package works when someone installs it.
+
+### name
+
+The package name, exactly as it will appear on npm. Must be lowercase, can contain hyphens and dots, and must be unique on the registry (or unique within your scope for scoped packages).
+
+```json
+"name": "multicorn-shield"
+```
+
+If you are using a scope:
+
+```json
+"name": "@your-org/your-package"
+```
+
+### version
+
+The current version of your package. This must follow semver (we cover this in lesson 4). Start at `1.0.0` if your API is stable, or `0.1.0` if you are still iterating.
+
+```json
+"version": "1.0.0"
+```
+
+### main, module, and exports
+
+These tell Node.js and bundlers where to find your code.
+
+`main` is the CommonJS entry point. `module` is the ESM entry point. `exports` is the modern way to define both, and it is what Node.js 12+ and modern bundlers prefer.
+
+```json
+"main": "./dist/index.cjs",
+"module": "./dist/index.js",
+"exports": {
+  ".": {
+    "import": "./dist/index.js",
+    "require": "./dist/index.cjs",
+    "types": "./dist/index.d.ts"
+  }
+}
+```
+
+The `exports` map is the most important of the three. It controls exactly what consumers can import. If you only set `main`, bundlers may not find the ESM version. If you only set `exports`, older tools that do not support it will fail. Setting all three covers the widest range of environments.
+
+Multicorn Shield outputs both ESM and CJS from tsup (its build tool). The `exports` map points each format to the correct file, and includes a `types` condition so TypeScript users get type definitions automatically.
+
+### types
+
+Points to your TypeScript declaration file. Without this, TypeScript users cannot import your package without errors.
+
+```json
+"types": "./dist/index.d.ts"
+```
+
+If you are using the `exports` field with a `types` condition (as shown above), this top-level `types` field is a fallback for older TypeScript versions. Include both.
+
+### license
+
+The licence under which your package is distributed. Use the SPDX identifier.
+
+```json
+"license": "MIT"
+```
+
+Note: the field name in package.json is `license` (American spelling). This is an npm convention. Use the American spelling in the JSON field, and the British spelling in your prose and documentation.
+
+### engines
+
+Declares the minimum Node.js version your package supports. npm will warn (or error, with `engine-strict`) if someone tries to install your package on an unsupported version.
+
+```json
+"engines": {
+  "node": ">=18.0.0"
+}
+```
+
+Pick the oldest Node.js version you actively test against. Do not claim support for versions you have never run your test suite on.
+
+### files
+
+Controls which files are included in the published tarball. By default, npm includes everything except what is listed in `.npmignore` or `.gitignore`. This often means you publish your entire source directory, test fixtures, and CI config. That is wasteful and sometimes leaks things you did not intend to share.
+
+Use the `files` field as an allowlist:
+
+```json
+"files": [
+  "dist",
+  "README.md",
+  "LICENSE",
+  "CHANGELOG.md"
+]
+```
+
+This publishes only your built output and documentation. Source files, test files, and config files stay out of the tarball.
+
+### repository, bugs, homepage
+
+These populate the sidebar links on your npm package page. They are optional but make your package look maintained and trustworthy.
+
+```json
+"repository": {
+  "type": "git",
+  "url": "https://github.com/your-org/your-package.git"
+},
+"bugs": {
+  "url": "https://github.com/your-org/your-package/issues"
+},
+"homepage": "https://your-package-docs.example.com"
+```
+
+## README.md
+
+Your README is the most important file in the package. It is the first thing developers see on the npm page, on GitHub, and when they run `npm docs your-package`.
+
+A good package README includes:
+
+- A one-line description of what the package does
+- Installation instructions (`npm install your-package`)
+- A minimal usage example that actually works if someone copies and pastes it
+- A link to full documentation if it exists
+- The licence
+
+You do not need to write an essay. A clear, honest README that gets someone from install to working code in under two minutes is more valuable than a long document that takes ten minutes to read.
+
+## LICENSE
+
+Include a `LICENSE` file in the root of your repository. The most common choices for open-source packages are MIT and Apache 2.0. If you are unsure, MIT is the simplest and most permissive.
+
+Without a licence file, your package is technically "all rights reserved" regardless of what the `license` field in package.json says. The field is metadata. The file is the legal document.
+
+## Build tools
+
+If your package is written in TypeScript or uses modern JavaScript features that need transpiling, you need a build step. The three most common tools for building npm packages are:
+
+**tsup** compiles TypeScript to both ESM and CJS with minimal configuration. It handles declaration files, source maps, and tree-shaking. Multicorn Shield uses tsup. It is the pragmatic choice for most packages.
+
+**rollup** gives you fine-grained control over the output bundle. It is more configurable than tsup but requires more setup. Use it when you need custom plugins or very specific output formats.
+
+**esbuild** is extremely fast and handles the basics well. tsup actually uses esbuild under the hood. Use esbuild directly when you want speed and do not need the convenience wrappers tsup provides.
+
+You do not need to master any of these tools for this track. The choice criteria are: tsup for most packages, rollup if you need fine control, esbuild if you need raw speed and minimal config. Pick one, configure it once, and move on.
+
+## Dry run before publish
+
+Before you publish for the first time (next lesson), verify what will actually be included in the tarball:
+
+```bash
+npm pack --dry-run
+```
+
+### What you should see
+
+A list of every file that would be included in the tarball, with sizes. The output looks something like this:
+
+```
+npm notice Tarball Contents
+npm notice 1.2kB  LICENSE
+npm notice 3.4kB  README.md
+npm notice 856B   package.json
+npm notice 12.5kB dist/index.js
+npm notice 11.8kB dist/index.cjs
+npm notice 4.2kB  dist/index.d.ts
+npm notice === Tarball Details ===
+npm notice name:          your-package
+npm notice version:       1.0.0
+npm notice filename:      your-package-1.0.0.tgz
+npm notice package size:  8.9 kB
+npm notice unpacked size: 34.0 kB
+npm notice total files:   6
+```
+
+Read each line. `npm notice Tarball Contents` lists every file. Check that your `dist/` output is there, that README.md and LICENSE are there, and that test files, `.env` files, and source maps you did not intend to include are not there.
+
+`npm notice package size` is the compressed download size. `npm notice unpacked size` is what it expands to on disk. If these seem surprisingly large, check whether you are including files you should not be.
+
+If you see files that should not be published, update your `files` field in package.json and run `npm pack --dry-run` again.
+
+## Checkpoint
+
+Before moving on:
+
+1. Run `npm pack --dry-run` in your project and read every line of the output.
+2. Confirm your package.json has `name`, `version`, `main` or `exports`, `types` (if TypeScript), `license`, `files`, and `engines`.
+3. Confirm you have a README.md with at least a description and install command, and a LICENSE file.
+
+If all three check out, your package is ready for its first publish.

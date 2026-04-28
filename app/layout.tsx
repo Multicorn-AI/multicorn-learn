@@ -15,15 +15,15 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Multicorn — The trusted layer between humans and AI agents',
+  title: 'Multicorn: The trusted layer between humans and AI agents',
   description:
     'Multicorn Shield gives your team consent screens, spending controls, and activity logging for every AI agent. Open-source SDK, enterprise-grade controls.',
   metadataBase: new URL('https://multicorn.ai'),
   icons: {
     icon: [
       { url: '/learn/favicon.ico', sizes: 'any' },
-      { url: '/learn/favicon.svg', type: 'image/svg+xml' },
-      { url: '/learn/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+      { url: '/learn/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/learn/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
       { url: '/learn/favicon-192x192.png', sizes: '192x192', type: 'image/png' },
       { url: '/learn/favicon-512x512.png', sizes: '512x512', type: 'image/png' },
     ],

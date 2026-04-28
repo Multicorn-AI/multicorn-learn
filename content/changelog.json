@@ -101,7 +101,9 @@
     "date": "2026-04-08",
     "added": [],
     "changed": [],
-    "fixed": ["Updated README badges and npm package metadata to reflect current branding."],
+    "fixed": [
+      "Updated README badges and npm package metadata to reflect current branding."
+    ],
     "security": []
   },
   {
@@ -322,7 +324,9 @@
     "date": "2026-03-04",
     "added": [],
     "changed": [],
-    "fixed": ["API key resolution from config.json when openclaw.json env block is not available"],
+    "fixed": [
+      "API key resolution from config.json when openclaw.json env block is not available"
+    ],
     "security": []
   },
   {
@@ -340,35 +344,51 @@
   {
     "version": "0.1.7",
     "date": "2026-03-04",
-    "added": ["README header SVG banner"],
+    "added": [
+      "README header SVG banner"
+    ],
     "changed": [
       "Consent flow updated for OpenClaw Plugin API (replaces deprecated gateway hook approach)"
     ],
-    "fixed": ["Handler and plugin consent test alignment with new Plugin API structure"],
+    "fixed": [
+      "Handler and plugin consent test alignment with new Plugin API structure"
+    ],
     "security": []
   },
   {
     "version": "0.1.6",
     "date": "2026-03-04",
-    "added": ["Comprehensive plugin test suite for beforeToolCall and afterToolCall hooks"],
+    "added": [
+      "Comprehensive plugin test suite for beforeToolCall and afterToolCall hooks"
+    ],
     "changed": [],
-    "fixed": ["Plugin registration and lifecycle handling with OpenClaw Plugin API"],
+    "fixed": [
+      "Plugin registration and lifecycle handling with OpenClaw Plugin API"
+    ],
     "security": []
   },
   {
     "version": "0.1.5",
     "date": "2026-03-04",
     "added": [],
-    "changed": ["Package metadata updates for npm listing"],
-    "fixed": ["Test stability improvements across the full suite"],
+    "changed": [
+      "Package metadata updates for npm listing"
+    ],
+    "fixed": [
+      "Test stability improvements across the full suite"
+    ],
     "security": []
   },
   {
     "version": "0.1.4",
     "date": "2026-03-04",
     "added": [],
-    "changed": ["MCP proxy improved for edge cases in tool call interception"],
-    "fixed": ["Proxy test reliability"],
+    "changed": [
+      "MCP proxy improved for edge cases in tool call interception"
+    ],
+    "fixed": [
+      "Proxy test reliability"
+    ],
     "security": []
   },
   {
@@ -382,7 +402,9 @@
       "Hook documentation (HOOK.md)"
     ],
     "changed": [],
-    "fixed": ["OpenClaw integration issues discovered during end-to-end testing"],
+    "fixed": [
+      "OpenClaw integration issues discovered during end-to-end testing"
+    ],
     "security": []
   },
   {
@@ -397,8 +419,12 @@
     "version": "0.1.1",
     "date": "2026-03-04",
     "added": [],
-    "changed": ["Publish workflow switched to OIDC trusted publishing via GitHub Actions"],
-    "fixed": ["Plugin loading path resolution for OpenClaw"],
+    "changed": [
+      "Publish workflow switched to OIDC trusted publishing via GitHub Actions"
+    ],
+    "fixed": [
+      "Plugin loading path resolution for OpenClaw"
+    ],
     "security": []
   },
   {

@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 import { COURSE_2_TRACK_SLUGS, type Course2Track } from '@/lib/course-2-track-config'
+import type { LessonNavigationData } from '@/lib/lesson-navigation'
 
 const COURSE_2_CONTENT_ROOT = path.join(process.cwd(), 'content', 'learn', 'course-2')
 
@@ -25,10 +26,7 @@ export interface Course2Lesson {
   readonly content: string
 }
 
-export interface Course2LessonNavigation {
-  readonly prev: { readonly slug: string; readonly title: string } | null
-  readonly next: { readonly slug: string; readonly title: string } | null
-}
+export type Course2LessonNavigation = LessonNavigationData
 
 const REQUIRED_STRING_FIELDS = ['title', 'description', 'outcome', 'date'] as const
 const REQUIRED_NUMBER_FIELDS = ['order', 'estimatedMinutes'] as const

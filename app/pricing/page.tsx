@@ -1,135 +1,52 @@
-import type { Metadata } from 'next'
+'use client'
+
+import { useState } from 'react'
 import { PricingCard } from '@/components/PricingCard'
 import { PricingFAQ } from '@/components/PricingFAQ'
 import { Footer } from '@/components/Footer'
+import { SIGNUP_URL } from '@/lib/urls'
+import {
+  ANNUAL_BILLING_MONTHS,
+  COMPARISON_FEATURES,
+  getTierHref,
+  SHIELD_TIERS,
+  type PricingTierDef,
+} from '@/lib/pricing-constants'
 
-export const metadata: Metadata = {
-  title: 'Multicorn Pricing — Free AI Agent Control SDK',
-  description:
-    'Start free with Multicorn Shield. Pro, Business, and Enterprise tiers for teams that need more agents, controls, and compliance.',
-  openGraph: {
-    title: 'Multicorn Pricing — Free AI Agent Control SDK',
-    description:
-      'Start free with Multicorn Shield. Pro, Business, and Enterprise tiers for teams that need more agents, controls, and compliance.',
-    url: 'https://multicorn.ai/pricing',
-    siteName: 'Multicorn',
-    type: 'website',
-    images: [
-      {
-        url: 'https://multicorn.ai/images/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Multicorn Pricing — Free AI Agent Control SDK',
-      },
-    ],
-  },
+function formatUsd(dollars: number): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+  }).format(dollars)
 }
 
-interface ShieldTier {
-  readonly name: string
-  readonly price: string
-  readonly period: string
-  readonly audience: string
-  readonly features: readonly string[]
-  readonly cta: string
-  readonly href: string
-  readonly highlighted: boolean
-  readonly badge?: string
-  readonly disabled?: boolean
+/**
+ * Derives the price/period strings passed to PricingCard. Free and Enterprise
+ * are unchanged by billing period; paid tiers use effective monthly for annual
+ * (10 months paid per year) with period text that includes "billed annually".
+ */
+function getDisplayPrice(
+  tier: PricingTierDef,
+  billing: 'monthly' | 'annual',
+): { readonly price: string; readonly period: string } {
+  if (tier.monthlyPrice === null) {
+    return { price: 'Custom', period: 'tailored to your needs' }
+  }
+  if (tier.monthlyPrice === 0) {
+    return { price: formatUsd(0), period: 'forever' }
+  }
+  if (billing === 'monthly') {
+    return { price: formatUsd(tier.monthlyPrice), period: 'per month' }
+  }
+  const effectivePerMonth = (tier.monthlyPrice * ANNUAL_BILLING_MONTHS) / 12
+  return {
+    price: formatUsd(effectivePerMonth),
+    period: 'per month, billed annually',
+  }
 }
 
-const SHIELD_TIERS: readonly ShieldTier[] = [
-  {
-    name: 'Free',
-    price: '$0',
-    period: 'forever',
-    audience: 'For solo developers and hobbyists getting started with agent control.',
-    features: [
-      'Consent screens',
-      'Basic dashboard',
-      '3 agents',
-      '1,000 actions per month',
-      'Community support',
-    ],
-    cta: 'Start for free',
-    href: 'https://app.multicorn.ai',
-    highlighted: false,
-  },
-  {
-    name: 'Pro',
-    price: '$29',
-    period: 'per month',
-    audience: 'For small teams that need more agents and deeper controls.',
-    features: [
-      'Everything in Free',
-      '10 agents',
-      'Unlimited activity logging',
-      'Team policies',
-      'Spending controls',
-      'Activity feed',
-      'Priority email support',
-    ],
-    cta: 'Get started',
-    href: 'https://app.multicorn.ai',
-    highlighted: true,
-  },
-  {
-    name: 'Business',
-    price: '$199',
-    period: 'per month',
-    audience: 'For mid-size companies that need advanced governance and compliance.',
-    features: [
-      'Everything in Pro',
-      'Unlimited agents',
-      'Role-based access control',
-      'SSO integration',
-      'Approval workflows',
-      'Priority support',
-    ],
-    cta: 'Get started',
-    href: 'https://app.multicorn.ai',
-    highlighted: false,
-  },
-  {
-    name: 'Enterprise',
-    price: 'Custom',
-    period: 'tailored to your needs',
-    audience: 'For organizations with custom security, compliance, and scale requirements.',
-    features: [
-      'Everything in Business',
-      'Immutable audit logs',
-      'Compliance reporting',
-      'Data boundary controls',
-      'Multi-party approval',
-      'Dedicated support',
-    ],
-    cta: 'Register interest',
-    href: 'mailto:sales@multicorn.ai',
-    highlighted: false,
-    badge: 'Coming soon',
-    disabled: true,
-  },
-]
-
-interface ComparisonFeature {
-  readonly name: string
-  readonly free: 'yes' | 'no' | 'limited'
-  readonly pro: 'yes' | 'no' | 'limited'
-  readonly business: 'yes' | 'no' | 'limited'
-  readonly enterprise: 'yes' | 'no' | 'limited'
-}
-
-const COMPARISON_FEATURES: readonly ComparisonFeature[] = [
-  { name: 'Consent screens', free: 'yes', pro: 'yes', business: 'yes', enterprise: 'yes' },
-  { name: 'Spending controls', free: 'no', pro: 'yes', business: 'yes', enterprise: 'yes' },
-  { name: 'Activity logging', free: 'limited', pro: 'yes', business: 'yes', enterprise: 'yes' },
-  { name: 'Team policies', free: 'no', pro: 'yes', business: 'yes', enterprise: 'yes' },
-  { name: 'Role-based access control', free: 'no', pro: 'no', business: 'yes', enterprise: 'yes' },
-  { name: 'SSO integration', free: 'no', pro: 'no', business: 'yes', enterprise: 'yes' },
-  { name: 'Approval workflows', free: 'no', pro: 'no', business: 'yes', enterprise: 'yes' },
-  { name: 'Immutable audit logs', free: 'no', pro: 'no', business: 'no', enterprise: 'yes' },
-  { name: 'Dedicated support', free: 'no', pro: 'no', business: 'no', enterprise: 'yes' },
-]
+type BillingId = 'monthly' | 'annual'
 
 function ComparisonCell({ value }: { readonly value: 'yes' | 'no' | 'limited' }) {
   if (value === 'yes') {
@@ -173,12 +90,18 @@ function ComparisonCell({ value }: { readonly value: 'yes' | 'no' | 'limited' })
   )
 }
 
+const BILLING_OPTIONS: readonly { readonly id: BillingId; readonly label: string }[] = [
+  { id: 'monthly', label: 'Monthly' },
+  { id: 'annual', label: 'Annual' },
+]
+
 export default function PricingPage() {
+  const [billing, setBilling] = useState<BillingId>('monthly')
+
   return (
     <>
       <main>
-        {/* Hero */}
-        <section className="px-6 pb-16 pt-24 sm:pt-32">
+        <section className="px-6 pb-8 pt-24 sm:pt-32">
           <div className="mx-auto max-w-content text-center">
             <span className="mb-4 inline-block rounded-full bg-orange/10 px-4 py-1.5 text-sm font-medium text-orange">
               Pricing
@@ -189,10 +112,38 @@ export default function PricingPage() {
             <p className="mx-auto max-w-2xl text-lg leading-relaxed text-text-secondary">
               Start free. Scale as your team grows. No hidden costs, no surprises.
             </p>
+
+            <div
+              className="mx-auto mt-8 flex max-w-sm gap-2 rounded-lg border border-border bg-surface p-1"
+              role="tablist"
+              aria-label="Billing period"
+            >
+              {BILLING_OPTIONS.map((opt) => (
+                <button
+                  key={opt.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={billing === opt.id}
+                  id={`billing-tab-${opt.id}`}
+                  onClick={() => setBilling(opt.id)}
+                  className={`flex-1 rounded-md px-4 py-2.5 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 ${
+                    billing === opt.id
+                      ? 'bg-primary text-white shadow-sm'
+                      : 'text-text-secondary hover:text-text-primary'
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+            {billing === 'annual' && (
+              <p className="mt-3 text-sm text-text-secondary">
+                Save 2 months when you pay annually.
+              </p>
+            )}
           </div>
         </section>
 
-        {/* Shield pricing cards */}
         <section className="px-6 pb-20">
           <div className="mx-auto max-w-content">
             <h2 className="mb-4 text-center text-2xl font-bold tracking-tight text-text-primary sm:text-3xl">
@@ -203,73 +154,28 @@ export default function PricingPage() {
             </p>
 
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-              {SHIELD_TIERS.map((tier) => (
-                <PricingCard
-                  key={tier.name}
-                  name={tier.name}
-                  price={tier.price}
-                  period={tier.period}
-                  audience={tier.audience}
-                  features={tier.features}
-                  cta={tier.cta}
-                  href={tier.href}
-                  highlighted={tier.highlighted}
-                  badge={tier.badge}
-                  disabled={tier.disabled}
-                />
-              ))}
+              {SHIELD_TIERS.map((tier) => {
+                const { price, period } = getDisplayPrice(tier, billing)
+                return (
+                  <PricingCard
+                    key={tier.name}
+                    name={tier.name}
+                    price={price}
+                    period={period}
+                    audience={tier.audience}
+                    features={tier.features}
+                    cta={tier.cta}
+                    href={getTierHref(tier.ctaTarget)}
+                    highlighted={tier.highlighted}
+                    badge={tier.badge}
+                    disabled={tier.disabled}
+                  />
+                )
+              })}
             </div>
           </div>
         </section>
 
-        {/* Learn pricing */}
-        <section className="bg-surface-secondary px-6 py-20 sm:py-28">
-          <div className="mx-auto max-w-content">
-            <h2 className="mb-4 text-center text-2xl font-bold tracking-tight text-text-primary sm:text-3xl">
-              Multicorn Learn
-            </h2>
-            <p className="mx-auto mb-12 max-w-xl text-center text-text-secondary">
-              AI education for everyone. Learn how AI works, pick the right tools, and use them
-              safely.
-            </p>
-
-            <div className="mx-auto grid max-w-2xl gap-8 sm:grid-cols-2">
-              <PricingCard
-                name="Free"
-                price="$0"
-                period="forever"
-                audience="Everything you need to start learning about AI."
-                features={[
-                  'All AI 101 content',
-                  'Interactive tool picker',
-                  'AI news feed',
-                  'Basic prompt library',
-                ]}
-                cta="Start learning"
-                href="/learn"
-              />
-              <PricingCard
-                name="Pro"
-                price="$10"
-                period="per month"
-                audience="Go deeper with structured courses and a full prompt library."
-                features={[
-                  'Everything in Free',
-                  'Full prompt library',
-                  'Structured courses',
-                  'Industry-specific guides',
-                  'Bookmarking and progress tracking',
-                ]}
-                cta="Coming soon"
-                href="/learn"
-                badge="Coming soon"
-                disabled
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Feature comparison table */}
         <section className="px-6 py-20 sm:py-28">
           <div className="mx-auto max-w-content">
             <h2 className="mb-4 text-center text-2xl font-bold tracking-tight text-text-primary sm:text-3xl">
@@ -338,10 +244,8 @@ export default function PricingPage() {
           </div>
         </section>
 
-        {/* FAQ */}
         <PricingFAQ />
 
-        {/* CTA */}
         <section className="bg-surface-secondary px-6 py-20 sm:py-28">
           <div className="mx-auto max-w-content text-center">
             <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
@@ -353,16 +257,16 @@ export default function PricingPage() {
             </p>
             <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <a
-                href="https://app.multicorn.ai"
+                href={SIGNUP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex min-h-[44px] items-center rounded-lg bg-primary px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
               >
-                Start for free
+                Get started free
               </a>
               <a
-                href="mailto:sales@multicorn.ai"
-                className="inline-flex min-h-[44px] items-center rounded-lg border border-border px-8 py-3 text-base font-semibold text-text-primary transition-colors hover:bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+                href="mailto:hello@multicorn.ai"
+                className="inline-flex min-h-[44px] items-center rounded-lg border border-border px-8 py-3 text-base font-semibold text-text-primary transition-colors hover:bg-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
               >
                 Contact us
               </a>

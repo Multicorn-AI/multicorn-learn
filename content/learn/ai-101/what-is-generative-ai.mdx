@@ -1,6 +1,6 @@
 ---
 title: 'What is Generative AI?'
-description: 'A plain-English guide to generative AI — what it is, how large language models work at a high level, and what they can and cannot do today.'
+description: 'A plain-English guide to generative AI: what it is, how large language models work at a high level, and what they can and cannot do today.'
 date: '2026-02-20'
 author: 'Multicorn Team'
 ogImage: 'https://multicorn.ai/images/og-image.png'
@@ -11,7 +11,7 @@ series: 'ai-101'
 
 ## The short version
 
-Generative AI is software that creates new content — text, images, code, music — based on patterns it learned from existing examples. When you ask ChatGPT a question and it writes a paragraph in response, that is generative AI at work.
+Generative AI is software that creates new content (text, images, code, music) based on patterns it learned from existing examples. When you ask ChatGPT a question and it writes a paragraph in response, that is generative AI at work.
 
 This article explains how it works in plain English, no technical background required.
 
@@ -19,11 +19,11 @@ This article explains how it works in plain English, no technical background req
 
 Most software you use every day follows rules that a programmer wrote by hand. A calculator adds numbers because someone told it exactly how addition works. A spell-checker flags misspelled words because someone gave it a dictionary.
 
-Generative AI is different. Instead of following hand-written rules, it learns patterns from huge collections of existing content — books, websites, conversations, code repositories — and then uses those patterns to produce something new. The word "generative" simply means it generates new output rather than looking up an existing answer.
+Generative AI is different. Instead of following hand-written rules, it learns patterns from huge collections of existing content (books, websites, conversations, code repositories) and then uses those patterns to produce something new. The word "generative" simply means it generates new output rather than looking up an existing answer.
 
 ## What is a large language model?
 
-A large language model (usually shortened to LLM) is the engine behind most text-based generative AI tools. "Large" refers to its size — billions of internal settings that were adjusted during training. "Language model" means its core skill is predicting what word comes next in a sentence.
+A large language model (usually shortened to LLM) is the engine behind most text-based generative AI tools. "Large" refers to its size: billions of internal settings that were adjusted during training. "Language model" means its core skill is predicting what word comes next in a sentence.
 
 That sounds simple, and at a mechanical level it is. But when you scale that prediction ability up to billions of settings trained on enormous amounts of text, something surprising happens: the model becomes capable of writing essays, answering questions, translating languages, summarising documents, and even writing code.
 
@@ -33,11 +33,11 @@ Popular LLMs include GPT (the model behind ChatGPT), Claude, Gemini, and Llama. 
 
 Training an LLM happens in two main stages.
 
-**Stage one: reading.** The model processes massive amounts of text — think billions of web pages, books, and articles. During this stage it adjusts its internal settings so that it gets better and better at predicting what word comes next. This stage is expensive. It requires thousands of specialised computer chips (called GPUs) running for weeks or months. This is why only a handful of organisations train the largest models from scratch.
+**Stage one: reading.** The model processes massive amounts of text. Think billions of web pages, books, and articles. During this stage it adjusts its internal settings so that it gets better and better at predicting what word comes next. This stage is expensive. It requires thousands of specialised computer chips (called GPUs) running for weeks or months. This is why only a handful of organisations train the largest models from scratch.
 
 **Stage two: fine-tuning.** After the general reading stage, the model is refined for specific tasks. Human reviewers rate the model's responses and the model adjusts its settings to produce answers that humans prefer. This is what makes a model feel "helpful" rather than just technically accurate.
 
-Once training is finished, the model's settings are fixed. When you chat with an LLM, it is not learning from your conversation in real time — it is applying patterns it already learned during training.
+Once training is finished, the model's settings are fixed. When you chat with an LLM, it is not learning from your conversation in real time. It is applying patterns it already learned during training.
 
 ## What can generative AI do well?
 
@@ -54,26 +54,26 @@ Today's generative AI models are genuinely useful for a growing list of tasks:
 
 Understanding the limits is just as important as knowing the capabilities.
 
-- **It does not "know" things.** An LLM does not have a database of facts it looks up. It predicts plausible-sounding text based on patterns. This means it can confidently state something that is completely wrong — a behaviour often called a "hallucination." Always verify important facts independently.
+- **It does not "know" things.** An LLM does not have a database of facts it looks up. It predicts plausible-sounding text based on patterns. This means it can confidently state something that is completely wrong, a behaviour often called a "hallucination." Always verify important facts independently.
 - **It cannot reason the way humans do.** LLMs can mimic logical reasoning for straightforward problems, but they struggle with multi-step logic, novel situations, and tasks that require genuine understanding of the physical world.
 - **It has a knowledge cutoff.** Because training happens once (or is updated periodically), the model does not know about events that happened after its training data was collected.
-- **It cannot take actions on its own.** A plain LLM can only generate text. It cannot send an email, book a meeting, or make a purchase — unless it is connected to external tools. (More on this in our article on [AI agents](/learn/ai-101/what-are-ai-agents-and-permissions).)
-- **It can reflect biases in its training data.** If the text it learned from contains biases — and real-world text inevitably does — the model may reproduce those biases in its output.
+- **It cannot take actions on its own.** A plain LLM can only generate text. It cannot send an email, book a meeting, or make a purchase, unless it is connected to external tools. (More on this in our article on [AI agents](/learn/course-1/what-are-ai-agents-and-permissions).)
+- **It can reflect biases in its training data.** If the text it learned from contains biases (and real-world text inevitably does), the model may reproduce those biases in its output.
 
 ## How is it different from traditional AI?
 
 You may have heard the term "AI" used for years before ChatGPT made it a household word. Traditional AI (sometimes called "narrow AI") was built for specific, well-defined tasks: detecting spam, recommending movies, recognising faces in photos. Each system was purpose-built and could not do anything outside its narrow speciality.
 
-Generative AI models are more general-purpose. A single LLM can write poetry, debug Python code, and explain quantum physics — even though nobody explicitly programmed it to do any of those things. This flexibility is what makes generative AI feel like a step change, even though the underlying maths has been evolving for decades.
+Generative AI models are more general-purpose. A single LLM can write poetry, debug Python code, and explain quantum physics, even though nobody explicitly programmed it to do any of those things. This flexibility is what makes generative AI feel like a step change, even though the underlying maths has been evolving for decades.
 
 ## Why does this matter for you?
 
-If you work with software, manage a team, or just use the internet, generative AI is already part of your day — whether you realise it or not. Email apps use it to suggest replies. Search engines use it to summarise results. Code editors use it to autocomplete functions.
+If you work with software, manage a team, or just use the internet, generative AI is already part of your day, whether you realise it or not. Email apps use it to suggest replies. Search engines use it to summarise results. Code editors use it to autocomplete functions.
 
 Understanding the basics puts you in a better position to:
 
 - **Evaluate tools honestly.** You can tell the difference between a genuinely useful AI feature and marketing hype.
-- **Use AI tools more effectively.** Knowing how an LLM works helps you write better requests (called "prompts") and get better results. Our next article covers [how prompts work](/learn/ai-101/what-are-prompts).
+- **Use AI tools more effectively.** Knowing how an LLM works helps you write better requests (called "prompts") and get better results. Our next article covers [how prompts work](/learn/course-1/what-are-prompts).
 - **Spot risks early.** When you know that LLMs can hallucinate, you will double-check important outputs instead of trusting them blindly.
 
 ## Key takeaways
@@ -81,7 +81,5 @@ Understanding the basics puts you in a better position to:
 - Generative AI creates new content by predicting patterns learned from existing data.
 - Large language models (LLMs) are the most common type of generative AI for text.
 - They are trained on enormous amounts of text and then fine-tuned with human feedback.
-- They are powerful for drafting, summarising, coding, and brainstorming — but they can produce incorrect information and cannot take real-world actions on their own.
+- They are powerful for drafting, summarising, coding, and brainstorming, but they can produce incorrect information and cannot take real-world actions on their own.
 - Understanding the basics helps you use AI tools more effectively and spot their limitations.
-
-**Next up:** [What Are Prompts and How Do They Work?](/learn/ai-101/what-are-prompts)

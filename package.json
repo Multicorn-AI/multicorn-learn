@@ -2,7 +2,7 @@
   "name": "multicorn-learn",
   "version": "0.1.0",
   "private": false,
-  "description": "Multicorn Learn — AI education site and landing page for multicorn.ai",
+  "description": "Multicorn Learn: AI education site and landing page for multicorn.ai",
   "license": "MIT",
   "type": "module",
   "packageManager": "pnpm@10.29.3",
@@ -31,7 +31,8 @@
     "next-mdx-remote": "^6.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "remark-gfm": "^4.0.1"
+    "remark-gfm": "^4.0.1",
+    "rss-parser": "^3.13.0"
   },
   "devDependencies": {
     "@multicorn/multicorn-content": "workspace:*",
