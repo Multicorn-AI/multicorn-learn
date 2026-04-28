@@ -155,6 +155,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: `${BASE_URL}/blog/agent-knew-the-rules`,
+      lastModified: new Date('2026-04-29'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
       url: `${BASE_URL}/learn/course-2/cursor`,
       lastModified: new Date('2026-04-17'),
       changeFrequency: 'monthly',

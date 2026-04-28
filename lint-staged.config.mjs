@@ -7,19 +7,27 @@ function notCacheOrDeps(f) {
   return !f.includes('node_modules') && !f.includes('.vite')
 }
 
+const DIR = new URL('.', import.meta.url).pathname.replace(/\/$/, '')
+const ESLINT = `${DIR}/node_modules/.bin/eslint`
+const PRETTIER = `${DIR}/node_modules/.bin/prettier`
+
 export default {
   '*.{ts,tsx}': (filenames) => {
     const files = filenames.filter(notCacheOrDeps)
     if (files.length === 0) return []
     return [
-      `eslint --fix --cache --cache-location .eslintcache ${files.join(' ')}`,
-      `prettier --write ${files.join(' ')}`,
+      `${ESLINT} --fix --cache --cache-location .eslintcache ${files.join(' ')}`,
+      `${PRETTIER} --write ${files.join(' ')}`,
     ]
   },
-  '*.{css,md,mdx}': 'prettier --write',
+  '*.{css,md,mdx}': (filenames) => {
+    const files = filenames.filter(notCacheOrDeps)
+    if (files.length === 0) return []
+    return `${PRETTIER} --write ${files.join(' ')}`
+  },
   '*.{json}': (filenames) => {
     const files = filenames.filter(notCacheOrDeps)
     if (files.length === 0) return []
-    return `prettier --write ${files.join(' ')}`
+    return `${PRETTIER} --write ${files.join(' ')}`
   },
 }
