@@ -7,6 +7,10 @@ function notCacheOrDeps(f) {
   return !f.includes('node_modules') && !f.includes('.vite')
 }
 
+const DIR = new URL('.', import.meta.url).pathname.replace(/\/$/, '')
+const ESLINT = `${DIR}/node_modules/.bin/eslint`
+const PRETTIER = `${DIR}/node_modules/.bin/prettier`
+
 /** Build-generated from multicorn-shield CHANGELOG; do not format on commit. */
 function notGeneratedChangelog(f) {
   const n = f.replace(/\\/g, '/')
@@ -18,20 +22,20 @@ export default {
     const files = filenames.filter(notCacheOrDeps)
     if (files.length === 0) return []
     return [
-      `pnpm exec eslint --fix --cache --cache-location .eslintcache ${files.join(' ')}`,
-      `pnpm exec prettier --write ${files.join(' ')}`,
+      `${ESLINT} --fix --cache --cache-location .eslintcache ${files.join(' ')}`,
+      `${PRETTIER} --write ${files.join(' ')}`,
     ]
   },
   '*.{css,md,mdx}': (filenames) => {
     const files = filenames.filter(notCacheOrDeps)
     if (files.length === 0) return []
-    return `pnpm exec prettier --write ${files.join(' ')}`
+    return `${PRETTIER} --write ${files.join(' ')}`
   },
-  '*.json': (filenames) => {
+  '*.{json}': (filenames) => {
     const files = filenames
       .filter(notCacheOrDeps)
       .filter(notGeneratedChangelog)
     if (files.length === 0) return []
-    return `pnpm exec prettier --write ${files.join(' ')}`
+    return `${PRETTIER} --write ${files.join(' ')}`
   },
 }

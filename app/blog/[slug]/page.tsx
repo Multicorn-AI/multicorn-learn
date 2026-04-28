@@ -3,7 +3,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import remarkGfm from 'remark-gfm'
-import { getBlogPost, getAllBlogSlugs } from '@/lib/blog'
+import { getBlogPost, getAllBlogPosts } from '@/lib/blog'
 import { blogComponents } from '@/lib/mdx-blog-components'
 import { EmailSignupForm } from '@/components/EmailSignupForm'
 
@@ -12,8 +12,8 @@ interface BlogPostPageProps {
 }
 
 export async function generateStaticParams() {
-  const slugs = getAllBlogSlugs()
-  return slugs.map((slug) => ({ slug }))
+  const posts = getAllBlogPosts()
+  return posts.map((post) => ({ slug: post.slug }))
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
@@ -22,6 +22,10 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
   if (!post) {
     return { title: 'Post not found' }
+  }
+
+  if (post.meta.draft && process.env.NODE_ENV === 'production') {
+    notFound()
   }
 
   return {
@@ -66,6 +70,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const post = getBlogPost(slug)
 
   if (!post) {
+    notFound()
+  }
+
+  if (post.meta.draft && process.env.NODE_ENV === 'production') {
     notFound()
   }
 

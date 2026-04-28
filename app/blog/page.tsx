@@ -33,7 +33,7 @@ function formatDate(dateString: string): string {
 }
 
 export default function BlogPage() {
-  const posts = getAllBlogPosts()
+  const posts = getAllBlogPosts(process.env.NODE_ENV === 'development')
 
   return (
     <main className="flex min-h-screen flex-col items-center px-6 pb-20 pt-16 sm:pb-28 sm:pt-24">
@@ -61,7 +61,12 @@ export default function BlogPage() {
                 href={`/blog/${post.slug}`}
                 className="block rounded-card border border-border bg-surface-secondary p-6 transition-colors hover:border-primary/30 hover:bg-surface-tertiary sm:p-8"
               >
-                <div className="mb-3 flex flex-wrap gap-2">
+                <div className="mb-3 flex flex-wrap items-center gap-2">
+                  {post.meta.draft ? (
+                    <span className="rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-700 dark:text-amber-400">
+                      Draft
+                    </span>
+                  ) : null}
                   {post.meta.tags.map((tag) => (
                     <span
                       key={tag}

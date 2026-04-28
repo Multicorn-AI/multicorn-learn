@@ -1,0 +1,108 @@
+---
+title: "We use AI agents to build Multicorn. Here's how permissions earn our trust."
+description: 'How we govern AI agent permissions while building Multicorn: Shield dashboards, our fleet, real metrics, and one production incident.'
+date: '2026-04-19'
+author: 'Rachelle Rathbone'
+ogImage: 'https://multicorn.ai/images/og-image.png'
+draft: true
+tags:
+  - AI agents
+  - permissions
+  - governance
+  - engineering
+---
+
+{/_
+Publish checklist: set `date` in frontmatter to the real launch day (this site uses `date`,
+not `publishedAt`), draft: false, replace PLACEHOLDER_COUNT / incident
+block and screenshots, then add /blog/building-with-agents to app/sitemap.ts (and bump /blog
+lastModified).
+_/}
+
+I built agent governance at Atlassian. Then I built this. That sequence is the reason the product exists, so it is worth five seconds of explanation before anything else.
+
+Working on Rovo Agents, I spent most days watching what agents actually did in production at enterprise scale. The question that would not leave me alone was this: when your agent takes an action, what proof do you have of what it did? The agent's own account of its work is not proof. What matters is what the system recorded, hash-chained and ordered, that a security team could put in front of a regulator six months later and have it hold up.
+
+Shield exists to answer that question. For the past six weeks it has been governing the agents that build Multicorn itself, which is what this post is about. Every figure here will come from production data. Every screenshot will be real. There is one specific incident that changed how I think about agent governance, and I will get to it further down.
+
+## Our agent fleet
+
+Multicorn is built by a small team and a larger fleet of agents. On any given week the agents doing work on our codebases are these.
+
+**Cursor** is the primary implementation agent. It writes code across all four repos under my direction. **Claude Code** is in the mix for terminal-heavy work and larger refactors where its shell access matters. **multicorn-ops** is a GitHub Actions reviewer I wrote that posts structured feedback from seven review personas on every PR. A **content agent** drafts blog posts and marketing copy, which I then edit heavily. **Windsurf Cascade** comes in for tasks where its multi-file reasoning gives it an edge.
+
+These agents touch production code. They merge PRs. They publish content. Some of what they do costs real money, either in API calls or in triggering deploys and database queries. Every one of those actions passes through Shield before it happens.
+
+The figure that surprises me whenever I look at the dashboard is the raw count. Agents produced [PLACEHOLDER_COUNT] tool calls across our repos in the last six weeks. That is not a commit count. It is the number of individual tool invocations: reads, writes, shell commands, API requests, everything. Reviewing that volume by hand would be the whole job.
+
+> [SCREENSHOT_1: Shield dashboard activity feed showing a typical hour of agent activity across the four repos. Alt text: "Shield activity feed showing agent tool calls grouped by agent and repo, with approved, blocked, and pending states."]
+
+## The dashboard as a daily tool
+
+I open the Shield dashboard the way other people open email. It is the first thing I check in the morning and the last thing I check before I close my laptop. The reason is not that I distrust the agents. It is that the dashboard shows me things the agents themselves cannot or will not report.
+
+Three views do the bulk of the work for me.
+
+The first is the agent list. It shows every agent currently connected to Shield along with its platform, its active scopes, its recent spending, and the time of its last action. When something new appears on that list that I did not authorise, I notice within minutes. This has actually happened once, and the incident section below is where I describe it.
+
+> [SCREENSHOT_2: Agent list page showing registered agents with platform badges, scope counts, and recent activity. Alt text: "Shield agent list page showing five registered agents with platform badges and last-seen timestamps."]
+
+The second view is the activity feed. It is a real-time stream of every action every agent is taking, filterable by agent, by repo, by action type, and by outcome. Most of the time I am just skimming. Every so often something looks off and I open the entry to see the full hash-chained audit trail behind it.
+
+The third view is the alerts page, which covers burst detection, spending alerts, retaliation detection, and reconnaissance detection. That page is quiet most weeks. The weeks it is not quiet are the ones I pay close attention to.
+
+> [SCREENSHOT_3: An approval event detail showing the full consent flow with agent identity, requested scope, user decision, and the resulting hash-chain entry. Alt text: "Shield approval event detail with hash-chain audit entry visible."]
+
+## When Shield caught something
+
+Here is the incident.
+
+[REAL_INCIDENT_PLACEHOLDER. Replace this block with 300 to 500 words describing the actual event. Do not publish this post until this section contains a real incident. The Team persona will spot a fabricated one instantly and the post loses all credibility.
+
+Suggested structure for this section:
+
+1. What the agent was asked to do (one sentence of context).
+2. What it actually tried to do that differed from the intent.
+3. How Shield surfaced it. Which detection fired: SCP-03 reconnaissance, SCP-04 retaliation, burst detection, spending alert, or a consent screen that I paused on.
+4. What I did about it.
+5. What I changed afterwards in the agent's scope, in my prompting, or in Shield itself.
+
+Pick the incident that best illustrates the value Shield adds. Include the real timestamp and the real hash from the audit trail if the chain is intact.]
+
+> [SCREENSHOT_4: The specific alert or blocked event from the incident described above. Alt text: describe the specific detection that fired.]
+
+The thing worth taking from that story is not that Shield prevented a disaster, because Shield is honest about what it cannot do. It cannot stop every class of attack and we do not claim it can. What Shield actually gave me was an ordered, cryptographically verifiable record of what happened, which is the thing a security team needs when someone asks "are you sure?" long after the fact.
+
+## What we learned
+
+Four things, in rough order of how much they changed my mind.
+
+**Governance turned out to be a workflow problem more than a gating problem.** The version of Shield I first sketched was almost entirely about blocking actions. The version we actually use day to day is mostly about making activity visible. In practice the agents rarely try to do anything egregious. They do slightly-wrong things often, and the damage accumulates quietly unless something is watching the pattern. The activity feed catches the pattern. Actual blocks are rare.
+
+**Speed matters more than I wanted it to matter.** My first consent screen took about three seconds to render and asked for two clicks. Within a day I was bypassing my own product. The one we ship now renders in under 200ms and defaults to approve-for-session with a visible revoke path, and that was the change that made me start actually using it again. If governance infrastructure is slow, humans will route around it, including the human who built it.
+
+**Hash-chained audit logs are worth the engineering cost, and we nearly did not build them.** We spent the better part of a week arguing about whether an append-only table with database-level write protections was good enough. In the end we went with SHA-256 chains because of a single thought experiment: an acquirer's security team is going to ask this question, and "the database prevents updates" is a much weaker answer than "the chain itself breaks if anyone touches any entry." The work was not small. It has paid for itself already in the conversations it lets me skip.
+
+**Scope at the agent level, not at the action level.** Early on I tried to enumerate every action an agent might take and put a scope on each one. The list got unreadable and I stopped maintaining it. What actually works is scoping by agent and by repo, with spending and burst limits sitting on top of that. An agent either has access to a repo or it does not. Everything finer-grained lives in the detection layer, not the permission layer, and the product got much simpler once I accepted that.
+
+## How to set this up for your team
+
+The full documentation is at [multicorn.ai/docs](https://multicorn.ai/docs). The short version, if you want to run what we run:
+
+1. Install the Shield SDK or plugin for each agent platform your team uses. We ship native plugins for Claude Code, Cursor, OpenClaw, and Windsurf. Anything else goes through the SDK or the hosted proxy.
+2. Register each agent via the consent flow. Agents get created the first time they send a message and Shield intercepts it. You cannot pre-create them in the dashboard, and that is on purpose. The consent flow is the registration.
+3. Scope each agent by repo or workspace, starting narrow. You can always broaden later once you see what the agent actually needs.
+4. Set spending alerts even if you think you will never hit them. They catch the runaway loops you did not predict, which is the whole point.
+5. Open the dashboard every day for the first fortnight. You will see patterns you did not know existed in your own setup, and some of them will surprise you.
+
+The free tier is enough for small teams to decide whether this is useful. Paid tiers add the enterprise pieces: SSO, RBAC, longer audit retention, and the compliance exports that security teams actually ask for.
+
+## A small honest note
+
+We are a small company and Shield is live but not finished. If you try it and something is broken or unclear, the fastest path to a fix is to email me directly at rachelle@multicorn.ai. I read every one.
+
+The agents, meanwhile, will keep building. Shield will keep watching. I will write another one of these posts when the number is ten times bigger and we have learned ten times more.
+
+---
+
+_Multicorn Shield is open source. The SDK lives at [github.com/multicorn-ai/multicorn-shield](https://github.com/multicorn-ai/multicorn-shield). Contributions welcome. Please read CONTRIBUTING.md first._
