@@ -1,10 +1,188 @@
 ---
 title: 'The release workflow'
-description: 'Release branches, tags, versioning before push, pnpm publish, and CHANGELOG discipline matching Multicorn practice.'
+description: 'Branch protection, the release branch dance, CHANGELOG discipline, and publishing after merge.'
 order: 5
 estimatedMinutes: 14
-outcome: 'You can describe the Multicorn Shield style release workflow end to end.'
+outcome: 'You can execute a clean release from branch to publish without help.'
 date: '2026-04-28'
 ---
 
-{/* Content pending */}
+Publishing a package is more than running `npm publish`. In a real project with branch protection, the version bump, the publish, and the git tag all need to happen in the right order. Get it wrong and you end up with version mismatches, missing tags, or a publish from the wrong commit.
+
+This lesson walks through the release workflow that Multicorn Shield uses. It is not the only valid approach, but it works reliably for a solo developer or a small team with branch protection on main.
+
+## Why branch protection complicates things
+
+If your main branch is protected (no direct pushes, PRs required), you cannot run `npm version patch` on main and push. The version bump commit would be rejected by the branch protection rule.
+
+You also cannot publish first and then merge, because the version in package.json on main would not match what you just published.
+
+The solution is a release branch. You create it, bump the version there, merge it into main through a PR, and then publish from main after the merge.
+
+## The full workflow, step by step
+
+Here is the exact sequence. Follow it in order.
+
+### Step 1: Create the release branch
+
+From main, create a new branch named after the version you are about to release:
+
+```bash
+git checkout main
+git pull origin main
+git checkout -b release/v1.5.0
+```
+
+The branch name format `release/vX.Y.Z` makes it clear what this branch is for. Anyone looking at open branches can see a release is in progress.
+
+### Step 2: Bump the version on the branch
+
+```bash
+npm version minor
+```
+
+### What you should see
+
+```
+v1.5.0
+```
+
+This created a commit and tag on your release branch. The commit changes package.json (and package-lock.json if present). The tag points to this commit.
+
+Do not push the tag yet. If you push the tag now and the PR gets rejected or needs changes, you will have a tag pointing to the wrong commit.
+
+### Step 3: Update the CHANGELOG
+
+Open your CHANGELOG.md and add an entry for this version. Follow the [Keep a Changelog](https://keepachangelog.com/) format:
+
+```markdown
+## [1.5.0] - 2026-04-28
+
+### Added
+
+- New `configure()` method for runtime settings
+- Support for Node.js 22
+
+### Fixed
+
+- Timeout handling on slow connections
+```
+
+Commit this change:
+
+```bash
+git add CHANGELOG.md
+git commit -m "docs: update CHANGELOG for v1.5.0"
+```
+
+A note on the `[Unreleased]` header: do not leave an empty `[Unreleased]` section at the top of your CHANGELOG. Delete it when you cut a release. Add it back only when there is actual unreleased content to list. An empty `[Unreleased]` header sitting at the top of your CHANGELOG communicates nothing and adds noise.
+
+### Step 4: Push the branch (not the tag)
+
+```bash
+git push origin release/v1.5.0
+```
+
+Push only the branch. The tag stays local for now.
+
+### Step 5: Open a PR and merge
+
+Open a pull request from `release/v1.5.0` into `main`. The PR description should include what is in this release. Your CI pipeline runs against the PR as normal.
+
+Once the PR passes review and CI, merge it into main.
+
+### Step 6: Pull main and push the tag
+
+After the merge, switch to main and pull the merged result:
+
+```bash
+git checkout main
+git pull origin main
+```
+
+Now push the tag:
+
+```bash
+git push origin v1.5.0
+```
+
+### What you should see
+
+```
+Total 0 (delta 0), reused 0 (delta 0)
+To github.com:your-org/your-package.git
+ * [new tag]         v1.5.0 -> v1.5.0
+```
+
+The tag now exists on the remote and points to the merge commit (or the version bump commit, depending on your merge strategy). Either is fine. The important thing is that the tag exists on main's history, not on a dangling branch.
+
+### Step 7: Publish
+
+With main checked out and up to date:
+
+```bash
+npm publish
+```
+
+Or if you use pnpm:
+
+```bash
+pnpm publish --no-provenance
+```
+
+### What you should see
+
+The tarball contents and the confirmation line:
+
+```
++ your-package@1.5.0
+```
+
+Your package is live. The version in package.json on main matches the version on npm, and the git tag points to the right commit.
+
+### Step 8: Clean up
+
+Delete the release branch:
+
+```bash
+git branch -d release/v1.5.0
+git push origin --delete release/v1.5.0
+```
+
+## The sequence matters
+
+Here is why the order is what it is:
+
+1. **Version bump on the branch, not main.** Branch protection blocks direct commits to main.
+2. **CHANGELOG on the branch.** It gets reviewed in the same PR as the version bump.
+3. **Push branch first, not the tag.** If the PR is rejected, you have not published a tag for a version that does not exist on main.
+4. **Tag push after merge.** The tag exists in main's history, which is what tools like GitHub Releases and npm provenance expect.
+5. **Publish after tag push.** The published version corresponds to a tagged commit on main. Anyone who checks out the tag gets the exact code that was published.
+
+If you publish before pushing the tag, or push the tag before the merge, you create a gap where the published version does not match what is on main. That gap causes confusion and erodes trust.
+
+## What to do when something goes wrong
+
+**The PR needs changes after the version bump.** Make the changes on the release branch, commit them, and push. The version bump commit is already there. Do not bump again.
+
+**You pushed the tag too early.** Delete the remote tag with `git push origin --delete v1.5.0`, make your fixes, and push the tag again after the merge.
+
+**You published the wrong version.** If you catch it within 72 hours, you can unpublish with `npm unpublish your-package@1.5.0`. Then fix the issue, bump to a new patch version (1.5.1), and publish again. Unpublishing should be rare. If you find yourself doing it regularly, slow down your release process.
+
+**You skipped a version number.** This happens. Multicorn Shield has skipped version numbers (documented in its CHANGELOG). It is not ideal, but it is not harmful. Do not try to "fill in" the gap by publishing the skipped version after the fact. Just note it and move on.
+
+## Automating with CI
+
+Some teams automate the publish step in CI. When a tag matching `v*` is pushed, a GitHub Actions workflow runs `npm publish` automatically. This removes the manual publish step and ensures publishes always come from CI, not from a developer's laptop.
+
+This is a good practice for teams, but it adds complexity. For a solo developer or small team, the manual workflow above is reliable and simple. Consider automation when you find yourself publishing frequently enough that the manual steps become a bottleneck.
+
+## Checkpoint
+
+Walk through the workflow mentally (or on a test package):
+
+1. Can you create a release branch, bump the version, update the CHANGELOG, and push the branch without pushing the tag?
+2. After the PR merges, can you pull main, push the tag, and publish?
+3. Do you understand why the tag push comes after the merge, not before?
+
+If you can answer all three, you can execute a clean release. The next lesson covers what happens when you need to make a breaking change.

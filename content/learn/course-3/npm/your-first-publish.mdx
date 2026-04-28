@@ -1,10 +1,207 @@
 ---
 title: 'Your first publish'
-description: 'npm account, login, publish, annotated CLI output, and what appears on your package page.'
+description: 'npm account creation, logging in, publishing, and understanding what happens at each step.'
 order: 3
 estimatedMinutes: 12
 outcome: 'You can log in and publish with a clear picture of what each step does.'
 date: '2026-04-28'
 ---
 
-{/* Content pending */}
+You have a package.json with the right fields, a README, a LICENSE, and a clean `npm pack --dry-run` output. Time to publish.
+
+This lesson walks through every step from creating an npm account to seeing your package live on the registry. Every command includes its expected output so you know exactly what to look for.
+
+## Create an npm account
+
+If you do not already have an npm account, create one at [npmjs.com/signup](https://www.npmjs.com/signup). You will need an email address, a username, and a password.
+
+After you sign up, npm will send a verification email. Click the link in that email before continuing. You cannot publish until your email is verified.
+
+If you already have an account, skip to the next section.
+
+## Log in from the terminal
+
+Run:
+
+```bash
+npm login
+```
+
+### What you should see
+
+npm will prompt you for your username, password, and email. If you have two-factor authentication enabled (recommended, covered in lesson 7), it will also prompt for a one-time code.
+
+```
+npm notice Log in on https://registry.npmjs.org/
+Login at:
+https://www.npmjs.com/login?next=/login/cli/...
+Press ENTER to open in the browser...
+```
+
+Recent versions of npm open a browser window for authentication rather than collecting credentials in the terminal. Follow the browser flow, then return to your terminal.
+
+After successful login:
+
+```
+Logged in on https://registry.npmjs.org/.
+```
+
+You can verify you are logged in:
+
+```bash
+npm whoami
+```
+
+### What you should see
+
+Your npm username, printed on a single line:
+
+```
+your-username
+```
+
+If this prints an error instead of your username, you are not logged in. Run `npm login` again.
+
+## Dry run first
+
+Always do a dry run before your first real publish. This shows you exactly what npm would upload without actually uploading it:
+
+```bash
+npm publish --dry-run
+```
+
+### What you should see
+
+The same tarball contents you saw from `npm pack --dry-run` in the previous lesson, followed by a summary:
+
+```
+npm notice Publishing to https://registry.npmjs.org/ with tag latest
+npm notice Tarball Contents
+npm notice 1.2kB  LICENSE
+npm notice 3.4kB  README.md
+npm notice 856B   package.json
+npm notice 12.5kB dist/index.js
+npm notice 11.8kB dist/index.cjs
+npm notice 4.2kB  dist/index.d.ts
+npm notice === Tarball Details ===
+npm notice name:          your-package
+npm notice version:       1.0.0
+npm notice filename:      your-package-1.0.0.tgz
+npm notice package size:  8.9 kB
+npm notice unpacked size: 34.0 kB
+npm notice total files:   6
+npm notice
++ your-package@1.0.0 (dry run)
+```
+
+The key line is `Publishing to https://registry.npmjs.org/ with tag latest`. This confirms you are publishing to the public npm registry and that the `latest` dist-tag will point to this version.
+
+The last line `+ your-package@1.0.0 (dry run)` confirms nothing was actually published. The `(dry run)` suffix is your safety net.
+
+Read through the file list one more time. This is your last chance to catch files that should not be public.
+
+## Publish for real
+
+When you are satisfied with the dry run output:
+
+```bash
+npm publish
+```
+
+### What you should see
+
+The same tarball contents and summary as the dry run, but without the `(dry run)` suffix:
+
+```
+npm notice Publishing to https://registry.npmjs.org/ with tag latest
+npm notice Tarball Contents
+npm notice 1.2kB  LICENSE
+npm notice 3.4kB  README.md
+npm notice 856B   package.json
+npm notice 12.5kB dist/index.js
+npm notice 11.8kB dist/index.cjs
+npm notice 4.2kB  dist/index.d.ts
+npm notice === Tarball Details ===
+npm notice name:          your-package
+npm notice version:       1.0.0
+npm notice filename:      your-package-1.0.0.tgz
+npm notice package size:  8.9 kB
+npm notice unpacked size: 34.0 kB
+npm notice total files:   6
+npm notice
++ your-package@1.0.0
+```
+
+The last line `+ your-package@1.0.0` without `(dry run)` means your package is now live on the npm registry.
+
+If you are publishing a scoped package and it is your first publish, you may see an error about payment. Scoped packages default to `restricted` (private), which requires a paid npm plan. To publish a scoped package as public for free:
+
+```bash
+npm publish --access public
+```
+
+Or set this permanently in your package.json:
+
+```json
+"publishConfig": {
+  "access": "public"
+}
+```
+
+## Verify your package is live
+
+Open your package page in a browser:
+
+```
+https://www.npmjs.com/package/your-package
+```
+
+Replace `your-package` with your actual package name. You should see your README, your version number, and the metadata from your package.json.
+
+You can also verify from the terminal:
+
+```bash
+npm view your-package
+```
+
+### What you should see
+
+The same metadata block you saw in lesson 1 when you ran `npm view multicorn-shield`, but now showing your own package. The `dist-tags` line should show `latest: 1.0.0` (or whatever version you published).
+
+Try installing your own package in a temporary directory to confirm it works:
+
+```bash
+mkdir /tmp/test-install
+cd /tmp/test-install
+npm init -y
+npm install your-package
+```
+
+### What you should see
+
+```
+added 1 package in 1s
+```
+
+(The exact number of packages may be higher if your package has dependencies.)
+
+Open `node_modules/your-package/` and confirm the files match what `npm pack --dry-run` showed. Your dist files should be there. Your test files and source files should not.
+
+## What you cannot undo
+
+Once a version is published to npm, you can unpublish it within 72 hours. After 72 hours, you cannot remove it. Even within that window, unpublishing is discouraged because other people may already depend on that version.
+
+The practical implication: treat every publish as permanent. Dry run first. Read the output. Be certain before you hit enter.
+
+If you publish a version with a bug, the correct response is to publish a new patched version, not to unpublish the broken one. We cover this workflow in lesson 5.
+
+## Checkpoint
+
+Before moving on:
+
+1. Run `npm whoami` and confirm you are logged in.
+2. Run `npm publish --dry-run` and read every line.
+3. If this is a real package you intend to publish, run `npm publish` and verify the package page appears on npmjs.com.
+4. If this is a practice exercise, you can create a scoped test package under your own npm username (e.g. `@your-username/test-package`) and publish that instead.
+
+Your package is live. The next lesson covers how to manage version numbers as you ship updates.

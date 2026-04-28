@@ -1,10 +1,138 @@
 ---
 title: 'Versioning with semver'
-description: 'Patch, minor, and major; breaking changes; and npm version patch, minor, and major.'
+description: 'Patch, minor, and major versions. What counts as a breaking change. How npm version works.'
 order: 4
 estimatedMinutes: 10
 outcome: 'You can bump versions intentionally and recognise when a change needs a major.'
 date: '2026-04-28'
 ---
 
-{/* Content pending */}
+Every time you publish a new version of your package, the version number tells your users what to expect. Semver (semantic versioning) is the convention npm uses to encode that information in three numbers.
+
+## The three numbers
+
+A semver version looks like `1.4.2`. The three parts are:
+
+**Major (1).** Incremented when you make changes that break existing usage. If someone's code works with version 1.x and would break with this update, it is a major change.
+
+**Minor (4).** Incremented when you add new functionality that does not break existing usage. Everything that worked before still works. There is just more available now.
+
+**Patch (2).** Incremented when you fix a bug without changing the API. No new features, no breaking changes. Just a fix.
+
+The promise to your users is: if they pin to `^1.4.2` in their package.json (the default when they run `npm install`), npm will install any `1.x.y` where `x >= 4` or `x == 4 && y >= 2`. That means minor and patch updates are automatic, but major updates require the user to opt in.
+
+If you ship a breaking change in a minor or patch release, you break that promise. Their CI pipeline fails. Their production build breaks. They stop trusting your package.
+
+## What counts as a breaking change
+
+For an SDK or library, these are breaking changes:
+
+- Removing a function, class, or method that was previously exported
+- Renaming an exported function or changing its import path
+- Changing the type signature of an exported function (adding required parameters, changing return types)
+- Removing or renaming a configuration option
+- Changing default behaviour that users depend on
+- Dropping support for a Node.js version you previously supported
+
+These are not breaking changes:
+
+- Adding a new exported function or class
+- Adding an optional parameter to an existing function
+- Fixing a bug (even if someone was relying on the buggy behaviour, bug fixes are patch-level by convention)
+- Improving performance without changing the API
+- Adding a new configuration option with a sensible default
+
+The grey area is internal changes that affect behaviour without changing the API surface. For example, if you change how your SDK retries failed HTTP requests, the function signatures are the same but the observable behaviour is different. Use your judgement. If users are likely to notice and their code might need adjusting, treat it as a minor at minimum.
+
+## Using npm version
+
+You could edit the `version` field in package.json by hand, but `npm version` does it for you and creates a git commit and tag in one step.
+
+```bash
+npm version patch
+```
+
+### What you should see
+
+```
+v1.4.3
+```
+
+This command did three things:
+
+1. Changed the `version` field in package.json from `1.4.2` to `1.4.3`
+2. Created a git commit with the message `v1.4.3`
+3. Created a git tag named `v1.4.3`
+
+For a minor bump:
+
+```bash
+npm version minor
+```
+
+### What you should see
+
+```
+v1.5.0
+```
+
+Notice that the patch number reset to 0. When you bump the minor, the patch resets. When you bump the major, both minor and patch reset.
+
+For a major bump:
+
+```bash
+npm version major
+```
+
+### What you should see
+
+```
+v2.0.0
+```
+
+Both minor and patch reset to 0.
+
+## When to use each
+
+Before every release, ask yourself:
+
+1. Did I remove or rename anything that was previously public? **Major.**
+2. Did I change the behaviour of an existing function in a way that could break someone's code? **Major.**
+3. Did I add new functionality without changing existing functionality? **Minor.**
+4. Did I fix a bug or make an internal improvement with no API changes? **Patch.**
+
+If you are unsure whether a change is breaking, err on the side of a minor bump. It is better to be cautious than to break someone's build.
+
+## Pre-1.0 versions
+
+If your package is below version `1.0.0`, the conventions are slightly different. In the `0.x.y` range, minor bumps are treated as potentially breaking. This is the "unstable" range where you are still figuring out your API.
+
+Once you reach `1.0.0`, you are promising stability. The semver contract is in full effect.
+
+There is no shame in staying below 1.0 while you iterate. It is better to be honest about instability than to ship 1.0 prematurely and then immediately need a 2.0.
+
+## Checking your current version
+
+To see what version you are on:
+
+```bash
+npm pkg get version
+```
+
+### What you should see
+
+```
+"1.4.2"
+```
+
+Or check the Versions tab on your npm package page to see every version you have published, with dates.
+
+## Checkpoint
+
+Before moving on:
+
+1. Run `npm version patch --no-git-tag-version` to see the version bump without creating a commit (useful for practice). Reset it with `git checkout package.json` afterwards.
+2. Look at the [multicorn-shield versions tab](https://www.npmjs.com/package/multicorn-shield?activeTab=versions) to see a real version history. Notice which bumps were patches and which were minors.
+3. Write down one change you could make to your package that would be a patch, one that would be a minor, and one that would be a major.
+
+You now know how to bump versions intentionally. The next lesson puts this into a full release workflow with branch protection and CHANGELOG discipline.

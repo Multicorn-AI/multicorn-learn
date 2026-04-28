@@ -1,10 +1,143 @@
 ---
 title: 'Breaking changes and deprecations'
-description: 'Warning downstream users, deprecating versions, documenting migrations, and when to ship a major.'
+description: 'How to warn users, document migrations, and decide when to cut a major version.'
 order: 6
 estimatedMinutes: 10
-outcome: 'You know how deprecation and semver lines work together in practice.'
+outcome: 'You can communicate breaking changes clearly and deprecate features responsibly.'
 date: '2026-04-28'
 ---
 
-{/* Content pending */}
+At some point you will need to change your package in a way that breaks existing usage. A function signature changes. A configuration option is renamed. An entire module is replaced with something better. The question is not whether this will happen, but how you handle it when it does.
+
+## The cost of breaking changes
+
+When you publish a major version, every user of your package has to do work. They need to read your migration guide. They need to update their code. They need to run their test suite. They need to deploy the updated version. If you have a hundred users, a breaking change creates a hundred small tasks.
+
+This does not mean you should never make breaking changes. Sometimes the old API is genuinely bad and needs replacing. But it does mean you should be thoughtful about when and how you do it. Batch breaking changes together rather than shipping one per month. Give users warning before you remove something. Make migration as easy as you can.
+
+## Deprecation warnings
+
+Before you remove a function or change its behaviour, deprecate it first. A deprecation is a signal to users: "this still works, but it will be removed in the next major version."
+
+### Console warnings
+
+The simplest approach is a runtime warning:
+
+```typescript
+export function oldMethod(options: OldOptions): Result {
+  console.warn(
+    '[your-package] oldMethod() is deprecated and will be removed in v3.0.0. ' +
+      'Use newMethod() instead. See https://your-docs.example.com/migration',
+  )
+  return newMethodInternal(convertOptions(options))
+}
+```
+
+The warning should tell the user three things: what is deprecated, what to use instead, and where to find the migration guide. One sentence, three pieces of information.
+
+### JSDoc @deprecated
+
+Mark deprecated functions in your type definitions so TypeScript users see the warning at edit time, not just at runtime:
+
+```typescript
+/**
+ * @deprecated Use {@link newMethod} instead. Will be removed in v3.0.0.
+ */
+export function oldMethod(options: OldOptions): Result {
+  // ...
+}
+```
+
+Most editors will show deprecated functions with a strikethrough. This is a strong visual signal that catches people before they even run the code.
+
+### npm deprecate
+
+You can also deprecate an entire version or version range on the registry:
+
+```bash
+npm deprecate your-package@"< 2.0.0" "Upgrade to v2 for security fixes. See https://your-docs.example.com/migration"
+```
+
+### What you should see
+
+No output on success. Users who install a deprecated version will see the deprecation message during installation:
+
+```
+npm warn deprecated your-package@1.9.0: Upgrade to v2 for security fixes.
+```
+
+Use this sparingly. Deprecating old versions is appropriate for security issues or when the old version has known bugs that will not be fixed. Do not deprecate old versions just because a new major exists.
+
+## Writing a migration guide
+
+When you ship a major version, include a migration guide. This can be a section in your CHANGELOG, a separate MIGRATION.md file, or a page in your documentation. The format matters less than the content.
+
+A good migration guide covers:
+
+**What changed and why.** Do not just list the changes. Explain the reasoning. Users are more willing to do migration work when they understand why the change was necessary.
+
+**Before and after code.** For every breaking change, show what the old code looked like and what the new code should look like. Make it copy-pasteable.
+
+**Automated migration (if feasible).** If a change is mechanical (e.g. a function was renamed), consider shipping a codemod or providing a find-and-replace pattern. Even a simple regex can save users significant time.
+
+Here is an example. Say you moved from constructor options to a separate `configure()` method.
+
+**Before (v1):**
+
+```js
+const client = new YourPackage({
+  apiKey: 'your-key',
+  timeout: 5000,
+})
+```
+
+**After (v2):**
+
+```js
+const client = new YourPackage()
+client.configure({
+  apiKey: 'your-key',
+  timeout: 5000,
+})
+```
+
+**Why:** Separating configuration from construction allows reconfiguration at runtime without creating a new instance.
+
+**Find-and-replace:** Search for `new YourPackage({` and replace the constructor body with a `.configure()` call after construction.
+
+## When to cut a major
+
+Batch breaking changes. If you have three breaking changes planned, ship them all in one major version rather than three separate majors. Users migrate once instead of three times.
+
+Some situations that warrant a major bump:
+
+- You are dropping support for a Node.js version that is past its end-of-life date. This is routine and expected. Document it clearly but do not over-explain.
+- You are replacing a core API that has design problems. This is the most disruptive kind of major, so the migration guide needs to be thorough.
+- You are removing a feature that is no longer maintained. Deprecate it in the current minor first, then remove it in the next major.
+
+Some situations that do not warrant a major bump:
+
+- You fixed a bug and someone was relying on the buggy behaviour. Bug fixes are patch-level. Document the fix and move on.
+- You added a feature and it "feels" like a big change. If it is additive and does not break existing code, it is a minor, regardless of how significant it feels.
+
+## The deprecation timeline
+
+A reasonable pattern for a solo developer or small team:
+
+1. **Minor release:** Add the new API alongside the old one. Deprecate the old API with console warnings and JSDoc tags. Update your README to show the new API as primary.
+
+2. **Wait one or two minor releases.** Give users time to migrate. If your package has meaningful download numbers, check whether the deprecation warning is being hit (if you have telemetry) or whether issues are filed about the migration (if you have a public issue tracker).
+
+3. **Major release:** Remove the old API. Ship the migration guide. Update the CHANGELOG.
+
+The waiting period depends on your user base. A package with ten users can move faster than one with ten thousand. The principle is the same: warn, wait, remove.
+
+## Checkpoint
+
+Before moving on:
+
+1. Think of a function or configuration option in your package that you might want to change. Write a one-line console.warn deprecation message for it.
+2. Write a two-paragraph migration guide entry for a hypothetical breaking change: before code, after code, and why.
+3. Consider whether any changes you are planning should be batched into a single major release.
+
+The next lesson covers the other side of trust: protecting your package and your users from supply chain attacks.
