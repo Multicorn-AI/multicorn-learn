@@ -56,13 +56,13 @@ export function CourseFeedbackForm({
       setSubmitting(true)
       setError(null)
       const ok = await submitFeedback({
-        courseSlug,
-        lessonSlug,
-        feedbackType: 'star_rating',
-        ratingValue: rating as 1 | 2 | 3 | 4 | 5,
-        textPositive: textPositive.trim() || undefined,
-        textNegative: textNegative.trim() || undefined,
-        wouldRecommend: recommend ?? undefined,
+        course_slug: courseSlug,
+        lesson_slug: lessonSlug,
+        feedback_type: 'star_rating',
+        rating_value: rating as 1 | 2 | 3 | 4 | 5,
+        text_positive: textPositive.trim() || undefined,
+        text_negative: textNegative.trim() || undefined,
+        would_recommend: recommend ?? undefined,
         email: email.trim() || undefined,
         website: honeypot || undefined,
       })
@@ -218,7 +218,7 @@ export function CourseFeedbackForm({
         </div>
 
         {/* Honeypot - same pattern as EnterpriseInterestModal */}
-        <div aria-hidden="true" className="absolute -left-[9999px] -top-[9999px]">
+        <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
           <label htmlFor="feedback-website">Website</label>
           <input
             id="feedback-website"
@@ -231,7 +231,7 @@ export function CourseFeedbackForm({
         </div>
 
         {error ? (
-          <p role="alert" className="text-red-500 mt-4 text-sm">
+          <p role="alert" className="text-red-600 mt-4 text-sm">
             {error}
           </p>
         ) : null}

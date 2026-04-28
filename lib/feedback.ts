@@ -1,9 +1,3 @@
-function shouldTrack(): boolean {
-  const explicit = process.env.NEXT_PUBLIC_ANALYTICS_URL
-  if (typeof explicit === 'string' && explicit.trim() !== '') return true
-  return process.env.NODE_ENV === 'production'
-}
-
 function getBaseUrl(): string {
   const explicit = process.env.NEXT_PUBLIC_ANALYTICS_URL
   if (typeof explicit === 'string' && explicit.trim() !== '') {
@@ -16,20 +10,20 @@ function getBaseUrl(): string {
 }
 
 export interface ThumbsFeedbackPayload {
-  readonly courseSlug: string
-  readonly lessonSlug: string
-  readonly feedbackType: 'thumbs'
-  readonly ratingValue: 0 | 1
+  readonly course_slug: string
+  readonly lesson_slug: string
+  readonly feedback_type: 'thumbs'
+  readonly rating_value: 0 | 1
 }
 
 export interface StarFeedbackPayload {
-  readonly courseSlug: string
-  readonly lessonSlug?: string
-  readonly feedbackType: 'star_rating'
-  readonly ratingValue: 1 | 2 | 3 | 4 | 5
-  readonly textPositive?: string
-  readonly textNegative?: string
-  readonly wouldRecommend?: boolean
+  readonly course_slug: string
+  readonly lesson_slug?: string
+  readonly feedback_type: 'star_rating'
+  readonly rating_value: 1 | 2 | 3 | 4 | 5
+  readonly text_positive?: string
+  readonly text_negative?: string
+  readonly would_recommend?: boolean
   readonly email?: string
   readonly website?: string
 }
@@ -37,7 +31,7 @@ export interface StarFeedbackPayload {
 export type FeedbackPayload = ThumbsFeedbackPayload | StarFeedbackPayload
 
 export async function submitFeedback(payload: FeedbackPayload): Promise<boolean> {
-  if (typeof window === 'undefined' || !shouldTrack()) return false
+  if (typeof window === 'undefined') return false
   try {
     const res = await fetch(`${getBaseUrl()}/api/v1/feedback`, {
       method: 'POST',
