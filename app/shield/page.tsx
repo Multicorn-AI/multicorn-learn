@@ -8,6 +8,7 @@ import { MulticornSignupCta } from '@/components/MulticornSignupCta'
 import { TrackedCtaLink } from '@/components/TrackedCtaLink'
 import { ShieldPageTracker } from '@/components/ShieldPageTracker'
 import { QuickstartTabs } from '@/components/QuickstartTabs'
+import { SupportedPlatforms } from '@/components/SupportedPlatforms'
 
 export const metadata: Metadata = {
   title: 'Multicorn Shield: Permissions, Control & Audit for AI Agents',
@@ -356,8 +357,10 @@ export default function ShieldPage() {
           </div>
         </section> */}
 
+        <SupportedPlatforms />
+
         {/* How It Works */}
-        <section className="px-6 py-14 sm:py-28">
+        <section id="how-it-works" className="px-6 py-14 sm:py-28">
           <div className="mx-auto max-w-content">
             <div className="mb-16 text-center">
               <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
