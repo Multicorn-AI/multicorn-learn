@@ -10,11 +10,12 @@ export const PRICING_ENTERPRISE_MAILTO = 'mailto:enterprise@multicorn.ai'
  */
 export type TierCTA = 'signup' | 'contact'
 
+/** Returns signup URL or enterprise mailto for pricing CTAs. */
 export function getTierHref(cta: TierCTA): string {
   return cta === 'signup' ? SIGNUP_URL : PRICING_ENTERPRISE_MAILTO
 }
 
-/** Annual billing: pay for 10 months, get 12 (2 months free). Use `monthlyPrice * 10` for the yearly total. */
+/** Months billed per year on annual pricing (12 months access, 10 months paid). */
 export const ANNUAL_BILLING_MONTHS = 10 as const
 
 export interface PricingTierDef {
@@ -31,6 +32,39 @@ export interface PricingTierDef {
   readonly disabled?: boolean
 }
 
+/** Formats a USD amount as currency with no fractional digits (pricing UI). */
+export function formatUsd(dollars: number): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+  }).format(dollars)
+}
+
+/**
+ * Builds price label and billing-period copy for {@link PricingTierDef} rows (homepage and /pricing cards).
+ */
+export function getDisplayPrice(
+  tier: PricingTierDef,
+  billing: 'monthly' | 'annual',
+): { readonly price: string; readonly period: string } {
+  if (tier.monthlyPrice === null) {
+    return { price: 'Custom', period: 'tailored to your needs' }
+  }
+  if (tier.monthlyPrice === 0) {
+    return { price: formatUsd(0), period: 'forever' }
+  }
+  if (billing === 'monthly') {
+    return { price: formatUsd(tier.monthlyPrice), period: 'per month' }
+  }
+  const effectivePerMonth = (tier.monthlyPrice * ANNUAL_BILLING_MONTHS) / 12
+  return {
+    price: formatUsd(effectivePerMonth),
+    period: 'per month, billed annually',
+  }
+}
+
+/** Shield tier definitions for homepage and /pricing cards (single source of truth). */
 export const SHIELD_TIERS: readonly PricingTierDef[] = [
   {
     name: 'Free',

@@ -107,14 +107,16 @@ function DashboardPreview() {
         <span className="h-3 w-3 rounded-full bg-green/60" aria-hidden="true" />
         <span className="ml-2 text-xs text-text-tertiary">Multicorn Shield</span>
       </div>
-      <Image
-        src="/images/shield-agents.png"
-        alt="Multicorn Shield dashboard showing connected AI agents with action counts, spend tracking, and budget limits"
-        width={600}
-        height={259}
-        className="h-auto w-full"
-        sizes="(max-width: 1024px) 100vw, 50vw"
-      />
+      <div role="img" aria-label="Multicorn Shield dashboard preview">
+        <Image
+          src="/images/shield-agents.png"
+          alt=""
+          width={600}
+          height={259}
+          className="h-auto w-full"
+          sizes="(max-width: 1024px) 100vw, 50vw"
+        />
+      </div>
     </div>
   )
 }

@@ -370,7 +370,7 @@ export default function ShieldPage() {
                 <span className="ml-2 text-xs text-text-tertiary">Terminal</span>
               </div>
               <div className="bg-[#1a1a2e] px-6 py-8 font-mono text-sm leading-relaxed">
-                <p className="text-text-tertiary">
+                <p className="text-[#8888a0]">
                   $ npx multicorn-proxy --wrap npx @modelcontextprotocol/server-filesystem /tmp
                 </p>
                 <p className="mt-3 text-[#8888a0]">Proxy starting agent=filesystem command=npx</p>
@@ -394,7 +394,7 @@ export default function ShieldPage() {
                 <p className="text-red">
                   Action blocked service=gmail reason=no execute permission
                 </p>
-                <p className="mt-4 animate-pulse text-text-tertiary">█</p>
+                <p className="mt-4 text-[#8888a0] motion-safe:animate-pulse">█</p>
               </div>
             </div>
           </div>

@@ -1,41 +1,7 @@
 'use client'
 
 import { PricingCard } from '@/components/PricingCard'
-import {
-  ANNUAL_BILLING_MONTHS,
-  getTierHref,
-  SHIELD_TIERS,
-  type PricingTierDef,
-} from '@/lib/pricing-constants'
-
-function formatUsd(dollars: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0,
-  }).format(dollars)
-}
-
-/** Matches /pricing when Monthly billing is selected (same formatting rules). */
-function getDisplayPrice(
-  tier: PricingTierDef,
-  billing: 'monthly' | 'annual',
-): { readonly price: string; readonly period: string } {
-  if (tier.monthlyPrice === null) {
-    return { price: 'Custom', period: 'tailored to your needs' }
-  }
-  if (tier.monthlyPrice === 0) {
-    return { price: formatUsd(0), period: 'forever' }
-  }
-  if (billing === 'monthly') {
-    return { price: formatUsd(tier.monthlyPrice), period: 'per month' }
-  }
-  const effectivePerMonth = (tier.monthlyPrice * ANNUAL_BILLING_MONTHS) / 12
-  return {
-    price: formatUsd(effectivePerMonth),
-    period: 'per month, billed annually',
-  }
-}
+import { getDisplayPrice, getTierHref, SHIELD_TIERS } from '@/lib/pricing-constants'
 
 export function Pricing() {
   const billing = 'monthly' as const

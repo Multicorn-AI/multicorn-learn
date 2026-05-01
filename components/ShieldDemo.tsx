@@ -3,6 +3,10 @@
 import { useState } from 'react'
 import Image from 'next/image'
 
+/**
+ * Screenshots are from the Multicorn product owner's account (internal test agents only, no customer data).
+ */
+
 type DashboardTab = 'agents' | 'activity'
 
 /** Intrinsic layout width; heights preserve each screenshot's aspect ratio (sources differ). */
@@ -66,15 +70,17 @@ export function ShieldDemo() {
       </div>
 
       <div id="shield-demo-panel" role="tabpanel" aria-labelledby={`shield-demo-tab-${activeTab}`}>
-        <Image
-          src={img.src}
-          alt={img.alt}
-          width={img.width}
-          height={img.height}
-          className="h-auto w-full rounded-xl shadow-lg"
-          priority={false}
-          sizes="(max-width: 768px) 100vw, 768px"
-        />
+        <div role="img" aria-label={img.alt}>
+          <Image
+            src={img.src}
+            alt=""
+            width={img.width}
+            height={img.height}
+            className="h-auto w-full rounded-xl shadow-lg"
+            priority={false}
+            sizes="(max-width: 768px) 100vw, 768px"
+          />
+        </div>
       </div>
     </div>
   )
