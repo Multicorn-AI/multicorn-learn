@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 import { FeatureCard } from '@/components/FeatureCard'
 
 interface Feature {
@@ -74,7 +76,7 @@ const FEATURES: readonly Feature[] = [
     ),
   },
   {
-    name: 'Permission scopes',
+    name: 'Permission management',
     description:
       'Define exactly what each agent can access: Gmail, Calendar, Slack, GitHub. All with type-safe, granular permissions.',
     icon: (
@@ -98,55 +100,22 @@ const FEATURES: readonly Feature[] = [
 
 function DashboardPreview() {
   return (
-    <div
-      className="overflow-hidden rounded-card border border-border bg-surface shadow-lg"
-      aria-label="Multicorn Shield dashboard preview"
-      role="img"
-    >
+    <div className="overflow-hidden rounded-card border border-border bg-surface shadow-lg">
       <div className="flex items-center gap-2 border-b border-border-light bg-surface-secondary px-4 py-3">
-        <span className="h-3 w-3 rounded-full bg-red/60" />
-        <span className="h-3 w-3 rounded-full bg-orange/60" />
-        <span className="h-3 w-3 rounded-full bg-green/60" />
+        <span className="h-3 w-3 rounded-full bg-red/60" aria-hidden="true" />
+        <span className="h-3 w-3 rounded-full bg-orange/60" aria-hidden="true" />
+        <span className="h-3 w-3 rounded-full bg-green/60" aria-hidden="true" />
         <span className="ml-2 text-xs text-text-tertiary">Multicorn Shield</span>
       </div>
-      <div className="space-y-3 p-6">
-        <div className="flex items-center justify-between">
-          <div className="h-3 w-28 rounded bg-surface-tertiary" />
-          <div className="h-6 w-16 rounded-full bg-green/10 px-2 py-0.5 text-center text-xs font-medium text-green">
-            Active
-          </div>
-        </div>
-        <div className="grid grid-cols-3 gap-3">
-          <div className="rounded-lg bg-surface-secondary p-3">
-            <div className="mb-1 text-xs text-text-tertiary">Agents</div>
-            <div className="text-lg font-semibold text-text-primary">12</div>
-          </div>
-          <div className="rounded-lg bg-surface-secondary p-3">
-            <div className="mb-1 text-xs text-text-tertiary">Approved</div>
-            <div className="text-lg font-semibold text-green">847</div>
-          </div>
-          <div className="rounded-lg bg-surface-secondary p-3">
-            <div className="mb-1 text-xs text-text-tertiary">Blocked</div>
-            <div className="text-lg font-semibold text-red">23</div>
-          </div>
-        </div>
-        <div className="space-y-2">
-          {(
-            [
-              'OpenClaw read Gmail',
-              'Claude Code push to GitHub',
-              'GPT-5.3 send Slack message',
-            ] as const
-          ).map((action) => (
-            <div
-              key={action}
-              className="flex items-center justify-between rounded-lg bg-surface-secondary px-3 py-2"
-            >
-              <span className="text-xs text-text-secondary">{action}</span>
-              <span className="text-xs font-medium text-green">Approved</span>
-            </div>
-          ))}
-        </div>
+      <div role="img" aria-label="Multicorn Shield dashboard preview">
+        <Image
+          src="/images/shield-agents.png"
+          alt=""
+          width={600}
+          height={259}
+          className="h-auto w-full"
+          sizes="(max-width: 1024px) 100vw, 50vw"
+        />
       </div>
     </div>
   )

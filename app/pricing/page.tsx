@@ -6,45 +6,11 @@ import { PricingFAQ } from '@/components/PricingFAQ'
 import { Footer } from '@/components/Footer'
 import { SIGNUP_URL } from '@/lib/urls'
 import {
-  ANNUAL_BILLING_MONTHS,
   COMPARISON_FEATURES,
+  getDisplayPrice,
   getTierHref,
   SHIELD_TIERS,
-  type PricingTierDef,
 } from '@/lib/pricing-constants'
-
-function formatUsd(dollars: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0,
-  }).format(dollars)
-}
-
-/**
- * Derives the price/period strings passed to PricingCard. Free and Enterprise
- * are unchanged by billing period; paid tiers use effective monthly for annual
- * (10 months paid per year) with period text that includes "billed annually".
- */
-function getDisplayPrice(
-  tier: PricingTierDef,
-  billing: 'monthly' | 'annual',
-): { readonly price: string; readonly period: string } {
-  if (tier.monthlyPrice === null) {
-    return { price: 'Custom', period: 'tailored to your needs' }
-  }
-  if (tier.monthlyPrice === 0) {
-    return { price: formatUsd(0), period: 'forever' }
-  }
-  if (billing === 'monthly') {
-    return { price: formatUsd(tier.monthlyPrice), period: 'per month' }
-  }
-  const effectivePerMonth = (tier.monthlyPrice * ANNUAL_BILLING_MONTHS) / 12
-  return {
-    price: formatUsd(effectivePerMonth),
-    period: 'per month, billed annually',
-  }
-}
 
 type BillingId = 'monthly' | 'annual'
 

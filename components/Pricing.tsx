@@ -1,98 +1,10 @@
 'use client'
 
-import { useState } from 'react'
 import { PricingCard } from '@/components/PricingCard'
-import { EnterpriseInterestModal } from '@/components/EnterpriseInterestModal'
-
-interface Tier {
-  readonly name: string
-  readonly price: string
-  readonly period: string
-  readonly audience: string
-  readonly features: readonly string[]
-  readonly cta: string
-  readonly href?: string
-  readonly highlighted: boolean
-  readonly badge?: string
-  readonly enterprise?: boolean
-}
-
-const TIERS: readonly Tier[] = [
-  {
-    name: 'Free',
-    price: '$0',
-    period: 'forever',
-    audience: 'For solo developers and hobbyists getting started with agent control.',
-    features: [
-      'Consent screens',
-      'Basic dashboard',
-      '3 agents',
-      '1,000 actions per month',
-      'Community support',
-    ],
-    cta: 'Start for free',
-    href: 'https://app.multicorn.ai',
-    highlighted: false,
-  },
-  {
-    name: 'Pro',
-    price: '$29',
-    period: 'per month',
-    audience: 'For small teams that need more agents and deeper controls.',
-    features: [
-      'Everything in Free',
-      'Up to 5 team members',
-      '10 agents',
-      'Unlimited activity logging',
-      'Team policies',
-      'Spending controls',
-      'Priority email support',
-    ],
-    cta: 'Get started',
-    href: 'https://app.multicorn.ai',
-    highlighted: true,
-  },
-  {
-    name: 'Business',
-    price: '$199',
-    period: 'per month',
-    audience: 'For mid-size companies that need advanced governance and compliance.',
-    features: [
-      'Everything in Pro',
-      'Unlimited team members',
-      'Unlimited agents',
-      'Role-based access control',
-      'SSO integration',
-      'Approval workflows',
-      'Priority support',
-    ],
-    cta: 'Get started',
-    href: 'https://app.multicorn.ai',
-    highlighted: false,
-  },
-  {
-    name: 'Enterprise',
-    price: 'Custom',
-    period: 'tailored to your needs',
-    audience: 'For organizations with custom security, compliance, and scale requirements.',
-    features: [
-      'Everything in Business',
-      'Unlimited team members',
-      'Immutable audit logs',
-      'Compliance reporting',
-      'Data boundary controls',
-      'Multi-party approval',
-      'Dedicated support',
-    ],
-    cta: 'Register interest',
-    highlighted: false,
-    badge: 'Coming soon',
-    enterprise: true,
-  },
-]
+import { getDisplayPrice, getTierHref, SHIELD_TIERS } from '@/lib/pricing-constants'
 
 export function Pricing() {
-  const [enterpriseModalOpen, setEnterpriseModalOpen] = useState(false)
+  const billing = 'monthly' as const
 
   return (
     <section id="pricing" className="px-6 py-20 sm:py-28">
@@ -107,29 +19,26 @@ export function Pricing() {
         </div>
 
         <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {TIERS.map((tier) => (
-            <PricingCard
-              key={tier.name}
-              name={tier.name}
-              price={tier.price}
-              period={tier.period}
-              audience={tier.audience}
-              features={tier.features}
-              cta={tier.cta}
-              href={tier.href}
-              highlighted={tier.highlighted}
-              badge={tier.badge}
-              onCtaClick={tier.enterprise ? () => setEnterpriseModalOpen(true) : undefined}
-            />
-          ))}
+          {SHIELD_TIERS.map((tier) => {
+            const { price, period } = getDisplayPrice(tier, billing)
+            return (
+              <PricingCard
+                key={tier.name}
+                name={tier.name}
+                price={price}
+                period={period}
+                audience={tier.audience}
+                features={tier.features}
+                cta={tier.cta}
+                href={getTierHref(tier.ctaTarget)}
+                highlighted={tier.highlighted}
+                badge={tier.badge}
+                disabled={tier.disabled}
+              />
+            )
+          })}
         </div>
       </div>
-
-      <EnterpriseInterestModal
-        open={enterpriseModalOpen}
-        onClose={() => setEnterpriseModalOpen(false)}
-        source="shield-pricing"
-      />
     </section>
   )
 }
