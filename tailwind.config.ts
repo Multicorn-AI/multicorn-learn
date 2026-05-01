@@ -70,12 +70,17 @@ const config: Config = {
           '85%': { opacity: '1' },
           '100%': { transform: 'translateY(var(--flow-distance, 40px))', opacity: '0' },
         },
+        'agent-picker-fade': {
+          from: { opacity: '0' },
+          to: { opacity: '1' },
+        },
       },
       animation: {
         drift: 'drift 6s ease-in-out infinite',
         'drift-reverse': 'drift-reverse 7s ease-in-out infinite',
         'gradient-shift': 'gradient-shift 8s ease infinite',
         'flow-dot': 'flow-dot 2s ease-in-out infinite',
+        'agent-picker-fade': 'agent-picker-fade 0.2s ease-out',
       },
     },
   },

@@ -8,6 +8,7 @@ import { MulticornSignupCta } from '@/components/MulticornSignupCta'
 import { TrackedCtaLink } from '@/components/TrackedCtaLink'
 import { ShieldPageTracker } from '@/components/ShieldPageTracker'
 import { QuickstartTabs } from '@/components/QuickstartTabs'
+import { SupportedPlatforms } from '@/components/SupportedPlatforms'
 
 export const metadata: Metadata = {
   title: 'Multicorn Shield: Permissions, Control & Audit for AI Agents',
@@ -321,43 +322,10 @@ export default function ShieldPage() {
           </div>
         </section>
 
-        {/* Built with Shield */}
-        {/* <section className="px-6 py-10 sm:py-14">
-          <div className="mx-auto max-w-content">
-            <div className="rounded-card bg-primary px-6 py-8 text-center sm:px-10 sm:py-12">
-              <p className="text-lg font-semibold text-white sm:text-xl">
-                We use AI agents to build Multicorn.
-              </p>
-              <p className="mt-2 text-lg font-semibold text-white sm:text-xl">
-                Shield governs every one of them.
-              </p>
-              <a
-                href="https://multicorn.ai/blog/agents"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-6 inline-flex min-h-[44px] items-center gap-2 rounded text-base font-medium text-white underline decoration-white/40 underline-offset-4 transition-colors hover:decoration-white focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-primary"
-              >
-                Read how
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  className="h-4 w-4"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </a>
-            </div>
-          </div>
-        </section> */}
+        <SupportedPlatforms />
 
         {/* How It Works */}
-        <section className="px-6 py-14 sm:py-28">
+        <section id="how-it-works" className="px-6 py-14 sm:py-28">
           <div className="mx-auto max-w-content">
             <div className="mb-16 text-center">
               <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
