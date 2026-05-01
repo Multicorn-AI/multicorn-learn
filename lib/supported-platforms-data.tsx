@@ -1,4 +1,3 @@
-import type { LucideIcon } from 'lucide-react'
 import {
   ArrowRight,
   Bird,
@@ -11,15 +10,7 @@ import {
   Wind,
 } from 'lucide-react'
 
-export interface SupportedPlatform {
-  name: string
-  badge: string
-  description: string
-  icon: LucideIcon
-  comingSoon: boolean
-}
-
-export const SUPPORTED_PLATFORMS: readonly SupportedPlatform[] = [
+export const SUPPORTED_PLATFORMS = [
   {
     name: 'OpenClaw',
     badge: 'Native plugin',
@@ -85,4 +76,19 @@ export const SUPPORTED_PLATFORMS: readonly SupportedPlatform[] = [
     icon: Terminal,
     comingSoon: true,
   },
-]
+] as const
+
+export type SupportedPlatform = (typeof SUPPORTED_PLATFORMS)[number]
+export type SupportedPlatformName = SupportedPlatform['name']
+
+const claudeEntry = SUPPORTED_PLATFORMS.find((p) => p.name === 'Claude Code')
+/** Default recommendation when resolver returns no catalog row (keeps Claude Code as intended fallback). */
+export const FALLBACK_RECOMMENDATION_PLATFORM_NAME: SupportedPlatformName = claudeEntry
+  ? claudeEntry.name
+  : SUPPORTED_PLATFORMS[0].name
+
+export const PLATFORM_NAMES = SUPPORTED_PLATFORMS.map((p) => p.name)
+
+export function findSupportedPlatform(name: SupportedPlatformName): SupportedPlatform | undefined {
+  return SUPPORTED_PLATFORMS.find((p) => p.name === name)
+}

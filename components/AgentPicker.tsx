@@ -1,7 +1,12 @@
 'use client'
 
 import { useCallback, useMemo, useState } from 'react'
-import { SUPPORTED_PLATFORMS, type SupportedPlatform } from '@/lib/supported-platforms-data'
+import {
+  FALLBACK_RECOMMENDATION_PLATFORM_NAME,
+  findSupportedPlatform,
+  type SupportedPlatform,
+  type SupportedPlatformName,
+} from '@/lib/supported-platforms-data'
 
 const HOW_IT_WORKS_HASH = '#how-it-works'
 
@@ -9,27 +14,36 @@ const Q1_OPTIONS = ['A coding project', 'Automating tasks', 'Just exploring'] as
 const Q2_OPTIONS = ['VS Code', 'JetBrains', 'Cursor', 'Terminal / CLI', 'No preference'] as const
 const Q3_OPTIONS = ['I write code daily', 'I can follow a tutorial', "I'm non-technical"] as const
 
+const LEGEND_Q1 = 'What are you building?'
+const LEGEND_Q2 = "What's your preferred editor?"
+const LEGEND_Q3 = 'How technical are you?'
+
 type Q1 = (typeof Q1_OPTIONS)[number]
 type Q2 = (typeof Q2_OPTIONS)[number]
 type Q3 = (typeof Q3_OPTIONS)[number]
 
-function recommendedPlatformName(building: Q1, editor: Q2, technical: Q3): string {
-  if (editor === 'Cursor') return 'Cursor'
-  if (editor === 'Terminal / CLI') {
-    if (technical === 'I write code daily') return 'OpenClaw'
-    return 'Claude Code'
-  }
-  if (editor === 'VS Code') {
-    if (building === 'A coding project') return 'Cline'
-    return 'Claude Code'
-  }
-  if (editor === 'JetBrains') return 'Claude Code'
-  if (technical === "I'm non-technical") return 'Cursor'
-  return 'Claude Code'
+function pickPlatform(name: SupportedPlatformName): SupportedPlatform | undefined {
+  return findSupportedPlatform(name)
 }
 
-function findPlatform(name: string): SupportedPlatform | undefined {
-  return SUPPORTED_PLATFORMS.find((p) => p.name === name)
+/** Resolution uses SupportedPlatformName so picks stay aligned with SUPPORTED_PLATFORMS data. */
+function recommendedPlatform(
+  building: Q1,
+  editor: Q2,
+  technical: Q3,
+): SupportedPlatform | undefined {
+  if (editor === 'Cursor') return pickPlatform('Cursor')
+  if (editor === 'Terminal / CLI') {
+    if (technical === 'I write code daily') return pickPlatform('OpenClaw')
+    return pickPlatform('Claude Code')
+  }
+  if (editor === 'VS Code') {
+    if (building === 'A coding project') return pickPlatform('Cline')
+    return pickPlatform('Claude Code')
+  }
+  if (editor === 'JetBrains') return pickPlatform('Claude Code')
+  if (technical === "I'm non-technical") return pickPlatform('Cursor')
+  return pickPlatform('Claude Code')
 }
 
 export function AgentPicker() {
@@ -40,8 +54,10 @@ export function AgentPicker() {
 
   const recommendation = useMemo(() => {
     if (building === null || editor === null || technical === null) return null
-    const name = recommendedPlatformName(building, editor, technical)
-    return findPlatform(name) ?? findPlatform('Claude Code')
+    const picked = recommendedPlatform(building, editor, technical)
+    return picked !== undefined
+      ? picked
+      : findSupportedPlatform(FALLBACK_RECOMMENDATION_PLATFORM_NAME)
   }, [building, editor, technical])
 
   const reset = useCallback(() => {
@@ -67,10 +83,10 @@ export function AgentPicker() {
   return (
     <div className="mx-auto max-w-xl">
       <h3 className="text-center text-xl font-semibold text-text-primary">
-        Not sure which agent to use?
+        Not sure which agent to use? We can help.
       </h3>
       <p className="mt-2 text-center text-sm text-text-secondary">
-        Answer a couple of questions and we&apos;ll recommend one.
+        Answer a few questions and we&apos;ll recommend one.
       </p>
 
       <div className="mt-8">
@@ -82,7 +98,7 @@ export function AgentPicker() {
             {step === 0 && (
               <fieldset>
                 <legend className="mb-4 text-center text-sm font-medium text-text-primary">
-                  What are you building?
+                  {LEGEND_Q1}
                 </legend>
                 <div className="flex flex-wrap justify-center gap-2">
                   {Q1_OPTIONS.map((opt) => (
@@ -90,6 +106,7 @@ export function AgentPicker() {
                       key={opt}
                       type="button"
                       onClick={() => pickQ1(opt)}
+                      aria-label={`${opt} - answer to ${LEGEND_Q1}`}
                       className="min-h-[44px] rounded-full border border-border bg-surface px-4 py-2.5 text-sm font-medium text-text-secondary transition-colors hover:border-primary/25 hover:text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
                     >
                       {opt}
@@ -101,7 +118,7 @@ export function AgentPicker() {
             {step === 1 && (
               <fieldset>
                 <legend className="mb-4 text-center text-sm font-medium text-text-primary">
-                  What&apos;s your preferred editor?
+                  {LEGEND_Q2}
                 </legend>
                 <div className="flex flex-wrap justify-center gap-2">
                   {Q2_OPTIONS.map((opt) => (
@@ -109,6 +126,7 @@ export function AgentPicker() {
                       key={opt}
                       type="button"
                       onClick={() => pickQ2(opt)}
+                      aria-label={`${opt} - answer to ${LEGEND_Q2}`}
                       className="min-h-[44px] rounded-full border border-border bg-surface px-4 py-2.5 text-sm font-medium text-text-secondary transition-colors hover:border-primary/25 hover:text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
                     >
                       {opt}
@@ -120,7 +138,7 @@ export function AgentPicker() {
             {step === 2 && (
               <fieldset>
                 <legend className="mb-4 text-center text-sm font-medium text-text-primary">
-                  How technical are you?
+                  {LEGEND_Q3}
                 </legend>
                 <div className="flex flex-wrap justify-center gap-2">
                   {Q3_OPTIONS.map((opt) => (
@@ -128,6 +146,7 @@ export function AgentPicker() {
                       key={opt}
                       type="button"
                       onClick={() => pickQ3(opt)}
+                      aria-label={`${opt} - answer to ${LEGEND_Q3}`}
                       className="min-h-[44px] rounded-full border border-border bg-surface px-4 py-2.5 text-sm font-medium text-text-secondary transition-colors hover:border-primary/25 hover:text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
                     >
                       {opt}
@@ -159,14 +178,18 @@ function ResultCard({
     <div key="result" className="motion-safe:animate-agent-picker-fade motion-reduce:animate-none">
       <div className="rounded-card border border-border bg-surface-secondary p-5 text-left">
         <p className="text-center text-sm font-medium text-text-primary">We recommend</p>
-        <div className="mt-4 flex items-center gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-shield/10">
-            <Icon className="h-5 w-5 text-shield" aria-hidden />
+        <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-shield/10">
+            <Icon className="h-6 w-6 text-shield" aria-hidden />
           </div>
-          <span className="text-base font-semibold text-text-primary">{platform.name}</span>
+          <p className="text-center text-lg font-semibold tracking-tight text-text-primary">
+            {platform.name}
+          </p>
         </div>
-        <span className="mt-1 block text-xs text-text-tertiary">{platform.badge}</span>
-        <p className="mt-2 text-xs leading-relaxed text-text-secondary">{platform.description}</p>
+        <span className="mt-2 block text-center text-xs text-text-tertiary">{platform.badge}</span>
+        <p className="mt-2 text-center text-xs leading-relaxed text-text-secondary">
+          {platform.description}
+        </p>
         <a
           href={HOW_IT_WORKS_HASH}
           className="mt-5 inline-flex min-h-[44px] w-full items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/30 focus:ring-offset-2"
