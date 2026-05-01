@@ -7,7 +7,6 @@ import { ShieldDemo } from '@/components/ShieldDemo'
 import { MulticornSignupCta } from '@/components/MulticornSignupCta'
 import { TrackedCtaLink } from '@/components/TrackedCtaLink'
 import { ShieldPageTracker } from '@/components/ShieldPageTracker'
-import { QuickstartTabs } from '@/components/QuickstartTabs'
 import { SupportedPlatforms } from '@/components/SupportedPlatforms'
 
 export const metadata: Metadata = {
@@ -177,7 +176,7 @@ const CAPABILITIES: readonly Capability[] = [
   {
     name: 'Team policies',
     description:
-      'Set organization-wide rules for what agents can do. Apply policies across teams so every agent follows the same guardrails.',
+      'Define organisation-wide rules for what agents can do. Set default permissions across your team so every new agent starts with the right guardrails.',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -200,7 +199,7 @@ const CAPABILITIES: readonly Capability[] = [
   {
     name: 'Approval workflows',
     description:
-      'Require sign-off for high-risk actions. Route approvals automatically based on action type or spending amount.',
+      'Require sign-off for sensitive actions. Review and approve or reject agent requests before they execute, with time-bounded grants.',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -219,54 +218,6 @@ const CAPABILITIES: readonly Capability[] = [
     ),
   },
 ]
-
-const PROXY_QUICKSTART_STEPS = [
-  {
-    step: '1',
-    title: 'Get your API key',
-    code: `# Sign up at app.multicorn.ai, then create a key in Settings
-export MULTICORN_API_KEY=mcs_your_key_here`,
-  },
-  {
-    step: '2',
-    title: 'Wrap your MCP server',
-    code: 'npx multicorn-proxy --wrap npx @modelcontextprotocol/server-filesystem /tmp',
-  },
-] as const
-
-const SDK_QUICKSTART_STEPS = [
-  {
-    step: '1',
-    title: 'Install the SDK',
-    code: 'npm install multicorn-shield',
-  },
-  {
-    step: '2',
-    title: 'Get your API key',
-    code: `# Sign up at app.multicorn.ai, then create a key in Settings
-export MULTICORN_API_KEY=mcs_your_key_here`,
-  },
-  {
-    step: '3',
-    title: 'Initialize Shield',
-    code: `import { MulticornShield } from "multicorn-shield";
-
-const shield = new MulticornShield({
-  apiKey: process.env.MULTICORN_API_KEY,
-});`,
-  },
-  {
-    step: '4',
-    title: 'Request consent from users',
-    code: `const decision = await shield.requestConsent({
-  agent: "OpenClaw",
-  scopes: ["read:gmail", "write:calendar"],
-  spendLimit: 200,
-});
-
-// decision.grantedScopes - what the user approved`,
-  },
-] as const
 
 export default function ShieldPage() {
   return (
@@ -400,87 +351,6 @@ export default function ShieldPage() {
           </div>
         </section>
 
-        {/* Quickstart */}
-        <section className="bg-surface-secondary px-6 py-14 sm:py-28">
-          <div className="mx-auto max-w-content">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
-                Up and running in minutes
-              </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-lg text-text-secondary">
-                Two paths to start controlling your AI agents. Pick the one that fits your setup.
-              </p>
-            </div>
-
-            <div className="mt-16">
-              <QuickstartTabs
-                paths={[
-                  {
-                    id: 'proxy',
-                    label: 'Wrap your agents (no code changes)',
-                    description:
-                      'Already using an MCP server with Claude Code, OpenClaw, or another agent? Add Shield as a proxy in front of it.',
-                    steps: PROXY_QUICKSTART_STEPS.map((s) => ({
-                      ...s,
-                      language: 'Terminal',
-                    })),
-                    note: 'Prefer a config file? Run npx multicorn-proxy init and pick "Local MCP / Other".',
-                    noteHref: '/docs/mcp-proxy',
-                    noteLinkText: 'Full MCP proxy guide',
-                  },
-                  {
-                    id: 'sdk',
-                    label: 'Integrate the SDK',
-                    description:
-                      'For full control over consent screens, spending limits, and action logging in your application code.',
-                    steps: SDK_QUICKSTART_STEPS.map((s) => ({
-                      ...s,
-                      language: s.step <= '2' ? 'Terminal' : 'JavaScript',
-                    })),
-                  },
-                ]}
-              />
-            </div>
-
-            <div className="mt-12 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <a
-                href="https://github.com/Multicorn-AI/multicorn-shield"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-semibold text-text-primary transition-colors hover:bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="h-5 w-5"
-                  aria-hidden="true"
-                >
-                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
-                </svg>
-                GitHub
-              </a>
-              <a
-                href="https://www.npmjs.com/package/multicorn-shield"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-semibold text-text-primary transition-colors hover:bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="h-5 w-5 text-red"
-                  aria-hidden="true"
-                >
-                  <path d="M0 7.334v8h6.666v1.332H12v-1.332h12v-8H0zm6.666 6.664H5.334v-4H3.999v4H1.335V8.667h5.331v5.331zm4 0h-2.666V8.667h2.666v5.331zm12 0h-2.666v-4h-1.334v4h-1.335v-4h-1.333v4h-2.666V8.667H22.666v5.331zM11.333 8.667h1.334v4h-1.334v-4z" />
-                </svg>
-                npm
-              </a>
-            </div>
-          </div>
-        </section>
-
         {/* Proxy Demo */}
         <section className="px-6 py-14 sm:py-28">
           <div className="mx-auto max-w-content">
@@ -499,29 +369,30 @@ export default function ShieldPage() {
                 <span className="h-3 w-3 rounded-full bg-green/60" aria-hidden="true" />
                 <span className="ml-2 text-xs text-text-tertiary">Terminal</span>
               </div>
-              <div className="bg-[#1a1a2e] px-6 py-8 font-mono text-sm leading-relaxed text-green">
+              <div className="bg-[#1a1a2e] px-6 py-8 font-mono text-sm leading-relaxed">
                 <p className="text-text-tertiary">
                   $ npx multicorn-proxy --wrap npx @modelcontextprotocol/server-filesystem /tmp
                 </p>
+                <p className="mt-3 text-[#8888a0]">Proxy starting agent=filesystem command=npx</p>
+                <p className="text-[#8888a0]">Agent resolved agent=filesystem scopes=3</p>
+                <p className="text-green">Proxy ready agent=filesystem</p>
                 <p className="mt-3 text-[#8888a0]">
-                  [multicorn-proxy] Proxy starting. agent=filesystem
+                  Extracted tool identity tool=filesystem_read_file service=filesystem
                 </p>
                 <p className="text-[#8888a0]">
-                  [multicorn-proxy] Agent resolved. agent=filesystem scopes=3
-                </p>
-                <p className="text-green">[multicorn-proxy] Proxy ready. agent=filesystem</p>
-                <p className="mt-3 text-[#8888a0]">
-                  [multicorn-proxy] Tool call intercepted. tool=filesystem_read_file allowed=true
+                  Scope validation result service=filesystem action=read_file allowed=true
                 </p>
                 <p className="text-green">
-                  [multicorn-proxy] Action logged. service=filesystem action=read_file
-                  status=approved
+                  Approved action logged service=filesystem action=read_file
                 </p>
                 <p className="mt-3 text-[#8888a0]">
-                  [multicorn-proxy] Tool call intercepted. tool=gmail_send_email allowed=false
+                  Extracted tool identity tool=gmail_send_email service=gmail
+                </p>
+                <p className="text-[#8888a0]">
+                  Scope validation result service=gmail action=send_email allowed=false
                 </p>
                 <p className="text-red">
-                  [multicorn-proxy] Action blocked. service=gmail reason=no execute access
+                  Action blocked service=gmail reason=no execute permission
                 </p>
                 <p className="mt-4 animate-pulse text-text-tertiary">█</p>
               </div>
