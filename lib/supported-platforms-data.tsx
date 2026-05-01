@@ -6,7 +6,6 @@ import {
   Puzzle,
   Sparkles,
   SquareTerminal,
-  Terminal,
   Wind,
 } from 'lucide-react'
 
@@ -71,10 +70,11 @@ export const SUPPORTED_PLATFORMS = [
   },
   {
     name: 'Gemini CLI',
-    badge: 'Coming soon',
-    description: "Google's command-line AI agent. Shield support coming soon.",
-    icon: Terminal,
-    comingSoon: true,
+    badge: 'Native plugin',
+    description:
+      "Google's open-source terminal agent. Shield hooks into Gemini CLI's BeforeTool/AfterTool system.",
+    icon: Sparkles,
+    comingSoon: false,
   },
 ] as const
 
