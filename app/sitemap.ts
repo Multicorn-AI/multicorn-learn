@@ -201,6 +201,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: `${BASE_URL}/blog/microsoft-agent-governance-toolkit-who-else-showed-up`,
+      lastModified: new Date('2026-05-02'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
       url: `${BASE_URL}/learn/course-2/cursor`,
       lastModified: new Date('2026-04-17'),
       changeFrequency: 'monthly',

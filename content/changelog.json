@@ -1,5 +1,45 @@
 [
   {
+    "version": "0.13.0",
+    "date": "2026-05-02",
+    "added": [
+      "Gemini CLI native plugin: BeforeTool/AfterTool hook scripts for full governance",
+      "Gemini CLI hosted proxy support with httpUrl config field",
+      "CLI wizard: Gemini CLI platform with native plugin and hosted proxy integration modes",
+      "CLI wizard: platform prerequisite detection (warns if target platform is not installed)"
+    ],
+    "changed": [],
+    "fixed": [],
+    "security": []
+  },
+  {
+    "version": "0.12.0",
+    "date": "2026-05-01",
+    "added": [
+      "Cline native plugin support via PreToolUse/PostToolUse hooks",
+      "Hook scripts for Cline: pre-tool-use.cjs, post-tool-use.cjs, shared.cjs",
+      "Cline plugin README with setup instructions and troubleshooting",
+      "Browser auto-open for consent screen when Shield blocks an action",
+      "Licence headers on all plugin scripts"
+    ],
+    "changed": [
+      "CLI wizard installs Cline hooks to ~/Documents/Cline/Hooks/ (previously ~/Documents/Cline/Rules/Hooks/)",
+      "Cline hook reads toolName field from hook input (Cline v3.81+ sends toolName, not tool)",
+      "Consent flow no longer polls for approval (blocks immediately with consent URL to avoid Cline's 30-second hook timeout)",
+      "Extracted shared utilities (config loading, HTTP, tool mapping) into shared.cjs to eliminate duplication between hooks",
+      "Parameter metadata scrubbed before sending to Shield API (file contents redacted, commands truncated)",
+      "HTTPS enforced for non-local Shield API connections",
+      "Removed polling-based consent approval flow (replaced with immediate block + consent URL)",
+      "Removed consent marker filesystem state (no longer needed without polling)"
+    ],
+    "fixed": [],
+    "security": [
+      "Fixed Windows shell injection in openBrowser (replaced execSync with execFileSync)",
+      "Added HTTPS enforcement for non-localhost baseUrl in hook config",
+      "Added parameter and result scrubbing to prevent sensitive data leakage in audit metadata"
+    ]
+  },
+  {
     "version": "0.11.0",
     "date": "2026-04-25",
     "added": [
