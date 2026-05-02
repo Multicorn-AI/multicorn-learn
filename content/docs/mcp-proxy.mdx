@@ -9,7 +9,7 @@ order: 2
 The Multicorn proxy sits between your AI agent and its MCP server on the stdio transport. Every tool call passes through Shield's permission layer before reaching the server. Blocked calls are rejected immediately. Approved calls are logged to your dashboard in real time.
 
 ```
-Agent  →  multicorn-proxy  →  MCP server
+Agent  →  multicorn-shield  →  MCP server
               │
               └── checks permissions
               └── logs activity
@@ -29,7 +29,7 @@ npm install -g multicorn-shield
 ### Step 2: Set up your API key
 
 ```bash
-npx multicorn-proxy init
+npx multicorn-shield init
 ```
 
 This prompts for your API key (starts with `mcs_`). Get one at [app.multicorn.ai/settings#api-keys](https://app.multicorn.ai/settings#api-keys). The key is saved to `~/.multicorn/config.json`.
@@ -37,13 +37,13 @@ This prompts for your API key (starts with `mcs_`). Get one at [app.multicorn.ai
 ### Step 3: Wrap your MCP server
 
 ```bash
-npx multicorn-proxy --wrap <your-mcp-server-command>
+npx multicorn-shield --wrap <your-mcp-server-command>
 ```
 
 For example:
 
 ```bash
-npx multicorn-proxy --wrap npx @modelcontextprotocol/server-filesystem /tmp
+npx multicorn-shield --wrap npx @modelcontextprotocol/server-filesystem /tmp
 ```
 
 That's it. Open your [Multicorn dashboard](https://app.multicorn.ai) to see agent activity in real time.
@@ -69,7 +69,7 @@ Your existing config points directly to the MCP server:
 
 ### Claude Code after
 
-Wrap the command with `multicorn-proxy --wrap`. The original command and arguments move into the proxy's arguments:
+Wrap the command with `multicorn-shield --wrap`. The original command and arguments move into the proxy's arguments:
 
 ```json
 {
@@ -77,7 +77,7 @@ Wrap the command with `multicorn-proxy --wrap`. The original command and argumen
     "filesystem": {
       "command": "npx",
       "args": [
-        "multicorn-proxy",
+        "multicorn-shield",
         "--wrap",
         "npx",
         "@modelcontextprotocol/server-filesystem",
@@ -98,7 +98,7 @@ To set a custom name for the agent in the dashboard, add `--agent-name` before `
     "filesystem": {
       "command": "npx",
       "args": [
-        "multicorn-proxy",
+        "multicorn-shield",
         "--agent-name",
         "claude-filesystem",
         "--wrap",
@@ -135,7 +135,7 @@ OpenClaw uses a similar JSON configuration for MCP servers. The same wrapping pa
   "mcpServers": {
     "github": {
       "command": "npx",
-      "args": ["multicorn-proxy", "--wrap", "npx", "@modelcontextprotocol/server-github"]
+      "args": ["multicorn-shield", "--wrap", "npx", "@modelcontextprotocol/server-github"]
     }
   }
 }
@@ -145,7 +145,7 @@ If OpenClaw uses environment variables for configuration, those still work. The 
 
 ## Generic MCP client
 
-If your MCP client starts a server via a shell command on the stdio transport, you can wrap it with `multicorn-proxy`. The pattern is always the same:
+If your MCP client starts a server via a shell command on the stdio transport, you can wrap it with `multicorn-shield`. The pattern is always the same:
 
 **Original command:**
 
@@ -156,7 +156,7 @@ my-mcp-server --port 3000 --data /var/data
 **Wrapped command:**
 
 ```bash
-npx multicorn-proxy --wrap my-mcp-server --port 3000 --data /var/data
+npx multicorn-shield --wrap my-mcp-server --port 3000 --data /var/data
 ```
 
 Everything after `--wrap` is forwarded to the child process as-is.
@@ -179,7 +179,7 @@ If your client uses a JSON config, replace the `command` and `args` fields:
 ```json
 {
   "command": "npx",
-  "args": ["multicorn-proxy", "--wrap", "my-mcp-server", "--port", "3000", "--data", "/var/data"]
+  "args": ["multicorn-shield", "--wrap", "my-mcp-server", "--port", "3000", "--data", "/var/data"]
 }
 ```
 
@@ -204,7 +204,7 @@ If your client uses a JSON config, replace the `command` and `args` fields:
 
 The API key is invalid or has been revoked.
 
-**Fix:** Run `npx multicorn-proxy init` and enter a valid key from [app.multicorn.ai/settings#api-keys](https://app.multicorn.ai/settings#api-keys). Keys start with `mcs_` and must be at least 16 characters.
+**Fix:** Run `npx multicorn-shield init` and enter a valid key from [app.multicorn.ai/settings#api-keys](https://app.multicorn.ai/settings#api-keys). Keys start with `mcs_` and must be at least 16 characters.
 
 ### Agent not appearing in dashboard
 
@@ -213,7 +213,7 @@ The proxy could not reach the Multicorn service, or the agent name does not matc
 **Fix:**
 
 - Check your network connection to `api.multicorn.ai`.
-- Use `--agent-name` to set a specific name: `npx multicorn-proxy --agent-name my-agent --wrap <command>`.
+- Use `--agent-name` to set a specific name: `npx multicorn-shield --agent-name my-agent --wrap <command>`.
 - Run with `--log-level debug` to see detailed output about agent registration.
 
 ### Tool calls timing out
@@ -230,7 +230,7 @@ The wrapped MCP server is not responding, or there is a network issue between th
 
 The proxy has not been initialised yet.
 
-**Fix:** Run `npx multicorn-proxy init` to create the config file at `~/.multicorn/config.json`.
+**Fix:** Run `npx multicorn-shield init` to create the config file at `~/.multicorn/config.json`.
 
 ### Permissions not taking effect
 
