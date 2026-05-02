@@ -97,7 +97,7 @@ openclaw plugins list
 Run the Shield setup command:
 
 ```bash
-npx multicorn-proxy init
+npx multicorn-shield init
 ```
 
 It will ask for your API key (the one you copied from the dashboard) and save it to `~/.multicorn/config.json`. The plugin reads this file automatically on every tool call.
@@ -108,7 +108,7 @@ Restart the gateway to pick up the new config:
 openclaw gateway restart
 ```
 
-**Manual configuration:** You can also set the API key by editing `~/.openclaw/openclaw.json` and adding `hooks.internal.entries.multicorn-shield.env` with `MULTICORN_API_KEY` and `MULTICORN_BASE_URL`. The plugin reads from both locations, but `npx multicorn-proxy init` is the recommended path.
+**Manual configuration:** You can also set the API key by editing `~/.openclaw/openclaw.json` and adding `hooks.internal.entries.multicorn-shield.env` with `MULTICORN_API_KEY` and `MULTICORN_BASE_URL`. The plugin reads from both locations, but `npx multicorn-shield init` is the recommended path.
 
 ## Step 4: Run your agent
 

@@ -371,7 +371,7 @@ export default function ShieldPage() {
               </div>
               <div className="bg-[#1a1a2e] px-6 py-8 font-mono text-sm leading-relaxed">
                 <p className="text-[#8888a0]">
-                  $ npx multicorn-proxy --wrap npx @modelcontextprotocol/server-filesystem /tmp
+                  $ npx multicorn-shield --wrap npx @modelcontextprotocol/server-filesystem /tmp
                 </p>
                 <p className="mt-3 text-[#8888a0]">Proxy starting agent=filesystem command=npx</p>
                 <p className="text-[#8888a0]">Agent resolved agent=filesystem scopes=3</p>

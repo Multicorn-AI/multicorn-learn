@@ -63,10 +63,10 @@ const PROXY_STEPS: readonly FlowStep[] = [
   {
     title: 'Wrap your MCP server',
     description: 'Point Shield at your existing MCP server. No code changes needed.',
-    code: `MULTICORN_API_KEY=mcs_your_key_here npx multicorn-proxy --wrap \\
+    code: `MULTICORN_API_KEY=mcs_your_key_here npx multicorn-shield --wrap \\
   npx @modelcontextprotocol/server-filesystem /tmp`,
     codeLanguage: 'Terminal',
-    note: 'Get your API key at app.multicorn.ai/settings#api-keys. Prefer a config file? Run npx multicorn-proxy init and pick "Local MCP / Other".',
+    note: 'Get your API key at app.multicorn.ai/settings#api-keys. Prefer a config file? Run npx multicorn-shield init and pick "Local MCP / Other".',
   },
   {
     title: 'Agent runs normally',
