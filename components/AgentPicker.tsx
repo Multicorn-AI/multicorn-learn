@@ -35,6 +35,7 @@ function recommendedPlatform(
   if (editor === 'Cursor') return pickPlatform('Cursor')
   if (editor === 'Terminal / CLI') {
     if (technical === 'I write code daily') return pickPlatform('OpenClaw')
+    if (technical === 'I can follow a tutorial') return pickPlatform('Gemini CLI')
     return pickPlatform('Claude Code')
   }
   if (editor === 'VS Code') {

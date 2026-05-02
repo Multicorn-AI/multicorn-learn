@@ -6,7 +6,6 @@ import {
   Puzzle,
   Sparkles,
   SquareTerminal,
-  Terminal,
   Wind,
 } from 'lucide-react'
 
@@ -27,25 +26,34 @@ export const SUPPORTED_PLATFORMS = [
     comingSoon: false,
   },
   {
-    name: 'Cursor',
-    badge: 'Hosted proxy',
-    description: 'AI-powered code editor. Shield wraps your MCP server through the hosted proxy.',
-    icon: Code2,
-    comingSoon: false,
-  },
-  {
     name: 'Windsurf',
-    badge: 'Hosted proxy',
+    badge: 'Native plugin',
     description:
-      "Codeium's AI editor. Connect through Shield's hosted proxy - no code changes needed.",
+      'AI-powered code editor. Shield hooks into Cascade Hooks for full governance. Hosted proxy also available.',
     icon: Wind,
     comingSoon: false,
   },
   {
     name: 'Cline',
-    badge: 'Hosted proxy',
-    description: "VS Code extension for autonomous coding. Routes through Shield's hosted proxy.",
+    badge: 'Native plugin',
+    description:
+      'VS Code extension for autonomous coding. Shield connects via native Cline Hooks. Hosted proxy also available.',
     icon: SquareTerminal,
+    comingSoon: false,
+  },
+  {
+    name: 'Gemini CLI',
+    badge: 'Native plugin',
+    description:
+      "Google's open-source terminal agent. Shield hooks into Gemini CLI's BeforeTool/AfterTool system.",
+    icon: Sparkles,
+    comingSoon: false,
+  },
+  {
+    name: 'Cursor',
+    badge: 'Hosted proxy',
+    description: 'AI-powered code editor. Shield wraps your MCP server through the hosted proxy.',
+    icon: Code2,
     comingSoon: false,
   },
   {
@@ -67,13 +75,6 @@ export const SUPPORTED_PLATFORMS = [
     badge: 'Coming soon',
     description: "Block's open-source AI agent. Shield support coming soon.",
     icon: Bird,
-    comingSoon: true,
-  },
-  {
-    name: 'Gemini CLI',
-    badge: 'Coming soon',
-    description: "Google's command-line AI agent. Shield support coming soon.",
-    icon: Terminal,
     comingSoon: true,
   },
 ] as const
