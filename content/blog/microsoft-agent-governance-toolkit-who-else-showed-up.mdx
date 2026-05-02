@@ -1,0 +1,106 @@
+---
+title: 'Microsoft just mass-produced agent governance. Here is who else showed up.'
+description: 'Microsoft shipped a seven-package agent governance toolkit under MIT licence. It is the biggest entry into the space so far, but it is not the only one. A look at who is building what, and what is still missing.'
+publishedAt: '2026-05-02'
+author: 'Rachelle Rathbone'
+tags: ['agents', 'governance', 'comparison', 'shield', 'microsoft']
+draft: false
+---
+
+On 2 April 2026, Microsoft open-sourced the <a href="https://github.com/microsoft/agent-governance-toolkit" rel="noopener noreferrer" target="_blank">Agent Governance Toolkit</a> (AGT): seven packages, five languages, 9,500 tests, sub-millisecond policy enforcement, and coverage mapped to all ten items on the OWASP Agentic AI Top 10. It is the most comprehensive open-source entry into agent governance to date, and it landed with a regulatory deadline attached. The EU AI Act's high-risk obligations take effect in August. Colorado's AI Act becomes enforceable in June. The timing was not subtle.
+
+Microsoft's release is worth understanding not because it is the only option, but because it draws a clear line between "we should probably think about agent governance" and "here is production-grade infrastructure to do it." That shift changes the conversation for everyone building in this space.
+
+This post is a look at the tools that exist today, what each one does well, and where the gaps still are.
+
+## What Microsoft built
+
+AGT is structured as a monorepo with independently installable packages. The core is Agent OS, a stateless policy engine that intercepts every agent action before execution. Policies are written in YAML, OPA/Rego, or Cedar. Evaluation runs at sub-millisecond latency, so governance sits in the execution path without meaningful overhead.
+
+Around that core, the toolkit provides cryptographic agent identity (Ed25519 signing with SPIFFE/SVID support), execution sandboxing with five permission levels, a reliability engineering package with circuit breakers and SLO tracking, automated compliance grading against the OWASP Agentic Top 10 and regulatory frameworks (EU AI Act, HIPAA, SOC 2), and a marketplace governance layer for plugin lifecycle management.
+
+The integration story is broad. Adapters ship for LangChain, CrewAI, Google ADK, OpenAI Agents SDK, Haystack, LangGraph, PydanticAI, Dify, and LlamaIndex. The TypeScript SDK is on npm. The .NET SDK is on NuGet. Rust and Go packages round out the language coverage.
+
+It is a lot. And it is built for a specific user: the platform engineer or SRE who already thinks in terms of policy-as-code, mTLS, and observability pipelines. Microsoft's own framing makes this explicit. Their architecture blog post compares AGT to an operating system kernel, a service mesh, and an SRE platform. If those metaphors land naturally for you, AGT is probably the right tool.
+
+If they do not, you are not the only one.
+
+## Who else is building
+
+Microsoft is not working in isolation. Several other tools have appeared in the past few months, each approaching agent governance from a different angle.
+
+### Asqav
+
+<a href="https://github.com/jagmarques/asqav-sdk" rel="noopener noreferrer" target="_blank">
+  Asqav
+</a>
+is a Python SDK focused on cryptographic audit trails. Every agent action gets signed with
+ML-DSA-65, a quantum-safe signature algorithm standardised under FIPS 204, and hash-chained to the
+previous entry. If someone tampers with an entry or tries to omit one, the chain breaks and
+verification fails.
+
+The scope is deliberately narrow compared to AGT. Asqav does not include a policy engine, execution sandboxing, or framework adapters beyond its five supported frameworks (LangChain, CrewAI, OpenAI Agents, Haystack, LiteLLM). What it does is produce audit records that will remain cryptographically verifiable even against quantum computing attacks. For teams whose primary governance concern is provable compliance evidence, particularly under the EU AI Act's Article 12 requirements for tamper-evident logging, that focus is the point.
+
+An MCP server is available for Claude Desktop and Cursor. MIT licensed.
+
+### Agentgateway
+
+<a href="https://agentgateway.dev/" rel="noopener noreferrer" target="_blank">
+  Agentgateway
+</a>
+is a Linux Foundation project that operates as an agentic proxy. Written in Rust, it sits between
+agents and everything they talk to: LLMs, tools (via MCP), and other agents (via A2A). Traffic
+routing, spend controls, RBAC, JWT authentication, and OpenTelemetry instrumentation are built in.
+
+The positioning is different from AGT. Where AGT is application-level middleware that lives inside your agent's process, agentgateway is infrastructure-level. It is closer to an API gateway that happens to understand AI-native protocols. For teams already running Kong or Envoy for their API traffic, the mental model translates directly.
+
+### MintMCP
+
+<a href="https://www.mintmcp.com/" rel="noopener noreferrer" target="_blank">
+  MintMCP
+</a>
+is a commercial platform focused specifically on MCP server governance. One-click deployment of MCP
+servers with OAuth/SSO, real-time tracing of every tool call, and centralised credential management.
+It holds SOC 2 Type II certification. Coursera and Harvey AI are among its early adopters.
+
+MintMCP fills a specific niche: teams deploying MCP servers at scale who need governance around tool access without building it themselves. It is not open source and it is not framework-agnostic in the way AGT is. Its value is in speed to production for a specific deployment pattern.
+
+### Guardrails AI and NeMo Guardrails
+
+These two predate the current wave and approach governance from the output validation side. <a href="https://github.com/guardrails-ai/guardrails" rel="noopener noreferrer" target="_blank">Guardrails AI</a> focuses on structural guarantees for LLM responses: type validation, format enforcement, and a community hub of validators. NVIDIA's <a href="https://github.com/NVIDIA/NeMo-Guardrails" rel="noopener noreferrer" target="_blank">NeMo Guardrails</a> uses a custom DSL called Colang for conversation rails, topic control, and safety filters.
+
+Both are useful but address a different layer. They validate what comes out of a model. The newer tools (AGT, Asqav, agentgateway, Shield) govern what an agent does with that output: which tools it calls, what data it accesses, whether a human needs to approve before execution.
+
+### Multicorn Shield
+
+[Shield](https://multicorn.ai/shield) takes a different approach. Instead of providing a policy engine that developers wire into their agent code, Shield operates as a proxy layer between the agent and the tools it calls. Install the [SDK](https://www.npmjs.com/package/multicorn-shield), point your agent's traffic through Shield, and every tool call is logged, evaluated, and optionally gated before it executes. Seven agent platforms are supported today, including Cursor, Claude Code, Windsurf, Claude Desktop, and Cline.
+
+The piece that no other tool in this list provides is the consent screen. When an agent is first connected, the end user sees exactly which permission scopes the agent is requesting and can approve or deny each one individually before the agent acts. This is not a policy file or a YAML configuration. It is a UI that a person interacts with. If an agent is going to act on your behalf, you should see what it is asking for and have the option to say no.
+
+The audit trail is append-only with SHA-256 hash chains, similar in principle to Asqav's approach but integrated into the hosted platform rather than existing as a standalone SDK. Spending controls, teams with role-based access, and an enterprise content review queue round out the feature set. The SDK is open source. The platform is free to start at [app.multicorn.ai](https://app.multicorn.ai).
+
+## Where the gaps still are
+
+All of these tools solve real problems. None of them solve all of them. A few observations about what is still missing from the space as a whole.
+
+**Every tool still starts with a developer.** AGT, Asqav, agentgateway, and Shield all require a developer to install, configure, and connect. This is normal for infrastructure tooling at this stage, but it creates a bottleneck. The person who cares about governance (a team lead, a compliance officer, a founder) cannot set it up without involving engineering. As agent deployment moves further into non-technical teams through no-code platforms and AI assistants, the setup path will need to meet them where they are. Nobody has fully solved this yet.
+
+**Consent is an afterthought.** Most tools focus on what happens after an agent is deployed: policy enforcement, audit logging, compliance evidence. Very few address what happens before the agent acts. Does the end user understand what permissions the agent has? Can they see what it is about to do and say no? As agents start acting on behalf of users across email, calendar, file systems, and communication tools, the consent interaction becomes a trust-critical moment. Shield's consent screen is the only implementation of this pattern in the current tooling, but it should not be.
+
+**The compliance story is fragmented.** Every tool maps to different regulatory frameworks in different ways. AGT maps to OWASP, EU AI Act, HIPAA, and SOC 2. Asqav focuses on EU AI Act Article 12. Others do not map to specific regulations at all. As compliance requirements become enforceable this year, teams will need clear evidence of which controls they have in place. A single pip install is not compliance. Neither is a single dashboard. The evidence chain from policy to enforcement to audit record needs to be legible to a regulator, not just to a developer.
+
+**Self-hosted governance is a tax.** AGT is powerful but self-hosted. Agentgateway requires infrastructure. Asqav is an SDK you integrate and a service you call. For teams that want governance without also wanting to run governance infrastructure, the options are limited. This mirrors the early days of error tracking and observability, where Sentry and Datadog eventually won by removing the operational burden. MintMCP and Shield are the only hosted platforms in this list, each focused on a different deployment model.
+
+## What this means
+
+Microsoft entering the space does three things.
+
+First, it validates the category. When a company with Microsoft's reach publishes an MIT-licensed governance toolkit, it signals that agent governance is not a niche concern. It is infrastructure. Teams evaluating whether to invest in governance tooling no longer need to justify the category itself.
+
+Second, it raises the floor. The quality bar for any governance tool just increased. 9,500 tests. Five-language support. 20 framework adapters. Compliance automation. These are not weekend projects. Anyone building in this space needs to be clear about what they offer that this does not.
+
+Third, it clarifies where the real competition is. AGT solves governance for teams that already have platform engineering functions. It does not solve governance for the growing number of teams deploying agents through coding tools like Cursor and Claude Code, where a single developer is shipping with AI assistance and needs guardrails without building a policy engine. That segment is growing faster than the enterprise segment, and it is where the tools that complement AGT (rather than compete with it) will find their users.
+
+The regulatory deadlines this year will force the question for everyone deploying agents in production. The good news is that the tooling exists. The question is which combination fits your team, your deployment model, and your tolerance for running infrastructure you did not sign up for.
+
+> Shield is an open-source SDK and hosted platform for AI agent governance. Install the SDK from [npm](https://www.npmjs.com/package/multicorn-shield), or try the dashboard at [app.multicorn.ai](https://app.multicorn.ai). If you are building with Cursor, Claude Code, Windsurf, or any MCP-compatible agent and want permissions, audit trails, and spending controls without running your own policy engine, [start here](https://multicorn.ai/shield).

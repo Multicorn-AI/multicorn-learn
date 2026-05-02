@@ -1,6 +1,48 @@
 import type { Release } from '@/lib/changelog'
 import { CHANGE_CATEGORIES } from '@/lib/changelog'
 
+/** Renders changelog lines: text in `backticks` becomes inline code (backticks are not shown). */
+function ChangelogLine({ text }: { readonly text: string }) {
+  const segments: Array<{ readonly type: 'text' | 'code'; readonly value: string }> = []
+  const re = /`([^`]+)`/g
+  let last = 0
+  let m: RegExpExecArray | null
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) {
+      segments.push({ type: 'text', value: text.slice(last, m.index) })
+    }
+    const inner = m[1]
+    if (inner !== undefined) {
+      segments.push({ type: 'code', value: inner })
+    }
+    last = m.index + m[0].length
+  }
+  if (last < text.length) {
+    segments.push({ type: 'text', value: text.slice(last) })
+  }
+
+  if (segments.length === 0) {
+    return text
+  }
+
+  return (
+    <>
+      {segments.map((seg, i) =>
+        seg.type === 'code' ? (
+          <code
+            key={i}
+            className="rounded bg-surface-tertiary px-1.5 py-0.5 font-mono text-[0.9em] font-normal text-text-primary [box-decoration-break:clone]"
+          >
+            {seg.value}
+          </code>
+        ) : (
+          <span key={i}>{seg.value}</span>
+        ),
+      )}
+    </>
+  )
+}
+
 function formatDate(dateString: string): string {
   return new Date(dateString).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -47,7 +89,9 @@ export function ChangelogEntry({ release }: { readonly release: Release }) {
                     aria-hidden="true"
                     className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-text-tertiary"
                   />
-                  {change}
+                  <span className="min-w-0">
+                    <ChangelogLine text={change} />
+                  </span>
                 </li>
               ))}
             </ul>

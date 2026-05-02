@@ -135,7 +135,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           />
         </div>
 
-        <section className="mt-16 border-t border-border pt-10">
+        <section className="mt-10 border-t border-border pt-8">
           <h2 className="mb-2 text-lg font-semibold text-text-primary">
             Stay up to date with Multicorn
           </h2>
