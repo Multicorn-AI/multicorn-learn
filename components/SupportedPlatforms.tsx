@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { ChevronDown } from 'lucide-react'
 import { AgentPicker } from '@/components/AgentPicker'
@@ -8,8 +8,19 @@ import { SUPPORTED_PLATFORMS, supportedPlatformBadgeClass } from '@/lib/supporte
 
 const CARD_SURFACE = 'rounded-card border border-border bg-surface-secondary p-5 text-left'
 
+const EXPANDABLE_INTERACTIVE = `${CARD_SURFACE} w-full min-w-0 cursor-pointer outline-none transition-colors duration-200 hover:bg-surface-tertiary focus-visible:ring-2 focus-visible:ring-shield/30 focus-visible:ring-offset-2`
+
+const EXPANDABLE_STATIC = `${CARD_SURFACE} w-full min-w-0`
+
+const COMING_SOON_INTERACTIVE = `${CARD_SURFACE} w-full min-w-0 cursor-not-allowed border-dashed opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-shield/30`
+
+const COMING_SOON_STATIC = `${CARD_SURFACE} w-full min-w-0 border-dashed opacity-50`
+
 export function SupportedPlatforms() {
+  const [mounted, setMounted] = useState(false)
   const [expandedName, setExpandedName] = useState<string | null>(null)
+
+  useEffect(() => setMounted(true), [])
 
   const toggleCard = useCallback((name: string) => {
     setExpandedName((prev) => (prev === name ? null : name))
@@ -31,18 +42,8 @@ export function SupportedPlatforms() {
             const isExpanded = expandedName === platform.name
 
             if (platform.comingSoon) {
-              return (
-                <button
-                  key={platform.name}
-                  type="button"
-                  aria-disabled="true"
-                  aria-label={`${platform.name}. Coming soon. Not selectable yet.`}
-                  onClick={(e) => e.preventDefault()}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') e.preventDefault()
-                  }}
-                  className={`${CARD_SURFACE} w-full min-w-0 cursor-not-allowed border-dashed opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-shield/30`}
-                >
+              const inner = (
+                <>
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex min-w-0 flex-1 items-center gap-3">
                       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-shield/10">
@@ -64,19 +65,32 @@ export function SupportedPlatforms() {
                   <p className="mt-2 text-xs leading-relaxed text-text-secondary">
                     {platform.description}
                   </p>
+                </>
+              )
+
+              return mounted ? (
+                <button
+                  key={platform.name}
+                  type="button"
+                  aria-disabled="true"
+                  aria-label={`${platform.name}. Coming soon. Not selectable yet.`}
+                  onClick={(e) => e.preventDefault()}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') e.preventDefault()
+                  }}
+                  className={COMING_SOON_INTERACTIVE}
+                >
+                  {inner}
                 </button>
+              ) : (
+                <div key={platform.name} className={COMING_SOON_STATIC} role="presentation">
+                  {inner}
+                </div>
               )
             }
 
-            return (
-              <button
-                key={platform.name}
-                type="button"
-                aria-expanded={isExpanded}
-                aria-label={`${platform.name} - click to ${isExpanded ? 'collapse' : 'expand'} details`}
-                onClick={() => toggleCard(platform.name)}
-                className={`${CARD_SURFACE} w-full min-w-0 cursor-pointer outline-none transition-colors duration-200 hover:bg-surface-tertiary focus-visible:ring-2 focus-visible:ring-shield/30 focus-visible:ring-offset-2`}
-              >
+            const inner = (
+              <>
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex min-w-0 flex-1 items-center gap-3">
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-shield/10">
@@ -109,7 +123,24 @@ export function SupportedPlatforms() {
                     </p>
                   </div>
                 </div>
+              </>
+            )
+
+            return mounted ? (
+              <button
+                key={platform.name}
+                type="button"
+                aria-expanded={isExpanded}
+                aria-label={`${platform.name} - click to ${isExpanded ? 'collapse' : 'expand'} details`}
+                onClick={() => toggleCard(platform.name)}
+                className={EXPANDABLE_INTERACTIVE}
+              >
+                {inner}
               </button>
+            ) : (
+              <div key={platform.name} className={EXPANDABLE_STATIC}>
+                {inner}
+              </div>
             )
           })}
         </div>
