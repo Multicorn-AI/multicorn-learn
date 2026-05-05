@@ -1,15 +1,34 @@
+import type { LucideIcon } from 'lucide-react'
 import {
-  ArrowRight,
   Bird,
   Code2,
   Github,
+  GitBranch,
+  Infinity as InfinityIcon,
+  Layers,
   Puzzle,
   Sparkles,
   SquareTerminal,
   Wind,
 } from 'lucide-react'
 
-export const SUPPORTED_PLATFORMS = [
+export interface SupportedPlatform {
+  readonly name: string
+  readonly badge: string
+  readonly description: string
+  readonly icon: LucideIcon
+  readonly comingSoon: boolean
+}
+
+/** Small pill matching dashboard PlatformSelect (native vs hosted proxy). */
+export function supportedPlatformBadgeClass(badge: SupportedPlatform['badge']): string {
+  if (badge === 'Native plugin') {
+    return 'rounded bg-green-dim px-2 py-0.5 text-[10px] font-medium leading-tight text-green/80'
+  }
+  return 'rounded bg-cyan-dim px-2 py-0.5 text-[10px] font-medium leading-tight text-cyan'
+}
+
+export const SUPPORTED_PLATFORMS: readonly SupportedPlatform[] = [
   {
     name: 'OpenClaw',
     badge: 'Native plugin',
@@ -57,36 +76,57 @@ export const SUPPORTED_PLATFORMS = [
     comingSoon: false,
   },
   {
+    name: 'Claude Desktop',
+    badge: 'Hosted proxy',
+    description: 'Claude Desktop connects to Shield via hosted proxy. Governs MCP tool calls.',
+    icon: Sparkles,
+    comingSoon: false,
+  },
+  {
+    name: 'Kilo Code',
+    badge: 'Hosted proxy',
+    description: 'IDE extension. Shield wraps MCP through the hosted proxy.',
+    icon: Layers,
+    comingSoon: false,
+  },
+  {
     name: 'GitHub Copilot',
-    badge: 'Coming soon',
-    description: "GitHub's AI pair programmer. Shield support coming soon.",
+    badge: 'Hosted proxy',
+    description:
+      "GitHub's AI pair programmer. Shield governs MCP tools through the hosted proxy in VS Code and JetBrains.",
     icon: Github,
-    comingSoon: true,
+    comingSoon: false,
   },
   {
     name: 'Continue',
-    badge: 'Coming soon',
-    description: 'Open-source AI code assistant. Shield support coming soon.',
-    icon: ArrowRight,
-    comingSoon: true,
+    badge: 'Hosted proxy',
+    description:
+      'Open-source AI code assistant for VS Code and JetBrains. Shield governs MCP through the hosted proxy.',
+    icon: InfinityIcon,
+    comingSoon: false,
   },
   {
     name: 'Goose',
-    badge: 'Coming soon',
-    description: "Block's open-source AI agent. Shield support coming soon.",
+    badge: 'Hosted proxy',
+    description: 'Open-source AI agent from AAIF. Shield support via hosted proxy.',
     icon: Bird,
-    comingSoon: true,
+    comingSoon: false,
   },
-] as const
+  {
+    name: 'Aider',
+    badge: 'Hosted proxy',
+    description: 'Terminal-first coding agent. Shield wraps MCP through the hosted proxy.',
+    icon: GitBranch,
+    comingSoon: false,
+  },
+]
 
-export type SupportedPlatform = (typeof SUPPORTED_PLATFORMS)[number]
-export type SupportedPlatformName = SupportedPlatform['name']
+export type SupportedPlatformName = (typeof SUPPORTED_PLATFORMS)[number]['name']
 
 const claudeEntry = SUPPORTED_PLATFORMS.find((p) => p.name === 'Claude Code')
 /** Default recommendation when resolver returns no catalog row (keeps Claude Code as intended fallback). */
-export const FALLBACK_RECOMMENDATION_PLATFORM_NAME: SupportedPlatformName = claudeEntry
-  ? claudeEntry.name
-  : SUPPORTED_PLATFORMS[0].name
+export const FALLBACK_RECOMMENDATION_PLATFORM_NAME: SupportedPlatformName =
+  claudeEntry !== undefined ? claudeEntry.name : 'OpenClaw'
 
 export const PLATFORM_NAMES = SUPPORTED_PLATFORMS.map((p) => p.name)
 

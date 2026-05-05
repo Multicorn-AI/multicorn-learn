@@ -153,8 +153,8 @@ export default function ShieldThreatModelPage() {
                   picture of what the agent tried to do.
                 </p>
                 <p className="mt-3 text-sm leading-relaxed text-text-secondary">
-                  Native plugin integrations today include OpenClaw and Claude Code, with Windsurf
-                  on the roadmap. When we say &quot;full coverage&quot; on this page, we mean this
+                  Native plugin integrations today include OpenClaw, Claude Code, Windsurf, Cline,
+                  and Gemini CLI. When we say &quot;full coverage&quot; on this page, we mean this
                   path.
                 </p>
               </div>
@@ -167,10 +167,11 @@ export default function ShieldThreatModelPage() {
                   MCP never touches Shield, by design.
                 </p>
                 <p className="mt-3 text-sm leading-relaxed text-text-secondary">
-                  This is the right mental model for Cursor, Windsurf, Claude Desktop, and other
-                  clients you connect through the proxy. You get strong governance for MCP tools.
-                  You do not get visibility into built-in host capabilities that never pass through
-                  MCP.
+                  This is the right mental model for Cursor, Claude Desktop, Kilo Code, GitHub
+                  Copilot, Continue, Goose, Aider, and other clients you connect through the proxy.
+                  Windsurf also supports hosted proxy mode alongside its native plugin. You get
+                  strong governance for MCP tools. You do not get visibility into built-in host
+                  capabilities that never pass through MCP.
                 </p>
               </div>
             </div>

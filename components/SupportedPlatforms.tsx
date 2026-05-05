@@ -1,9 +1,12 @@
 'use client'
 
 import { useCallback, useState } from 'react'
+import Link from 'next/link'
 import { ChevronDown } from 'lucide-react'
 import { AgentPicker } from '@/components/AgentPicker'
-import { SUPPORTED_PLATFORMS } from '@/lib/supported-platforms-data'
+import { SUPPORTED_PLATFORMS, supportedPlatformBadgeClass } from '@/lib/supported-platforms-data'
+
+const CARD_SURFACE = 'rounded-card border border-border bg-surface-secondary p-5 text-left'
 
 export function SupportedPlatforms() {
   const [expandedName, setExpandedName] = useState<string | null>(null)
@@ -38,20 +41,26 @@ export function SupportedPlatforms() {
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') e.preventDefault()
                   }}
-                  className="w-full min-w-0 cursor-not-allowed rounded-card border border-dashed border-border bg-surface-secondary p-5 text-left opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
+                  className={`${CARD_SURFACE} w-full min-w-0 cursor-not-allowed border-dashed opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-shield/30`}
                 >
-                  <div className="flex flex-wrap items-center gap-2 gap-y-2">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-shield/10">
-                      <Icon className="h-5 w-5 text-shield" aria-hidden />
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex min-w-0 flex-1 items-center gap-3">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-shield/10">
+                        <Icon className="h-5 w-5 text-shield" aria-hidden />
+                      </div>
+                      <span className="min-w-0 text-sm font-semibold text-text-primary">
+                        {platform.name}
+                      </span>
                     </div>
-                    <span className="min-w-0 flex-1 text-sm font-semibold text-text-primary">
-                      {platform.name}
-                    </span>
-                    <span className="shrink-0 rounded-full bg-surface-secondary px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-text-secondary ring-1 ring-border">
-                      Coming soon
-                    </span>
+                    <div className="flex shrink-0 flex-col items-end gap-1">
+                      <span className={supportedPlatformBadgeClass(platform.badge)}>
+                        {platform.badge}
+                      </span>
+                      <span className="rounded-full bg-surface px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-text-secondary ring-1 ring-border">
+                        Coming soon
+                      </span>
+                    </div>
                   </div>
-                  <span className="mt-1 block text-xs text-text-tertiary">{platform.badge}</span>
                   <p className="mt-2 text-xs leading-relaxed text-text-secondary">
                     {platform.description}
                   </p>
@@ -66,25 +75,29 @@ export function SupportedPlatforms() {
                 aria-expanded={isExpanded}
                 aria-label={`${platform.name} - click to ${isExpanded ? 'collapse' : 'expand'} details`}
                 onClick={() => toggleCard(platform.name)}
-                className={`w-full min-w-0 cursor-pointer rounded-card border border-border bg-surface-secondary p-5 text-left outline-none transition-all duration-200 hover:border-shield/40 focus-visible:ring-2 focus-visible:ring-shield/30 focus-visible:ring-offset-2 ${
-                  isExpanded ? 'border-shield/40' : ''
-                }`}
+                className={`${CARD_SURFACE} w-full min-w-0 cursor-pointer outline-none transition-colors duration-200 hover:bg-surface-tertiary focus-visible:ring-2 focus-visible:ring-shield/30 focus-visible:ring-offset-2`}
               >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-shield/10">
-                    <Icon className="h-5 w-5 text-shield" aria-hidden />
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex min-w-0 flex-1 items-center gap-3">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-shield/10">
+                      <Icon className="h-5 w-5 text-shield" aria-hidden />
+                    </div>
+                    <span className="min-w-0 text-left text-sm font-semibold text-text-primary">
+                      {platform.name}
+                    </span>
                   </div>
-                  <span className="min-w-0 flex-1 text-sm font-semibold text-text-primary">
-                    {platform.name}
-                  </span>
-                  <ChevronDown
-                    className={`h-5 w-5 shrink-0 text-text-tertiary transition-transform duration-200 motion-reduce:transition-none ${
-                      isExpanded ? 'rotate-180' : ''
-                    }`}
-                    aria-hidden
-                  />
+                  <div className="flex shrink-0 items-start gap-2">
+                    <span className={supportedPlatformBadgeClass(platform.badge)}>
+                      {platform.badge}
+                    </span>
+                    <ChevronDown
+                      className={`h-5 w-5 shrink-0 text-text-tertiary transition-transform duration-200 motion-reduce:transition-none ${
+                        isExpanded ? 'rotate-180' : ''
+                      }`}
+                      aria-hidden
+                    />
+                  </div>
                 </div>
-                <span className="mt-1 block text-xs text-text-tertiary">{platform.badge}</span>
                 <div
                   className={`grid overflow-hidden transition-all duration-200 ease-out motion-reduce:transition-none ${
                     isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
@@ -102,6 +115,14 @@ export function SupportedPlatforms() {
         </div>
         <p className="mt-6 text-center text-sm text-text-tertiary">
           ...and any other compatible AI coding agent
+        </p>
+        <p className="mt-3 text-center">
+          <Link
+            href="/shield/threat-model"
+            className="text-sm font-medium text-primary underline-offset-2 hover:underline"
+          >
+            How native plugins and hosted proxy compare →
+          </Link>
         </p>
         <div className="mt-12 border-t border-border pt-12">
           <AgentPicker />

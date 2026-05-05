@@ -4,6 +4,7 @@ import { useCallback, useMemo, useState } from 'react'
 import {
   FALLBACK_RECOMMENDATION_PLATFORM_NAME,
   findSupportedPlatform,
+  supportedPlatformBadgeClass,
   type SupportedPlatform,
   type SupportedPlatformName,
 } from '@/lib/supported-platforms-data'
@@ -179,15 +180,17 @@ function ResultCard({
     <div key="result" className="motion-safe:animate-agent-picker-fade motion-reduce:animate-none">
       <div className="rounded-card border border-border bg-surface-secondary p-5 text-left">
         <p className="text-center text-sm font-medium text-text-primary">We recommend</p>
-        <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+        <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-shield/10">
             <Icon className="h-6 w-6 text-shield" aria-hidden />
           </div>
-          <p className="text-center text-lg font-semibold tracking-tight text-text-primary">
-            {platform.name}
-          </p>
+          <div className="flex flex-col items-center gap-2 sm:items-start">
+            <p className="text-center text-lg font-semibold tracking-tight text-text-primary sm:text-left">
+              {platform.name}
+            </p>
+            <span className={supportedPlatformBadgeClass(platform.badge)}>{platform.badge}</span>
+          </div>
         </div>
-        <span className="mt-2 block text-center text-xs text-text-tertiary">{platform.badge}</span>
         <p className="mt-2 text-center text-xs leading-relaxed text-text-secondary">
           {platform.description}
         </p>
