@@ -4,7 +4,11 @@ import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { ChevronDown } from 'lucide-react'
 import { AgentPicker } from '@/components/AgentPicker'
-import { SUPPORTED_PLATFORMS, supportedPlatformBadgeClass } from '@/lib/supported-platforms-data'
+import {
+  SUPPORTED_PLATFORMS,
+  platformBadgeToVisualStatus,
+  supportedPlatformBadgeClass,
+} from '@/lib/supported-platforms-data'
 
 const CARD_SURFACE = 'rounded-card border border-border bg-surface-secondary p-5 text-left'
 
@@ -12,9 +16,9 @@ const EXPANDABLE_INTERACTIVE = `${CARD_SURFACE} w-full min-w-0 cursor-pointer ou
 
 const EXPANDABLE_STATIC = `${CARD_SURFACE} w-full min-w-0`
 
-const COMING_SOON_INTERACTIVE = `${CARD_SURFACE} w-full min-w-0 cursor-not-allowed border-dashed opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-shield/30`
+const COMING_SOON_INTERACTIVE = `${CARD_SURFACE} w-full min-w-0 cursor-not-allowed border-dashed opacity-50 outline-none focus:outline-none`
 
-const COMING_SOON_STATIC = `${CARD_SURFACE} w-full min-w-0 border-dashed opacity-50`
+const COMING_SOON_STATIC = `${CARD_SURFACE} block w-full min-w-0 border-dashed opacity-50`
 
 export function SupportedPlatforms() {
   const [mounted, setMounted] = useState(false)
@@ -54,10 +58,14 @@ export function SupportedPlatforms() {
                       </span>
                     </div>
                     <div className="flex shrink-0 flex-col items-end gap-1">
-                      <span className={supportedPlatformBadgeClass(platform.badge)}>
+                      <span
+                        className={supportedPlatformBadgeClass(
+                          platformBadgeToVisualStatus(platform.badge),
+                        )}
+                      >
                         {platform.badge}
                       </span>
-                      <span className="rounded-full bg-surface px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-text-secondary ring-1 ring-border">
+                      <span className={supportedPlatformBadgeClass('coming-soon')}>
                         Coming soon
                       </span>
                     </div>
@@ -73,6 +81,7 @@ export function SupportedPlatforms() {
                   key={platform.name}
                   type="button"
                   aria-disabled="true"
+                  tabIndex={-1}
                   aria-label={`${platform.name}. Coming soon. Not selectable yet.`}
                   onClick={(e) => e.preventDefault()}
                   onKeyDown={(e) => {
@@ -83,9 +92,9 @@ export function SupportedPlatforms() {
                   {inner}
                 </button>
               ) : (
-                <div key={platform.name} className={COMING_SOON_STATIC} role="presentation">
+                <span key={platform.name} className={COMING_SOON_STATIC}>
                   {inner}
-                </div>
+                </span>
               )
             }
 
@@ -101,7 +110,11 @@ export function SupportedPlatforms() {
                     </span>
                   </div>
                   <div className="flex shrink-0 items-start gap-2">
-                    <span className={supportedPlatformBadgeClass(platform.badge)}>
+                    <span
+                      className={supportedPlatformBadgeClass(
+                        platformBadgeToVisualStatus(platform.badge),
+                      )}
+                    >
                       {platform.badge}
                     </span>
                     <ChevronDown

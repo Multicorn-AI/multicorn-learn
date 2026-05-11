@@ -19,9 +19,26 @@ export interface SupportedPlatform {
   readonly comingSoon: boolean
 }
 
-/** Small pill matching dashboard PlatformSelect (native vs hosted proxy). */
-export function supportedPlatformBadgeClass(badge: SupportedPlatform['badge']): string {
-  if (badge === 'Native plugin') {
+/** Visual variant for marketing badges (Native plugin vs Hosted proxy pills). */
+export type PlatformSupportBadgeStatus = 'supported' | 'new' | 'coming-soon'
+
+export function platformBadgeToVisualStatus(
+  badge: SupportedPlatform['badge'],
+): 'supported' | 'new' {
+  return badge === 'Native plugin' ? 'supported' : 'new'
+}
+
+/**
+ * Returns Tailwind classes for a platform support badge.
+ * @param status - The platform support status (`supported` = native-style pill, `new` = hosted-proxy-style pill, `coming-soon` = muted uppercase pill)
+ * @returns CSS class string for the badge
+ * @example supportedPlatformBadgeClass("supported") // "rounded bg-green-dim ... text-green/80"
+ */
+export function supportedPlatformBadgeClass(status: PlatformSupportBadgeStatus): string {
+  if (status === 'coming-soon') {
+    return 'rounded-full bg-surface px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-text-secondary ring-1 ring-border'
+  }
+  if (status === 'supported') {
     return 'rounded bg-green-dim px-2 py-0.5 text-[10px] font-medium leading-tight text-green/80'
   }
   return 'rounded bg-cyan-dim px-2 py-0.5 text-[10px] font-medium leading-tight text-cyan'

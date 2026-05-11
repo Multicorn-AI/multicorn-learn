@@ -4,6 +4,7 @@ import { useCallback, useMemo, useState } from 'react'
 import {
   FALLBACK_RECOMMENDATION_PLATFORM_NAME,
   findSupportedPlatform,
+  platformBadgeToVisualStatus,
   supportedPlatformBadgeClass,
   type SupportedPlatform,
   type SupportedPlatformName,
@@ -188,7 +189,11 @@ function ResultCard({
             <p className="text-center text-lg font-semibold tracking-tight text-text-primary sm:text-left">
               {platform.name}
             </p>
-            <span className={supportedPlatformBadgeClass(platform.badge)}>{platform.badge}</span>
+            <span
+              className={supportedPlatformBadgeClass(platformBadgeToVisualStatus(platform.badge))}
+            >
+              {platform.badge}
+            </span>
           </div>
         </div>
         <p className="mt-2 text-center text-xs leading-relaxed text-text-secondary">
