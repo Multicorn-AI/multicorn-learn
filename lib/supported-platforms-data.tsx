@@ -3,7 +3,6 @@ import {
   Bird,
   Code2,
   Github,
-  GitBranch,
   Infinity as InfinityIcon,
   Layers,
   Puzzle,
@@ -110,13 +109,6 @@ export const SUPPORTED_PLATFORMS: readonly SupportedPlatform[] = [
     badge: 'Hosted proxy',
     description: 'Open-source AI agent from AAIF. Shield support via hosted proxy.',
     icon: Bird,
-    comingSoon: false,
-  },
-  {
-    name: 'Aider',
-    badge: 'Hosted proxy',
-    description: 'Terminal-first coding agent. Shield wraps MCP through the hosted proxy.',
-    icon: GitBranch,
     comingSoon: false,
   },
 ]

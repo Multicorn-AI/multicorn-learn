@@ -168,7 +168,7 @@ export default function ShieldThreatModelPage() {
                 </p>
                 <p className="mt-3 text-sm leading-relaxed text-text-secondary">
                   This is the right mental model for Cursor, Claude Desktop, Kilo Code, GitHub
-                  Copilot, Continue, Goose, Aider, and other clients you connect through the proxy.
+                  Copilot, Continue, Goose, and other clients you connect through the proxy.
                   Windsurf also supports hosted proxy mode alongside its native plugin. You get
                   strong governance for MCP tools. You do not get visibility into built-in host
                   capabilities that never pass through MCP.
