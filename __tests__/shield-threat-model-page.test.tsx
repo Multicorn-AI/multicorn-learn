@@ -31,10 +31,14 @@ describe('/shield/threat-model page', () => {
     expect(docLink).toHaveAttribute('href', '/docs/getting-started')
   })
 
-  it('mentions roadmap wording for native integrations', () => {
+  it('lists native plugin integrations including Gemini CLI', () => {
     render(<ShieldThreatModelPage />)
 
-    expect(screen.getByText(/Windsurf on the roadmap/i)).toBeInTheDocument()
+    expect(
+      screen.getByText(
+        /Native plugin integrations today include OpenClaw, Claude Code, Windsurf, Cline, and Gemini CLI/i,
+      ),
+    ).toBeInTheDocument()
   })
 
   it('declares the correct canonical URL', () => {

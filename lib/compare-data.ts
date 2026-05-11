@@ -26,7 +26,7 @@ export const COMPARE_COMPETITORS: readonly CompareCompetitor[] = [
     strengths: [
       'Kernel-level enforcement on macOS via sandbox-exec, not a wrapper or proxy',
       'Zero dependencies, single self-contained shell script',
-      'Tested against major coding agents including Claude Code, Codex, Cursor, Gemini CLI, Cline, and Aider',
+      'Tested against major coding agents including Claude Code, Codex, Cursor, Gemini CLI, and Cline',
       'Open source under Apache 2.0',
     ],
     gaps: [

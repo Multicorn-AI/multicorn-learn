@@ -41,7 +41,7 @@ verification fails.
 
 The scope is deliberately narrow compared to AGT. Asqav does not include a policy engine, execution sandboxing, or framework adapters beyond its five supported frameworks (LangChain, CrewAI, OpenAI Agents, Haystack, LiteLLM). What it does is produce audit records that will remain cryptographically verifiable even against quantum computing attacks. For teams whose primary governance concern is provable compliance evidence, particularly under the EU AI Act's Article 12 requirements for tamper-evident logging, that focus is the point.
 
-An MCP server is available for Claude Desktop and Cursor. MIT licensed.
+An MCP server is available for Cursor and other MCP clients. MIT licensed.
 
 ### Agentgateway
 
@@ -73,7 +73,7 @@ Both are useful but address a different layer. They validate what comes out of a
 
 ### Multicorn Shield
 
-[Shield](https://multicorn.ai/shield) takes a different approach. Instead of providing a policy engine that developers wire into their agent code, Shield operates as a proxy layer between the agent and the tools it calls. Install the [SDK](https://www.npmjs.com/package/multicorn-shield), point your agent's traffic through Shield, and every tool call is logged, evaluated, and optionally gated before it executes. Seven agent platforms are supported today, including Cursor, Claude Code, Windsurf, Claude Desktop, and Cline.
+[Shield](https://multicorn.ai/shield) takes a different approach. Instead of providing a policy engine that developers wire into their agent code, Shield operates as a proxy layer between the agent and the tools it calls. Install the [SDK](https://www.npmjs.com/package/multicorn-shield), point your agent's traffic through Shield, and every tool call is logged, evaluated, and optionally gated before it executes. Multiple agent platforms are supported today, including Cursor, Claude Code, Windsurf, and Cline.
 
 The piece that no other tool in this list provides is the consent screen. When an agent is first connected, the end user sees exactly which permission scopes the agent is requesting and can approve or deny each one individually before the agent acts. This is not a policy file or a YAML configuration. It is a UI that a person interacts with. If an agent is going to act on your behalf, you should see what it is asking for and have the option to say no.
 
