@@ -1,52 +1,195 @@
 [
   {
-    "version": "1.0.0",
-    "date": "2026-05-02",
+    "version": "1.6.0",
+    "date": "2026-05-10",
+    "added": [
+      "Claude Code promotion note when selecting Cursor in the CLI",
+      "Example usage prompt in CLI \"Next steps\" output",
+      "`--version` flag prints version number and exits",
+      "Consent-required errors now display a clear multi-line message with the approval URL on its own line"
+    ],
+    "changed": [
+      "Auth prompt detects token pasted at the y/N confirmation and treats it as the token value directly",
+      "Single-item arrow select skips the interactive picker and selects immediately",
+      "Blocked response message reformatted for clarity"
+    ],
+    "fixed": [
+      "Hosted proxy blocks `.well-known` OAuth discovery probes to prevent `mcp-remote` entering OAuth mode"
+    ],
+    "security": []
+  },
+  {
+    "version": "1.4.1",
+    "date": "2026-05-09",
     "added": [],
     "changed": [
-      "CLI binary renamed from `multicorn-proxy` to `multicorn-shield`. The `multicorn-proxy` command still works but prints a deprecation warning. All user-facing documentation and dashboard references use `npx multicorn-shield`.",
-      "`multicorn-proxy` binary alias. Use `multicorn-shield` instead."
+      "Upstream auth prompt accepts a raw API token (`Bearer` added automatically) or a full Authorization-style value (`Bearer`, `Basic`, `Token`, `ApiKey` prefixes are passed through unchanged)"
     ],
-    "fixed": [],
+    "fixed": [
+      "CLI replace flow no longer shows duplicate agent entries"
+    ],
     "security": []
   },
   {
-    "version": "0.13.0",
-    "date": "2026-05-01",
+    "version": "1.4.0",
+    "date": "2026-05-08",
     "added": [
-      "Gemini CLI native plugin: `BeforeTool`/`AfterTool` hook scripts for full governance",
-      "Gemini CLI hosted proxy support with `httpUrl` config field",
-      "CLI wizard: Gemini CLI platform with native plugin and hosted proxy integration modes",
-      "CLI wizard: platform prerequisite detection (warns if target platform is not installed)"
+      "Hosted proxy wizard now prompts for upstream MCP server authentication (header name and value) when the target server requires credentials",
+      "Helpful examples shown during hosted proxy setup: common MCP server URLs (GitHub, Supabase, Atlassian, Stripe) with links to where to find tokens",
+      "Upstream auth headers are stored encrypted and forwarded by the proxy to the target MCP server on every request"
+    ],
+    "changed": [
+      "Target MCP server URL prompt now shows common examples instead of a generic placeholder",
+      "\"govern\" replaced with \"control\" in all user-facing copy",
+      "\"upstream auth\" replaced with \"server credentials\" in all user-facing copy"
+    ],
+    "fixed": [
+      "Hosted proxy connections to MCP servers requiring authentication (e.g. GitHub, Supabase) now work end-to-end - previously the proxy forwarded requests without credentials"
+    ],
+    "security": []
+  },
+  {
+    "version": "1.3.6",
+    "date": "2026-05-08",
+    "added": [],
+    "changed": [],
+    "fixed": [
+      "Hosted proxy URLs now embed the API key as a query parameter fallback for MCP clients that don't send static Authorization headers (fixes Cursor, Claude Desktop, and other clients that ignore the headers config during discovery)"
+    ],
+    "security": []
+  },
+  {
+    "version": "1.3.5",
+    "date": "2026-05-08",
+    "added": [],
+    "changed": [],
+    "fixed": [
+      "Replace flow no longer shows duplicate agent names (deduplication fix from 1.3.4 was incomplete)"
+    ],
+    "security": []
+  },
+  {
+    "version": "1.3.3",
+    "date": "2026-05-08",
+    "added": [
+      "Claude model recommendation note shown when selecting Cursor or GitHub Copilot in the wizard"
     ],
     "changed": [],
-    "fixed": [],
+    "fixed": [
+      "Hosted proxy wizard now auto-writes MCP server config to platform config files instead of showing paste-only snippets (Cursor, Claude Desktop, Windsurf, Cline, Gemini CLI)",
+      "Claude Desktop config snippet now uses mcp-remote bridge format (url + headers format not supported by Claude Desktop)",
+      "Replace flow no longer shows duplicate agent names when agent exists in both local config and account API",
+      "Replace flow name prompt now defaults to the selected agent's name instead of the generic platform default"
+    ],
     "security": []
   },
   {
-    "version": "0.12.0",
-    "date": "2026-05-01",
+    "version": "1.3.2",
+    "date": "2026-05-07",
     "added": [
-      "Cline native plugin support via `PreToolUse`/`PostToolUse` hooks",
-      "Hook scripts for Cline: `pre-tool-use.cjs`, `post-tool-use.cjs`, `shared.cjs`",
+      "Print signup URL and API key instructions before the key prompt in the CLI wizard for new users who don't yet have an account.",
+      "Print dashboard URL at the end of the CLI wizard setup summary.",
+      "Log a one-time \"First action recorded\" message with dashboard link on the first approved action in both the MCP proxy and OpenClaw plugin."
+    ],
+    "changed": [],
+    "fixed": [
+      "Pass action cost (USD) to the backend when logging approved and spending-blocked actions via the MCP proxy. Previously cost was computed locally for spending-limit checks but never sent to the API, causing all agent spend totals to show $0.",
+      "Add optional `cost` field to `ActionLogPayload` in `shield-client.ts` so OpenClaw plugin callers can include cost when it becomes available upstream.",
+      "Sanitise cost values extracted from tool arguments before logging (reject negative, NaN, Infinity, and values exceeding $1M)."
+    ],
+    "security": []
+  },
+  {
+    "version": "1.3.1",
+    "date": "2026-05-07",
+    "added": [],
+    "changed": [],
+    "fixed": [
+      "Consent screen not opening for re-created agents with the same name (stale consent marker now cleared on polling timeout)",
+      "One-time approvals not working in Claude Code and Windsurf hooks (hook now polls approval status instead of immediately blocking when consent marker exists)"
+    ],
+    "security": []
+  },
+  {
+    "version": "1.2.0",
+    "date": "2026-05-06",
+    "added": [
+      "Agents now remember which project directory they were set up in - running `init` from different repos creates separate agents on the same platform (e.g. one Cursor agent per project)",
+      "When a platform already has agents registered, the wizard offers to replace a specific one, add a new agent alongside them, or skip to another platform",
+      "If the current directory already has an agent for the selected platform, the wizard detects it and offers a targeted replace prompt",
+      "Default agent names now include the project folder (e.g. `multicorn-dashboard-cursor` instead of `cursor`)",
+      "Extracted Claude Code tool-to-Shield mapping into dedicated module (`src/hooks/claude-code-tool-map.ts`), exported as CommonJS for hook scripts",
+      "Updated plugin hook scripts to v1.2.0",
+      "After API key validation, `init` may warn when the installed `multicorn-shield` is older than the version published on npm (fetch errors are ignored)"
+    ],
+    "changed": [
+      "Claude Code path in `init` writes PreToolUse and PostToolUse command hooks to `~/.claude/settings.json` (script paths resolve via the installed `multicorn-shield` package). Marketplace and `claude plugin install` steps were removed from the wizard",
+      "\"Next steps\" after setup complete only lists how to start or restart each platform (no repeated paste-into-file instructions)",
+      "Agent resolution now picks the most specific workspace match when multiple agents share a platform - falls back to the original behaviour for existing setups",
+      "Native hook scripts (Cline, Claude Code, Windsurf, Gemini CLI) use workspace-aware agent resolution. Claude Code hooks use `PWD` when set, then longest matching `workspacePath`, then `defaultAgent`, then the first `claude-code` agent",
+      "Replacing an agent no longer removes all agents for that platform - only the specific one being replaced"
+    ],
+    "fixed": [
+      "Stripe/payment tools incorrectly classified as `execute` instead of `write` in tool mapper",
+      "If the old Claude Code plugin is still installed, `init` prints a note that hooks now live in `settings.json` and suggests `claude plugin uninstall multicorn-shield@multicorn-shield`"
+    ],
+    "security": []
+  },
+  {
+    "version": "1.1.0",
+    "date": "2026-05-06",
+    "added": [
+      "Kilo Code as a hosted proxy platform",
+      "GitHub Copilot as a hosted proxy platform",
+      "Continue as a hosted proxy platform",
+      "Goose as a hosted proxy platform",
+      "Claude Desktop as a hosted proxy platform",
+      "Prereq check step in CLI wizard for all hosted proxy platforms",
+      "Platform filter and search in dashboard platform select"
+    ],
+    "changed": [
+      "GitHub Copilot moved from native plugin to hosted proxy section in CLI wizard",
+      "Kilo Code config snippet now includes `\"type\": \"streamable-http\"`",
+      "Goose config snippet uses `\"type\": \"streamable_http\"` and `\"url\"` (SSE deprecated)",
+      "ProxySetup is now a stepped wizard (prereq check, OS selection, proxy form, snippet, completion)",
+      "Short name prompt removed from CLI wizard (uses agent name automatically)"
+    ],
+    "fixed": [
+      "Proxy ALLOW_PRIVATE_TARGETS env var not bypassing localhost validation",
+      "Goose prereq URL updated (moved from Block to the Agentic AI Foundation (AAIF))",
+      "Continue prereq URL updated",
+      "ProxySetup form input contrast (WCAG AA fix)",
+      "Governance disclosure now lists all four native plugin platforms"
+    ],
+    "security": []
+  },
+  {
+    "version": "1.0.0",
+    "date": "2026-05-02",
+    "added": [
+      "Gemini CLI native plugin: BeforeTool/AfterTool hook scripts for full governance",
+      "Gemini CLI hosted proxy support with httpUrl config field",
+      "CLI wizard: Gemini CLI platform with native plugin and hosted proxy integration modes",
+      "CLI wizard: platform prerequisite detection (warns if target platform is not installed) ## [X.Y.Z] - YYYY-MM-DD",
+      "Cline native plugin support via PreToolUse/PostToolUse hooks",
+      "Hook scripts for Cline: pre-tool-use.cjs, post-tool-use.cjs, shared.cjs",
       "Cline plugin README with setup instructions and troubleshooting",
       "Browser auto-open for consent screen when Shield blocks an action",
       "Licence headers on all plugin scripts"
     ],
     "changed": [
-      "CLI wizard installs Cline hooks to `~/Documents/Cline/Hooks/` (previously `~/Documents/Cline/Rules/Hooks/`)",
-      "Cline hook reads `toolName` field from hook input (Cline v3.81+ sends `toolName`, not `tool`)",
+      "CLI binary renamed from `multicorn-proxy` to `multicorn-shield`. The `multicorn-proxy` command still works but prints a deprecation warning. All user-facing documentation and dashboard references use `npx multicorn-shield`.",
+      "CLI wizard installs Cline hooks to ~/Documents/Cline/Hooks/ (previously ~/Documents/Cline/Rules/Hooks/)",
+      "Cline hook reads toolName field from hook input (Cline v3.81+ sends toolName, not tool)",
       "Consent flow no longer polls for approval (blocks immediately with consent URL to avoid Cline's 30-second hook timeout)",
-      "Extracted shared utilities (config loading, HTTP, tool mapping) into `shared.cjs` to eliminate duplication between hooks",
+      "Extracted shared utilities (config loading, HTTP, tool mapping) into shared.cjs to eliminate duplication between hooks",
       "Parameter metadata scrubbed before sending to Shield API (file contents redacted, commands truncated)",
-      "HTTPS enforced for non-local Shield API connections",
-      "Polling-based consent approval flow (replaced with immediate block + consent URL)",
-      "Consent marker filesystem state (no longer needed without polling)"
+      "HTTPS enforced for non-local Shield API connections"
     ],
     "fixed": [],
     "security": [
-      "Fixed Windows shell injection in `openBrowser` (replaced `execSync` with `execFileSync`)",
-      "Added HTTPS enforcement for non-localhost `baseUrl` in hook config",
+      "Fixed Windows shell injection in openBrowser (replaced execSync with execFileSync)",
+      "Added HTTPS enforcement for non-localhost baseUrl in hook config",
       "Added parameter and result scrubbing to prevent sensitive data leakage in audit metadata"
     ]
   },
@@ -224,7 +367,7 @@
     "version": "0.2.2",
     "date": "2026-04-04",
     "added": [
-      "Claude Desktop Extension (`.mcpb`) for one-click install. Packages Shield as a Desktop Extension that wraps existing MCP servers, enforces permissions via the Shield API, and logs all tool calls.",
+      "Claude Desktop Extension (.mcpb) for one-click install. Packages Shield as a Desktop Extension that wraps existing MCP servers, enforces permissions via the Shield API, and logs all tool calls.",
       "`npx multicorn-shield restore` command to recover original MCP server config after disabling the extension.",
       "`multicorn-shield/proxy` subpath export with interceptor helpers, consent utilities, logger, scope validator, and tool mapper for hosted proxy consumers.",
       "HTTP client for hosted proxy URLs (`proxy-client`) supporting Streamable HTTP transport, session management, and JSON-RPC error handling.",
@@ -261,8 +404,8 @@
       "MCP proxy: comprehensive tool name mapper with explicit mappings for filesystem, git, web, terminal, email, and calendar MCP servers",
       "CLI wizard: \"connected\" checkmark for Claude Code and Claude Desktop in platform selection menu",
       "CLI wizard: Step 3 added to Claude Code output (\"Start Claude Code: claude\")",
-      "Agent name validation: must match `/^[a-zA-Z0-9_-]+$/` before use in config files",
-      "`shell` tool name mapping to `terminal:execute` in Claude Code hook (covers Claude Code's Shell tool variant)"
+      "Agent name validation: must match /^[a-zA-Z0-9_-]+$/ before use in config files",
+      "`shell` tool name mapping to terminal:execute in Claude Code hook (covers Claude Code's Shell tool variant)"
     ],
     "changed": [
       "Claude Desktop wizard path now auto-writes config instead of showing manual JSON snippet (falls back to manual on invalid JSON or user skip)",
@@ -270,10 +413,10 @@
       "`isClaudeDesktopConnected` uses proper args array inspection instead of substring match on serialized JSON"
     ],
     "fixed": [
-      "Claude Code plugin install: removed `skills` array from `plugin.json` that caused validation error on `claude plugin install`",
+      "Claude Code plugin install: removed `skills` array from plugin.json that caused validation error on `claude plugin install`",
       "Claude Code consent flow: consent screen only opens once per agent (not per scope), subsequent permission requests block with approvals link",
-      "Claude Code hook: `localhost:8080` API base URL correctly maps to `localhost:5173` dashboard URL for consent and approvals links",
-      "MCP proxy: filesystem server tools (`read_file`, `write_file`, `list_directory`, etc.) now correctly map to `filesystem:read/write` instead of garbage service names"
+      "Claude Code hook: localhost:8080 API base URL correctly maps to localhost:5173 dashboard URL for consent and approvals links",
+      "MCP proxy: filesystem server tools (read_file, write_file, list_directory, etc.) now correctly map to filesystem:read/write instead of garbage service names"
     ],
     "security": []
   },
@@ -282,8 +425,8 @@
     "date": "2026-03-21",
     "added": [
       "Claude Code marketplace manifest at `.claude-plugin/marketplace.json`",
-      "Claude Code plugin structure at `plugins/multicorn-shield/` with `plugin.json` and shield-governance skill",
-      "Repository field added to `marketplace.json` linking to GitHub source"
+      "Claude Code plugin structure at `plugins/multicorn-shield/` with plugin.json and shield-governance skill",
+      "Repository field added to marketplace.json linking to GitHub source"
     ],
     "changed": [],
     "fixed": [],
@@ -303,13 +446,13 @@
     "changed": [
       "All proxy and plugin failure modes now fail closed (block action when Shield cannot verify permissions)",
       "`handleHttpError` returns `shouldBlock: true` for 429 (rate limit) and 5xx (server error), matching the existing `checkActionPermission` behavior and fixing misleading comments",
-      "Service-unreachable, auth-error, and internal-error responses use distinct JSON-RPC error codes: `-32000` (permission denied), `-32002` (internal error), `-32003` (service unreachable), `-32004` (auth error)",
+      "Service-unreachable, auth-error, and internal-error responses use distinct JSON-RPC error codes: -32000 (permission denied), -32002 (internal error), -32003 (service unreachable), -32004 (auth error)",
       "Plugin output filename changed from `index.js` to `multicorn-shield.js` to fix OpenClaw plugin ID mismatch warning"
     ],
     "fixed": [
       "Proxy `handleToolCall` no longer hangs or returns wrong error code when service is unreachable at startup",
       "`findAgentByName` wraps `response.json()` in try/catch so malformed responses flow through the offline path instead of throwing unhandled rejections",
-      "Existing test assertions updated to match new error codes (`-32003` for service unreachable, `-32004` for auth errors)"
+      "Existing test assertions updated to match new error codes (-32003 for service unreachable, -32004 for auth errors)"
     ],
     "security": []
   },
@@ -321,7 +464,7 @@
     "fixed": [
       "Audit log payload column uses `text` instead of `jsonb` to preserve SHA-256 hash chain integrity (PostgreSQL `jsonb` normalizes key ordering and whitespace)",
       "`Instant.toString()` timestamp precision preserved using `DateTimeFormatter` with `SSSSSS` pattern in `AuditHasher.formatTimestamp()`",
-      "All 40 integration tests passing after audit log migration (`V030`)"
+      "All 40 integration tests passing after audit log migration (V030)"
     ],
     "security": []
   },
@@ -331,9 +474,9 @@
     "added": [],
     "changed": [],
     "fixed": [
-      "Consent screen now pre-selects the permission level the agent actually requested (e.g. `terminal:execute` pre-selects the Execute button)",
-      "Scope param parsing supports both formats: `service:permission` (`terminal:execute`) and `permission:service` (`execute:terminal`)",
-      "`deriveDashboardUrl` respects `MULTICORN_BASE_URL` env var for local development instead of always resolving to production",
+      "Consent screen now pre-selects the permission level the agent actually requested (e.g. terminal:execute pre-selects the Execute button)",
+      "Scope param parsing supports both formats: service:permission (terminal:execute) and permission:service (execute:terminal)",
+      "deriveDashboardUrl respects MULTICORN_BASE_URL env var for local development instead of always resolving to production",
       "Plugin re-checks permission after consent completes in the blocked path, so the user doesn't have to trigger a second tool call"
     ],
     "security": []
@@ -364,9 +507,9 @@
     "changed": [],
     "fixed": [
       "Plugin fail mode now defaults to closed (block on API error, never fail open)",
-      "`approval_id` field name corrected from camelCase to snake_case to match backend API",
-      "Plugin `beforeToolCall` wrapped in try/catch so errors block instead of crashing silently",
-      "Config cascade documented: `~/.multicorn/config.json` takes priority over `openclaw.json` plugin env"
+      "approval_id field name corrected from camelCase to snake_case to match backend API",
+      "Plugin beforeToolCall wrapped in try/catch so errors block instead of crashing silently",
+      "Config cascade documented: ~/.multicorn/config.json takes priority over openclaw.json plugin env"
     ],
     "security": []
   },
@@ -376,7 +519,7 @@
     "added": [],
     "changed": [],
     "fixed": [
-      "API key resolution from `config.json` when `openclaw.json` env block is not available"
+      "API key resolution from config.json when openclaw.json env block is not available"
     ],
     "security": []
   },
@@ -386,7 +529,7 @@
     "added": [],
     "changed": [],
     "fixed": [
-      "Plugin correctly maps destructive exec commands (`rm`, `mv`, `sudo`, `chmod`) to `terminal:write` instead of `terminal:execute`",
+      "Plugin correctly maps destructive exec commands (rm, mv, sudo, chmod) to terminal:write instead of terminal:execute",
       "Approval descriptions now show human-readable summaries instead of raw shell commands",
       "Agent polling removed in favour of immediate block with dashboard redirect (OpenClaw hook timeout was shorter than human approval time)"
     ],
@@ -446,11 +589,11 @@
     "version": "0.1.3",
     "date": "2026-03-04",
     "added": [
-      "Shield API client (`shield-client.ts`) for permission checks and action logging from the plugin",
+      "Shield API client (shield-client.ts) for permission checks and action logging from the plugin",
       "Consent flow module with browser-open and polling for user authorization",
-      "OpenClaw Plugin API integration (`beforeToolCall`/`afterToolCall` hooks)",
-      "Tool name mapper: OpenClaw tools (`exec`, `read`, `write`, `browser`, `message`) mapped to Shield service scopes",
-      "Hook documentation (`HOOK.md`)"
+      "OpenClaw Plugin API integration (beforeToolCall/afterToolCall hooks)",
+      "Tool name mapper: OpenClaw tools (exec, read, write, browser, message) mapped to Shield service scopes",
+      "Hook documentation (HOOK.md)"
     ],
     "changed": [],
     "fixed": [

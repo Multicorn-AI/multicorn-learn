@@ -79,7 +79,7 @@ export const SUPPORTED_PLATFORMS: readonly SupportedPlatform[] = [
     badge: 'Hosted proxy',
     description: 'Claude Desktop connects to Shield via hosted proxy. Governs MCP tool calls.',
     icon: Sparkles,
-    comingSoon: false,
+    comingSoon: true,
   },
   {
     name: 'Kilo Code',
