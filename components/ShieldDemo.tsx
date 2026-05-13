@@ -12,18 +12,18 @@ type DashboardTab = 'agents' | 'activity'
 /** Intrinsic layout width; heights preserve each screenshot's aspect ratio (sources differ). */
 const IMG_WIDTH = 1200
 
-const AGENTS_HEIGHT = Math.round((IMG_WIDTH * 1242) / 2876)
-const ACTIVITY_HEIGHT = Math.round((IMG_WIDTH * 1592) / 2858)
+const AGENTS_HEIGHT = Math.round((IMG_WIDTH * 677) / 1568)
+const ACTIVITY_HEIGHT = Math.round((IMG_WIDTH * 812) / 1458)
 
 const TAB_CONFIG = {
   agents: {
-    src: '/images/shield-agents.png',
+    src: '/images/shield-dashboard-agents.png',
     alt: 'Multicorn Shield dashboard showing 8 connected AI agents with action counts, spend tracking, and budget limits',
     width: IMG_WIDTH,
     height: AGENTS_HEIGHT,
   },
   activity: {
-    src: '/images/shield-activity.png',
+    src: '/images/shield-dashboard-activity.png',
     alt: 'Multicorn Shield activity log showing approved, blocked, and pending agent actions with filters',
     width: IMG_WIDTH,
     height: ACTIVITY_HEIGHT,
