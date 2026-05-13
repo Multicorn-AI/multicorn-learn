@@ -14,6 +14,8 @@ const LEARN_GITHUB_REPO_URL = 'https://github.com/Multicorn-AI/multicorn-learn'
 
 const PRODUCT_LINKS: readonly FooterLink[] = [
   { label: 'Shield', href: '/shield' },
+  { label: 'Threat model', href: '/shield/threat-model' },
+  { label: 'OWASP compliance', href: '/shield/owasp' },
   { label: 'Pricing', href: '/pricing' },
   { label: 'Documentation', href: '/docs' },
   { label: 'Changelog', href: '/changelog' },

@@ -531,6 +531,13 @@ export default function ShieldPage() {
               >
                 Read the threat model
               </TrackedCtaLink>
+              <TrackedCtaLink
+                href="/shield/owasp"
+                className="inline-flex min-h-[44px] items-center rounded-lg border border-border bg-surface px-8 py-3 text-base font-semibold text-text-primary shadow-sm transition-colors hover:bg-surface-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2"
+                eventName="shield_page_owasp_link_click"
+              >
+                OWASP compliance
+              </TrackedCtaLink>
             </div>
           </div>
         </section>
