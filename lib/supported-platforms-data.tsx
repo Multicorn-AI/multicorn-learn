@@ -1,15 +1,5 @@
 import type { LucideIcon } from 'lucide-react'
-import {
-  Bird,
-  Code2,
-  Github,
-  Infinity as InfinityIcon,
-  Layers,
-  Puzzle,
-  Sparkles,
-  SquareTerminal,
-  Wind,
-} from 'lucide-react'
+import { Bird, Code2, Github, Layers, Puzzle, Sparkles, SquareTerminal, Wind } from 'lucide-react'
 
 export interface SupportedPlatform {
   readonly name: string
@@ -92,13 +82,6 @@ export const SUPPORTED_PLATFORMS: readonly SupportedPlatform[] = [
     comingSoon: false,
   },
   {
-    name: 'Claude Desktop',
-    badge: 'Hosted proxy',
-    description: 'Claude Desktop connects to Shield via hosted proxy. Governs MCP tool calls.',
-    icon: Sparkles,
-    comingSoon: true,
-  },
-  {
     name: 'Kilo Code',
     badge: 'Hosted proxy',
     description: 'IDE extension. Shield wraps MCP through the hosted proxy.',
@@ -114,17 +97,9 @@ export const SUPPORTED_PLATFORMS: readonly SupportedPlatform[] = [
     comingSoon: false,
   },
   {
-    name: 'Continue',
-    badge: 'Hosted proxy',
-    description:
-      'Open-source AI code assistant for VS Code and JetBrains. Shield governs MCP through the hosted proxy.',
-    icon: InfinityIcon,
-    comingSoon: false,
-  },
-  {
     name: 'Goose',
     badge: 'Hosted proxy',
-    description: 'Open-source AI agent from AAIF. Shield support via hosted proxy.',
+    description: 'Open-source AI agent from AAIF. Shield connects via hosted proxy.',
     icon: Bird,
     comingSoon: false,
   },

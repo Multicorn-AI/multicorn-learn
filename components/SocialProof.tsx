@@ -6,7 +6,8 @@ export function SocialProof() {
           Compatible with
         </p>
         <p className="mt-3 text-lg font-semibold text-text-secondary">
-          OpenClaw · Claude Code · Cursor · Windsurf · Cline
+          OpenClaw · Claude Code · Cursor · Windsurf · Cline · Gemini CLI · Goose · Kilo Code ·
+          GitHub Copilot
         </p>
       </div>
     </section>

@@ -109,7 +109,7 @@ function DashboardPreview() {
       </div>
       <div role="img" aria-label="Multicorn Shield dashboard preview">
         <Image
-          src="/images/shield-agents.png"
+          src="/images/shield-dashboard-agents.png"
           alt=""
           width={600}
           height={259}

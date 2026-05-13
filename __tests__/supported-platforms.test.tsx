@@ -39,11 +39,10 @@ describe('supportedPlatformBadgeClass', () => {
 })
 
 describe('SupportedPlatforms', () => {
-  it('SSR output does not use role=presentation and uses static span for coming-soon cards', () => {
+  it('SSR output does not use role=presentation', () => {
     const html = renderToString(<SupportedPlatforms />)
     expect(html).not.toContain('role="presentation"')
-    expect(html).toContain('Claude Desktop')
-    expect(html).toMatch(/<span[^>]*border-dashed[^>]*>[\s\S]*?Claude Desktop/)
+    expect(html).toContain('OpenClaw')
   })
 
   it('after mount, expandable card is a button with expand/collapse aria-label', async () => {
@@ -52,15 +51,6 @@ describe('SupportedPlatforms', () => {
       name: /OpenClaw - click to expand details/i,
     })
     expect(btn).toHaveAttribute('aria-expanded', 'false')
-  })
-
-  it('coming-soon card uses disabled semantics and is removed from tab order', async () => {
-    render(<SupportedPlatforms />)
-    const btn = await screen.findByRole('button', {
-      name: /Claude Desktop\. Coming soon\. Not selectable yet\./i,
-    })
-    expect(btn).toHaveAttribute('aria-disabled', 'true')
-    expect(btn).toHaveAttribute('tabIndex', '-1')
   })
 
   it('toggles expand/collapse on platform card click', async () => {

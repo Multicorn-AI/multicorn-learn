@@ -157,9 +157,6 @@ export function SupportedPlatforms() {
             )
           })}
         </div>
-        <p className="mt-6 text-center text-sm text-text-tertiary">
-          ...and any other compatible AI coding agent
-        </p>
         <p className="mt-3 text-center">
           <Link
             href="/shield/threat-model"
