@@ -1,5 +1,128 @@
 [
   {
+    "version": "1.9.5",
+    "date": "2026-05-13",
+    "added": [],
+    "changed": [
+      "CLI \"Try it\" prompt matches dashboard example: \"Use the {agent} MCP server to list my GitHub repositories\""
+    ],
+    "fixed": [
+      "CLI \"Try it\" prompt now suggests a real tool call instead of metadata discovery",
+      "Duplicate \"Add a new agent alongside these\" menu option removed"
+    ],
+    "security": []
+  },
+  {
+    "version": "1.9.4",
+    "date": "2026-05-13",
+    "added": [],
+    "changed": [
+      "Codex CLI hosted proxy next-steps updated: \"Restart Codex CLI to load the new MCP server config\"",
+      "Added copy-pasteable \"Try it out\" prompt to Codex CLI hosted proxy next-steps"
+    ],
+    "fixed": [
+      "Double \"Bearer\" prefix in Codex CLI hosted proxy TOML snippet (was outputting `Bearer Bearer mcs_...`)",
+      "Codex CLI hosted proxy now auto-writes MCP server config to `~/.codex/config.toml` instead of asking users to paste manually",
+      "PreToolUse hook now prints the consent/approval URL to stderr so users know where to approve"
+    ],
+    "security": []
+  },
+  {
+    "version": "1.9.3",
+    "date": "2026-05-13",
+    "added": [],
+    "changed": [],
+    "fixed": [
+      "Codex CLI hosted proxy snippet uses `http_headers` with inline API key instead of `bearer_token_env_var` (no env var setup needed)",
+      "Removed \"Set MULTICORN_API_KEY environment variable\" instruction from hosted proxy next-steps",
+      "Added `/mcp` verification step to Codex CLI hosted proxy next-steps"
+    ],
+    "security": []
+  },
+  {
+    "version": "1.9.2",
+    "date": "2026-05-12",
+    "added": [],
+    "changed": [],
+    "fixed": [
+      "Include `plugins/codex-cli` in published npm package (missing from `files` in package.json)"
+    ],
+    "security": []
+  },
+  {
+    "version": "1.9.1",
+    "date": "2026-05-12",
+    "added": [],
+    "changed": [],
+    "fixed": [
+      "Include `plugins/codex-cli` in published npm package (missing from `files` in package.json)"
+    ],
+    "security": []
+  },
+  {
+    "version": "1.9.0",
+    "date": "2026-05-12",
+    "added": [
+      "OpenAI Codex CLI as a supported platform (native hooks + hosted proxy)",
+      "Codex CLI hook scripts (PreToolUse, PostToolUse) for terminal command interception",
+      "Codex CLI agent resolution and tool name mapping",
+      "CLI wizard support for Codex CLI: native plugin install and hosted proxy TOML snippet",
+      "`plugins/codex-cli/README.md` documenting hook script build and test workflow"
+    ],
+    "changed": [
+      "Error message prefix shortened from `[multicorn-shield]` to `[Shield]`",
+      "\"Audit trail\" terminology replaced with \"record the action\" in user-facing messages"
+    ],
+    "fixed": [
+      "Codex config.toml feature flag updated from deprecated `codex_hooks` to `hooks`",
+      "Config.toml migration: init now detects and replaces deprecated `codex_hooks` flag automatically",
+      "Hook scripts reject plaintext HTTP for non-localhost API calls",
+      "Config file permission warning when `~/.multicorn/config.json` is readable by other users",
+      "Destructive command detection uses word-boundary matching instead of substring includes",
+      "Unknown tool names default to restrictive `write` permission level instead of `execute`",
+      "Audit log payloads size-bounded and secret patterns redacted before transmission",
+      "Error messages sanitised: internal details hidden unless `MULTICORN_DEBUG` is set",
+      "Test-mode polling escape hatch removed from production hook scripts",
+      "Shared utility module extracted to eliminate duplication between hook scripts"
+    ],
+    "security": []
+  },
+  {
+    "version": "1.8.0",
+    "date": "2026-05-11",
+    "added": [
+      "OpenCode as a supported platform (native plugin + hosted proxy paths)",
+      "Native Shield plugin for OpenCode (`plugins/opencode/multicorn-shield.ts`) using `tool.execute.before`/`tool.execute.after` hooks for permission checks and audit logging",
+      "OpenCode in CLI init wizard with native plugin and hosted proxy integration modes",
+      "Tool name mapping for OpenCode built-in tools (`bash`, `read`, `write`, `edit`, `apply_patch`, `glob`, `grep`, `list`, `webfetch`, `websearch`)",
+      "Shell reload hint in CLI native plugin output for freshly installed tools",
+      "`'opencode'` to `AGENT_PLATFORM_SLUGS`"
+    ],
+    "changed": [],
+    "fixed": [],
+    "security": []
+  },
+  {
+    "version": "1.7.0",
+    "date": "2026-05-11",
+    "added": [],
+    "changed": [
+      "Add runtime dependency on [`yaml`](https://www.npmjs.com/package/yaml) (ISC) for safe Goose `config.yaml` read/write in the hosted-proxy CLI path",
+      "GitHub Copilot: CLI auto-writes config to `.vscode/mcp.json`",
+      "Kilo Code: CLI writes to `.kilo/kilo.jsonc` with correct format (`mcp` key, `type: remote`)",
+      "Continue: CLI writes YAML to `.continue/mcpServers/<name>.yaml` in workspace root",
+      "Goose: CLI auto-writes to `~/.config/goose/config.yaml`",
+      "All hosted proxy platforms: Next Steps includes where to verify connection and example prompt",
+      "Claude Desktop removed from hosted proxy platform list (consent URL not clickable)"
+    ],
+    "fixed": [
+      "Agent name now uses user-provided short name instead of auto-generated default",
+      "Goose config snippet uses `uri` instead of incorrect `url`",
+      "Replace flow deduplicates agent list loaded from config on startup"
+    ],
+    "security": []
+  },
+  {
     "version": "1.6.0",
     "date": "2026-05-10",
     "added": [
@@ -46,9 +169,7 @@
     "fixed": [
       "Hosted proxy connections to MCP servers requiring authentication (e.g. GitHub, Supabase) now work end-to-end - previously the proxy forwarded requests without credentials"
     ],
-    "security": [
-      "Upstream auth headers stored with AES-256 encryption at rest"
-    ]
+    "security": []
   },
   {
     "version": "1.3.6",
@@ -56,11 +177,9 @@
     "added": [],
     "changed": [],
     "fixed": [
-      "Hosted proxy URLs now embed the API key as a query parameter fallback for MCP clients that don't send static Authorization headers (fixes Cursor, Claude Desktop, and other clients that ignore the headers config during discovery). The query parameter key is a scoped proxy session key, not the user's primary API key."
+      "Hosted proxy URLs now embed the API key as a query parameter fallback for MCP clients that don't send static Authorization headers (fixes Cursor, Claude Desktop, and other clients that ignore the headers config during discovery)"
     ],
-    "security": [
-      "Fixed credential-forwarding bug in query parameter fallback"
-    ]
+    "security": []
   },
   {
     "version": "1.3.5",
