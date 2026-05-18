@@ -112,7 +112,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${BASE_URL}/blog`,
-      lastModified: new Date('2026-04-10'),
+      lastModified: new Date('2026-05-19'),
       changeFrequency: 'weekly',
       priority: 0.6,
     },
@@ -209,6 +209,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${BASE_URL}/blog/microsoft-agent-governance-toolkit-who-else-showed-up`,
       lastModified: new Date('2026-05-02'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/blog/your-ai-agent-can-send-500-emails-in-10-seconds`,
+      lastModified: new Date('2026-05-19'),
       changeFrequency: 'monthly',
       priority: 0.7,
     },
