@@ -79,6 +79,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         {children}
       </blockquote>
     ),
+    hr: () => <hr className="mb-10 mt-12 border-0 border-t border-border" aria-hidden="true" />,
     ...components,
   }
 }
