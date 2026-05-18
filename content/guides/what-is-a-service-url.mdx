@@ -1,0 +1,60 @@
+---
+title: 'What is a service URL?'
+description: 'How to find the address of the MCP server your AI agent connects to'
+published: '2026-05-19'
+---
+
+When you set up Shield, it asks for a "service to protect". This is the web address (URL) of the tool your AI agent connects to. Shield sits in front of it to monitor and control what the agent does.
+
+It works like a security desk in a building lobby. The service URL is the address of the building. Shield is the desk that checks everyone going in and out.
+
+## Common MCP server addresses
+
+If you are connecting to a well-known service, here are their MCP server URLs:
+
+| Service        | URL                                  |
+| -------------- | ------------------------------------ |
+| GitHub Copilot | `https://api.githubcopilot.com/mcp/` |
+| Supabase       | `https://mcp.supabase.com/sse`       |
+| Atlassian      | `https://mcp.atlassian.com/v1/sse`   |
+| Stripe         | `https://mcp.stripe.com/v1/sse`      |
+
+Check your MCP server's documentation for the correct URL. It usually starts with `https://` and often ends in `/mcp`, `/sse`, or `/v1/sse`.
+
+## Where do I find mine?
+
+It depends on how your MCP server was set up. Here are the most common situations.
+
+### You followed one of our courses
+
+If you built an MCP server by following a Multicorn Learn course, the URL was shown during the deployment step. It typically looks like:
+
+- `https://your-app-name.fly.dev/mcp` (if deployed to Fly.io)
+- `https://your-app-name.railway.app/mcp` (if deployed to Railway)
+- `http://localhost:3002/mcp` (if running locally on your machine)
+
+Check your deployment dashboard or terminal output for the exact URL. It usually ends in `/mcp`.
+
+### Someone on your team set it up
+
+Ask the person who set up the MCP server for the URL. They will know it from the deployment step. It is a web address that usually ends in `/mcp` or `/sse`.
+
+### You are using a hosted MCP service
+
+Some services provide MCP servers as part of their product. Check the service's documentation or settings page for an "MCP endpoint" or "MCP server URL". It will be a web address starting with `https://`. See the table above for common examples.
+
+### You do not have one yet
+
+Shield protects MCP servers that already exist. If you do not have one, you need to set up the service first, then come back to Shield.
+
+If you are new to AI agents and want to understand what MCP servers are, read [What are AI agents?](/learn/course-1/what-is-an-ai-agent). For setting up an MCP server, check the documentation for the specific service you want to connect to. Most have a getting started guide that includes the MCP server URL.
+
+## What does Shield do with this URL?
+
+Shield creates a proxy (a secure pass-through) that sits between your AI agent and the service. Every request the agent makes goes through Shield first. Shield checks permissions, logs the action, and only passes the request through if it is allowed. The service URL tells Shield where to forward approved requests.
+
+## Common mistakes
+
+- **Using the Shield proxy URL instead of the service URL.** The service URL is the address of the tool you already have. The proxy URL is what Shield gives you after setup. Do not paste the proxy URL back into the service field.
+- **Using a URL that requires its own login.** If the service needs a separate username, password, or API key, you will need to provide that as a service token in the wizard. Shield passes this token through to the service on your behalf.
+- **Forgetting the path.** Most MCP servers expect requests at a specific path like `/mcp` or `/sse`. If your URL looks like `https://example.com` but should be `https://example.com/mcp`, the connection will fail.

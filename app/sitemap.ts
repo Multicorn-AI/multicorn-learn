@@ -75,6 +75,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${BASE_URL}/learn/guides/what-is-a-service-url`,
+      lastModified: new Date('2026-05-19'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
       url: `${BASE_URL}/learn/agent-platforms`,
       lastModified: new Date('2026-04-28'),
       changeFrequency: 'monthly',

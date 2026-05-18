@@ -254,6 +254,26 @@ export default function LearnPage() {
               </Link>
 
               <Link
+                href="/learn/guides/what-is-a-service-url"
+                className="group flex h-full min-h-[44px] flex-row items-start gap-4 rounded-lg border border-border bg-surface p-4 transition-colors hover:border-primary/25 hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-primary/20 sm:gap-5 sm:p-5"
+              >
+                <span
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border bg-surface-secondary text-primary"
+                  aria-hidden="true"
+                >
+                  <ShieldCheck className="h-5 w-5" strokeWidth={1.5} />
+                </span>
+                <div className="min-w-0 flex-1 text-left">
+                  <p className="font-semibold text-text-primary group-hover:text-primary">
+                    What is a service URL?
+                  </p>
+                  <p className="mt-0.5 text-sm leading-relaxed text-text-secondary">
+                    How to find the address of the MCP server your AI agent connects to.
+                  </p>
+                </div>
+              </Link>
+
+              <Link
                 href="/learn/news"
                 className="group flex h-full min-h-[44px] flex-row items-start gap-4 rounded-lg border border-border bg-surface p-4 transition-colors hover:border-primary/25 hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-primary/20 sm:gap-5 sm:p-5"
               >
