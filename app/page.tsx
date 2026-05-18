@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Hero } from '@/components/Hero'
 import { Features } from '@/components/Features'
+import { EmailSignupSection } from '@/components/EmailSignupSection'
 import { LearnSection } from '@/components/LearnSection'
 import { SocialProof } from '@/components/SocialProof'
 import { Pricing } from '@/components/Pricing'
@@ -32,6 +33,7 @@ export default function HomePage() {
         <Hero />
         <SocialProof />
         <Features />
+        <EmailSignupSection />
         <LearnSection />
         <Pricing />
       </main>

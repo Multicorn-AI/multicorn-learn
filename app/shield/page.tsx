@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Footer } from '@/components/Footer'
-import { ConsentScreenDemo } from '@/components/ConsentScreenDemo'
+import Image from 'next/image'
+
 import { FeatureCard } from '@/components/FeatureCard'
 import { HowItWorks } from '@/components/HowItWorks'
 import { ShieldDemo } from '@/components/ShieldDemo'
@@ -317,7 +318,7 @@ export default function ShieldPage() {
           </div>
         </section>
 
-        {/* Interactive Consent Screen Demo */}
+        {/* Consent Screen */}
         <section className="bg-[#0d0d14] px-6 py-14 sm:py-28">
           <div className="mx-auto max-w-content">
             <div className="mb-16 text-center">
@@ -325,11 +326,22 @@ export default function ShieldPage() {
                 See the consent screen in action
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-lg text-[#8888a0]">
-                This is how the consent screen appears to your users. Try toggling permissions,
-                adjusting the spending limit, and approving or denying the agent.
+                This is how the consent screen appears to your users. They review permissions,
+                adjust the spending limit, and approve or deny the agent.
               </p>
             </div>
-            <ConsentScreenDemo />
+            <div className="mx-auto max-w-[420px]">
+              <div className="overflow-hidden rounded-card shadow-xl shadow-primary/20 ring-1 ring-primary/10">
+                <Image
+                  src="/images/consent-screen-real.png"
+                  alt="Multicorn Shield consent screen showing permission controls for an AI agent accessing Gmail, Google Calendar, Payments, Slack, and Google Drive with spending limits"
+                  width={824}
+                  height={1610}
+                  sizes="420px"
+                  className="h-auto w-full"
+                />
+              </div>
+            </div>
           </div>
         </section>
 
