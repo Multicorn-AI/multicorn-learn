@@ -12,14 +12,18 @@ It works like a security desk in a building lobby. The service URL is the addres
 
 If you are connecting to a well-known service, here are their MCP server URLs:
 
-| Service        | URL                                  |
-| -------------- | ------------------------------------ |
-| GitHub Copilot | `https://api.githubcopilot.com/mcp/` |
-| Supabase       | `https://mcp.supabase.com/sse`       |
-| Atlassian      | `https://mcp.atlassian.com/v1/sse`   |
-| Stripe         | `https://mcp.stripe.com/v1/sse`      |
+| Service        | URL                                       |
+| -------------- | ----------------------------------------- |
+| GitHub Copilot | `https://api.githubcopilot.com/mcp/`      |
+| Supabase       | `https://mcp.supabase.com/sse`            |
+| Atlassian      | `https://mcp.atlassian.com/v1/mcp/authv2` |
+| Stripe         | `https://mcp.stripe.com/v1/sse`           |
 
-Check your MCP server's documentation for the correct URL. It usually starts with `https://` and often ends in `/mcp`, `/sse`, or `/v1/sse`.
+Check your MCP server's documentation for the correct URL. It usually starts with `https://` and often ends in `/mcp`, `/sse`, `/v1/sse`, or a service-specific auth path.
+
+## Do I need a token?
+
+Yes. All of the services listed above require authentication. When you enter a service URL in the Shield wizard, you will also be asked for an access token. Each service has its own way of generating tokens. The wizard includes step-by-step instructions for the most common services.
 
 ## Where do I find mine?
 
