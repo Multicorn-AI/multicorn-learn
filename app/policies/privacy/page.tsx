@@ -43,7 +43,7 @@ export default function PrivacyPolicyPage() {
           <h1 className="mb-2 text-4xl font-bold tracking-tight text-text-primary sm:text-5xl">
             Privacy policy
           </h1>
-          <p className="mb-12 text-sm text-text-secondary">Last updated February 19, 2026</p>
+          <p className="mb-12 text-sm text-text-secondary">Last updated July 12, 2026</p>
 
           {/* ── INTRODUCTION ── */}
           <section className="mb-12">
@@ -132,7 +132,18 @@ export default function PrivacyPolicyPage() {
                 <strong className="text-text-primary">
                   Do we collect any information from third parties?
                 </strong>{' '}
-                We do not collect any information from third parties.
+                When you connect your Google account to Multicorn Shield, we receive Google user
+                data from Google&apos;s APIs for the scopes you approve, but only when your AI agent
+                attempts an action you have authorised. We also receive profile information when you
+                sign in with a third-party social account, as described in the section called &quot;
+                <a href="#social-logins" className="text-primary hover:underline">
+                  HOW DO WE HANDLE YOUR SOCIAL LOGINS?
+                </a>
+                &quot; below. Learn more in{' '}
+                <a href="#google-user-data" className="text-primary hover:underline">
+                  Google user data
+                </a>
+                .
               </p>
               <p>
                 <strong className="text-text-primary">How do we process your information?</strong>{' '}
@@ -207,6 +218,11 @@ export default function PrivacyPolicyPage() {
                 <li>
                   <a href="#information-we-collect" className="hover:underline">
                     WHAT INFORMATION DO WE COLLECT?
+                  </a>
+                </li>
+                <li>
+                  <a href="#google-user-data" className="hover:underline">
+                    GOOGLE USER DATA
                   </a>
                 </li>
                 <li>
@@ -444,6 +460,105 @@ export default function PrivacyPolicyPage() {
                   rel="noopener noreferrer"
                 >
                   Limited Use requirements
+                </a>
+                .
+              </p>
+            </div>
+          </section>
+
+          {/* ── GOOGLE USER DATA ── */}
+          <section id="google-user-data" className="mb-12 scroll-mt-24">
+            <h2 className="mb-4 text-2xl font-bold text-text-primary">Google user data</h2>
+
+            <h3 className="mb-3 mt-6 text-lg font-semibold text-text-primary">
+              What Google data we access
+            </h3>
+            <div className="space-y-4 text-base leading-relaxed text-text-secondary">
+              <p>
+                When you connect your Google account, you grant Multicorn Shield access to the
+                scopes you approve: Gmail (read and send), Google Calendar (read and events), and
+                Google Drive (read, and create or edit for files the agent works with). We access
+                this data only when your AI agent attempts an action you have authorised.
+              </p>
+            </div>
+
+            <h3 className="mb-3 mt-6 text-lg font-semibold text-text-primary">How we use it</h3>
+            <div className="space-y-4 text-base leading-relaxed text-text-secondary">
+              <p>
+                Google user data is used solely to carry out the specific action you have asked your
+                agent to perform. Multicorn Shield acts as a governance layer: it intercepts each
+                action, requires your consent, and passes the result to your agent. We do not use
+                Google user data for advertising, we do not sell it, and we do not use it to
+                develop, improve, or train AI or machine-learning models.
+              </p>
+            </div>
+
+            <h3 className="mb-3 mt-6 text-lg font-semibold text-text-primary">
+              What we store, and what we do not
+            </h3>
+            <div className="space-y-4 text-base leading-relaxed text-text-secondary">
+              <p>
+                Multicorn Shield passes Google content through to your agent. We do not store the
+                content of your emails, files, or calendar events in our systems. What we do store
+                is an audit record of each action: the agent, the service (Gmail, Calendar, or
+                Drive), the action name, a timestamp, and whether the action was approved or
+                blocked. This audit record does not contain the arguments or the results of the
+                action, so it does not contain your message content, recipients, subjects, or file
+                contents.
+              </p>
+              <p>
+                Some optional local integrations (for example, our Codex CLI and OpenCode plugins)
+                record a redacted summary of an action&apos;s inputs and outputs to your activity
+                log. Google user data in those records is redacted.
+              </p>
+            </div>
+
+            <h3 className="mb-3 mt-6 text-lg font-semibold text-text-primary">
+              Who we share it with
+            </h3>
+            <div className="space-y-4 text-base leading-relaxed text-text-secondary">
+              <p>
+                We do not transfer Google user data to third parties. Google content is returned
+                directly to the AI agent you have connected, running in the tool you chose (for
+                example, Cursor or VS Code). What that tool subsequently does with the content,
+                including sending it to a language-model provider, is governed by that tool&apos;s
+                own policies, not ours. Our infrastructure providers (Amazon Web Services) process
+                data on our behalf and do not use it for their own purposes.
+              </p>
+            </div>
+
+            <h3 className="mb-3 mt-6 text-lg font-semibold text-text-primary">How we protect it</h3>
+            <div className="space-y-4 text-base leading-relaxed text-text-secondary">
+              <p>
+                All data is transmitted over TLS. Your Google OAuth tokens are encrypted at rest
+                using AES-256-GCM, with keys held in AWS Systems Manager. Your Google refresh token
+                never leaves our backend service. Audit records are append-only and tamper-evident.
+              </p>
+            </div>
+
+            <h3 className="mb-3 mt-6 text-lg font-semibold text-text-primary">
+              Retention and deletion
+            </h3>
+            <div className="space-y-4 text-base leading-relaxed text-text-secondary">
+              <p>
+                Your Google OAuth tokens are retained only while your Google account is connected.
+                When you disconnect Google, we revoke the token with Google and delete it from our
+                database immediately. When you delete your Multicorn account, we revoke and delete
+                all of your Google tokens. Audit records are retained as metadata only, and because
+                our audit log is append-only and tamper-evident it is not deleted. Deleted records
+                may persist in encrypted database backups until those backups expire on their normal
+                retention schedule.
+              </p>
+              <p>
+                You can review and revoke Multicorn Shield&apos;s access to your Google account at
+                any time at{' '}
+                <a
+                  href="https://myaccount.google.com/permissions"
+                  className="text-primary hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  https://myaccount.google.com/permissions
                 </a>
                 .
               </p>
@@ -1262,7 +1377,7 @@ export default function PrivacyPolicyPage() {
                         Name, contact information, education, employment, employment history, and
                         financial information
                       </td>
-                      <td className="border border-border px-4 py-3 text-center">NO</td>
+                      <td className="border border-border px-4 py-3 text-center">YES</td>
                     </tr>
                     <tr>
                       <td className="border border-border px-4 py-3">
@@ -1280,7 +1395,7 @@ export default function PrivacyPolicyPage() {
                         Transaction information, purchase history, financial details, and payment
                         information
                       </td>
-                      <td className="border border-border px-4 py-3 text-center">NO</td>
+                      <td className="border border-border px-4 py-3 text-center">YES</td>
                     </tr>
                     <tr>
                       <td className="border border-border px-4 py-3">E. Biometric information</td>
@@ -1298,7 +1413,7 @@ export default function PrivacyPolicyPage() {
                         interactions with our and other websites, applications, systems, and
                         advertisements
                       </td>
-                      <td className="border border-border px-4 py-3 text-center">NO</td>
+                      <td className="border border-border px-4 py-3 text-center">YES</td>
                     </tr>
                     <tr>
                       <td className="border border-border px-4 py-3">G. Geolocation data</td>
@@ -1373,6 +1488,12 @@ export default function PrivacyPolicyPage() {
               </p>
               <ul className="list-disc space-y-2 pl-6">
                 <li>Category A - As long as the user has an account with us</li>
+                <li>
+                  Category F - Agent activity audit metadata is retained as described in{' '}
+                  <a href="#google-user-data" className="text-primary hover:underline">
+                    Google user data
+                  </a>
+                </li>
               </ul>
 
               <h3 className="text-lg font-semibold text-text-primary">
@@ -1383,7 +1504,12 @@ export default function PrivacyPolicyPage() {
                 <a href="#information-we-collect" className="text-primary hover:underline">
                   WHAT INFORMATION DO WE COLLECT?
                 </a>
-                &quot;
+                &quot; We receive Google user data from Google&apos;s APIs when you connect your
+                Google account and authorise an agent action, as described in{' '}
+                <a href="#google-user-data" className="text-primary hover:underline">
+                  Google user data
+                </a>
+                . We do not store the content of your Google emails, files, or calendar events.
               </p>
 
               <h3 className="text-lg font-semibold text-text-primary">
